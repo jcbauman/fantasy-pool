@@ -1,25 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { OverviewComponent } from "./pages/overview/OverviewPage";
+import { getLeague } from "./backend/getters";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { PlayersPage } from "./pages/playersList/PlayersPage";
+import { PlayerDetailPage } from "./pages/playerDetail/PlayerDetailPage";
+import { ThemeProvider } from "@emotion/react";
+import theme from "./theme";
+import { CssBaseline } from "@mui/material";
+import { TopNav } from "./pages/nav/TopNav";
+import { LeagueInfoPage } from "./pages/info/LeagueInfoPage";
+import { LiveGameModePage } from "./pages/live-game/LiveGameModePage";
+import { ProfilePage } from "./pages/profile/ProfilePage";
+import { Provider } from "react-redux";
+import store, { persistor } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 function App() {
+  const league = getLeague();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline>
+            <Router>
+              <TopNav />
+              <Routes>
+                <Route
+                  path="/"
+                  element={<OverviewComponent leagueName={league.name} />}
+                />
+                <Route path="/players" element={<PlayersPage />} />
+                <Route path="/players/:id" element={<PlayerDetailPage />} />
+                <Route path="/info" element={<LeagueInfoPage />} />
+                <Route path="/live-game" element={<LiveGameModePage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+              </Routes>
+            </Router>
+          </CssBaseline>
+        </ThemeProvider>
+      </PersistGate>
+    </Provider>
   );
 }
 

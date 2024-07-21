@@ -32,6 +32,7 @@ export const LeagueInfoPage: FC = () => {
             There has not been an LM Note posted.
           </Typography>
         </Card>
+
         <Card sx={{ p: 2 }}>
           <Typography variant="overline">Abbreviations Glossary</Typography>
           {Object.keys(StatAbbreviations).map((key) => {
@@ -95,6 +96,12 @@ export const LeagueInfoPage: FC = () => {
               </TableBody>
             </Table>
           </TableContainer>
+        </Card>
+        <Card sx={{ p: 2 }}>
+          <Typography variant="overline">Format</Typography>
+          <Typography variant="body2">
+            The league is set to standard 8-ball bar pool format.
+          </Typography>
         </Card>
       </Stack>
     </PageContainer>

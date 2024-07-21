@@ -13,14 +13,11 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import SportsKabaddiOutlinedIcon from "@mui/icons-material/SportsKabaddiOutlined";
 import { PageContainer } from "../../shared-components/PageContainer";
+import { useAppContext } from "../../context/AppContext";
+import { Link as RouterLink } from "react-router-dom";
 
-interface OverviewComponentProps {
-  leagueName: string;
-}
-
-export const OverviewComponent: FC<OverviewComponentProps> = ({
-  leagueName,
-}) => {
+export const OverviewComponent: FC = () => {
+  const { league } = useAppContext();
   return (
     <PageContainer>
       <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
@@ -36,14 +33,14 @@ export const OverviewComponent: FC<OverviewComponentProps> = ({
             <strong>League</strong>
           </Typography>
           <Typography variant="overline" fontSize={16}>
-            {leagueName}
+            {league.name}
           </Typography>
         </Stack>
         <Box sx={{ width: "100%" }}>
           <List>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton href="/live-game">
+              <ListItemButton to="/live-game" component={RouterLink}>
                 <ListItemIcon>
                   <SportsKabaddiOutlinedIcon />
                 </ListItemIcon>
@@ -55,7 +52,7 @@ export const OverviewComponent: FC<OverviewComponentProps> = ({
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton href="/players">
+              <ListItemButton to="/players" component={RouterLink}>
                 <ListItemIcon>
                   <AccountBoxOutlinedIcon />
                 </ListItemIcon>
@@ -91,7 +88,7 @@ export const OverviewComponent: FC<OverviewComponentProps> = ({
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton href="/info">
+              <ListItemButton to="/info" component={RouterLink}>
                 <ListItemIcon>
                   <InfoOutlinedIcon />
                 </ListItemIcon>

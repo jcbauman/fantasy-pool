@@ -1,5 +1,5 @@
 import { matchPath, useLocation } from "react-router-dom";
-import { mockPlayers } from "../../../backend/fixtures";
+import { useAppContext } from "../../../context/AppContext";
 
 interface UseTopNav {
   title: string;
@@ -7,13 +7,13 @@ interface UseTopNav {
 }
 export const useTopNav = (): UseTopNav => {
   const location = useLocation();
-
+  const { players } = useAppContext();
   const matchPlayerDetail = matchPath(
     { path: "/players/:id" },
     location.pathname
   );
   const params = matchPlayerDetail?.params as { id?: string };
-  const player = mockPlayers.find((p) => p.id === params?.id);
+  const player = players.find((p) => p.id === params?.id);
   if (location.pathname.startsWith("/players")) {
     if (params?.id) {
       return { title: player?.name ?? "Player Detail", showBackButton: true };

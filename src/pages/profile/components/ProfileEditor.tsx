@@ -17,6 +17,7 @@ import { useAuthState } from "../../../auth/useAuthState";
 import { Controller, useForm } from "react-hook-form";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import { Link as RouterLink } from "react-router-dom";
 
 interface FormValues {
   email: string;
@@ -62,7 +63,8 @@ export const ProfileEditor: FC = () => {
           fullWidth
           variant="outlined"
           color="success"
-          href={`/players/${player?.id}`}
+          component={RouterLink}
+          to={`/players/${player?.id}`}
           startIcon={<LeaderboardOutlinedIcon />}
         >
           View my player stats

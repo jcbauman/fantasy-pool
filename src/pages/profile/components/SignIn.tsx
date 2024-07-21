@@ -10,6 +10,7 @@ import { FC } from "react";
 import { RegisterOptions, SubmitHandler, useForm } from "react-hook-form";
 import { mockUsers } from "../../../backend/fixtures";
 import { useAuthState } from "../../../auth/useAuthState";
+import { useNavigate } from "react-router-dom";
 
 interface FormValues {
   email: string;
@@ -24,6 +25,7 @@ export const SignIn: FC = () => {
     formState: { errors },
   } = useForm<FormValues>();
   const { signIn } = useAuthState();
+  const navigate = useNavigate();
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     const user = mockUsers.find((u) => u.email === data.email);
     if (!user) {
@@ -32,7 +34,7 @@ export const SignIn: FC = () => {
       setError("password", { message: "Incorrect username or password." });
     } else {
       signIn(user.id);
-      window.location.href = "/";
+      navigate("/");
     }
   };
 

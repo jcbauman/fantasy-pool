@@ -14,10 +14,12 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SportsKabaddiIcon from "@mui/icons-material/SportsKabaddi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 export const TopNav: FC = () => {
   const { title, showBackButton } = useTopNav();
   const { isAuthed } = useAuthState();
+  const navigate = useNavigate();
   const { gameIsInProgress } = useSelector((state: RootState) => state.game);
   return (
     <AppBar position="fixed">
@@ -32,7 +34,7 @@ export const TopNav: FC = () => {
             if (showBackButton) {
               window.history.back();
             } else {
-              window.location.pathname = "/";
+              navigate("/");
             }
           }}
         >
@@ -51,7 +53,8 @@ export const TopNav: FC = () => {
             aria-label="currentGame"
             aria-haspopup="true"
             color="inherit"
-            href="/live-game"
+            to="/live-game"
+            component={RouterLink}
           >
             <Badge
               color="secondary"
@@ -68,7 +71,8 @@ export const TopNav: FC = () => {
           aria-controls="menu-appbar"
           aria-haspopup="true"
           color="inherit"
-          href="/profile"
+          component={RouterLink}
+          to="/profile"
         >
           {isAuthed ? <ManageAccountsIcon /> : <AccountCircle />}
         </IconButton>

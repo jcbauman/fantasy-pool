@@ -3,6 +3,7 @@ import { PageContainer } from "../../shared-components/PageContainer";
 import { Button, Card, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { Link as RouterLink } from "react-router-dom";
 
 export const GameCompletePage: FC = () => {
   const lastGameId = useSelector((state: RootState) => state.game.lastGameId);
@@ -17,7 +18,7 @@ export const GameCompletePage: FC = () => {
           <Stack direction="column" spacing={2}>
             <Typography variant="h4">Game Complete!</Typography>
             {lastGameId}
-            <Button href="/" variant="contained">
+            <Button to="/" variant="contained" component={RouterLink}>
               Back to home
             </Button>
           </Stack>

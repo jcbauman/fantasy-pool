@@ -1,19 +1,18 @@
 import { Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import { useParams } from "react-router-dom";
-import { mockPlayers } from "../../backend/fixtures";
-import { PlayerCell } from "../playersList/components/PlayerCell";
 import { PlayerDetailHeader } from "./components/PlayerDetailHeader";
 import { PlayerSeasonStats } from "./components/PlayerSeasonStats";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { GameLog } from "./components/GameLog";
+import { useAppContext } from "../../context/AppContext";
 
 interface PlayerParams extends Record<string, string | undefined> {
   id: string;
 }
 
 export const PlayerDetailPage: FC = () => {
-  const players = mockPlayers;
+  const { players } = useAppContext();
   const { id } = useParams<PlayerParams>();
   const player = players.find((p) => p.id === id);
   if (!player) {

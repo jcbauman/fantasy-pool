@@ -16,11 +16,12 @@ import {
   getPlayedGamesForPlayer,
   getStatsForGame,
 } from "../../playersList/utils/playerUtils";
-import { mockGame } from "../../../backend/fixtures";
 import { formatDateToMMDD, getAbbreviation } from "../../../utils/statsUtils";
+import { useAppContext } from "../../../context/AppContext";
 
 export const GameLog: FC<{ player: Player }> = ({ player }) => {
-  const games = getPlayedGamesForPlayer(player.id, [mockGame]);
+  const { games: allGames } = useAppContext();
+  const games = getPlayedGamesForPlayer(player.id, allGames);
   return (
     <Card>
       <Stack direction="column" sx={{ p: 0, pb: 1 }}>

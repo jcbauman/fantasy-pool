@@ -16,8 +16,6 @@ import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearGame, setLastGameId } from "../../../redux/gameSlice";
 import { RootState } from "../../../redux/store";
-import { mockPlayers } from "../../../backend/fixtures";
-import { Player } from "../../../types";
 import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
@@ -27,15 +25,19 @@ import WavingHandOutlinedIcon from "@mui/icons-material/WavingHandOutlined";
 import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";
 import { TimeCounter } from "./TimeCounter";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
+import { useAppContext } from "../../../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 export const GameInterface: FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { players, addGame } = useAppContext();
   const game = useSelector((state: RootState) => state.game.currentGame);
   const [selectedTab, setSelectedTab] = useState(0);
   const [endGameDialogOpen, setEndGameDialogOpen] = useState(false);
   const startTime = game?.timestamp ? new Date(game?.timestamp) : new Date();
 
-  const gamePlayers = mockPlayers.filter((player) =>
+  const gamePlayers = players.filter((player) =>
     game?.playerIds.includes(player.id)
   );
   const showTabs = gamePlayers.length > 1;
@@ -149,8 +151,11 @@ export const GameInterface: FC = () => {
         open={endGameDialogOpen}
         onClose={() => setEndGameDialogOpen(false)}
         onConfirm={() => {
-          dispatch(setLastGameId(game?.id ?? null));
-          window.location.pathname = "/game-complete";
+          if (game) {
+            addGame(game);
+            dispatch(setLastGameId(game?.id ?? null));
+          }
+          navigate("/game-complete");
           dispatch(clearGame());
         }}
       />

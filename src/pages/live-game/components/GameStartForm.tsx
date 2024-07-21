@@ -11,11 +11,11 @@ import {
 } from "@mui/material";
 import { FC, useState } from "react";
 import DatePicker from "../../../shared-components/DatePicker";
-import { mockPlayers } from "../../../backend/fixtures";
 import { useAuthState } from "../../../auth/useAuthState";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { initializeGame } from "../../../redux/gameSlice";
+import { useAppContext } from "../../../context/AppContext";
 interface FormData {
   date: Date | null;
   location: string;
@@ -25,7 +25,7 @@ interface FormData {
 export const GameStartForm: FC = () => {
   const { player } = useAuthState();
   const dispatch = useDispatch();
-  const allPlayers = mockPlayers;
+  const { players: allPlayers } = useAppContext();
   const {
     handleSubmit,
     control,

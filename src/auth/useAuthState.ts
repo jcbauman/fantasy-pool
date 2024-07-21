@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Player, User } from "../types";
-import { mockPlayers, mockUsers } from "../backend/fixtures";
 import { RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlayer, setUserId, signOutAndClearIds } from "../redux/playerSlice";
+import { useAppContext } from "../context/AppContext";
 
 const USER_ID_KEY = "FANTASY_POOL_USER_ID";
 
@@ -18,6 +18,7 @@ interface AuthState {
 
 export const useAuthState = (): AuthState => {
   const { player, userId } = useSelector((state: RootState) => state.player);
+  const { users, players } = useAppContext();
   const dispatch = useDispatch();
   const [user, setUser] = useState<User | undefined>();
   useEffect(() => {
@@ -26,11 +27,11 @@ export const useAuthState = (): AuthState => {
   }, [dispatch, userId]);
 
   useEffect(() => {
-    const linkedUser = mockUsers.find((u) => u.id === userId);
-    const linkedPlayer = mockPlayers.find((u) => u.linkedUserId === userId);
+    const linkedUser = users.find((u) => u.id === userId);
+    const linkedPlayer = players.find((u) => u.linkedUserId === userId);
     setUser(linkedUser);
     if (linkedPlayer) dispatch(setPlayer(linkedPlayer));
-  }, [userId, dispatch]);
+  }, [userId, dispatch, users, players]);
 
   const signOut = (): void => {
     localStorage.removeItem(USER_ID_KEY);

@@ -2,6 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Game } from "../types";
 import { v4 as uuidv4 } from "uuid";
+import { defaultGameStat } from "../utils/constants";
 
 interface PlayerState {
   currentGame: Game | null;
@@ -23,12 +24,18 @@ const gameSlice = createSlice({
       state,
       action: PayloadAction<Omit<Game, "id" | "statsByPlayer">>
     ) => {
+      const baseStats = action.payload.playerIds.map((playerId) => {
+        return {
+          playerId,
+          ...defaultGameStat,
+        };
+      });
       const resolvedGame: Game = {
         id: uuidv4(),
         playerIds: action.payload.playerIds,
         timestamp: action.payload.timestamp,
         location: action.payload.location,
-        statsByPlayer: [],
+        statsByPlayer: baseStats,
       };
       state.currentGame = resolvedGame;
       state.gameIsInProgress = true;

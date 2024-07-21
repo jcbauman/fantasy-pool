@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useAppContext } from "../context/AppContext";
 import { getStatsForPlayerGames } from "../pages/playersList/utils/playerUtils";
-import { Game, GameStatKeys, Player } from "../types";
+import { Game, GameStat, GameStatKeys, Player } from "../types";
 
 export const normalizePercentage = (value: number): string => {
   const per = Number.isNaN(value) ? 0 : (value * 100).toFixed(1);
@@ -39,4 +39,17 @@ export const getFantasyMultiplierForStat = (
     return scoringMatrix[statKey];
   }
   return 0;
+};
+
+export const getFantasyScoreForStat = (
+  stat: Omit<GameStat, "playerId">,
+  scoringMatrix: Record<string, number>
+): number => {
+  let total = 0;
+  Object.keys(stat as unknown as keyof GameStat).forEach((s) => {
+    total +=
+      getFantasyMultiplierForStat(s, scoringMatrix) *
+        stat[s as unknown as keyof Omit<GameStat, "playerId">] ?? 0;
+  });
+  return total;
 };

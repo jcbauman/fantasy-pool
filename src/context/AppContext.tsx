@@ -7,7 +7,12 @@ import React, {
   useMemo,
 } from "react";
 import { AggregateStats, Game, League, Player, User } from "../types";
-import { mockLeague, mockPlayers, mockUsers } from "../backend/fixtures";
+import {
+  mockLeague,
+  mockPlayers,
+  mockScoringMatrix,
+  mockUsers,
+} from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -20,6 +25,7 @@ interface AppContextType {
   addGame: (game: Game) => void;
   rankings: Record<string, string[]>;
   allStatsByPlayers: AggregateStats;
+  scoringMatrix: Record<string, number>;
 }
 
 export const useAppContext = () => {
@@ -37,6 +43,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const [players, setPlayers] = useState<Player[]>(mockPlayers);
   const [league, setLeague] = useState<League>(mockLeague);
   const [games, setGames] = useState<Game[]>([]);
+  const [scoringMatrix, setScoringMatrix] = useState(mockScoringMatrix);
   const { rankings, allStatsByPlayers } = useGetRankingByField(players, games);
 
   const addGame = (game: Game) => {
@@ -52,6 +59,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
         addGame,
         rankings,
         allStatsByPlayers,
+        scoringMatrix,
       }}
     >
       {children}

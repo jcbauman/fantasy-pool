@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useAppContext } from "../context/AppContext";
 import { getStatsForPlayerGames } from "../pages/playersList/utils/playerUtils";
-import { Game, Player } from "../types";
+import { Game, GameStatKeys, Player } from "../types";
 
 export const normalizePercentage = (value: number): string => {
   const per = Number.isNaN(value) ? 0 : (value * 100).toFixed(1);
@@ -29,4 +29,14 @@ export const formatDateToMMDD = (date: Date): string => {
   const day = date.getDate();
 
   return `${month}/${day}`;
+};
+
+export const getFantasyMultiplierForStat = (
+  statKey: string,
+  scoringMatrix: Record<string, number>
+): number => {
+  if (scoringMatrix[statKey]) {
+    return scoringMatrix[statKey];
+  }
+  return 0;
 };

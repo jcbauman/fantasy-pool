@@ -23,22 +23,22 @@ export const StatOverview: FC<{ player: Player }> = ({ player }) => {
     >
       <Divider />
       <Stack direction="column" sx={{ alignItems: "center", p: 2 }}>
-        <Typography variant="overline" color="textSecondary">
+        <Typography variant="overline" color="textSecondary" noWrap>
           Wins rank
         </Typography>
         <Typography variant="body1">{totalWinRank}</Typography>
       </Stack>
       <Divider orientation="vertical" />
       <Stack direction="column" sx={{ alignItems: "center", p: 2 }}>
-        <Typography variant="overline" color="textSecondary">
+        <Typography variant="overline" color="textSecondary" noWrap>
           # Games rank
         </Typography>
         <Typography variant="body1">{totalGamesRank}</Typography>
       </Stack>
       <Divider orientation="vertical" />
       <Stack direction="column" sx={{ alignItems: "center", p: 2 }}>
-        <Typography variant="overline" color="textSecondary">
-          Total games
+        <Typography variant="overline" color="textSecondary" noWrap>
+          # games
         </Typography>
         <Typography variant="body1">{totalGames}</Typography>
       </Stack>

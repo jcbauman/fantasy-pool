@@ -62,3 +62,13 @@ export const mockGame: Game = {
     },
   ],
 };
+
+export const mockScoringMatrix: { [key: string]: number } = {
+  [GameStatKeys.winsBy8BallSink]: 5,
+  [GameStatKeys.winsByOpponentScratch]: 4,
+  [GameStatKeys.lossesBy8BallSink]: -4,
+  [GameStatKeys.lossesByScratch]: -3,
+  [GameStatKeys.georgeWashingtons]: 1,
+  [GameStatKeys.incredibleShots]: 0.3,
+  [GameStatKeys.ballsPocketedInRow]: 1,
+};

@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import { Game, League, Player, User } from "../types";
+import { AggregateStats, Game, League, Player, User } from "../types";
 import { mockLeague, mockPlayers, mockUsers } from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 
@@ -19,6 +19,7 @@ interface AppContextType {
   games: Game[];
   addGame: (game: Game) => void;
   rankings: Record<string, string[]>;
+  allStatsByPlayers: AggregateStats;
 }
 
 export const useAppContext = () => {
@@ -36,14 +37,22 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const [players, setPlayers] = useState<Player[]>(mockPlayers);
   const [league, setLeague] = useState<League>(mockLeague);
   const [games, setGames] = useState<Game[]>([]);
-  const rankings = useGetRankingByField(players, games);
+  const { rankings, allStatsByPlayers } = useGetRankingByField(players, games);
 
   const addGame = (game: Game) => {
     setGames((prevGames) => [...prevGames, game]);
   };
   return (
     <AppContext.Provider
-      value={{ users, players, league, games, addGame, rankings }}
+      value={{
+        users,
+        players,
+        league,
+        games,
+        addGame,
+        rankings,
+        allStatsByPlayers,
+      }}
     >
       {children}
     </AppContext.Provider>

@@ -3,6 +3,7 @@ import { Player } from "../../../types";
 import { Avatar, Card, Stack, Typography } from "@mui/material";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import { StatOverview } from "../../playersList/components/StatOverview";
 
 export const PlayerDetailHeader: FC<{ player: Player }> = ({ player }) => {
   return (
@@ -35,7 +36,7 @@ export const PlayerDetailHeader: FC<{ player: Player }> = ({ player }) => {
           </Stack>
           {player.defaultLocation && (
             <Stack direction="row" sx={{ alignItems: "center" }} spacing={1}>
-              <LocationOnOutlinedIcon />
+              <Typography variant="overline">Default location:</Typography>
               <Typography variant="caption">
                 {player.defaultLocation}
               </Typography>
@@ -43,6 +44,7 @@ export const PlayerDetailHeader: FC<{ player: Player }> = ({ player }) => {
           )}
         </Stack>
       </Stack>
+      <StatOverview player={player} />
     </Card>
   );
 };

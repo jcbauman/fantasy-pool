@@ -1,25 +1,22 @@
 import { useMemo } from "react";
-import { useAppContext } from "../../../context/AppContext";
 import { getStatsForPlayerGames } from "../utils/playerUtils";
-import { Game, Player } from "../../../types";
-interface Stats {
-  [playerId: string]: {
-    [statName: string]: number;
-  };
-}
+import { AggregateStats, Game, Player } from "../../../types";
 
 export const useGetRankingByField = (
   players: Player[],
   games: Game[]
-): Record<string, string[]> => {
-  const allStatsByPlayers: Stats = useMemo(
+): {
+  rankings: Record<string, string[]>;
+  allStatsByPlayers: AggregateStats;
+} => {
+  const allStatsByPlayers: AggregateStats = useMemo(
     () =>
       players.reduce((acc, { id }) => {
         acc[id] = getStatsForPlayerGames(id, games) as unknown as {
           [statName: string]: number;
         };
         return acc;
-      }, {} as Stats),
+      }, {} as AggregateStats),
     [games, players]
   );
   const rankings: Record<string, string[]> = {};
@@ -45,5 +42,5 @@ export const useGetRankingByField = (
     // Extract sorted player IDs
     rankings[statName] = sortedPlayerStatEntries.map(([playerId]) => playerId);
   });
-  return rankings;
+  return { rankings, allStatsByPlayers };
 };

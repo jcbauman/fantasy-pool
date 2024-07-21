@@ -51,3 +51,9 @@ export interface GameStat {
   [GameStatKeys.georgeWashingtons]: number;
   [GameStatKeys.incredibleShots]: number;
 }
+
+export interface AggregateStats {
+  [playerId: string]: {
+    [statName: string]: number;
+  };
+}

@@ -6,6 +6,19 @@ export const getPlayerNameAbbreviation = (name: string): string => {
   return returnName[0].slice(0, 1) + ". " + returnName[returnName.length - 1];
 };
 
+export const getStatsForGame = (playerId: string, game: Game): GameStat => {
+  const playerIndex = game.playerIds.findIndex((id) => id === playerId);
+  const playerStats = game.statsByPlayer[playerIndex];
+  return playerStats;
+};
+
+export const getPlayedGamesForPlayer = (
+  playerId: string,
+  games: Game[]
+): Game[] => {
+  return games.filter((game) => game.playerIds.includes(playerId));
+};
+
 export const getStatsForPlayerGames = (
   playerId: string,
   games: Game[]

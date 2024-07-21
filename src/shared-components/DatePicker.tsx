@@ -3,9 +3,10 @@ import { TextField } from "@mui/material";
 
 interface DatePickerProps {
   label?: string;
+  onChange: (date: Date) => void;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ label }) => {
+const DatePicker: React.FC<DatePickerProps> = ({ label, onChange }) => {
   const [date, setDate] = useState("");
   const [error, setError] = useState("");
 
@@ -24,6 +25,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ label }) => {
     const value = event.target.value;
     const formattedValue = formatDate(value);
     setDate(formattedValue);
+    onChange(new Date(formattedValue));
 
     // Validate date format (basic validation)
     const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d$/;

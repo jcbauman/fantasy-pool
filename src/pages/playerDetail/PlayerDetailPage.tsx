@@ -6,6 +6,7 @@ import { PlayerCell } from "../playersList/components/PlayerCell";
 import { PlayerDetailHeader } from "./components/PlayerDetailHeader";
 import { PlayerSeasonStats } from "./components/PlayerSeasonStats";
 import { PageContainer } from "../../shared-components/PageContainer";
+import { GameLog } from "./components/GameLog";
 
 interface PlayerParams extends Record<string, string | undefined> {
   id: string;
@@ -34,8 +35,9 @@ export const PlayerDetailPage: FC = () => {
     <PageContainer>
       <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
         <PlayerDetailHeader player={player} />
-        <Stack sx={{ p: 1 }}>
+        <Stack sx={{ p: 1, pt: 2 }} spacing={2}>
           <PlayerSeasonStats player={player} />
+          <GameLog player={player} />
         </Stack>
       </Stack>
     </PageContainer>

@@ -48,6 +48,7 @@ export const mockGame: Game = {
   id: uuidv4(),
   playerIds: [playerId],
   timestamp: new Date().toString(),
+  location: "The Levee",
   statsByPlayer: [
     {
       winsBy8BallSink: 1,

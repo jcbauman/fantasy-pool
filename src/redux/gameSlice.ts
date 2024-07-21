@@ -4,13 +4,15 @@ import { Game } from "../types";
 import { v4 as uuidv4 } from "uuid";
 
 interface PlayerState {
-  game: Game | null;
+  currentGame: Game | null;
   gameIsInProgress: boolean;
+  lastGameId: string | null;
 }
 
 const initialState: PlayerState = {
-  game: null,
+  currentGame: null,
   gameIsInProgress: false,
+  lastGameId: null,
 };
 
 const gameSlice = createSlice({
@@ -28,16 +30,19 @@ const gameSlice = createSlice({
         location: action.payload.location,
         statsByPlayer: [],
       };
-      state.game = resolvedGame;
+      state.currentGame = resolvedGame;
       state.gameIsInProgress = true;
     },
     clearGame: (state, _action: PayloadAction<void>) => {
-      state.game = null;
+      state.currentGame = null;
       state.gameIsInProgress = false;
+    },
+    setLastGameId: (state, action: PayloadAction<string | null>) => {
+      state.lastGameId = action.payload;
     },
   },
 });
 
-export const { initializeGame, clearGame } = gameSlice.actions;
+export const { initializeGame, clearGame, setLastGameId } = gameSlice.actions;
 
 export default gameSlice.reducer;

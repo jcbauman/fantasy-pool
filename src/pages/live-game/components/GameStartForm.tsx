@@ -59,10 +59,13 @@ export const GameStartForm: FC = () => {
   return (
     <Card sx={{ p: 2 }}>
       <Typography sx={{ mb: 2 }} variant="overline">
-        Start a new gaming session
+        Start a new pool session
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack direction="column" gap={2}>
+          <Typography variant="caption">
+            You can record scores for up to 4 players simultaneously.
+          </Typography>
           <Controller
             name="playerIds"
             control={control}
@@ -74,6 +77,7 @@ export const GameStartForm: FC = () => {
               <Autocomplete
                 {...field}
                 multiple
+                value={field.value}
                 id="tags-outlined"
                 options={playerOptions}
                 getOptionLabel={(option) => option.label}

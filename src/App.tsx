@@ -16,6 +16,7 @@ import { ProfilePage } from "./pages/profile/ProfilePage";
 import { Provider } from "react-redux";
 import store, { persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+import { GameCompletePage } from "./pages/game-complete/GameCompletePage";
 
 function App() {
   const league = getLeague();
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/info" element={<LeagueInfoPage />} />
                 <Route path="/live-game" element={<LiveGameModePage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/game-complete" element={<GameCompletePage />} />
               </Routes>
             </Router>
           </CssBaseline>

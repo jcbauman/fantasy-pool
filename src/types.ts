@@ -32,13 +32,23 @@ export interface Game {
   statsByPlayer: GameStat[];
 }
 
+export enum GameStatKeys {
+  winsBy8BallSink = "W8",
+  winsByOpponentScratch = "WS",
+  lossesBy8BallSink = "L8",
+  lossesByScratch = "LS",
+  ballsPocketedInRow = "PIR",
+  georgeWashingtons = "GW",
+  incredibleShots = "IS",
+  fantasyPoints = "FP",
+}
 export interface GameStat {
-  winsBy8BallSink: number;
-  winsByOpponentScratch: number;
-  scratches: number;
-  lossesBy8BallSink: number;
-  lossesByScratch: number;
-  ballsPocketedInRow: number;
-  georgeWashingtons: number;
-  incredibleShots: number;
+  playerId: string;
+  [GameStatKeys.winsBy8BallSink]: number;
+  [GameStatKeys.winsByOpponentScratch]: number;
+  [GameStatKeys.lossesBy8BallSink]: number;
+  [GameStatKeys.lossesByScratch]: number;
+  [GameStatKeys.ballsPocketedInRow]: number;
+  [GameStatKeys.georgeWashingtons]: number;
+  [GameStatKeys.incredibleShots]: number;
 }

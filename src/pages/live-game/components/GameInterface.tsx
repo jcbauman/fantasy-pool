@@ -5,46 +5,94 @@ import {
   Divider,
   List,
   ListItem,
+  ListItemIcon,
   ListItemText,
   Stack,
   Tab,
   Tabs,
   Typography,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearGame } from "../../../redux/gameSlice";
+import { clearGame, setLastGameId } from "../../../redux/gameSlice";
 import { RootState } from "../../../redux/store";
 import { mockPlayers } from "../../../backend/fixtures";
 import { Player } from "../../../types";
 import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
-import { getTimeDifference } from "../../../utils/statsUtils";
+import { ConfirmationDialog } from "./ConfirmationDialog";
+import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
+import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";
+import DirectionsRunOutlinedIcon from "@mui/icons-material/DirectionsRunOutlined";
+import WavingHandOutlinedIcon from "@mui/icons-material/WavingHandOutlined";
+import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";
+import { TimeCounter } from "./TimeCounter";
+import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 
 export const GameInterface: FC = () => {
   const dispatch = useDispatch();
-  const game = useSelector((state: RootState) => state.game.game);
+  const game = useSelector((state: RootState) => state.game.currentGame);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [endGameDialogOpen, setEndGameDialogOpen] = useState(false);
+  const startTime = game?.timestamp ? new Date(game?.timestamp) : new Date();
+
   const gamePlayers = mockPlayers.filter((player) =>
     game?.playerIds.includes(player.id)
   );
+  const showTabs = gamePlayers.length > 1;
   const scorableFields = [
-    { primary: "Win", secondary: "Via 8-Ball sink" },
-    { primary: "Win", secondary: "Via opponent scratching on 8-Ball" },
-    { primary: "Loss", secondary: "Via opponent sink 8-Ball" },
-    { primary: "Loss", secondary: "Via scratching on 8-Ball" },
+    {
+      primary: "Win (8  ball)",
+      secondary: "Via 8-Ball sink",
+      icon: <EmojiEventsOutlinedIcon />,
+    },
+    {
+      primary: "Win (scratch)",
+      secondary: "Via opponent scratching on 8-Ball",
+      icon: <EmojiEventsOutlinedIcon />,
+    },
+    {
+      primary: "Incredible shot",
+      secondary: "That illicits praise from opponent",
+      icon: <CelebrationOutlinedIcon />,
+    },
+    {
+      primary: "Run (3+ balls)",
+      secondary: "Run of 3 or more pocketed balls",
+      icon: <DirectionsRunOutlinedIcon />,
+    },
+    {
+      primary: "George Washington",
+      secondary: "Giving up the table after a win",
+      icon: <WavingHandOutlinedIcon />,
+    },
+    { divider: true },
+    {
+      primary: "Loss (8 ball)",
+      secondary: "Via opponent sink 8-Ball",
+      icon: <DisabledByDefaultOutlinedIcon />,
+    },
+    {
+      primary: "Loss (scratch)",
+      secondary: "Via scratching on 8-Ball",
+      icon: <DisabledByDefaultOutlinedIcon />,
+    },
   ];
   return (
     <Stack direction="column" spacing={2}>
       <Card sx={{ p: 2 }}>
-        <Tabs
-          sx={{ mb: 2 }}
-          value={selectedTab}
-          onChange={(_e, value) => setSelectedTab(value)}
-        >
-          {gamePlayers.map((p) => {
-            return <Tab key={p.id} label={getPlayerNameAbbreviation(p.name)} />;
-          })}
-        </Tabs>
+        {showTabs && (
+          <Tabs
+            sx={{ mb: 2 }}
+            value={selectedTab}
+            onChange={(_e, value) => setSelectedTab(value)}
+          >
+            {gamePlayers.map((p) => {
+              return (
+                <Tab key={p.id} label={getPlayerNameAbbreviation(p.name)} />
+              );
+            })}
+          </Tabs>
+        )}
         <Stack
           direction="row"
           sx={{ justifyContent: "space-between", alignItems: "center" }}
@@ -55,18 +103,17 @@ export const GameInterface: FC = () => {
               <strong>{gamePlayers[selectedTab].name}</strong>
             </Typography>
           </Stack>
-          <Stack direction="column">
+          <Stack direction="column" sx={{ alignItems: "flex-end" }}>
             <Typography variant="overline">Game time</Typography>
-            <Typography variant="h5">
-              {getTimeDifference(
-                game?.timestamp ? new Date(game?.timestamp) : new Date()
-              )}
-            </Typography>
+            <TimeCounter startTime={startTime} />
           </Stack>
         </Stack>
         <Divider />
         <List disablePadding>
           {scorableFields.map((field) => {
+            if (field.divider) {
+              return <Divider key="divider" />;
+            }
             return (
               <ListItem
                 key={field.primary}
@@ -82,6 +129,7 @@ export const GameInterface: FC = () => {
                   </ButtonGroup>
                 }
               >
+                <ListItemIcon>{field.icon}</ListItemIcon>
                 <ListItemText {...field} />
               </ListItem>
             );
@@ -92,10 +140,20 @@ export const GameInterface: FC = () => {
         color="error"
         variant="contained"
         fullWidth
-        onClick={() => dispatch(clearGame())}
+        onClick={() => setEndGameDialogOpen(true)}
+        startIcon={<DoneOutlinedIcon />}
       >
         End session
       </Button>
+      <ConfirmationDialog
+        open={endGameDialogOpen}
+        onClose={() => setEndGameDialogOpen(false)}
+        onConfirm={() => {
+          dispatch(setLastGameId(game?.id ?? null));
+          window.location.pathname = "/game-complete";
+          dispatch(clearGame());
+        }}
+      />
     </Stack>
   );
 };

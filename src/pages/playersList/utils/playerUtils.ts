@@ -1,4 +1,5 @@
-import { Game, GameStat } from "../../../types";
+import { Game, GameStat, GameStatKeys } from "../../../types";
+import { defaultGameStat } from "../../../utils/constants";
 
 export const getPlayerNameAbbreviation = (name: string): string => {
   const returnName = name.trim().split(" ");
@@ -30,48 +31,57 @@ export const getStatsForPlayerGames = (
   const relevantGames = games.filter((game) =>
     game.playerIds.includes(playerId)
   );
-  const stats = relevantGames.reduce(
+  const stats: GameStat & {
+    totalGames: number;
+    totalWins: number;
+    totalSessions: number;
+  } = relevantGames.reduce(
     (acc, game) => {
       const playerIndex = game.playerIds.findIndex((id) => id === playerId);
       const playerStats = game.statsByPlayer[playerIndex];
       if (!playerStats) return acc;
       return {
-        winsBy8BallSink: acc.winsBy8BallSink + playerStats.winsBy8BallSink,
-        winsByOpponentScratch:
-          acc.winsByOpponentScratch + playerStats.winsByOpponentScratch,
-        scratches: acc.scratches + playerStats.scratches,
-        lossesBy8BallSink:
-          acc.lossesBy8BallSink + playerStats.lossesBy8BallSink,
-        lossesByScratch: acc.lossesByScratch + playerStats.lossesByScratch,
-        ballsPocketedInRow:
-          acc.ballsPocketedInRow + playerStats.ballsPocketedInRow,
-        georgeWashingtons:
-          acc.georgeWashingtons + playerStats.georgeWashingtons,
-        incredibleShots: acc.incredibleShots + playerStats.incredibleShots,
+        [GameStatKeys.winsBy8BallSink]:
+          acc[GameStatKeys.winsBy8BallSink] +
+          playerStats[GameStatKeys.winsBy8BallSink],
+        [GameStatKeys.winsByOpponentScratch]:
+          acc[GameStatKeys.winsByOpponentScratch] +
+          playerStats[GameStatKeys.winsByOpponentScratch],
+        [GameStatKeys.lossesBy8BallSink]:
+          acc[GameStatKeys.lossesBy8BallSink] +
+          playerStats[GameStatKeys.lossesBy8BallSink],
+        [GameStatKeys.lossesByScratch]:
+          acc[GameStatKeys.lossesByScratch] +
+          playerStats[GameStatKeys.lossesByScratch],
+        [GameStatKeys.ballsPocketedInRow]:
+          acc[GameStatKeys.ballsPocketedInRow] +
+          playerStats[GameStatKeys.ballsPocketedInRow],
+        [GameStatKeys.georgeWashingtons]:
+          acc[GameStatKeys.georgeWashingtons] +
+          playerStats[GameStatKeys.georgeWashingtons],
+        [GameStatKeys.incredibleShots]:
+          acc[GameStatKeys.incredibleShots] +
+          playerStats[GameStatKeys.incredibleShots],
         totalSessions: acc.totalSessions + 1,
         totalGames:
           acc.totalGames +
-          playerStats.winsBy8BallSink +
-          playerStats.winsByOpponentScratch +
-          playerStats.lossesBy8BallSink +
-          playerStats.lossesByScratch,
+          playerStats[GameStatKeys.winsBy8BallSink] +
+          playerStats[GameStatKeys.winsByOpponentScratch] +
+          playerStats[GameStatKeys.lossesBy8BallSink] +
+          playerStats[GameStatKeys.lossesByScratch],
         totalWins:
           acc.totalWins +
-          (playerStats.winsBy8BallSink + playerStats.winsByOpponentScratch),
+          (playerStats[GameStatKeys.winsBy8BallSink] +
+            playerStats[GameStatKeys.winsByOpponentScratch]),
+        playerId,
       };
     },
     {
-      winsBy8BallSink: 0,
-      winsByOpponentScratch: 0,
-      scratches: 0,
-      lossesBy8BallSink: 0,
-      lossesByScratch: 0,
-      ballsPocketedInRow: 0,
-      georgeWashingtons: 0,
-      incredibleShots: 0,
+      ...defaultGameStat,
       totalGames: 0,
       totalWins: 0,
       totalSessions: 0,
+      playerId,
     }
   );
   return stats;

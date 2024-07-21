@@ -25,20 +25,3 @@ export const formatDateToMMDD = (date: Date): string => {
 
   return `${month}/${day}`;
 };
-
-export function getTimeDifference(date: Date): string {
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-
-  const diffSeconds = Math.floor(diffMs / 1000);
-  const diffMinutes = Math.floor(diffSeconds / 60);
-  const diffHours = Math.floor(diffMinutes / 60);
-
-  const seconds = (diffSeconds % 60).toString().padStart(2, "0");
-  const minutes = (diffMinutes % 60).toString().padStart(2, "0");
-  const hours = diffHours.toString().padStart(2, "0");
-  if (diffHours > 1) {
-    return `${hours}:${minutes}:${seconds}`;
-  }
-  return `${minutes}:${seconds}`;
-}

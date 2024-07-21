@@ -1,4 +1,4 @@
-import { Game, League, Player, User } from "../types";
+import { Game, GameStatKeys, League, Player, User } from "../types";
 import { v4 as uuidv4 } from "uuid";
 
 const userId = "e3962e0e-768f-4281-84bd-345cc7ebd270";
@@ -51,14 +51,14 @@ export const mockGame: Game = {
   location: "The Levee",
   statsByPlayer: [
     {
-      winsBy8BallSink: 1,
-      winsByOpponentScratch: 3,
-      scratches: 2,
-      lossesBy8BallSink: 1,
-      lossesByScratch: 3,
-      ballsPocketedInRow: 6,
-      georgeWashingtons: 2,
-      incredibleShots: 1,
+      playerId: playerId,
+      [GameStatKeys.winsBy8BallSink]: 1,
+      [GameStatKeys.winsByOpponentScratch]: 3,
+      [GameStatKeys.lossesBy8BallSink]: 1,
+      [GameStatKeys.lossesByScratch]: 3,
+      [GameStatKeys.ballsPocketedInRow]: 6,
+      [GameStatKeys.georgeWashingtons]: 2,
+      [GameStatKeys.incredibleShots]: 1,
     },
   ],
 };

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Player } from "../../../types";
+import { GameStatKeys, Player } from "../../../types";
 import {
   Card,
   Paper,
@@ -44,42 +44,42 @@ export const GameLog: FC<{ player: Player }> = ({ player }) => {
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      W8
+                      {GameStatKeys.winsBy8BallSink}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      WS
+                      {GameStatKeys.winsByOpponentScratch}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      L8
+                      {GameStatKeys.lossesBy8BallSink}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      LS
+                      {GameStatKeys.lossesByScratch}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      IS
+                      {GameStatKeys.incredibleShots}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      MPR
+                      {GameStatKeys.ballsPocketedInRow}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      GW
+                      {GameStatKeys.georgeWashingtons}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      FP
+                      {GameStatKeys.fantasyPoints}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -99,13 +99,27 @@ export const GameLog: FC<{ player: Player }> = ({ player }) => {
                         {formatDateToMMDD(new Date(g.timestamp))}
                       </TableCell>
                       <TableCell>{getAbbreviation(g.location)}</TableCell>
-                      <TableCell>{stats.winsBy8BallSink}</TableCell>
-                      <TableCell>{stats.winsByOpponentScratch}</TableCell>
-                      <TableCell>{stats.lossesBy8BallSink}</TableCell>
-                      <TableCell>{stats.lossesByScratch}</TableCell>
-                      <TableCell>{stats.incredibleShots}</TableCell>
-                      <TableCell>{stats.ballsPocketedInRow}</TableCell>
-                      <TableCell>{stats.georgeWashingtons}</TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.winsBy8BallSink]}
+                      </TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.winsByOpponentScratch]}
+                      </TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.lossesBy8BallSink]}
+                      </TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.lossesByScratch]}
+                      </TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.incredibleShots]}
+                      </TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.ballsPocketedInRow]}
+                      </TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.georgeWashingtons]}
+                      </TableCell>
                       <TableCell>{0}</TableCell>
                     </TableRow>
                   );

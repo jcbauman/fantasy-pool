@@ -1,6 +1,6 @@
 // src/redux/playerSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Game } from "../types";
+import { Game, GameStat, GameStatKeys } from "../types";
 import { v4 as uuidv4 } from "uuid";
 import { defaultGameStat } from "../utils/constants";
 
@@ -47,9 +47,15 @@ const gameSlice = createSlice({
     setLastGameId: (state, action: PayloadAction<string | null>) => {
       state.lastGameId = action.payload;
     },
+    updateStat: (state, action: PayloadAction<GameStat[]>) => {
+      if (state.currentGame) {
+        state.currentGame.statsByPlayer = action.payload;
+      }
+    },
   },
 });
 
-export const { initializeGame, clearGame, setLastGameId } = gameSlice.actions;
+export const { initializeGame, clearGame, setLastGameId, updateStat } =
+  gameSlice.actions;
 
 export default gameSlice.reducer;

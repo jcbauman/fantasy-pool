@@ -40,7 +40,6 @@ export enum GameStatKeys {
   ballsPocketedInRow = "PIR",
   georgeWashingtons = "GW",
   incredibleShots = "IS",
-  fantasyPoints = "FP",
 }
 export interface GameStat {
   playerId: string;

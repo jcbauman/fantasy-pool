@@ -12,11 +12,14 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearGame, setLastGameId } from "../../../redux/gameSlice";
 import { RootState } from "../../../redux/store";
-import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
+import {
+  getPlayerNameAbbreviation,
+  getStatsForGame,
+} from "../../playersList/utils/playerUtils";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";
@@ -27,12 +30,15 @@ import { TimeCounter } from "./TimeCounter";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import { useAppContext } from "../../../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import { GameStatKeys } from "../../../types";
+import { useIterateStats } from "../hooks/useIterateStats";
 
 export const GameInterface: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { players, addGame } = useAppContext();
   const game = useSelector((state: RootState) => state.game.currentGame);
+  const { iterateStat } = useIterateStats();
   const [selectedTab, setSelectedTab] = useState(0);
   const [endGameDialogOpen, setEndGameDialogOpen] = useState(false);
   const startTime = game?.timestamp ? new Date(game?.timestamp) : new Date();
@@ -40,40 +46,50 @@ export const GameInterface: FC = () => {
   const gamePlayers = players.filter((player) =>
     game?.playerIds.includes(player.id)
   );
+  const currentPlayerGameStats = useMemo(
+    () => getStatsForGame(gamePlayers[selectedTab].id, game),
+    [selectedTab, game, gamePlayers]
+  );
   const showTabs = gamePlayers.length > 1;
   const scorableFields = [
     {
+      stat: GameStatKeys.winsBy8BallSink,
       primary: "Win (8  ball)",
       secondary: "Via 8-Ball sink",
       icon: <EmojiEventsOutlinedIcon />,
     },
     {
+      stat: GameStatKeys.winsByOpponentScratch,
       primary: "Win (scratch)",
       secondary: "Via opponent scratching on 8-Ball",
       icon: <EmojiEventsOutlinedIcon />,
     },
     {
+      stat: GameStatKeys.incredibleShots,
       primary: "Incredible shot",
       secondary: "That illicits praise from opponent",
       icon: <CelebrationOutlinedIcon />,
     },
     {
+      stat: GameStatKeys.ballsPocketedInRow,
       primary: "Run (3+ balls)",
       secondary: "Run of 3 or more pocketed balls",
       icon: <DirectionsRunOutlinedIcon />,
     },
     {
+      stat: GameStatKeys.georgeWashingtons,
       primary: "George Washington",
       secondary: "Giving up the table after a win",
       icon: <WavingHandOutlinedIcon />,
     },
-    { divider: true },
     {
+      stat: GameStatKeys.lossesBy8BallSink,
       primary: "Loss (8 ball)",
       secondary: "Via opponent sink 8-Ball",
       icon: <DisabledByDefaultOutlinedIcon />,
     },
     {
+      stat: GameStatKeys.lossesByScratch,
       primary: "Loss (scratch)",
       secondary: "Via scratching on 8-Ball",
       icon: <DisabledByDefaultOutlinedIcon />,
@@ -113,9 +129,7 @@ export const GameInterface: FC = () => {
         <Divider />
         <List disablePadding>
           {scorableFields.map((field) => {
-            if (field.divider) {
-              return <Divider key="divider" />;
-            }
+            const statValue = currentPlayerGameStats[field.stat] ?? 0;
             return (
               <ListItem
                 key={field.primary}
@@ -125,9 +139,30 @@ export const GameInterface: FC = () => {
                     variant="contained"
                     aria-label="Basic button group"
                   >
-                    <Button>-</Button>
-                    <Button aria-readonly={true}>0</Button>
-                    <Button>+</Button>
+                    <Button
+                      onClick={() => {
+                        if (statValue !== 0)
+                          iterateStat({
+                            playerId: gamePlayers[selectedTab].id,
+                            statKey: field.stat,
+                            delta: -1,
+                          });
+                      }}
+                    >
+                      -
+                    </Button>
+                    <Button sx={{ pointerEvents: "none" }}>{statValue}</Button>
+                    <Button
+                      onClick={() =>
+                        iterateStat({
+                          playerId: gamePlayers[selectedTab].id,
+                          statKey: field.stat,
+                          delta: 1,
+                        })
+                      }
+                    >
+                      +
+                    </Button>
                   </ButtonGroup>
                 }
               >

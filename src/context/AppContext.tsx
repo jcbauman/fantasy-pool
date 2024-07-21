@@ -4,9 +4,11 @@ import React, {
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
 } from "react";
 import { Game, League, Player, User } from "../types";
 import { mockLeague, mockPlayers, mockUsers } from "../backend/fixtures";
+import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -16,6 +18,7 @@ interface AppContextType {
   league: League;
   games: Game[];
   addGame: (game: Game) => void;
+  rankings: Record<string, string[]>;
 }
 
 export const useAppContext = () => {
@@ -33,12 +36,15 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const [players, setPlayers] = useState<Player[]>(mockPlayers);
   const [league, setLeague] = useState<League>(mockLeague);
   const [games, setGames] = useState<Game[]>([]);
+  const rankings = useGetRankingByField(players, games);
 
   const addGame = (game: Game) => {
     setGames((prevGames) => [...prevGames, game]);
   };
   return (
-    <AppContext.Provider value={{ users, players, league, games, addGame }}>
+    <AppContext.Provider
+      value={{ users, players, league, games, addGame, rankings }}
+    >
       {children}
     </AppContext.Provider>
   );

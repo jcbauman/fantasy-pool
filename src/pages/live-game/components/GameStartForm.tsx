@@ -19,7 +19,7 @@ import { useAppContext } from "../../../context/AppContext";
 interface FormData {
   date: Date | null;
   location: string;
-  playerIds: { value: string; label: string }[];
+  playerIds: string[];
 }
 
 export const GameStartForm: FC = () => {
@@ -34,24 +34,17 @@ export const GameStartForm: FC = () => {
     defaultValues: {
       date: new Date(),
       location: player?.defaultLocation ?? "",
-      playerIds: player?.id
-        ? [{ value: player.id, label: player.name ?? "" }]
-        : [],
+      playerIds: player?.id ? [player?.id] : [],
     },
   });
   const [checked, setChecked] = useState(true);
 
-  const playerOptions = allPlayers.map((p) => {
-    return {
-      value: p.id,
-      label: p.name,
-    };
-  });
+  const playerOptionIds = allPlayers.map((p) => p.id);
   const onSubmit = (data: FormData): void => {
     const resolvedData = {
       ...data,
       timestamp: data.date ? data.date.toString() : new Date().toString(),
-      playerIds: data.playerIds.map((p) => p.value),
+      playerIds: data.playerIds,
     };
     dispatch(initializeGame({ ...resolvedData }));
   };
@@ -79,8 +72,10 @@ export const GameStartForm: FC = () => {
                 multiple
                 value={field.value}
                 id="tags-outlined"
-                options={playerOptions}
-                getOptionLabel={(option) => option.label}
+                options={playerOptionIds}
+                getOptionLabel={(option) =>
+                  allPlayers.find((p) => p.id === option)?.name ?? ""
+                }
                 filterSelectedOptions
                 onChange={(_event, newValue) => {
                   field.onChange(newValue);

@@ -7,7 +7,11 @@ export const getPlayerNameAbbreviation = (name: string): string => {
   return returnName[0].slice(0, 1) + ". " + returnName[returnName.length - 1];
 };
 
-export const getStatsForGame = (playerId: string, game: Game): GameStat => {
+export const getStatsForGame = (
+  playerId: string,
+  game: Game | null
+): GameStat => {
+  if (!game) return { ...defaultGameStat, playerId };
   const playerIndex = game.playerIds.findIndex((id) => id === playerId);
   const playerStats = game.statsByPlayer[playerIndex];
   return playerStats;

@@ -80,7 +80,7 @@ export const GameLog: FC<{ player: Player }> = ({ player }) => {
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.fantasyPoints}
+                      {0}
                     </Typography>
                   </TableCell>
                 </TableRow>

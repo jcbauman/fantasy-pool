@@ -32,6 +32,7 @@ import { useAppContext } from "../../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { GameStatKeys } from "../../../types";
 import { useIterateStats } from "../hooks/useIterateStats";
+import { MultiBallDialog } from "./MultiBallDialog";
 
 export const GameInterface: FC = () => {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ export const GameInterface: FC = () => {
   const { iterateStat } = useIterateStats();
   const [selectedTab, setSelectedTab] = useState(0);
   const [endGameDialogOpen, setEndGameDialogOpen] = useState(false);
+  const [multiBallDialogOpen, setMultiBallDialogOpen] = useState(false);
   const startTime = game?.timestamp ? new Date(game?.timestamp) : new Date();
 
   const gamePlayers = players.filter((player) =>
@@ -65,24 +67,6 @@ export const GameInterface: FC = () => {
       icon: <EmojiEventsOutlinedIcon />,
     },
     {
-      stat: GameStatKeys.incredibleShots,
-      primary: "Incredible shot",
-      secondary: "That illicits praise from opponent",
-      icon: <CelebrationOutlinedIcon />,
-    },
-    {
-      stat: GameStatKeys.ballsPocketedInRow,
-      primary: "Run (3+ balls)",
-      secondary: "Run of 3 or more pocketed balls",
-      icon: <DirectionsRunOutlinedIcon />,
-    },
-    {
-      stat: GameStatKeys.georgeWashingtons,
-      primary: "George Washington",
-      secondary: "Giving up the table after a win",
-      icon: <WavingHandOutlinedIcon />,
-    },
-    {
       stat: GameStatKeys.lossesBy8BallSink,
       primary: "Loss (8 ball)",
       secondary: "Via opponent sink 8-Ball",
@@ -94,7 +78,33 @@ export const GameInterface: FC = () => {
       secondary: "Via scratching on 8-Ball",
       icon: <DisabledByDefaultOutlinedIcon />,
     },
+    {
+      stat: GameStatKeys.incredibleShots,
+      primary: "Incredible shot",
+      secondary: "That illicits praise from opponent",
+      icon: <CelebrationOutlinedIcon />,
+    },
+    {
+      stat: GameStatKeys.threeBallsPocketedInRow,
+      primary: "Run (3+ balls)",
+      secondary: "Run of 3 or more pocketed balls",
+      icon: <DirectionsRunOutlinedIcon />,
+      multiBall: true,
+    },
+    {
+      stat: GameStatKeys.georgeWashingtons,
+      primary: "George Washington",
+      secondary: "Giving up the table after a win",
+      icon: <WavingHandOutlinedIcon />,
+    },
   ];
+  const totalRuns =
+    currentPlayerGameStats[GameStatKeys.threeBallsPocketedInRow] +
+    currentPlayerGameStats[GameStatKeys.fourBallsPocketedInRow] +
+    currentPlayerGameStats[GameStatKeys.fiveBallsPocketedInRow] +
+    currentPlayerGameStats[GameStatKeys.sixBallsPocketedInRow] +
+    currentPlayerGameStats[GameStatKeys.sevenBallsPocketedInRow] +
+    currentPlayerGameStats[GameStatKeys.runTheTable];
   return (
     <Stack direction="column" spacing={2}>
       <Card sx={{ p: 2 }}>
@@ -122,7 +132,7 @@ export const GameInterface: FC = () => {
             </Typography>
           </Stack>
           <Stack direction="column" sx={{ alignItems: "flex-end" }}>
-            <Typography variant="overline">Game time</Typography>
+            <Typography variant="overline">Ellapsed time</Typography>
             <TimeCounter startTime={startTime} />
           </Stack>
         </Stack>
@@ -141,25 +151,35 @@ export const GameInterface: FC = () => {
                   >
                     <Button
                       onClick={() => {
-                        if (statValue !== 0)
-                          iterateStat({
-                            playerId: gamePlayers[selectedTab].id,
-                            statKey: field.stat,
-                            delta: -1,
-                          });
+                        if (field.multiBall) {
+                          setMultiBallDialogOpen(true);
+                        } else {
+                          if (statValue !== 0)
+                            iterateStat({
+                              playerId: gamePlayers[selectedTab].id,
+                              statKey: field.stat,
+                              delta: -1,
+                            });
+                        }
                       }}
                     >
                       -
                     </Button>
-                    <Button sx={{ pointerEvents: "none" }}>{statValue}</Button>
+                    <Button sx={{ pointerEvents: "none" }}>
+                      {field.multiBall ? totalRuns : statValue}
+                    </Button>
                     <Button
-                      onClick={() =>
-                        iterateStat({
-                          playerId: gamePlayers[selectedTab].id,
-                          statKey: field.stat,
-                          delta: 1,
-                        })
-                      }
+                      onClick={() => {
+                        if (field.multiBall) {
+                          setMultiBallDialogOpen(true);
+                        } else {
+                          iterateStat({
+                            playerId: gamePlayers[selectedTab].id,
+                            statKey: field.stat,
+                            delta: 1,
+                          });
+                        }
+                      }}
                     >
                       +
                     </Button>
@@ -193,6 +213,17 @@ export const GameInterface: FC = () => {
           navigate("/game-complete");
           dispatch(clearGame());
         }}
+      />
+      <MultiBallDialog
+        open={multiBallDialogOpen}
+        onClose={() => setMultiBallDialogOpen(false)}
+        onConfirm={(numBalls: number) =>
+          iterateStat({
+            playerId: gamePlayers[selectedTab].id,
+            statKey: `${numBalls}PR` as GameStatKeys,
+            delta: 1,
+          })
+        }
       />
     </Stack>
   );

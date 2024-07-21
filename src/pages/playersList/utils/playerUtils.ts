@@ -57,9 +57,23 @@ export const getStatsForPlayerGames = (
         [GameStatKeys.lossesByScratch]:
           acc[GameStatKeys.lossesByScratch] +
           playerStats[GameStatKeys.lossesByScratch],
-        [GameStatKeys.ballsPocketedInRow]:
-          acc[GameStatKeys.ballsPocketedInRow] +
-          playerStats[GameStatKeys.ballsPocketedInRow],
+        [GameStatKeys.threeBallsPocketedInRow]:
+          acc[GameStatKeys.threeBallsPocketedInRow] +
+          playerStats[GameStatKeys.threeBallsPocketedInRow],
+        [GameStatKeys.fourBallsPocketedInRow]:
+          acc[GameStatKeys.fourBallsPocketedInRow] +
+          playerStats[GameStatKeys.fourBallsPocketedInRow],
+        [GameStatKeys.fiveBallsPocketedInRow]:
+          acc[GameStatKeys.fiveBallsPocketedInRow] +
+          playerStats[GameStatKeys.fiveBallsPocketedInRow],
+        [GameStatKeys.sixBallsPocketedInRow]:
+          acc[GameStatKeys.sixBallsPocketedInRow] +
+          playerStats[GameStatKeys.sixBallsPocketedInRow],
+        [GameStatKeys.sevenBallsPocketedInRow]:
+          acc[GameStatKeys.sevenBallsPocketedInRow] +
+          playerStats[GameStatKeys.sevenBallsPocketedInRow],
+        [GameStatKeys.runTheTable]:
+          acc[GameStatKeys.runTheTable] + playerStats[GameStatKeys.runTheTable],
         [GameStatKeys.georgeWashingtons]:
           acc[GameStatKeys.georgeWashingtons] +
           playerStats[GameStatKeys.georgeWashingtons],

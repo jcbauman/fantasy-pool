@@ -70,17 +70,37 @@ export const GameLog: FC<{ player: Player }> = ({ player }) => {
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.ballsPocketedInRow}
+                      {GameStatKeys.threeBallsPocketedInRow}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="overline" noWrap>
+                      {GameStatKeys.fourBallsPocketedInRow}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="overline" noWrap>
+                      {GameStatKeys.fiveBallsPocketedInRow}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="overline" noWrap>
+                      {GameStatKeys.sixBallsPocketedInRow}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="overline" noWrap>
+                      {GameStatKeys.sevenBallsPocketedInRow}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="overline" noWrap>
+                      {GameStatKeys.runTheTable}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
                       {GameStatKeys.georgeWashingtons}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {0}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -101,27 +121,41 @@ export const GameLog: FC<{ player: Player }> = ({ player }) => {
                       </TableCell>
                       <TableCell>{getAbbreviation(g.location)}</TableCell>
                       <TableCell>
-                        {stats[GameStatKeys.winsBy8BallSink]}
+                        {stats[GameStatKeys.winsBy8BallSink] ?? 0}
                       </TableCell>
                       <TableCell>
-                        {stats[GameStatKeys.winsByOpponentScratch]}
+                        {stats[GameStatKeys.winsByOpponentScratch] ?? 0}
                       </TableCell>
                       <TableCell>
-                        {stats[GameStatKeys.lossesBy8BallSink]}
+                        {stats[GameStatKeys.lossesBy8BallSink] ?? 0}
                       </TableCell>
                       <TableCell>
-                        {stats[GameStatKeys.lossesByScratch]}
+                        {stats[GameStatKeys.lossesByScratch] ?? 0}
                       </TableCell>
                       <TableCell>
-                        {stats[GameStatKeys.incredibleShots]}
+                        {stats[GameStatKeys.incredibleShots] ?? 0}
                       </TableCell>
                       <TableCell>
-                        {stats[GameStatKeys.ballsPocketedInRow]}
+                        {stats[GameStatKeys.threeBallsPocketedInRow] ?? 0}
                       </TableCell>
                       <TableCell>
-                        {stats[GameStatKeys.georgeWashingtons]}
+                        {stats[GameStatKeys.fourBallsPocketedInRow] ?? 0}
                       </TableCell>
-                      <TableCell>{0}</TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.fiveBallsPocketedInRow] ?? 0}
+                      </TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.sixBallsPocketedInRow] ?? 0}
+                      </TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.sevenBallsPocketedInRow] ?? 0}
+                      </TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.runTheTable] ?? 0}
+                      </TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.georgeWashingtons] ?? 0}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

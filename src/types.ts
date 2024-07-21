@@ -37,7 +37,12 @@ export enum GameStatKeys {
   winsByOpponentScratch = "WS",
   lossesBy8BallSink = "L8",
   lossesByScratch = "LS",
-  ballsPocketedInRow = "PIR",
+  threeBallsPocketedInRow = "3PR",
+  fourBallsPocketedInRow = "4PR",
+  fiveBallsPocketedInRow = "5PR",
+  sixBallsPocketedInRow = "6PR",
+  sevenBallsPocketedInRow = "7PR",
+  runTheTable = "8PR",
   georgeWashingtons = "GW",
   incredibleShots = "IS",
 }
@@ -47,7 +52,12 @@ export interface GameStat {
   [GameStatKeys.winsByOpponentScratch]: number;
   [GameStatKeys.lossesBy8BallSink]: number;
   [GameStatKeys.lossesByScratch]: number;
-  [GameStatKeys.ballsPocketedInRow]: number;
+  [GameStatKeys.threeBallsPocketedInRow]: number;
+  [GameStatKeys.fourBallsPocketedInRow]: number;
+  [GameStatKeys.fiveBallsPocketedInRow]: number;
+  [GameStatKeys.sixBallsPocketedInRow]: number;
+  [GameStatKeys.sevenBallsPocketedInRow]: number;
+  [GameStatKeys.runTheTable]: number;
   [GameStatKeys.georgeWashingtons]: number;
   [GameStatKeys.incredibleShots]: number;
 }

@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/fantasy-pool/static/css/main.f855e6bc.css",
+    "main.js": "/fantasy-pool/static/js/main.eca7e628.js",
+    "static/js/453.e140703d.chunk.js": "/fantasy-pool/static/js/453.e140703d.chunk.js",
+    "index.html": "/fantasy-pool/index.html",
+    "main.f855e6bc.css.map": "/fantasy-pool/static/css/main.f855e6bc.css.map",
+    "main.eca7e628.js.map": "/fantasy-pool/static/js/main.eca7e628.js.map",
+    "453.e140703d.chunk.js.map": "/fantasy-pool/static/js/453.e140703d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.eca7e628.js"
+  ]
+}

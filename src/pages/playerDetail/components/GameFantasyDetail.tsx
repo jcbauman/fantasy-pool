@@ -33,7 +33,11 @@ export const GameFantasyDetail: FC<{
   }`;
   return (
     <Stack direction="column" sx={{ alignItems: "center" }}>
-      <Stack direction="column" sx={{ alignItems: "center", p: 2 }} spacing={1}>
+      <Stack
+        direction="column"
+        sx={{ alignItems: "center", py: 2 }}
+        spacing={1}
+      >
         <Avatar src={player.profilePictureUrl} alt={player.name} />
         <Typography>{player.name}</Typography>
         <Typography variant="caption">{caption}</Typography>
@@ -107,23 +111,22 @@ export const GameFantasyDetail: FC<{
                 return <></>;
               }
             })}
+            <TableRow>
+              <TableCell colSpan={3}>
+                <Typography variant="overline">Total</Typography>
+              </TableCell>
+              <TableCell align="right">
+                {normalizeStat(
+                  getFantasyScoreForPlayerSeason(
+                    [game],
+                    player.id,
+                    scoringMatrix
+                  )
+                )}
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
-        <Stack
-          direction="row"
-          sx={{
-            justifyContent: "space-between",
-            alignItems: "center",
-            px: 2,
-          }}
-        >
-          <Typography variant="overline">Total</Typography>
-          <Typography>
-            {normalizeStat(
-              getFantasyScoreForPlayerSeason([game], player.id, scoringMatrix)
-            )}
-          </Typography>
-        </Stack>
       </TableContainer>
     </Stack>
   );

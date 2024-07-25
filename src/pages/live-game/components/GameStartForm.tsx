@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { FC, useState } from "react";
 import DatePicker from "../../../shared-components/DatePicker";
-import { useAuthState } from "../../../auth/useAuthState";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { initializeGame } from "../../../redux/gameSlice";
@@ -23,7 +22,10 @@ interface FormData {
 }
 
 export const GameStartForm: FC = () => {
-  const { player } = useAuthState();
+  const {
+    authState: { player },
+  } = useAppContext();
+
   const dispatch = useDispatch();
   const { players: allPlayers } = useAppContext();
   const {

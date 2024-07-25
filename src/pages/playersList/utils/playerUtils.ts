@@ -17,7 +17,7 @@ export const getStatsForGame = (
   return playerStats;
 };
 
-export const getPlayedGamesForPlayer = (
+export const filterPlayedGamesForPlayer = (
   playerId: string,
   games: Game[]
 ): Game[] => {
@@ -32,17 +32,16 @@ export const getStatsForPlayerGames = (
   totalWins: number;
   totalSessions: number;
 } => {
-  const relevantGames = games.filter((game) =>
-    game.playerIds.includes(playerId)
-  );
   const stats: GameStat & {
     totalGames: number;
     totalWins: number;
     totalSessions: number;
-  } = relevantGames.reduce(
+  } = games.reduce(
     (acc, game) => {
-      const playerIndex = game.playerIds.findIndex((id) => id === playerId);
-      const playerStats = game.statsByPlayer[playerIndex];
+      const playerStats: GameStat | undefined = game.statsByPlayer.find(
+        (s) => s.playerId === playerId
+      );
+
       if (!playerStats) return acc;
       return {
         [GameStatKeys.winsBy8BallSink]:

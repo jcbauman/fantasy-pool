@@ -1,16 +1,30 @@
-import { FC } from "react";
-import { GameStatKeys, Player } from "../../../types";
+import { FC, useMemo, useState } from "react";
+import { Game, GameStatKeys, Player } from "../../../types";
 import { Divider, Stack, Typography } from "@mui/material";
 import { useAppContext } from "../../../context/AppContext";
-import { normalizePercentage } from "../../../utils/statsUtils";
+import {
+  getFantasyScoreForPlayerSeason,
+  normalizePercentage,
+  normalizeStat,
+} from "../../../utils/statsUtils";
+import { mockScoringMatrix } from "../../../backend/fixtures";
 
-export const StatOverview: FC<{ player: Player }> = ({ player }) => {
+export const StatOverview: FC<{ player: Player; playerGames: Game[] }> = ({
+  player,
+  playerGames,
+}) => {
   const { rankings, allStatsByPlayers } = useAppContext();
+  const fantasyScore = useMemo(() => {
+    return getFantasyScoreForPlayerSeason(
+      playerGames,
+      player?.id,
+      mockScoringMatrix
+    );
+  }, [playerGames, player?.id]);
   const totalWinRank =
     (rankings["totalWins"].findIndex((id) => id === player.id) ?? 0) + 1;
   const totalGamesRank =
     (rankings["totalGames"].findIndex((id) => id === player.id) ?? 0) + 1;
-  console.log(allStatsByPlayers);
   const totalGames = allStatsByPlayers[player.id]?.totalGames ?? 0;
   const totalWins = allStatsByPlayers[player.id]?.totalWins ?? 0;
   const winPercentage = totalGames
@@ -38,9 +52,9 @@ export const StatOverview: FC<{ player: Player }> = ({ player }) => {
       <Divider orientation="vertical" />
       <Stack direction="column" sx={{ alignItems: "center", p: 2 }}>
         <Typography variant="overline" color="textSecondary" noWrap>
-          # games
+          FTSY pts
         </Typography>
-        <Typography variant="body1">{totalGames}</Typography>
+        <Typography variant="body1">{normalizeStat(fantasyScore)}</Typography>
       </Stack>
       <Divider orientation="vertical" />
       <Stack direction="column" sx={{ alignItems: "center", p: 2 }}>

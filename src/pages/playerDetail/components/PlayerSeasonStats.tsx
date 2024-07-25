@@ -1,8 +1,13 @@
 import { FC } from "react";
-import { GameStat, GameStatKeys, Player } from "../../../types";
+import {
+  Game,
+  GameStat,
+  GameStatKeys,
+  GameStatKeysAbbrev,
+  Player,
+} from "../../../types";
 import {
   Card,
-  Paper,
   Stack,
   Table,
   TableBody,
@@ -12,19 +17,15 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useAppContext } from "../../../context/AppContext";
-import {
-  getFantasyScoreForStat,
-  normalizePercentage,
-} from "../../../utils/statsUtils";
+import { normalizePercentage } from "../../../utils/statsUtils";
+import { getStatsForPlayerGames } from "../../playersList/utils/playerUtils";
 
-export const PlayerSeasonStats: FC<{ player: Player }> = ({ player }) => {
-  const { allStatsByPlayers, scoringMatrix } = useAppContext();
-  const stats = allStatsByPlayers[player.id];
-  const fantasyPoints = getFantasyScoreForStat(
-    stats as Omit<GameStat, "playerId">,
-    scoringMatrix
-  );
+export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
+  player,
+  games,
+}) => {
+  const stats = getStatsForPlayerGames(player.id, games);
+
   return (
     <Card>
       <Stack direction="column">
@@ -42,22 +43,22 @@ export const PlayerSeasonStats: FC<{ player: Player }> = ({ player }) => {
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.winsBy8BallSink}
+                    {GameStatKeysAbbrev[GameStatKeys.winsBy8BallSink]}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.winsByOpponentScratch}
+                    {GameStatKeysAbbrev[GameStatKeys.winsByOpponentScratch]}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.lossesBy8BallSink}
+                    {GameStatKeysAbbrev[GameStatKeys.lossesBy8BallSink]}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.lossesByScratch}
+                    {GameStatKeysAbbrev[GameStatKeys.lossesByScratch]}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -67,42 +68,42 @@ export const PlayerSeasonStats: FC<{ player: Player }> = ({ player }) => {
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.incredibleShots}
+                    {GameStatKeysAbbrev[GameStatKeys.incredibleShots]}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.threeBallsPocketedInRow}
+                    {GameStatKeysAbbrev[GameStatKeys.threeBallsPocketedInRow]}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.fourBallsPocketedInRow}
+                    {GameStatKeysAbbrev[GameStatKeys.fourBallsPocketedInRow]}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.fiveBallsPocketedInRow}
+                    {GameStatKeysAbbrev[GameStatKeys.fiveBallsPocketedInRow]}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.sixBallsPocketedInRow}
+                    {GameStatKeysAbbrev[GameStatKeys.sixBallsPocketedInRow]}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.sevenBallsPocketedInRow}
+                    {GameStatKeysAbbrev[GameStatKeys.sevenBallsPocketedInRow]}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.runTheTable}
+                    {GameStatKeysAbbrev[GameStatKeys.runTheTable]}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeys.georgeWashingtons}
+                    {GameStatKeysAbbrev[GameStatKeys.georgeWashingtons]}
                   </Typography>
                 </TableCell>
               </TableRow>

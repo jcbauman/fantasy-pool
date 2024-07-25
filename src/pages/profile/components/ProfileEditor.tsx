@@ -5,7 +5,6 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  Input,
   Radio,
   RadioGroup,
   Stack,
@@ -13,30 +12,34 @@ import {
   Typography,
 } from "@mui/material";
 import { FC, useEffect, useMemo } from "react";
-import { useAuthState } from "../../../auth/useAuthState";
 import { Controller, useForm } from "react-hook-form";
-import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import { Link as RouterLink } from "react-router-dom";
+import { useAppContext } from "../../../context/AppContext";
+import { Player } from "../../../types";
 
-interface FormValues {
+export interface ProfileFormValues {
   email: string;
   name: string;
   nickname: string;
   out: boolean;
-  profileImageUrl: string;
+  profilePictureUrl: string;
   defaultLocation: string;
 }
 
-export const ProfileEditor: FC = () => {
-  const { user, player, signOut } = useAuthState();
+export const ProfileEditor: FC<{
+  player: Player | null;
+  onSubmit: (data: ProfileFormValues) => void;
+}> = ({ player, onSubmit }) => {
+  const {
+    authState: { user, signOut },
+  } = useAppContext();
   const defaultValues = useMemo(() => {
     return {
       email: user?.email,
       name: player?.name,
       nickname: player?.nickname,
-      out: player?.out,
-      profileImageUrl: player?.profilePictureUrl,
+      out: player?.out ?? false,
+      profilePictureUrl: player?.profilePictureUrl,
       defaultLocation: player?.defaultLocation,
     };
   }, [user, player]);
@@ -45,8 +48,9 @@ export const ProfileEditor: FC = () => {
     watch,
     reset,
     control,
+    handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<ProfileFormValues>({
     defaultValues,
   });
 
@@ -57,23 +61,12 @@ export const ProfileEditor: FC = () => {
   const watchAll = watch();
   return (
     <Stack direction="column">
-      <Card sx={{ p: 2, mb: 2 }}>
-        <Typography variant={"overline"}>Your stats</Typography>
-        <Button
-          fullWidth
-          variant="outlined"
-          color="success"
-          component={RouterLink}
-          to={`/players/${player?.id}`}
-          startIcon={<LeaderboardOutlinedIcon />}
-        >
-          View my player stats
-        </Button>
-      </Card>
       <Card sx={{ p: 2 }}>
         <Stack direction={"column"} gap={2}>
-          <Typography variant={"overline"}>Edit your profile</Typography>
-          <form>
+          <Typography variant={"overline"}>
+            {Boolean(player) ? "Edit" : "Create"} your profile
+          </Typography>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Stack direction={"column"} gap={2}>
               <TextField
                 variant="outlined"
@@ -81,7 +74,7 @@ export const ProfileEditor: FC = () => {
                 label="Name"
                 size="small"
                 defaultValue={watchAll.name}
-                {...register("name")}
+                {...register("name", { required: "Name is required" })}
               />
               {errors.name && (
                 <Typography color="error" variant="caption">
@@ -94,13 +87,14 @@ export const ProfileEditor: FC = () => {
                 label="Nickname"
                 size="small"
                 defaultValue={watchAll.nickname}
-                {...register("nickname")}
+                {...register("nickname", { required: "Nickname is required" })}
               />
               <TextField
                 variant="outlined"
                 type="email"
                 label="Email"
                 size="small"
+                disabled
                 defaultValue={watchAll.email}
                 {...register("email", {
                   required: "Email is required",
@@ -131,43 +125,40 @@ export const ProfileEditor: FC = () => {
                 <FormLabel>
                   <Typography variant="overline">Status</Typography>
                 </FormLabel>
-                <Controller
-                  name="out"
-                  control={control}
-                  render={({ field }) => (
-                    <RadioGroup
-                      row
-                      {...field}
-                      value={field.value || ""}
-                      onChange={(event) => field.onChange(event.target.value)}
-                    >
-                      <FormControlLabel
-                        value="true"
-                        control={<Radio />}
-                        label="Active"
-                      />
-                      <FormControlLabel
-                        value="false"
-                        control={<Radio />}
-                        label="Out"
-                      />
-                    </RadioGroup>
-                  )}
-                />
+                <FormControl component="fieldset">
+                  <Controller
+                    name="out"
+                    control={control}
+                    render={({ field }) => (
+                      <RadioGroup row {...field}>
+                        <FormControlLabel
+                          value="false"
+                          control={<Radio />}
+                          label="Healthy"
+                        />
+                        <FormControlLabel
+                          value="true"
+                          control={<Radio />}
+                          label="Out"
+                        />
+                      </RadioGroup>
+                    )}
+                  />
+                </FormControl>
               </FormControl>
               <Stack direction="row" gap={1} sx={{ alignItems: "center" }}>
-                <Avatar src={watchAll.profileImageUrl} />
+                <Avatar src={watchAll.profilePictureUrl} />
                 <TextField
                   fullWidth
                   variant="outlined"
                   type="text"
                   label="Profile image URL"
                   size="small"
-                  {...register("profileImageUrl")}
-                  defaultValue={watchAll.profileImageUrl}
+                  {...register("profilePictureUrl")}
+                  defaultValue={watchAll.profilePictureUrl}
                 />
               </Stack>
-              <Button variant="contained" color="primary">
+              <Button variant="contained" color="primary" type="submit">
                 Save changes
               </Button>
               <Card sx={{ p: 2 }} raised>
@@ -182,9 +173,11 @@ export const ProfileEditor: FC = () => {
               </Card>
             </Stack>
           </form>
-          <Button variant="text" color="error" fullWidth onClick={signOut}>
-            Sign out
-          </Button>
+          {window.location.pathname.startsWith("/profile") && (
+            <Button variant="text" color="error" fullWidth onClick={signOut}>
+              Sign out
+            </Button>
+          )}
         </Stack>
       </Card>
     </Stack>

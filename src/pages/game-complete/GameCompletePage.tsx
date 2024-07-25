@@ -4,9 +4,18 @@ import { Button, Card, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Link as RouterLink } from "react-router-dom";
+import { GameFantasyDetail } from "../playerDetail/components/GameFantasyDetail";
+import { useAppContext } from "../../context/AppContext";
+import { mockScoringMatrix } from "../../backend/fixtures";
 
 export const GameCompletePage: FC = () => {
+  const {
+    games,
+    authState: { player },
+  } = useAppContext();
   const lastGameId = useSelector((state: RootState) => state.game.lastGameId);
+  const targetGame = games.find((game) => game.id === lastGameId);
+  console.log(lastGameId, games, targetGame, "bruh");
   return (
     <PageContainer>
       <Stack
@@ -16,8 +25,14 @@ export const GameCompletePage: FC = () => {
       >
         <Card sx={{ p: 2, textAlign: "center" }}>
           <Stack direction="column" spacing={2}>
-            <Typography variant="h4">Game Complete!</Typography>
-            {lastGameId}
+            <Typography variant="h5">GAME COMPLETE</Typography>
+            {player && (
+              <GameFantasyDetail
+                game={targetGame}
+                player={player}
+                scoringMatrix={mockScoringMatrix}
+              />
+            )}
             <Button to="/" variant="contained" component={RouterLink}>
               Back to home
             </Button>

@@ -16,12 +16,14 @@ interface MultiBallDialogProps {
   open: boolean;
   onClose: () => void;
   onConfirm: (numBalls: number) => void;
+  selectedPlayerName: string;
 }
 
 export const MultiBallDialog: FC<MultiBallDialogProps> = ({
   open,
   onClose,
   onConfirm,
+  selectedPlayerName,
 }) => {
   const [numBalls, setNumBalls] = useState(3);
   const buttons = [3, 4, 5, 6, 7, 8];
@@ -30,14 +32,14 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
       <DialogTitle>
         <Stack direction="row" sx={{ alignItems: "center" }} spacing={2}>
           <DirectionsRunIcon />
-          How many balls did you get?
+          How many balls did {selectedPlayerName} get?
         </Stack>
       </DialogTitle>
       <DialogContent>
         <Stack direction="column" spacing={2}>
           <Typography>
-            Select the number of balls you pocketed in a row before missing or
-            ending the game.
+            Select the number of balls {selectedPlayerName} pocketed in a row
+            before missing or ending the game.
           </Typography>
           <ButtonGroup
             variant="outlined"

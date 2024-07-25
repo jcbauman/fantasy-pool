@@ -33,15 +33,22 @@ import { useNavigate } from "react-router-dom";
 import { GameStatKeys } from "../../../types";
 import { useIterateStats } from "../hooks/useIterateStats";
 import { MultiBallDialog } from "./MultiBallDialog";
+import { addNewGame } from "../../../backend/setters";
+import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
+import { DiscardDialog } from "./DiscardDialog";
 
 export const GameInterface: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { players, addGame } = useAppContext();
+  const {
+    players,
+    authState: { player },
+  } = useAppContext();
   const game = useSelector((state: RootState) => state.game.currentGame);
   const { iterateStat } = useIterateStats();
   const [selectedTab, setSelectedTab] = useState(0);
   const [endGameDialogOpen, setEndGameDialogOpen] = useState(false);
+  const [discardGameDialogOpen, setDiscardGameDialogOpen] = useState(false);
   const [multiBallDialogOpen, setMultiBallDialogOpen] = useState(false);
   const startTime = game?.timestamp ? new Date(game?.timestamp) : new Date();
 
@@ -57,44 +64,44 @@ export const GameInterface: FC = () => {
     {
       stat: GameStatKeys.winsBy8BallSink,
       primary: "Win (8  ball)",
-      secondary: "Via 8-Ball sink",
+      secondary: "My team or I sunk the 8-ball",
       icon: <EmojiEventsOutlinedIcon />,
     },
     {
       stat: GameStatKeys.winsByOpponentScratch,
       primary: "Win (scratch)",
-      secondary: "Via opponent scratching on 8-Ball",
+      secondary: "My opponent screwed up",
       icon: <EmojiEventsOutlinedIcon />,
     },
     {
       stat: GameStatKeys.lossesBy8BallSink,
       primary: "Loss (8 ball)",
-      secondary: "Via opponent sink 8-Ball",
+      secondary: "My opponent sunk the 8-ball",
       icon: <DisabledByDefaultOutlinedIcon />,
     },
     {
       stat: GameStatKeys.lossesByScratch,
       primary: "Loss (scratch)",
-      secondary: "Via scratching on 8-Ball",
+      secondary: "My team or I screwed up",
       icon: <DisabledByDefaultOutlinedIcon />,
     },
     {
       stat: GameStatKeys.incredibleShots,
       primary: "Incredible shot",
-      secondary: "That illicits praise from opponent",
+      secondary: "My shot impressed",
       icon: <CelebrationOutlinedIcon />,
     },
     {
       stat: GameStatKeys.threeBallsPocketedInRow,
       primary: "Run (3+ balls)",
-      secondary: "Run of 3 or more pocketed balls",
+      secondary: "3 or more balls in a row",
       icon: <DirectionsRunOutlinedIcon />,
       multiBall: true,
     },
     {
       stat: GameStatKeys.georgeWashingtons,
       primary: "George Washington",
-      secondary: "Giving up the table after a win",
+      secondary: "Gave up the table after a win",
       icon: <WavingHandOutlinedIcon />,
     },
   ];
@@ -187,7 +194,14 @@ export const GameInterface: FC = () => {
                 }
               >
                 <ListItemIcon>{field.icon}</ListItemIcon>
-                <ListItemText {...field} />
+                <ListItemText
+                  primary={field.primary}
+                  secondary={
+                    <Typography variant="caption" noWrap>
+                      {field.secondary}
+                    </Typography>
+                  }
+                />
               </ListItem>
             );
           })}
@@ -205,22 +219,40 @@ export const GameInterface: FC = () => {
       <ConfirmationDialog
         open={endGameDialogOpen}
         onClose={() => setEndGameDialogOpen(false)}
-        onConfirm={() => {
+        onDiscard={() => {
+          setEndGameDialogOpen(false);
+          setDiscardGameDialogOpen(true);
+        }}
+        onConfirm={async () => {
           if (game) {
-            addGame(game);
-            dispatch(setLastGameId(game?.id ?? null));
+            const { id, ...gameNoId } = game;
+            const gameId = await addNewGame(gameNoId);
+            dispatch(setLastGameId(gameId ?? null));
           }
           navigate("/game-complete");
           dispatch(clearGame());
         }}
       />
+      <DiscardDialog
+        open={discardGameDialogOpen}
+        onClose={() => setDiscardGameDialogOpen(false)}
+        onConfirm={async () => {
+          dispatch(clearGame());
+          navigate("/");
+        }}
+      />
       <MultiBallDialog
         open={multiBallDialogOpen}
         onClose={() => setMultiBallDialogOpen(false)}
+        selectedPlayerName={
+          gamePlayers[selectedTab].id === player?.id
+            ? "you"
+            : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
+        }
         onConfirm={(numBalls: number) =>
           iterateStat({
             playerId: gamePlayers[selectedTab].id,
-            statKey: `${numBalls}PR` as GameStatKeys,
+            statKey: getStatKeyFromNumBalls(numBalls),
             delta: 1,
           })
         }

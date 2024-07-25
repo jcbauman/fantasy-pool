@@ -1,6 +1,13 @@
 import "./App.css";
 import { OverviewComponent } from "./pages/overview/OverviewPage";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  RouterProvider,
+  createRoutesFromElements,
+  createBrowserRouter,
+} from "react-router-dom";
 import { PlayersPage } from "./pages/playersList/PlayersPage";
 import { PlayerDetailPage } from "./pages/playerDetail/PlayerDetailPage";
 import { ThemeProvider } from "@emotion/react";
@@ -15,6 +22,11 @@ import store, { persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { GameCompletePage } from "./pages/game-complete/GameCompletePage";
 import { AppContextProvider } from "./context/AppContext";
+import { useEffect } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "./backend/firebase/firebaseConfig";
+import { SignInPage } from "./pages/profile/SignInPage";
+import { CreatePlayerPage } from "./pages/profile/CreatePlayerPage";
 
 function App() {
   return (
@@ -32,7 +44,9 @@ function App() {
                   <Route path="/info" element={<LeagueInfoPage />} />
                   <Route path="/live-game" element={<LiveGameModePage />} />
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/sign-in" element={<SignInPage />} />
                   <Route path="/game-complete" element={<GameCompletePage />} />
+                  <Route path="/create-player" element={<CreatePlayerPage />} />
                 </Routes>
               </Router>
             </AppContextProvider>

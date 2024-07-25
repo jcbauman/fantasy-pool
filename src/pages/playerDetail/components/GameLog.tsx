@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { GameStatKeys, Player } from "../../../types";
+import { FC, useState } from "react";
+import { Game, GameStatKeys, GameStatKeysAbbrev, Player } from "../../../types";
 import {
   Card,
   Paper,
@@ -12,16 +12,23 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { getStatsForGame } from "../../playersList/utils/playerUtils";
 import {
-  getPlayedGamesForPlayer,
-  getStatsForGame,
-} from "../../playersList/utils/playerUtils";
-import { formatDateToMMDD, getAbbreviation } from "../../../utils/statsUtils";
-import { useAppContext } from "../../../context/AppContext";
+  formatDateToMMDD,
+  getAbbreviation,
+  getFantasyScoreForPlayerSeason,
+  normalizeStat,
+} from "../../../utils/statsUtils";
+import { mockScoringMatrix } from "../../../backend/fixtures";
+import { GameFantasyDetailDialog } from "./GameFantasyDetailDialog";
 
-export const GameLog: FC<{ player: Player }> = ({ player }) => {
-  const { games: allGames } = useAppContext();
-  const games = getPlayedGamesForPlayer(player.id, allGames);
+export const GameLog: FC<{ player: Player; games: Game[] }> = ({
+  player,
+  games,
+}) => {
+  const [detailModalGame, setDetailModalGame] = useState<Game | undefined>(
+    undefined
+  );
   return (
     <Card>
       <Stack direction="column" sx={{ p: 0, pb: 1 }}>
@@ -45,62 +52,67 @@ export const GameLog: FC<{ player: Player }> = ({ player }) => {
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.winsBy8BallSink}
+                      Pts
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.winsByOpponentScratch}
+                      {GameStatKeysAbbrev[GameStatKeys.winsBy8BallSink]}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.lossesBy8BallSink}
+                      {GameStatKeysAbbrev[GameStatKeys.winsByOpponentScratch]}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.lossesByScratch}
+                      {GameStatKeysAbbrev[GameStatKeys.lossesBy8BallSink]}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.incredibleShots}
+                      {GameStatKeysAbbrev[GameStatKeys.lossesByScratch]}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.threeBallsPocketedInRow}
+                      {GameStatKeysAbbrev[GameStatKeys.incredibleShots]}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.fourBallsPocketedInRow}
+                      {GameStatKeysAbbrev[GameStatKeys.threeBallsPocketedInRow]}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.fiveBallsPocketedInRow}
+                      {GameStatKeysAbbrev[GameStatKeys.fourBallsPocketedInRow]}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.sixBallsPocketedInRow}
+                      {GameStatKeysAbbrev[GameStatKeys.fiveBallsPocketedInRow]}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.sevenBallsPocketedInRow}
+                      {GameStatKeysAbbrev[GameStatKeys.sixBallsPocketedInRow]}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.runTheTable}
+                      {GameStatKeysAbbrev[GameStatKeys.sevenBallsPocketedInRow]}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeys.georgeWashingtons}
+                      {GameStatKeysAbbrev[GameStatKeys.runTheTable]}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="overline" noWrap>
+                      {GameStatKeysAbbrev[GameStatKeys.georgeWashingtons]}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -108,6 +120,11 @@ export const GameLog: FC<{ player: Player }> = ({ player }) => {
               <TableBody>
                 {games.map((g) => {
                   const stats = getStatsForGame(player.id, g);
+                  const fantasyPoints = getFantasyScoreForPlayerSeason(
+                    [g],
+                    player.id,
+                    mockScoringMatrix
+                  );
                   return (
                     <TableRow
                       key={g.id}
@@ -120,6 +137,16 @@ export const GameLog: FC<{ player: Player }> = ({ player }) => {
                         {formatDateToMMDD(new Date(g.timestamp))}
                       </TableCell>
                       <TableCell>{getAbbreviation(g.location)}</TableCell>
+                      <TableCell
+                        onClick={() => setDetailModalGame(g)}
+                        sx={{
+                          color: "lightblue",
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {normalizeStat(fantasyPoints)}
+                      </TableCell>
                       <TableCell>
                         {stats[GameStatKeys.winsBy8BallSink] ?? 0}
                       </TableCell>
@@ -168,6 +195,13 @@ export const GameLog: FC<{ player: Player }> = ({ player }) => {
           </Stack>
         )}
       </Stack>
+      <GameFantasyDetailDialog
+        open={Boolean(detailModalGame)}
+        onClose={() => setDetailModalGame(undefined)}
+        player={player}
+        scoringMatrix={mockScoringMatrix}
+        game={detailModalGame}
+      />
     </Card>
   );
 };

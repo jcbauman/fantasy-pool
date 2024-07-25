@@ -9,7 +9,7 @@ import { GameInterface } from "./components/GameInterface";
 export const LiveGameModePage: FC = () => {
   const { gameIsInProgress } = useSelector((state: RootState) => state.game);
   return (
-    <PageContainer>
+    <PageContainer authedRoute>
       <Stack direction="column" sx={{ width: "100%", height: "100%", p: 1 }}>
         {gameIsInProgress ? <GameInterface /> : <GameStartForm />}
       </Stack>

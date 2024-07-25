@@ -1,9 +1,9 @@
 export interface User {
+  fbID: string;
   id: string;
   email: string;
-  pw: string;
-  name: string;
-  leagueId: string;
+  name?: string;
+  leagueId?: string;
   isAppAdmin?: boolean;
 }
 
@@ -30,9 +30,25 @@ export interface Game {
   location?: string;
   playerIds: string[];
   statsByPlayer: GameStat[];
+  excludeGame?: boolean;
 }
 
 export enum GameStatKeys {
+  winsBy8BallSink = "winsBy8BallSink",
+  winsByOpponentScratch = "winsByOpponentScratch",
+  lossesBy8BallSink = "lossesBy8BallSink",
+  lossesByScratch = "lossesByScratch",
+  threeBallsPocketedInRow = "threeBallsPocketedInRow",
+  fourBallsPocketedInRow = "fourBallsPocketedInRow",
+  fiveBallsPocketedInRow = "fiveBallsPocketedInRow",
+  sixBallsPocketedInRow = "sixBallsPocketedInRow",
+  sevenBallsPocketedInRow = "sevenBallsPocketedInRow",
+  runTheTable = "runTheTable",
+  georgeWashingtons = "georgeWashingtons",
+  incredibleShots = "incredibleShots",
+}
+
+export enum GameStatKeysAbbrev {
   winsBy8BallSink = "W8",
   winsByOpponentScratch = "WS",
   lossesBy8BallSink = "L8",

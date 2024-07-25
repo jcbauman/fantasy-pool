@@ -1,16 +1,16 @@
 import {
   Button,
   Card,
-  Input,
   Stack,
+  Tab,
+  Tabs,
   TextField,
   Typography,
 } from "@mui/material";
-import { FC } from "react";
-import { RegisterOptions, SubmitHandler, useForm } from "react-hook-form";
-import { mockUsers } from "../../../backend/fixtures";
-import { useAuthState } from "../../../auth/useAuthState";
+import { FC, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../../context/AppContext";
 
 interface FormValues {
   email: string;
@@ -24,23 +24,43 @@ export const SignIn: FC = () => {
     setError,
     formState: { errors },
   } = useForm<FormValues>();
-  const { signIn } = useAuthState();
+  const {
+    authState: { signIn, createAccount },
+  } = useAppContext();
+  const [signUpMode, setSignUpMode] = useState(0);
   const navigate = useNavigate();
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    const user = mockUsers.find((u) => u.email === data.email);
-    if (!user) {
-      setError("email", { message: "No user found for email" });
-    } else if (user.pw !== data.password) {
-      setError("password", { message: "Incorrect username or password." });
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    if (signUpMode === 1) {
+      const result = await createAccount(data.email, data.password);
+      if (!result) throw new Error("No account created");
+      navigate("/create-player");
     } else {
-      signIn(user.id);
-      navigate("/");
+      const result = await signIn(data.email, data.password);
+      if (result) navigate("/");
     }
+    // if (!user) {
+    //   setError("email", { message: "No user found for email" });
+    // } else if (user.pw !== data.password) {
+    //   setError("password", { message: "Incorrect username or password." });
+    // } else {
+    //   signIn(user.id);
+    //   navigate("/");
+    // }
   };
 
   return (
     <Card sx={{ p: 2 }}>
-      <Typography variant="overline">Sign in to your account</Typography>
+      <Tabs
+        sx={{ width: "100%", mb: 2 }}
+        value={signUpMode}
+        onChange={(_e, newValue) => setSignUpMode(newValue)}
+      >
+        <Tab label="Sign in" />
+        <Tab label="Sign up" />
+      </Tabs>
+      <Typography variant="overline" sx={{ mb: 2 }}>
+        Sign {signUpMode === 0 ? "in to your" : "up for a new"} account
+      </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack direction="column" gap={2}>
           <TextField
@@ -72,7 +92,7 @@ export const SignIn: FC = () => {
             </Typography>
           )}
           <Button type="submit" variant="contained">
-            Sign in
+            {signUpMode === 0 ? "Sign in" : "Sign up"}
           </Button>
         </Stack>
       </form>

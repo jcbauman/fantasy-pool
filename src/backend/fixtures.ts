@@ -1,14 +1,21 @@
-import { Game, GameStatKeys, League, Player, User } from "../types";
+import {
+  Game,
+  GameStatKeys,
+  GameStatKeysAbbrev,
+  League,
+  Player,
+  User,
+} from "../types";
 import { v4 as uuidv4 } from "uuid";
 
 const userId = "e3962e0e-768f-4281-84bd-345cc7ebd270";
-const playerId = "5d64d0a0-e5ea-44b5-9e1d-b13daa78d944";
+const playerId = "pIswTHPOxcQxlrzuQ2k7";
 const player2Id = "8216f468-e5f2-4391-bb6b-fd438a91f39d";
 export const mockUsers: User[] = [
   {
+    fbID: uuidv4(),
     id: userId,
     email: "rocko@gmail.com",
-    pw: "1234",
     name: "Rocko",
     leagueId: "1",
   },
@@ -39,7 +46,7 @@ export const mockPlayers: Player[] = [
 
 export const mockLeague: League = {
   id: uuidv4(),
-  name: "Rocko's League",
+  name: "The Other Other League",
   userIds: [userId],
   leagueManagerId: userId,
 };
@@ -71,8 +78,8 @@ export const mockGame: Game = {
 export const mockScoringMatrix: { [key: string]: number } = {
   [GameStatKeys.winsBy8BallSink]: 5,
   [GameStatKeys.winsByOpponentScratch]: 4,
-  [GameStatKeys.lossesBy8BallSink]: -4,
-  [GameStatKeys.lossesByScratch]: -3,
+  [GameStatKeys.lossesBy8BallSink]: -3,
+  [GameStatKeys.lossesByScratch]: -2,
   [GameStatKeys.georgeWashingtons]: 0.3,
   [GameStatKeys.incredibleShots]: 0.3,
   [GameStatKeys.threeBallsPocketedInRow]: 0.5,

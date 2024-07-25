@@ -7,7 +7,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useMemo, useState } from "react";
 import { Player } from "../../types";
 import { PlayerCell } from "./components/PlayerCell";
 import { getStatsForPlayerGames } from "./utils/playerUtils";
@@ -16,8 +16,19 @@ import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
+enum OrderByFields {
+  Name = "Name",
+  Wins = "Wins",
+  Games = "Games",
+  WinPercentage = "Win %",
+}
 export const PlayersPage: FC = () => {
   const { players } = useAppContext();
+
+  const alphabeticalPlayers = useMemo(
+    () => players.sort((a, b) => a.name.localeCompare(b.name)),
+    [players]
+  );
   return (
     <PageContainer>
       <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
@@ -26,28 +37,28 @@ export const PlayersPage: FC = () => {
             <TableRow>
               <TableCell>
                 <Typography variant="overline" noWrap>
-                  Players
+                  {OrderByFields.Name}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="overline" noWrap>
-                  Wins
+                  {OrderByFields.Wins}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="overline" noWrap>
-                  Games
+                  {OrderByFields.Games}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="overline" noWrap>
-                  Win %
+                  {OrderByFields.WinPercentage}
                 </Typography>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {players.map((player) => (
+            {alphabeticalPlayers.map((player) => (
               <PlayerRow key={player.id} player={player} />
             ))}
           </TableBody>

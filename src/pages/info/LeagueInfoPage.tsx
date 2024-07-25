@@ -12,10 +12,13 @@ import {
 } from "@mui/material";
 import { FC } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
-import { GameStatKeys } from "../../types";
 import { StatAbbreviations } from "../../utils/constants";
-import { getFantasyMultiplierForStat } from "../../utils/statsUtils";
+import {
+  getFantasyMultiplierForStat,
+  getStringFromStatKey,
+} from "../../utils/statsUtils";
 import { useAppContext } from "../../context/AppContext";
+import { GameStatKeys, GameStatKeysAbbrev } from "../../types";
 
 export const LeagueInfoPage: FC = () => {
   const { scoringMatrix } = useAppContext();
@@ -26,14 +29,14 @@ export const LeagueInfoPage: FC = () => {
         sx={{ width: "100%", height: "100%", p: 1 }}
         spacing={2}
       >
-        <Card sx={{ p: 2 }}>
+        <Card sx={{ p: 2, overflow: "visible" }}>
           <Typography variant="overline">League Manager's Note</Typography>
           <Typography variant="body2">
             There has not been an LM Note posted.
           </Typography>
         </Card>
 
-        <Card sx={{ p: 2 }}>
+        <Card sx={{ p: 2, overflow: "visible" }}>
           <Typography variant="overline">Abbreviations Glossary</Typography>
           {Object.keys(StatAbbreviations).map((key) => {
             return (
@@ -43,7 +46,7 @@ export const LeagueInfoPage: FC = () => {
             );
           })}
         </Card>
-        <Card sx={{ p: 2 }}>
+        <Card sx={{ p: 2, overflow: "visible" }}>
           <Typography variant="overline">Fantasy Scoring</Typography>
           <Typography variant="body2">
             League fantasy points scoring is defined by your league manager.
@@ -68,7 +71,7 @@ export const LeagueInfoPage: FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Object.keys(StatAbbreviations).map((key) => {
+                {Object.keys(GameStatKeys).map((key) => {
                   const points = getFantasyMultiplierForStat(
                     key,
                     scoringMatrix
@@ -81,7 +84,7 @@ export const LeagueInfoPage: FC = () => {
                         borderColor: "white",
                       }}
                     >
-                      <TableCell>{`${StatAbbreviations[key]} (${key})`}</TableCell>
+                      <TableCell>{getStringFromStatKey(key)}</TableCell>
                       <TableCell sx={{ textAlign: "right" }}>
                         <Typography
                           variant="body2"
@@ -97,7 +100,7 @@ export const LeagueInfoPage: FC = () => {
             </Table>
           </TableContainer>
         </Card>
-        <Card sx={{ p: 2 }}>
+        <Card sx={{ p: 2, overflow: "visible" }}>
           <Typography variant="overline">Format</Typography>
           <Typography variant="body2">
             The league is set to standard 8-ball bar pool format.

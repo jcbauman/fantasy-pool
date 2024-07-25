@@ -14,10 +14,22 @@ import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import SportsKabaddiOutlinedIcon from "@mui/icons-material/SportsKabaddiOutlined";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useFetcher } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { sendSuccessNotificaton } from "../../redux/notificationSlice";
 
 export const OverviewComponent: FC = () => {
   const { league } = useAppContext();
+  const dispatch = useDispatch();
+
+  const onClickBlockedField = (): void => {
+    dispatch(
+      sendSuccessNotificaton(
+        "This tab will become available after a fantasy draft starts!"
+      )
+    );
+  };
+
   return (
     <PageContainer>
       <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
@@ -61,7 +73,7 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={onClickBlockedField}>
                 <ListItemIcon>
                   <ScoreboardOutlinedIcon />
                 </ListItemIcon>
@@ -70,7 +82,7 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={onClickBlockedField}>
                 <ListItemIcon>
                   <LeaderboardOutlinedIcon />
                 </ListItemIcon>
@@ -79,7 +91,7 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={onClickBlockedField}>
                 <ListItemIcon>
                   <EventNoteOutlinedIcon />
                 </ListItemIcon>

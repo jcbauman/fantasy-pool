@@ -4,6 +4,7 @@ import { useAppContext } from "../../../context/AppContext";
 interface UseTopNav {
   title: string;
   showBackButton?: boolean;
+  hideButtons?: boolean;
 }
 export const useTopNav = (): UseTopNav => {
   const location = useLocation();
@@ -26,5 +27,7 @@ export const useTopNav = (): UseTopNav => {
   else if (location.pathname === "/profile")
     return { title: "My Profile", showBackButton: true };
   else if (location.pathname === "/live-game") return { title: "Game Mode" };
+  else if (location.pathname === "/create-player")
+    return { title: "Configure your player", hideButtons: true };
   else return { title: "Fantasy Pool" };
 };

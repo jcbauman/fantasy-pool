@@ -2,58 +2,121 @@ import { useEffect, useMemo, useState } from "react";
 import { Player, User } from "../types";
 import { RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlayer, setUserId, signOutAndClearIds } from "../redux/playerSlice";
-import { useAppContext } from "../context/AppContext";
+import { setPlayer, setUser } from "../redux/playerSlice";
+import {
+  User as FBUser,
+  signInWithEmailAndPassword,
+  UserCredential,
+} from "firebase/auth";
+import { auth } from "../backend/firebase/firebaseConfig";
+import { mockUsers } from "../backend/fixtures";
+import { setupNewUser } from "../backend/setters";
+import { sendErrorNotification } from "../redux/notificationSlice";
+import { getAppUserByUID, getPlayerByUserID } from "../backend/getters";
 
-const USER_ID_KEY = "FANTASY_POOL_USER_ID";
-
-interface AuthState {
+export interface UseAuthState {
   userId: string | null;
-  user: User | undefined;
+  user: User | null;
   player: Player | null;
   isAuthed: boolean;
   signOut: () => void;
-  signIn: (userId: string) => void;
+  signIn: (
+    email: string,
+    password: string
+  ) => Promise<UserCredential | undefined>;
+  createAccount: (
+    email: string,
+    password: string
+  ) => Promise<string | undefined>;
+  fbUser: FBUser | null;
 }
 
-export const useAuthState = (): AuthState => {
-  const { player, userId } = useSelector((state: RootState) => state.player);
-  const { users, players } = useAppContext();
+export const useAuthState = (): UseAuthState => {
+  const { player, user } = useSelector((state: RootState) => state.player);
   const dispatch = useDispatch();
-  const [user, setUser] = useState<User | undefined>();
-  useEffect(() => {
-    const storedId = localStorage.getItem(USER_ID_KEY);
-    if (storedId && storedId !== userId) dispatch(setUserId(storedId));
-  }, [dispatch, userId]);
+  const [fbUser, setFbUser] = useState<FBUser | null>(null);
 
   useEffect(() => {
-    const linkedUser = users.find((u) => u.id === userId);
-    const linkedPlayer = players.find((u) => u.linkedUserId === userId);
-    setUser(linkedUser);
-    if (linkedPlayer) dispatch(setPlayer(linkedPlayer));
-  }, [userId, dispatch, users, players]);
+    const fetchLinkedUser = async (): Promise<void> => {
+      const thisUser = await getAppUserByUID(fbUser?.uid);
+      if (thisUser && thisUser.id) dispatch(setUser(thisUser));
+      else {
+        dispatch(setUser(null));
+      }
+    };
+    fetchLinkedUser();
+  }, [dispatch, fbUser]);
 
-  const signOut = (): void => {
-    localStorage.removeItem(USER_ID_KEY);
-    window.location.reload();
-    dispatch(signOutAndClearIds());
+  useEffect(() => {
+    const fetchLinkedPlayer = async (): Promise<void> => {
+      const thisPlayer = await getPlayerByUserID(user?.id);
+      if (thisPlayer && thisPlayer.id) {
+        dispatch(setPlayer(thisPlayer));
+      } else {
+        dispatch(setPlayer(null));
+      }
+    };
+    fetchLinkedPlayer();
+  }, [user?.id, dispatch]);
+  console.log(player, "bruh player");
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
+      setFbUser(firebaseUser);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const createAccount = async (
+    email: string,
+    password: string
+  ): Promise<string | undefined> => {
+    try {
+      const result = await setupNewUser(email, password);
+      return result;
+    } catch (error) {
+      console.error(error);
+      dispatch(
+        sendErrorNotification("There was an error creating your account")
+      );
+    }
   };
 
-  const signIn = (userId: string): void => {
-    localStorage.setItem(USER_ID_KEY, userId);
-    dispatch(setUserId(userId));
+  const signIn = async (
+    email: string,
+    password: string
+  ): Promise<UserCredential | undefined> => {
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      return result;
+    } catch (error) {
+      dispatch(sendErrorNotification("An error occurred signing in"));
+      console.error(error);
+      return undefined;
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await auth.signOut();
+    } catch (e) {
+      dispatch(sendErrorNotification("An error occurred while signing out"));
+      console.error(e);
+    }
   };
 
   const isAuthed = useMemo(() => {
-    return Boolean(userId);
-  }, [userId]);
+    return Boolean(fbUser);
+  }, [fbUser]);
 
   return {
-    userId,
+    userId: user?.id ?? null,
     user,
+    fbUser,
     player,
     isAuthed,
     signOut,
     signIn,
+    createAccount,
   };
 };

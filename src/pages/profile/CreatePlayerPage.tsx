@@ -1,0 +1,45 @@
+import { Button, Card, Stack, Typography } from "@mui/material";
+import { FC } from "react";
+import { ProfileEditor, ProfileFormValues } from "./components/ProfileEditor";
+import { PageContainer } from "../../shared-components/PageContainer";
+import { Link, useNavigate } from "react-router-dom";
+import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
+import { useAppContext } from "../../context/AppContext";
+import { Player } from "../../types";
+import { createNewPlayer } from "../../backend/setters";
+import { useDispatch } from "react-redux";
+import { sendErrorNotification } from "../../redux/notificationSlice";
+
+export const CreatePlayerPage: FC = () => {
+  const {
+    authState: { user },
+  } = useAppContext();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const onSubmit = async (data: ProfileFormValues) => {
+    const resolvedPlayer: Omit<Player, "id"> = {
+      linkedUserId: user?.id ?? "",
+      ...data,
+    };
+    await createNewPlayer(
+      resolvedPlayer,
+      () => navigate("/"),
+      () =>
+        dispatch(
+          sendErrorNotification(
+            "An error occurred, unable to create player profile"
+          )
+        )
+    );
+  };
+  return (
+    <PageContainer>
+      <Stack
+        direction={"column"}
+        sx={{ width: "100%", height: "100%", p: 1, overflow: "hidden" }}
+      >
+        <ProfileEditor player={null} onSubmit={onSubmit} />
+      </Stack>
+    </PageContainer>
+  );
+};

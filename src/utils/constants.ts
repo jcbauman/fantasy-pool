@@ -1,4 +1,4 @@
-import { GameStat, GameStatKeys } from "../types";
+import { GameStat, GameStatKeys, GameStatKeysAbbrev } from "../types";
 
 export const defaultGameStat: Omit<GameStat, "playerId"> = {
   [GameStatKeys.winsBy8BallSink]: 0,
@@ -16,25 +16,28 @@ export const defaultGameStat: Omit<GameStat, "playerId"> = {
 };
 
 export const StatAbbreviations: { [key: string]: string } = {
-  [GameStatKeys.winsBy8BallSink]: "Wins by sinking the 8-ball",
-  [GameStatKeys.winsByOpponentScratch]:
+  [GameStatKeysAbbrev[GameStatKeys.winsBy8BallSink]]:
+    "Wins by sinking the 8-ball",
+  [GameStatKeysAbbrev[GameStatKeys.winsByOpponentScratch]]:
     "Wins by opponent scratch or mis-calling 8-ball",
-  [GameStatKeys.lossesBy8BallSink]: "Loss from opponent sinking the 8-ball",
-  [GameStatKeys.lossesByScratch]:
+  [GameStatKeysAbbrev[GameStatKeys.lossesBy8BallSink]]:
+    "Loss from opponent sinking the 8-ball",
+  [GameStatKeysAbbrev[GameStatKeys.lossesByScratch]]:
     "Loss by scratching or mis-calling the 8-ball",
-  [GameStatKeys.threeBallsPocketedInRow]:
+  [GameStatKeysAbbrev[GameStatKeys.threeBallsPocketedInRow]]:
     "3 balls pocketed in a row before missing",
-  [GameStatKeys.fourBallsPocketedInRow]:
+  [GameStatKeysAbbrev[GameStatKeys.fourBallsPocketedInRow]]:
     "4 balls pocketed in a row before missing",
-  [GameStatKeys.fiveBallsPocketedInRow]:
+  [GameStatKeysAbbrev[GameStatKeys.fiveBallsPocketedInRow]]:
     "5 balls pocketed in a row before missing",
-  [GameStatKeys.sixBallsPocketedInRow]:
+  [GameStatKeysAbbrev[GameStatKeys.sixBallsPocketedInRow]]:
     "6 balls pocketed in a row before missing",
-  [GameStatKeys.sevenBallsPocketedInRow]:
+  [GameStatKeysAbbrev[GameStatKeys.sevenBallsPocketedInRow]]:
     "7 balls pocketed in a row before missing",
-  [GameStatKeys.runTheTable]: "Runs of the table - all 8 balls in a row",
-  [GameStatKeys.georgeWashingtons]:
+  [GameStatKeysAbbrev[GameStatKeys.runTheTable]]:
+    "Runs of the table - all 8 balls in a row",
+  [GameStatKeysAbbrev[GameStatKeys.georgeWashingtons]]:
     "George Washingtons - giving up the table after a win",
-  [GameStatKeys.incredibleShots]:
+  [GameStatKeysAbbrev[GameStatKeys.incredibleShots]]:
     "Incredible shots - Risky yet successful shots that ellicit praise from opponent or onlooker",
 };

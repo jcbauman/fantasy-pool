@@ -1,11 +1,14 @@
 import { FC } from "react";
-import { Player } from "../../../types";
+import { Game, Player } from "../../../types";
 import { Avatar, Card, Stack, Typography } from "@mui/material";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { StatOverview } from "../../playersList/components/StatOverview";
 
-export const PlayerDetailHeader: FC<{ player: Player }> = ({ player }) => {
+export const PlayerDetailHeader: FC<{
+  player: Player;
+  playerGames: Game[];
+}> = ({ player, playerGames }) => {
   return (
     <Card>
       <Stack
@@ -44,7 +47,7 @@ export const PlayerDetailHeader: FC<{ player: Player }> = ({ player }) => {
           )}
         </Stack>
       </Stack>
-      <StatOverview player={player} />
+      <StatOverview player={player} playerGames={playerGames} />
     </Card>
   );
 };

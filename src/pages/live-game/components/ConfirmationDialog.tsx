@@ -14,12 +14,14 @@ interface ConfirmationDialogProps {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  onDiscard: () => void;
 }
 
 export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
   open,
   onClose,
   onConfirm,
+  onDiscard,
 }) => {
   return (
     <Dialog open={open}>
@@ -33,7 +35,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
           spacing={1}
           sx={{ justifyContent: "space-between", width: "100%" }}
         >
-          <IconButton size="large">
+          <IconButton size="large" onClick={onDiscard}>
             <DeleteOutlinedIcon color="error" />
           </IconButton>
           <Stack direction="row" spacing={1}>

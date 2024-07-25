@@ -21,7 +21,7 @@ export const getAbbreviation = (input?: string): string => {
   if (abbreviation.length >= 3) {
     return abbreviation.substring(0, 3);
   }
-  return abbreviation.padEnd(3, abbreviation[abbreviation.length - 1]);
+  return abbreviation;
 };
 
 export const formatDateToMMDD = (date: Date): string => {
@@ -52,4 +52,74 @@ export const getFantasyScoreForStat = (
         stat[s as unknown as keyof Omit<GameStat, "playerId">] ?? 0;
   });
   return total;
+};
+
+export const getFantasyScoreForPlayerSeason = (
+  games: Game[],
+  playerId: string | undefined,
+  scoringMatrix: Record<string, number>
+): number => {
+  let total = 0;
+  if (playerId)
+    games.forEach((game) => {
+      const playerStats = game.statsByPlayer.find(
+        (stat) => stat.playerId === playerId
+      );
+      if (playerStats) {
+        const { playerId, ...rest } = playerStats;
+        console.log(rest, "bruh");
+        total += getFantasyScoreForStat(rest, scoringMatrix);
+      }
+    });
+  return total;
+};
+
+export const getStatKeyFromNumBalls = (numBalls: number): GameStatKeys => {
+  switch (numBalls) {
+    case 3:
+      return GameStatKeys.threeBallsPocketedInRow;
+    case 4:
+      return GameStatKeys.fourBallsPocketedInRow;
+    case 5:
+      return GameStatKeys.fiveBallsPocketedInRow;
+    case 6:
+      return GameStatKeys.sixBallsPocketedInRow;
+    case 7:
+      return GameStatKeys.sevenBallsPocketedInRow;
+    case 8:
+      return GameStatKeys.runTheTable;
+    default:
+      return GameStatKeys.threeBallsPocketedInRow;
+  }
+};
+
+export const getStringFromStatKey = (statKey: string): string => {
+  switch (statKey) {
+    case GameStatKeys.winsBy8BallSink:
+      return "Wins by 8 ball sink";
+    case GameStatKeys.winsByOpponentScratch:
+      return "Wins by opponent scratch";
+    case GameStatKeys.lossesBy8BallSink:
+      return "Losses by 8 ball sink";
+    case GameStatKeys.lossesByScratch:
+      return "Losses by scratch";
+    case GameStatKeys.threeBallsPocketedInRow:
+      return "3 in a row";
+    case GameStatKeys.fourBallsPocketedInRow:
+      return "4 in a row";
+    case GameStatKeys.fiveBallsPocketedInRow:
+      return "5 in a row";
+    case GameStatKeys.sixBallsPocketedInRow:
+      return "6 in a row";
+    case GameStatKeys.sevenBallsPocketedInRow:
+      return "7 in a row";
+    case GameStatKeys.runTheTable:
+      return "Run the table";
+    case GameStatKeys.georgeWashingtons:
+      return "George Washingtons";
+    case GameStatKeys.incredibleShots:
+      return "Incredible shots";
+    default:
+      return "";
+  }
 };

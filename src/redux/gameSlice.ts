@@ -1,7 +1,6 @@
 // src/redux/playerSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Game, GameStat, GameStatKeys } from "../types";
-import { v4 as uuidv4 } from "uuid";
 import { defaultGameStat } from "../utils/constants";
 
 interface PlayerState {
@@ -31,7 +30,7 @@ const gameSlice = createSlice({
         };
       });
       const resolvedGame: Game = {
-        id: uuidv4(),
+        id: "",
         playerIds: action.payload.playerIds,
         timestamp: action.payload.timestamp,
         location: action.payload.location,

@@ -18,6 +18,7 @@ const theme = createTheme({
       secondary: "#bdbdbd",
     },
   },
+
   typography: {
     fontFamily: "Avenir, Arial, sans-serif",
   },
@@ -26,6 +27,25 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0,
+        },
+      },
+    },
+    MuiTabs: {
+      styleOverrides: {
+        indicator: {
+          backgroundColor: "darkred",
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            fontWeight: 1000,
+          },
+          "&.Mui-selected .MuiTab-wrapper": {
+            color: "darkred",
+          },
         },
       },
     },

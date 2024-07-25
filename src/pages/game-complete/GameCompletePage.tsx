@@ -15,7 +15,6 @@ export const GameCompletePage: FC = () => {
   } = useAppContext();
   const lastGameId = useSelector((state: RootState) => state.game.lastGameId);
   const targetGame = games.find((game) => game.id === lastGameId);
-  console.log(lastGameId, games, targetGame, "bruh");
   return (
     <PageContainer>
       <Stack

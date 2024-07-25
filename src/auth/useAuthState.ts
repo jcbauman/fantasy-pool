@@ -58,7 +58,6 @@ export const useAuthState = (): UseAuthState => {
     };
     fetchLinkedPlayer();
   }, [user?.id, dispatch]);
-  console.log(player, "bruh player");
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
       setFbUser(firebaseUser);

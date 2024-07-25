@@ -46,6 +46,7 @@ export const useFetchGames = (): Game[] => {
 export const getGamesForPlayer = async (
   playerId: string
 ): Promise<Game[] | undefined> => {
+  if (!playerId) return;
   const q = query(
     GAMES_COLLECTION,
     where("playerIds", "array-contains", playerId)
@@ -128,6 +129,7 @@ export const fetchPlayerById = async (
 export const getPlayerByUserID = async (
   id?: string
 ): Promise<Player | undefined> => {
+  if (!id) return;
   try {
     if (!id) throw new Error("No ID");
     const q = query(PLAYERS_COLLECTION, where("linkedUserId", "==", id));
@@ -160,7 +162,7 @@ export const getAppUserByUID = async (
   uID?: string
 ): Promise<User | undefined> => {
   try {
-    if (!uID) throw new Error("No ID");
+    if (!uID) return;
     const q = query(USERS_COLLECTION, where("fbID", "==", uID));
     const querySnapshot = await getDocs(q);
     const documents = querySnapshot.docs.map((doc) => ({

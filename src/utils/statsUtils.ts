@@ -67,7 +67,6 @@ export const getFantasyScoreForPlayerSeason = (
       );
       if (playerStats) {
         const { playerId, ...rest } = playerStats;
-        console.log(rest, "bruh");
         total += getFantasyScoreForStat(rest, scoringMatrix);
       }
     });

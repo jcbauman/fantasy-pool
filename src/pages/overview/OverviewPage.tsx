@@ -31,7 +31,7 @@ export const OverviewComponent: FC = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer authedRoute>
       <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
         <Stack
           direction="column"

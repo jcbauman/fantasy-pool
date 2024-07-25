@@ -97,7 +97,7 @@ export const SignIn: FC = () => {
               {errors.password.message}
             </Typography>
           )}
-          {signUpMode && (
+          {signUpMode ? (
             <TextField
               variant="outlined"
               type="text"
@@ -106,6 +106,8 @@ export const SignIn: FC = () => {
                 required: "League invite is required",
               })}
             />
+          ) : (
+            <></>
           )}
           {errors.leagueInvite && (
             <Typography color="error" variant="caption">

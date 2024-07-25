@@ -12,7 +12,8 @@ export const PageContainer: FC<{
   loading?: boolean;
   children: JSX.Element;
   authedRoute?: boolean;
-}> = ({ loading, children, authedRoute }) => {
+  isUnauthedRoute?: boolean; //kick off page if authed
+}> = ({ loading, children, authedRoute, isUnauthedRoute }) => {
   const navigate = useNavigate();
 
   const {
@@ -22,6 +23,9 @@ export const PageContainer: FC<{
   useEffect(() => {
     if (!isAuthed && authedRoute) navigate("/sign-in");
   }, [isAuthed, navigate, authedRoute]);
+  useEffect(() => {
+    if (isAuthed && isUnauthedRoute) navigate("/");
+  }, [isAuthed, navigate, isUnauthedRoute]);
 
   return (
     <Stack

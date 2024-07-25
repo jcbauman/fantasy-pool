@@ -5,7 +5,7 @@ import { PageContainer } from "../../shared-components/PageContainer";
 
 export const SignInPage: FC = () => {
   return (
-    <PageContainer>
+    <PageContainer isUnauthedRoute>
       <Stack
         direction={"column"}
         sx={{ width: "100%", height: "100%", p: 1, overflow: "hidden" }}

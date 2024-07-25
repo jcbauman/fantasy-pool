@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../../context/AppContext";
 
 interface FormValues {
@@ -18,6 +18,10 @@ interface FormValues {
   leagueInvite?: string;
 }
 
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
+
 export const SignIn: FC = () => {
   const {
     register,
@@ -25,10 +29,13 @@ export const SignIn: FC = () => {
     setError,
     formState: { errors },
   } = useForm<FormValues>();
+  const query = useQuery();
+  const leagueInvite = query.get("leagueInvite") ?? undefined;
+
   const {
     authState: { signIn, createAccount },
   } = useAppContext();
-  const [signUpMode, setSignUpMode] = useState(0);
+  const [signUpMode, setSignUpMode] = useState(leagueInvite ? 1 : 0);
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (signUpMode === 1) {
@@ -101,6 +108,7 @@ export const SignIn: FC = () => {
             <TextField
               variant="outlined"
               type="text"
+              defaultValue={leagueInvite}
               label="League invite code"
               {...register("leagueInvite", {
                 required: "League invite is required",

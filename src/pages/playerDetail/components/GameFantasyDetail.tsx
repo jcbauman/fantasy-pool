@@ -95,7 +95,7 @@ export const GameFantasyDetail: FC<{
                     <TableCell sx={{ textAlign: "right" }}>
                       <Typography
                         variant="body2"
-                        color={pointsPer >= 0 ? "primary" : "error"}
+                        color={pointsPer >= 0 ? "inherit" : "error"}
                       >
                         {normalizeStat(
                           pointsPer *

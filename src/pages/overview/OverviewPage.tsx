@@ -10,16 +10,21 @@ import ScoreboardOutlinedIcon from "@mui/icons-material/ScoreboardOutlined";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
+import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import SportsKabaddiOutlinedIcon from "@mui/icons-material/SportsKabaddiOutlined";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
 import { Link as RouterLink, useFetcher } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { sendSuccessNotificaton } from "../../redux/notificationSlice";
+import EightBallIcon from "../../shared-components/icons/EightBallIcon";
+import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 
 export const OverviewComponent: FC = () => {
-  const { league } = useAppContext();
+  const {
+    league,
+    authState: { player },
+  } = useAppContext();
   const dispatch = useDispatch();
 
   const onClickBlockedField = (): void => {
@@ -54,7 +59,7 @@ export const OverviewComponent: FC = () => {
             <ListItem disablePadding>
               <ListItemButton to="/live-game" component={RouterLink}>
                 <ListItemIcon>
-                  <SportsKabaddiOutlinedIcon />
+                  <EightBallIcon color="white" />
                 </ListItemIcon>
                 <ListItemText
                   primary="Game mode"
@@ -66,9 +71,21 @@ export const OverviewComponent: FC = () => {
             <ListItem disablePadding>
               <ListItemButton to="/players" component={RouterLink}>
                 <ListItemIcon>
-                  <AccountBoxOutlinedIcon />
+                  <GroupOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="Players" />
+              </ListItemButton>
+            </ListItem>
+            <Divider component="li" />
+            <ListItem disablePadding>
+              <ListItemButton
+                to={`/players/${player?.id ?? ""}`}
+                component={RouterLink}
+              >
+                <ListItemIcon>
+                  <AccountBoxOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="My statistics" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />

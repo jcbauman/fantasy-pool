@@ -45,7 +45,7 @@ export const PageContainer: FC<{
             flexShrink: 0,
           }}
         >
-          <CircularProgress color="secondary" />
+          <CircularProgress color="secondary" sx={{ my: "auto" }} />
         </Stack>
       ) : (
         children

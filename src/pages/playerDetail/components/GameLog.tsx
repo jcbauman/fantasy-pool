@@ -21,6 +21,7 @@ import {
 } from "../../../utils/statsUtils";
 import { mockScoringMatrix } from "../../../backend/fixtures";
 import { GameFantasyDetailDialog } from "./GameFantasyDetailDialog";
+import { sortGamesByDate } from "../../../utils/gameUtils";
 
 export const GameLog: FC<{ player: Player; games: Game[] }> = ({
   player,
@@ -29,6 +30,8 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
   const [detailModalGame, setDetailModalGame] = useState<Game | undefined>(
     undefined
   );
+  const dateSortedGames = sortGamesByDate(games);
+
   return (
     <Card>
       <Stack direction="column" sx={{ p: 0, pb: 1 }}>
@@ -118,7 +121,7 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {games.map((g) => {
+                {dateSortedGames.map((g) => {
                   const stats = getStatsForGame(player.id, g);
                   const fantasyPoints = getFantasyScoreForPlayerSeason(
                     [g],

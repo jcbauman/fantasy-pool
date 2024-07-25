@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
+import EightBallIcon from "../../shared-components/icons/EightBallIcon";
 
 export const TopNav: FC = () => {
   const { title, showBackButton, hideButtons } = useTopNav();
@@ -65,7 +66,7 @@ export const TopNav: FC = () => {
               variant="dot"
               invisible={window.location.pathname === "/live-game"}
             >
-              <SportsKabaddiIcon />
+              <EightBallIcon color="white" />
             </Badge>
           </IconButton>
         )}

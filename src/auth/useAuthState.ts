@@ -29,12 +29,14 @@ export interface UseAuthState {
     password: string
   ) => Promise<string | undefined>;
   fbUser: FBUser | null;
+  refetchPlayer: () => void;
 }
 
 export const useAuthState = (): UseAuthState => {
   const { player, user } = useSelector((state: RootState) => state.player);
   const dispatch = useDispatch();
   const [fbUser, setFbUser] = useState<FBUser | null>(null);
+  const [shouldRefetchPlayer, setShouldRefetchPlayer] = useState(false);
 
   useEffect(() => {
     const fetchLinkedUser = async (): Promise<void> => {
@@ -43,6 +45,7 @@ export const useAuthState = (): UseAuthState => {
       else {
         dispatch(setUser(null));
       }
+      setShouldRefetchPlayer(true);
     };
     fetchLinkedUser();
   }, [dispatch, fbUser]);
@@ -55,9 +58,13 @@ export const useAuthState = (): UseAuthState => {
       } else {
         dispatch(setPlayer(null));
       }
+      setShouldRefetchPlayer(false);
     };
-    fetchLinkedPlayer();
-  }, [user?.id, dispatch]);
+    if (shouldRefetchPlayer) {
+      fetchLinkedPlayer();
+    }
+  }, [user?.id, dispatch, shouldRefetchPlayer]);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
       setFbUser(firebaseUser);
@@ -117,5 +124,6 @@ export const useAuthState = (): UseAuthState => {
     signOut,
     signIn,
     createAccount,
+    refetchPlayer: () => setShouldRefetchPlayer(true),
   };
 };

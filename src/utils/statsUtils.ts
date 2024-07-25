@@ -1,7 +1,4 @@
-import { useMemo } from "react";
-import { useAppContext } from "../context/AppContext";
-import { getStatsForPlayerGames } from "../pages/playersList/utils/playerUtils";
-import { Game, GameStat, GameStatKeys, Player } from "../types";
+import { Game, GameStat, GameStatKeys } from "../types";
 
 export const normalizePercentage = (value: number): string => {
   const per = Number.isNaN(value) ? 0 : (value * 100).toFixed(1);
@@ -20,6 +17,9 @@ export const getAbbreviation = (input?: string): string => {
   const abbreviation = words.map((word) => word[0].toUpperCase()).join("");
   if (abbreviation.length >= 3) {
     return abbreviation.substring(0, 3);
+  }
+  if (abbreviation.length === 1 && words[0].length > 2) {
+    return words[0].substring(0, 3).toUpperCase();
   }
   return abbreviation;
 };

@@ -12,7 +12,7 @@ import { sendErrorNotification } from "../../redux/notificationSlice";
 
 export const CreatePlayerPage: FC = () => {
   const {
-    authState: { user },
+    authState: { user, refetchPlayer },
   } = useAppContext();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,7 +23,10 @@ export const CreatePlayerPage: FC = () => {
     };
     await createNewPlayer(
       resolvedPlayer,
-      () => navigate("/"),
+      () => {
+        refetchPlayer();
+        navigate("/");
+      },
       () =>
         dispatch(
           sendErrorNotification(

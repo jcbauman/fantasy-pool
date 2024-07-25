@@ -15,6 +15,7 @@ import { useAppContext } from "../../../context/AppContext";
 interface FormValues {
   email: string;
   password: string;
+  leagueInvite?: string;
 }
 
 export const SignIn: FC = () => {
@@ -31,6 +32,13 @@ export const SignIn: FC = () => {
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (signUpMode === 1) {
+      // todo - league invite code
+      if (data.leagueInvite !== "rock") {
+        setError("leagueInvite", {
+          message: "Invalid league invite code",
+        });
+        return;
+      }
       const result = await createAccount(data.email, data.password);
       if (!result) throw new Error("No account created");
       navigate("/create-player");
@@ -38,14 +46,6 @@ export const SignIn: FC = () => {
       const result = await signIn(data.email, data.password);
       if (result) navigate("/");
     }
-    // if (!user) {
-    //   setError("email", { message: "No user found for email" });
-    // } else if (user.pw !== data.password) {
-    //   setError("password", { message: "Incorrect username or password." });
-    // } else {
-    //   signIn(user.id);
-    //   navigate("/");
-    // }
   };
 
   return (
@@ -84,11 +84,32 @@ export const SignIn: FC = () => {
             variant="outlined"
             type="password"
             label="Password"
-            {...register("password", { required: "Password is required" })}
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+              },
+            })}
           />
           {errors.password && (
             <Typography color="error" variant="caption">
               {errors.password.message}
+            </Typography>
+          )}
+          {signUpMode && (
+            <TextField
+              variant="outlined"
+              type="text"
+              label="League invite code"
+              {...register("leagueInvite", {
+                required: "League invite is required",
+              })}
+            />
+          )}
+          {errors.leagueInvite && (
+            <Typography color="error" variant="caption">
+              {errors.leagueInvite.message}
             </Typography>
           )}
           <Button type="submit" variant="contained">

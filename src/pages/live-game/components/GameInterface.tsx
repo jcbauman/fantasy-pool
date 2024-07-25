@@ -12,7 +12,7 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearGame, setLastGameId } from "../../../redux/gameSlice";
 import { RootState } from "../../../redux/store";
@@ -193,7 +193,9 @@ export const GameInterface: FC = () => {
                   </ButtonGroup>
                 }
               >
-                <ListItemIcon>{field.icon}</ListItemIcon>
+                <ListItemIcon sx={{ minWidth: "30px" }}>
+                  {field.icon}
+                </ListItemIcon>
                 <ListItemText
                   primary={field.primary}
                   secondary={

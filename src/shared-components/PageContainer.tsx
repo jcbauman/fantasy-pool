@@ -28,7 +28,7 @@ export const PageContainer: FC<{
       direction="column"
       sx={{
         width: "100%",
-        height: `calc(100vh - ${NAV_BAR_HEIGHT}px)`,
+        height: `calc(100% - ${NAV_BAR_HEIGHT}px)`,
         mt: `${NAV_BAR_HEIGHT}px`,
       }}
     >

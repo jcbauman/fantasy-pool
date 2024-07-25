@@ -15,7 +15,7 @@ import {
 
 export const ProfilePage: FC = () => {
   const {
-    authState: { player, user },
+    authState: { player },
   } = useAppContext();
   const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ export const ProfilePage: FC = () => {
         direction={"column"}
         sx={{ width: "100%", height: "100%", p: 1, overflow: "hidden" }}
       >
-        <Card sx={{ p: 2, mb: 2 }}>
+        <Card sx={{ p: 2, mb: 2, overflow: "visible" }}>
           <Typography variant={"overline"}>Your stats</Typography>
           <Button
             fullWidth

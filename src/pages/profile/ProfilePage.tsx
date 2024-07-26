@@ -12,10 +12,11 @@ import {
   sendErrorNotification,
   sendSuccessNotificaton,
 } from "../../redux/notificationSlice";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 
 export const ProfilePage: FC = () => {
   const {
-    authState: { player },
+    authState: { player, user },
   } = useAppContext();
   const dispatch = useDispatch();
 
@@ -54,6 +55,20 @@ export const ProfilePage: FC = () => {
             View my player stats
           </Button>
         </Card>
+        {user?.isAppAdmin && (
+          <Card sx={{ p: 2, mb: 2, overflow: "visible" }}>
+            <Typography variant={"overline"}>Admin</Typography>
+            <Button
+              fullWidth
+              variant="outlined"
+              component={Link}
+              to={`/app-admin`}
+              startIcon={<AdminPanelSettingsOutlinedIcon />}
+            >
+              View app admin page
+            </Button>
+          </Card>
+        )}
         <ProfileEditor player={player} onSubmit={onSubmit} />
       </Stack>
     </PageContainer>

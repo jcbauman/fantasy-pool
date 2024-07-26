@@ -29,5 +29,7 @@ export const useTopNav = (): UseTopNav => {
   else if (location.pathname === "/live-game") return { title: "Game Mode" };
   else if (location.pathname === "/create-player")
     return { title: "Configure your player", hideButtons: true };
+  else if (location.pathname === "/app-admin")
+    return { title: "App admin", showBackButton: true };
   else return { title: "Fantasy Pool" };
 };

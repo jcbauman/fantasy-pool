@@ -13,6 +13,7 @@ import { mockUsers } from "../backend/fixtures";
 import { setupNewUser } from "../backend/setters";
 import { sendErrorNotification } from "../redux/notificationSlice";
 import { getAppUserByUID, getPlayerByUserID } from "../backend/getters";
+import { clearGame } from "../redux/gameSlice";
 
 export interface UseAuthState {
   userId: string | null;
@@ -105,6 +106,7 @@ export const useAuthState = (): UseAuthState => {
   const signOut = async () => {
     try {
       await auth.signOut();
+      dispatch(clearGame());
     } catch (e) {
       dispatch(sendErrorNotification("An error occurred while signing out"));
       console.error(e);

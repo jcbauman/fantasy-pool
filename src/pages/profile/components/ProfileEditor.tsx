@@ -16,6 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useAppContext } from "../../../context/AppContext";
 import { Player } from "../../../types";
+import { mockLeague } from "../../../backend/fixtures";
 
 export interface ProfileFormValues {
   email: string;
@@ -167,6 +168,7 @@ export const ProfileEditor: FC<{
                   variant="outlined"
                   type="text"
                   label="League"
+                  defaultValue={mockLeague.name}
                   size="small"
                   disabled
                 />

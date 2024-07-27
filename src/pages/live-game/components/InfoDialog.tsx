@@ -26,7 +26,7 @@ export const InfoDialog: FC<ConfirmationDialogProps> = ({ open, onClose }) => {
           <ListItem disablePadding>
             <ListItemText
               primary="Enter stats live"
-              secondary="Iterate stats while you play or immediately after you finish is recommended."
+              secondary="Iterate stats while you play or immediately after you finish for most accurate results."
             />
           </ListItem>
           <ListItem disablePadding>

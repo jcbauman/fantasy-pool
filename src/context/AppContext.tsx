@@ -1,18 +1,6 @@
-import React, {
-  createContext,
-  useState,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-} from "react";
+import React, { createContext, useState, ReactNode, useContext } from "react";
 import { AggregateStats, Game, League, Player, User } from "../types";
-import {
-  mockLeague,
-  mockPlayers,
-  mockScoringMatrix,
-  mockUsers,
-} from "../backend/fixtures";
+import { mockLeague, mockScoringMatrix } from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 import {
   useFetchGames,

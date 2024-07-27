@@ -39,6 +39,7 @@ function App() {
                   <Route path="/game-complete" element={<GameCompletePage />} />
                   <Route path="/create-player" element={<CreatePlayerPage />} />
                   <Route path="/app-admin" element={<AppAdminPage />} />
+                  <Route path="*" element={<OverviewComponent />} />
                 </Routes>
               </Router>
             </AppContextProvider>

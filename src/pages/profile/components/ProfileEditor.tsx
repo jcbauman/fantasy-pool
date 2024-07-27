@@ -16,7 +16,6 @@ import { Controller, useForm } from "react-hook-form";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useAppContext } from "../../../context/AppContext";
 import { Player } from "../../../types";
-import { mockLeague } from "../../../backend/fixtures";
 
 export interface ProfileFormValues {
   email: string;
@@ -33,6 +32,7 @@ export const ProfileEditor: FC<{
 }> = ({ player, onSubmit }) => {
   const {
     authState: { user, signOut },
+    league,
   } = useAppContext();
   const defaultValues = useMemo(() => {
     return {
@@ -168,7 +168,7 @@ export const ProfileEditor: FC<{
                   variant="outlined"
                   type="text"
                   label="League"
-                  defaultValue={mockLeague.name}
+                  defaultValue={league.name}
                   size="small"
                   disabled
                 />

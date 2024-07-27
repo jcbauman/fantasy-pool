@@ -1,7 +1,7 @@
 import { CircularProgress, Stack } from "@mui/material";
 import { FC, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import NotificationLayer from "./NotificationLayer";
 import { DesktopWarningDialog } from "./DesktopWarningDialog";
@@ -15,16 +15,24 @@ export const PageContainer: FC<{
   isUnauthedRoute?: boolean; //kick off page if authed
 }> = ({ loading, children, authedRoute, isUnauthedRoute }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     authState: { isAuthed },
   } = useAppContext();
 
   useEffect(() => {
-    if (!isAuthed && authedRoute) navigate("/sign-in");
+    if (!isAuthed && authedRoute) {
+      const searchParams = new URLSearchParams(location.search);
+      navigate({ pathname: "/sign-in", search: searchParams.toString() });
+    }
   }, [isAuthed, navigate, authedRoute]);
+
   useEffect(() => {
-    if (isAuthed && isUnauthedRoute) navigate("/");
+    if (isAuthed && isUnauthedRoute) {
+      const searchParams = new URLSearchParams(location.search);
+      navigate({ pathname: "/", search: searchParams.toString() });
+    }
   }, [isAuthed, navigate, isUnauthedRoute]);
 
   return (

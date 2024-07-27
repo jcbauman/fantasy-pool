@@ -16,7 +16,7 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 
 export const ProfilePage: FC = () => {
   const {
-    authState: { player, user },
+    authState: { player, user, refetchPlayer },
   } = useAppContext();
   const dispatch = useDispatch();
 
@@ -28,8 +28,11 @@ export const ProfilePage: FC = () => {
     await updateCurrentPlayer(
       resolvedPlayer,
       player?.id ?? "",
-      () =>
-        dispatch(sendSuccessNotificaton("Succesfully updated player profile")),
+      () => {
+        dispatch(sendSuccessNotificaton("Succesfully updated player profile"));
+        refetchPlayer();
+      },
+
       () =>
         dispatch(
           sendErrorNotification("An error occurred, unable to update profile")

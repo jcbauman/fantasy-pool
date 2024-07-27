@@ -35,6 +35,7 @@ const gameSlice = createSlice({
         timestamp: action.payload.timestamp,
         location: action.payload.location,
         statsByPlayer: baseStats,
+        authorPlayerId: action.payload.authorPlayerId,
       };
       state.currentGame = resolvedGame;
       state.gameIsInProgress = true;

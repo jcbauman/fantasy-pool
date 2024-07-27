@@ -31,6 +31,7 @@ export interface Game {
   playerIds: string[];
   statsByPlayer: GameStat[];
   excludeGame?: boolean;
+  authorPlayerId?: string;
 }
 
 export enum GameStatKeys {

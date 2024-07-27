@@ -6,7 +6,7 @@ import { useAppContext } from "../context/AppContext";
 import NotificationLayer from "./NotificationLayer";
 import { DesktopWarningDialog } from "./DesktopWarningDialog";
 
-const NAV_BAR_HEIGHT = 56;
+export const NAV_BAR_HEIGHT = 56;
 
 export const PageContainer: FC<{
   loading?: boolean;
@@ -26,14 +26,14 @@ export const PageContainer: FC<{
       const searchParams = new URLSearchParams(location.search);
       navigate({ pathname: "/sign-in", search: searchParams.toString() });
     }
-  }, [isAuthed, navigate, authedRoute]);
+  }, [isAuthed, navigate, authedRoute, location.search]);
 
   useEffect(() => {
     if (isAuthed && isUnauthedRoute) {
       const searchParams = new URLSearchParams(location.search);
       navigate({ pathname: "/", search: searchParams.toString() });
     }
-  }, [isAuthed, navigate, isUnauthedRoute]);
+  }, [isAuthed, navigate, isUnauthedRoute, location.search]);
 
   return (
     <Stack

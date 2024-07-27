@@ -47,6 +47,7 @@ export const GameStartForm: FC = () => {
       ...data,
       timestamp: data.date ? data.date.toString() : new Date().toString(),
       playerIds: data.playerIds,
+      authorPlayerId: player?.id ?? "",
     };
     dispatch(initializeGame({ ...resolvedData }));
   };

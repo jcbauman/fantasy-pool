@@ -22,10 +22,10 @@ import {
 
 export const GameFantasyDetail: FC<{
   game: Game | undefined;
-  player: Player;
+  player: Player | undefined;
   scoringMatrix: Record<string, number>;
 }> = ({ game, player, scoringMatrix }) => {
-  if (!game) return <></>;
+  if (!game || !player) return <></>;
   const playerStats = game.statsByPlayer.find((s) => s.playerId === player.id);
   if (!playerStats) return <></>;
   const caption = `${formatDateToMMDD(new Date(game.timestamp))} at ${
@@ -56,7 +56,7 @@ export const GameFantasyDetail: FC<{
               </TableCell>
               <TableCell>
                 <Typography variant="overline" noWrap>
-                  Pts per
+                  per
                 </Typography>
               </TableCell>
               <TableCell>

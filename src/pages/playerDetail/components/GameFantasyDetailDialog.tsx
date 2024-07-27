@@ -7,7 +7,7 @@ export const GameFantasyDetailDialog: FC<{
   open: boolean;
   onClose: () => void;
   game: Game | undefined;
-  player: Player;
+  player: Player | undefined;
   scoringMatrix: Record<string, number>;
 }> = ({ open, onClose, game, player, scoringMatrix }) => {
   return (

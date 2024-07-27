@@ -90,11 +90,11 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton onClick={onClickBlockedField}>
+              <ListItemButton to={`/games`} component={RouterLink}>
                 <ListItemIcon>
                   <ScoreboardOutlinedIcon />
                 </ListItemIcon>
-                <ListItemText primary="Scoreboard" />
+                <ListItemText primary="Recent games" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />

@@ -72,7 +72,7 @@ export const ProfileEditor: FC<{
               <TextField
                 variant="outlined"
                 type="text"
-                label="Name"
+                label="Full name"
                 size="small"
                 defaultValue={watchAll.name}
                 {...register("name", { required: "Name is required" })}

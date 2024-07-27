@@ -48,6 +48,7 @@ export const ProfileEditor: FC<{
     register,
     watch,
     reset,
+    setValue,
     control,
     handleSubmit,
     formState: { errors },
@@ -58,8 +59,8 @@ export const ProfileEditor: FC<{
   useEffect(() => {
     reset(defaultValues);
   }, [defaultValues, reset]);
-
   const watchAll = watch();
+
   return (
     <Stack direction="column">
       <Card sx={{ p: 2 }}>
@@ -131,16 +132,25 @@ export const ProfileEditor: FC<{
                     name="out"
                     control={control}
                     render={({ field }) => (
-                      <RadioGroup row {...field}>
+                      <RadioGroup
+                        row
+                        {...field}
+                        onChange={(e) => {
+                          const value = e.target.value === "true";
+                          setValue("out", value);
+                        }}
+                      >
                         <FormControlLabel
                           value="false"
                           control={<Radio />}
                           label="Healthy"
+                          checked={watchAll.out === false}
                         />
                         <FormControlLabel
                           value="true"
                           control={<Radio />}
                           label="Out"
+                          checked={watchAll.out === true}
                         />
                       </RadioGroup>
                     )}

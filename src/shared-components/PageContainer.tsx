@@ -1,6 +1,5 @@
 import { CircularProgress, Stack } from "@mui/material";
 import { FC, useEffect } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import NotificationLayer from "./NotificationLayer";

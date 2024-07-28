@@ -43,7 +43,12 @@ export const ProfilePage: FC = () => {
     <PageContainer authedRoute>
       <Stack
         direction={"column"}
-        sx={{ width: "100%", height: "100%", p: 1, overflow: "hidden" }}
+        sx={{
+          width: "100%",
+          height: "100%",
+          p: 1,
+          overflow: "visible",
+        }}
       >
         <Card sx={{ p: 2, mb: 2, overflow: "visible" }}>
           <Typography variant={"overline"}>Your stats</Typography>
@@ -58,8 +63,9 @@ export const ProfilePage: FC = () => {
             View my player stats
           </Button>
         </Card>
+        <ProfileEditor player={player} onSubmit={onSubmit} />
         {user?.isAppAdmin && (
-          <Card sx={{ p: 2, mb: 2, overflow: "visible" }}>
+          <Card sx={{ p: 2, mt: 2, overflow: "visible" }}>
             <Typography variant={"overline"}>Admin</Typography>
             <Button
               fullWidth
@@ -72,7 +78,6 @@ export const ProfilePage: FC = () => {
             </Button>
           </Card>
         )}
-        <ProfileEditor player={player} onSubmit={onSubmit} />
       </Stack>
     </PageContainer>
   );

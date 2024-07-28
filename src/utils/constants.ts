@@ -36,8 +36,8 @@ export const StatAbbreviations: { [key: string]: string } = {
     "7 balls pocketed in a row before missing",
   [GameStatKeysAbbrev[GameStatKeys.runTheTable]]:
     "Runs of the table - all 8 balls in a row",
+  [GameStatKeysAbbrev[GameStatKeys.skillShots]]:
+    "Skill shots - successful called bank-shots, combos, or caroms",
   [GameStatKeysAbbrev[GameStatKeys.cueHauler]]:
     "Beat cue-hauler - beat an opponent who used their own cue, glove, or other pool gear in the game",
-  [GameStatKeysAbbrev[GameStatKeys.skillShots]]:
-    "Skill shots - succesful called bank-shots, combos, or caroms",
 };

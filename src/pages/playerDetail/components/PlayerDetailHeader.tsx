@@ -39,8 +39,10 @@ export const PlayerDetailHeader: FC<{
           </Stack>
           {player.defaultLocation && (
             <Stack direction="row" sx={{ alignItems: "center" }} spacing={1}>
-              <Typography variant="overline">Default location:</Typography>
-              <Typography variant="caption">
+              <Typography variant="overline" noWrap>
+                Default location:
+              </Typography>
+              <Typography variant="caption" noWrap>
                 {player.defaultLocation}
               </Typography>
             </Stack>

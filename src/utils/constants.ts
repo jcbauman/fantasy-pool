@@ -11,8 +11,8 @@ export const defaultGameStat: Omit<GameStat, "playerId"> = {
   [GameStatKeys.sixBallsPocketedInRow]: 0,
   [GameStatKeys.sevenBallsPocketedInRow]: 0,
   [GameStatKeys.runTheTable]: 0,
-  [GameStatKeys.georgeWashingtons]: 0,
-  [GameStatKeys.incredibleShots]: 0,
+  [GameStatKeys.cueHauler]: 0,
+  [GameStatKeys.skillShots]: 0,
 };
 
 export const StatAbbreviations: { [key: string]: string } = {
@@ -36,8 +36,8 @@ export const StatAbbreviations: { [key: string]: string } = {
     "7 balls pocketed in a row before missing",
   [GameStatKeysAbbrev[GameStatKeys.runTheTable]]:
     "Runs of the table - all 8 balls in a row",
-  [GameStatKeysAbbrev[GameStatKeys.georgeWashingtons]]:
-    "George Washingtons - giving up the table after a win",
-  [GameStatKeysAbbrev[GameStatKeys.incredibleShots]]:
-    "Incredible shots - Risky yet successful shots that ellicit praise from opponent or onlooker",
+  [GameStatKeysAbbrev[GameStatKeys.cueHauler]]:
+    "Beat cue-hauler - beat an opponent who used their own cue, glove, or other pool gear in the game",
+  [GameStatKeysAbbrev[GameStatKeys.skillShots]]:
+    "Skill shots - succesful called bank-shots, combos, or caroms",
 };

@@ -80,7 +80,7 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.incredibleShots]}
+                      {GameStatKeysAbbrev[GameStatKeys.skillShots]}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -115,7 +115,7 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.georgeWashingtons]}
+                      {GameStatKeysAbbrev[GameStatKeys.cueHauler]}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -163,7 +163,7 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                         {stats[GameStatKeys.lossesByScratch] ?? 0}
                       </TableCell>
                       <TableCell>
-                        {stats[GameStatKeys.incredibleShots] ?? 0}
+                        {stats[GameStatKeys.skillShots] ?? 0}
                       </TableCell>
                       <TableCell>
                         {stats[GameStatKeys.threeBallsPocketedInRow] ?? 0}
@@ -184,7 +184,7 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                         {stats[GameStatKeys.runTheTable] ?? 0}
                       </TableCell>
                       <TableCell>
-                        {stats[GameStatKeys.georgeWashingtons] ?? 0}
+                        {stats[GameStatKeys.cueHauler] ?? 0}
                       </TableCell>
                     </TableRow>
                   );

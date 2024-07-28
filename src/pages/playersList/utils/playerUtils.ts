@@ -45,51 +45,52 @@ export const getStatsForPlayerGames = (
       if (!playerStats) return acc;
       return {
         [GameStatKeys.winsBy8BallSink]:
-          acc[GameStatKeys.winsBy8BallSink] +
-          playerStats[GameStatKeys.winsBy8BallSink],
+          (acc[GameStatKeys.winsBy8BallSink] ?? 0) +
+          (playerStats[GameStatKeys.winsBy8BallSink] ?? 0),
         [GameStatKeys.winsByOpponentScratch]:
-          acc[GameStatKeys.winsByOpponentScratch] +
-          playerStats[GameStatKeys.winsByOpponentScratch],
+          (acc[GameStatKeys.winsByOpponentScratch] ?? 0) +
+          (playerStats[GameStatKeys.winsByOpponentScratch] ?? 0),
         [GameStatKeys.lossesBy8BallSink]:
-          acc[GameStatKeys.lossesBy8BallSink] +
-          playerStats[GameStatKeys.lossesBy8BallSink],
+          (acc[GameStatKeys.lossesBy8BallSink] ?? 0) +
+          (playerStats[GameStatKeys.lossesBy8BallSink] ?? 0),
         [GameStatKeys.lossesByScratch]:
-          acc[GameStatKeys.lossesByScratch] +
-          playerStats[GameStatKeys.lossesByScratch],
+          (acc[GameStatKeys.lossesByScratch] ?? 0) +
+          (playerStats[GameStatKeys.lossesByScratch] ?? 0),
         [GameStatKeys.threeBallsPocketedInRow]:
-          acc[GameStatKeys.threeBallsPocketedInRow] +
-          playerStats[GameStatKeys.threeBallsPocketedInRow],
+          (acc[GameStatKeys.threeBallsPocketedInRow] ?? 0) +
+          (playerStats[GameStatKeys.threeBallsPocketedInRow] ?? 0),
         [GameStatKeys.fourBallsPocketedInRow]:
-          acc[GameStatKeys.fourBallsPocketedInRow] +
-          playerStats[GameStatKeys.fourBallsPocketedInRow],
+          (acc[GameStatKeys.fourBallsPocketedInRow] ?? 0) +
+          (playerStats[GameStatKeys.fourBallsPocketedInRow] ?? 0),
         [GameStatKeys.fiveBallsPocketedInRow]:
-          acc[GameStatKeys.fiveBallsPocketedInRow] +
-          playerStats[GameStatKeys.fiveBallsPocketedInRow],
+          (acc[GameStatKeys.fiveBallsPocketedInRow] ?? 0) +
+          (playerStats[GameStatKeys.fiveBallsPocketedInRow] ?? 0),
         [GameStatKeys.sixBallsPocketedInRow]:
-          acc[GameStatKeys.sixBallsPocketedInRow] +
-          playerStats[GameStatKeys.sixBallsPocketedInRow],
+          (acc[GameStatKeys.sixBallsPocketedInRow] ?? 0) +
+          (playerStats[GameStatKeys.sixBallsPocketedInRow] ?? 0),
         [GameStatKeys.sevenBallsPocketedInRow]:
-          acc[GameStatKeys.sevenBallsPocketedInRow] +
-          playerStats[GameStatKeys.sevenBallsPocketedInRow],
+          (acc[GameStatKeys.sevenBallsPocketedInRow] ?? 0) +
+          (playerStats[GameStatKeys.sevenBallsPocketedInRow] ?? 0),
         [GameStatKeys.runTheTable]:
-          acc[GameStatKeys.runTheTable] + playerStats[GameStatKeys.runTheTable],
-        [GameStatKeys.georgeWashingtons]:
-          acc[GameStatKeys.georgeWashingtons] +
-          playerStats[GameStatKeys.georgeWashingtons],
-        [GameStatKeys.incredibleShots]:
-          acc[GameStatKeys.incredibleShots] +
-          playerStats[GameStatKeys.incredibleShots],
+          (acc[GameStatKeys.runTheTable] ?? 0) +
+          (playerStats[GameStatKeys.runTheTable] ?? 0),
+        [GameStatKeys.cueHauler]:
+          (acc[GameStatKeys.cueHauler] ?? 0) +
+          (playerStats[GameStatKeys.cueHauler] ?? 0),
+        [GameStatKeys.skillShots]:
+          (acc[GameStatKeys.skillShots] ?? 0) +
+          (playerStats[GameStatKeys.skillShots] ?? 0),
         totalSessions: acc.totalSessions + 1,
         totalGames:
           acc.totalGames +
-          playerStats[GameStatKeys.winsBy8BallSink] +
-          playerStats[GameStatKeys.winsByOpponentScratch] +
-          playerStats[GameStatKeys.lossesBy8BallSink] +
-          playerStats[GameStatKeys.lossesByScratch],
+          (playerStats[GameStatKeys.winsBy8BallSink] ?? 0) +
+          (playerStats[GameStatKeys.winsByOpponentScratch] ?? 0) +
+          (playerStats[GameStatKeys.lossesBy8BallSink] ?? 0) +
+          (playerStats[GameStatKeys.lossesByScratch] ?? 0),
         totalWins:
           acc.totalWins +
-          (playerStats[GameStatKeys.winsBy8BallSink] +
-            playerStats[GameStatKeys.winsByOpponentScratch]),
+          ((playerStats[GameStatKeys.winsBy8BallSink] ?? 0) +
+            (playerStats[GameStatKeys.winsByOpponentScratch] ?? 0)),
         playerId,
       };
     },

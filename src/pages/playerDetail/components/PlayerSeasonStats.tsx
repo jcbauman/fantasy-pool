@@ -25,7 +25,7 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
   games,
 }) => {
   const stats = getStatsForPlayerGames(player.id, games);
-
+  console.log(new Date().toString());
   return (
     <Card>
       <Stack direction="column">
@@ -68,7 +68,7 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeysAbbrev[GameStatKeys.incredibleShots]}
+                    {GameStatKeysAbbrev[GameStatKeys.skillShots]}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -103,7 +103,7 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeysAbbrev[GameStatKeys.georgeWashingtons]}
+                    {GameStatKeysAbbrev[GameStatKeys.cueHauler]}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -133,9 +133,7 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
                     stats["totalWins"] / stats["totalGames"] ?? 0
                   )}
                 </TableCell>
-                <TableCell>
-                  {stats[GameStatKeys.incredibleShots] ?? 0}
-                </TableCell>
+                <TableCell>{stats[GameStatKeys.skillShots] ?? 0}</TableCell>
                 <TableCell>
                   {stats[GameStatKeys.threeBallsPocketedInRow] ?? 0}
                 </TableCell>
@@ -152,9 +150,7 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
                   {stats[GameStatKeys.sevenBallsPocketedInRow] ?? 0}
                 </TableCell>
                 <TableCell>{stats[GameStatKeys.runTheTable] ?? 0}</TableCell>
-                <TableCell>
-                  {stats[GameStatKeys.georgeWashingtons] ?? 0}
-                </TableCell>
+                <TableCell>{stats[GameStatKeys.cueHauler] ?? 0}</TableCell>
               </TableRow>
             </TableBody>
           </Table>

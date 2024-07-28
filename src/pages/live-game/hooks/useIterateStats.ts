@@ -30,7 +30,8 @@ export const useIterateStats = (): UseIterateStats => {
           const newStat = {
             ...currentGame.statsByPlayer[playerStatIndex],
             [statKey]:
-              currentGame.statsByPlayer[playerStatIndex][statKey] + delta,
+              (currentGame.statsByPlayer[playerStatIndex][statKey] ?? 0) +
+              delta,
           };
 
           const resolvedGameStats: GameStat[] = [

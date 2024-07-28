@@ -49,7 +49,7 @@ export const getFantasyScoreForStat = (
   Object.keys(stat as unknown as keyof GameStat).forEach((s) => {
     total +=
       getFantasyMultiplierForStat(s, scoringMatrix) *
-        stat[s as unknown as keyof Omit<GameStat, "playerId">] ?? 0;
+      (stat?.[s as unknown as keyof Omit<GameStat, "playerId">] ?? 0);
   });
   return total;
 };
@@ -114,10 +114,10 @@ export const getStringFromStatKey = (statKey: string): string => {
       return "7 in a row";
     case GameStatKeys.runTheTable:
       return "Run the table";
-    case GameStatKeys.georgeWashingtons:
-      return "George Washingtons";
-    case GameStatKeys.incredibleShots:
-      return "Incredible shots";
+    case GameStatKeys.cueHauler:
+      return "Beat cue-hauler";
+    case GameStatKeys.skillShots:
+      return "Skill shots";
     default:
       return "";
   }

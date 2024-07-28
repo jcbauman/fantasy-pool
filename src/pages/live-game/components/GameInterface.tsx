@@ -36,6 +36,7 @@ import { MultiBallDialog } from "./MultiBallDialog";
 import { addNewGame } from "../../../backend/setters";
 import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
+import MoneyOffOutlinedIcon from "@mui/icons-material/MoneyOffOutlined";
 
 export const GameInterface: FC = () => {
   const dispatch = useDispatch();
@@ -86,9 +87,9 @@ export const GameInterface: FC = () => {
       icon: <DisabledByDefaultOutlinedIcon />,
     },
     {
-      stat: GameStatKeys.incredibleShots,
-      primary: "Incredible shot",
-      secondary: "My shot impressed",
+      stat: GameStatKeys.skillShots,
+      primary: "Skill shot",
+      secondary: "Banks, combos, caroms",
       icon: <CelebrationOutlinedIcon />,
     },
     {
@@ -99,19 +100,19 @@ export const GameInterface: FC = () => {
       multiBall: true,
     },
     {
-      stat: GameStatKeys.georgeWashingtons,
-      primary: "George Washington",
-      secondary: "Gave up the table after a win",
-      icon: <WavingHandOutlinedIcon />,
+      stat: GameStatKeys.cueHauler,
+      primary: "Beat cue-hauler",
+      secondary: "Custom cue/glove user",
+      icon: <MoneyOffOutlinedIcon />,
     },
   ];
   const totalRuns =
-    currentPlayerGameStats[GameStatKeys.threeBallsPocketedInRow] +
-    currentPlayerGameStats[GameStatKeys.fourBallsPocketedInRow] +
-    currentPlayerGameStats[GameStatKeys.fiveBallsPocketedInRow] +
-    currentPlayerGameStats[GameStatKeys.sixBallsPocketedInRow] +
-    currentPlayerGameStats[GameStatKeys.sevenBallsPocketedInRow] +
-    currentPlayerGameStats[GameStatKeys.runTheTable];
+    (currentPlayerGameStats[GameStatKeys.threeBallsPocketedInRow] ?? 0) +
+    (currentPlayerGameStats[GameStatKeys.fourBallsPocketedInRow] ?? 0) +
+    (currentPlayerGameStats[GameStatKeys.fiveBallsPocketedInRow] ?? 0) +
+    (currentPlayerGameStats[GameStatKeys.sixBallsPocketedInRow] ?? 0) +
+    (currentPlayerGameStats[GameStatKeys.sevenBallsPocketedInRow] ?? 0) +
+    (currentPlayerGameStats[GameStatKeys.runTheTable] ?? 0);
   return (
     <Stack direction="column" spacing={2}>
       <Card sx={{ p: 2 }}>

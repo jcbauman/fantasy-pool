@@ -30,8 +30,11 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>
-        <Stack direction="row" sx={{ alignItems: "center" }} spacing={2}>
-          <DirectionsRunIcon />
+        <Stack
+          direction="row"
+          sx={{ alignItems: "center", lineHeight: 1 }}
+          spacing={2}
+        >
           How many balls did {selectedPlayerName} get?
         </Stack>
       </DialogTitle>
@@ -39,7 +42,8 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
         <Stack direction="column" spacing={2}>
           <Typography>
             Select the number of balls {selectedPlayerName} pocketed in a row
-            before missing or ending the game.
+            before missing or ending the game. (If you made a ball off the break
+            count, that counts as 1.)
           </Typography>
           <ButtonGroup
             variant="outlined"

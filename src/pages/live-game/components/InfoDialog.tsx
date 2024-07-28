@@ -38,7 +38,7 @@ export const InfoDialog: FC<ConfirmationDialogProps> = ({ open, onClose }) => {
           <ListItem disablePadding>
             <ListItemText
               primary="Playing doubles?"
-              secondary="Wins and losses can be attributed to all players on a team, while indivual stats like runs and incredible shots are per player."
+              secondary="Wins and losses can be attributed to all players on a team, while indivual stats like runs and skill shots are per player."
             />
           </ListItem>
           <ListItem disablePadding>

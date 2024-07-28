@@ -99,9 +99,9 @@ export const GameFantasyDetail: FC<{
                       >
                         {normalizeStat(
                           pointsPer *
-                            playerStats[
+                            (playerStats[
                               key as unknown as keyof Omit<GameStat, "playerId">
-                            ] ?? 0
+                            ] ?? 0)
                         )}
                       </Typography>
                     </TableCell>

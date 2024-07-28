@@ -45,8 +45,8 @@ export enum GameStatKeys {
   sixBallsPocketedInRow = "sixBallsPocketedInRow",
   sevenBallsPocketedInRow = "sevenBallsPocketedInRow",
   runTheTable = "runTheTable",
-  georgeWashingtons = "georgeWashingtons",
-  incredibleShots = "incredibleShots",
+  cueHauler = "cueHauler",
+  skillShots = "skillShots",
 }
 
 export enum GameStatKeysAbbrev {
@@ -60,23 +60,23 @@ export enum GameStatKeysAbbrev {
   sixBallsPocketedInRow = "6PR",
   sevenBallsPocketedInRow = "7PR",
   runTheTable = "8PR",
-  georgeWashingtons = "GW",
-  incredibleShots = "IS",
+  cueHauler = "CH",
+  skillShots = "SS",
 }
 export interface GameStat {
   playerId: string;
-  [GameStatKeys.winsBy8BallSink]: number;
-  [GameStatKeys.winsByOpponentScratch]: number;
-  [GameStatKeys.lossesBy8BallSink]: number;
-  [GameStatKeys.lossesByScratch]: number;
-  [GameStatKeys.threeBallsPocketedInRow]: number;
-  [GameStatKeys.fourBallsPocketedInRow]: number;
-  [GameStatKeys.fiveBallsPocketedInRow]: number;
-  [GameStatKeys.sixBallsPocketedInRow]: number;
-  [GameStatKeys.sevenBallsPocketedInRow]: number;
-  [GameStatKeys.runTheTable]: number;
-  [GameStatKeys.georgeWashingtons]: number;
-  [GameStatKeys.incredibleShots]: number;
+  [GameStatKeys.winsBy8BallSink]?: number;
+  [GameStatKeys.winsByOpponentScratch]?: number;
+  [GameStatKeys.lossesBy8BallSink]?: number;
+  [GameStatKeys.lossesByScratch]?: number;
+  [GameStatKeys.threeBallsPocketedInRow]?: number;
+  [GameStatKeys.fourBallsPocketedInRow]?: number;
+  [GameStatKeys.fiveBallsPocketedInRow]?: number;
+  [GameStatKeys.sixBallsPocketedInRow]?: number;
+  [GameStatKeys.sevenBallsPocketedInRow]?: number;
+  [GameStatKeys.runTheTable]?: number;
+  [GameStatKeys.cueHauler]?: number;
+  [GameStatKeys.skillShots]?: number;
 }
 
 export interface AggregateStats {

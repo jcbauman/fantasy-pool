@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import { getStatsForGame } from "../../playersList/utils/playerUtils";
 import {
-  formatDateToMMDD,
   getAbbreviation,
   getFantasyScoreForPlayerSeason,
   normalizeStat,
@@ -90,7 +89,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeysAbbrev[GameStatKeys.incredibleShots]}
+                    {GameStatKeysAbbrev[GameStatKeys.skillShots]}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -125,7 +124,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeysAbbrev[GameStatKeys.georgeWashingtons]}
+                    {GameStatKeysAbbrev[GameStatKeys.cueHauler]}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -173,9 +172,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                     <TableCell>
                       {stats[GameStatKeys.lossesByScratch] ?? 0}
                     </TableCell>
-                    <TableCell>
-                      {stats[GameStatKeys.incredibleShots] ?? 0}
-                    </TableCell>
+                    <TableCell>{stats[GameStatKeys.skillShots] ?? 0}</TableCell>
                     <TableCell>
                       {stats[GameStatKeys.threeBallsPocketedInRow] ?? 0}
                     </TableCell>
@@ -194,9 +191,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                     <TableCell>
                       {stats[GameStatKeys.runTheTable] ?? 0}
                     </TableCell>
-                    <TableCell>
-                      {stats[GameStatKeys.georgeWashingtons] ?? 0}
-                    </TableCell>
+                    <TableCell>{stats[GameStatKeys.cueHauler] ?? 0}</TableCell>
                   </TableRow>
                 );
               })}

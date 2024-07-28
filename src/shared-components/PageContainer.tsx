@@ -34,6 +34,13 @@ export const PageContainer: FC<{
     }
   }, [isAuthed, navigate, isUnauthedRoute, location.search]);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+
   return (
     <Stack
       direction="column"

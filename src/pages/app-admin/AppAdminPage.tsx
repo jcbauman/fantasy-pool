@@ -3,11 +3,16 @@ import { PageContainer } from "../../shared-components/PageContainer";
 import { Button, Card, Stack } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
+import { useDispatch } from "react-redux";
+import { sendSuccessNotificaton } from "../../redux/notificationSlice";
+import { collapsRepeatGames } from "./adminUtils";
 
 export const AppAdminPage: FC = () => {
   const {
+    games,
     authState: { user },
   } = useAppContext();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   if (!user || !user.isAppAdmin) {
     navigate("/profile");
@@ -20,6 +25,19 @@ export const AppAdminPage: FC = () => {
         <Card sx={{ p: 2 }}>
           <Button fullWidth variant="outlined" href={smsUrl} target="_blank">
             Send league invite message
+          </Button>
+        </Card>
+        <Card sx={{ p: 2 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() =>
+              collapsRepeatGames(games, (message: string) =>
+                dispatch(sendSuccessNotificaton(message))
+              )
+            }
+          >
+            Collapse repeat games
           </Button>
         </Card>
       </Stack>

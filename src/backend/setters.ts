@@ -71,3 +71,19 @@ export const updateCurrentPlayer = async (
     onError?.();
   }
 };
+
+export const updateExistingGame = async (
+  resolvedGame: Omit<Game, "id">,
+  gameId: string,
+  onSuccess?: () => void,
+  onError?: () => void
+): Promise<void> => {
+  try {
+    const docRef = doc(db, "games", gameId);
+    await updateDoc(docRef, resolvedGame);
+    onSuccess?.();
+  } catch (e) {
+    console.error("Unable to update game, missing permissions");
+    onError?.();
+  }
+};

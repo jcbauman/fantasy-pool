@@ -5,6 +5,7 @@ import {
   Checkbox,
   Collapse,
   FormControlLabel,
+  IconButton,
   Stack,
   TextField,
   Typography,
@@ -15,13 +16,16 @@ import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { initializeGame } from "../../../redux/gameSlice";
 import { useAppContext } from "../../../context/AppContext";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 interface FormData {
   date: Date | null;
   location: string;
   playerIds: string[];
 }
 
-export const GameStartForm: FC = () => {
+export const GameStartForm: FC<{
+  setShowInfoDialog: (show: boolean) => void;
+}> = ({ setShowInfoDialog }) => {
   const {
     authState: { player },
   } = useAppContext();
@@ -54,12 +58,20 @@ export const GameStartForm: FC = () => {
 
   return (
     <Card sx={{ p: 2 }}>
-      <Typography sx={{ mb: 2 }} variant="overline">
-        Start a new pool session
-      </Typography>
+      <Stack direction="row" sx={{ alignItems: "center", mb: 1 }}>
+        <Typography variant="overline">Start a new pool session</Typography>
+        <IconButton
+          size="small"
+          onClick={() => setShowInfoDialog(true)}
+          sx={{}}
+        >
+          <InfoOutlinedIcon />
+        </IconButton>
+      </Stack>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack direction="column" gap={2}>
           <Typography variant="caption">
+            Record scores for yourself or another player. <br />
             You can record scores for up to 4 players simultaneously.
           </Typography>
           <Controller

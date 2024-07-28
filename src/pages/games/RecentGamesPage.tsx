@@ -6,7 +6,7 @@ import {
   makeStyles,
   Stack,
 } from "@mui/material";
-import { FC, useMemo, useState } from "react";
+import { FC, Fragment, useMemo, useState } from "react";
 import {
   NAV_BAR_HEIGHT,
   PageContainer,
@@ -33,7 +33,7 @@ export const RecentGamesPage: FC = () => {
         <List disablePadding>
           {Object.entries(gamesGroupedByDate).map(([date, items]) => {
             return (
-              <>
+              <Fragment key={`date-${date}`}>
                 <ListSubheader
                   sx={{
                     position: "sticky",
@@ -54,7 +54,7 @@ export const RecentGamesPage: FC = () => {
                     </ListItem>
                   );
                 })}
-              </>
+              </Fragment>
             );
           })}
         </List>

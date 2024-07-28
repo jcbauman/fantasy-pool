@@ -32,7 +32,11 @@ export const LiveGameModePage: FC = () => {
   return (
     <PageContainer authedRoute>
       <Stack direction="column" sx={{ width: "100%", height: "100%", p: 1 }}>
-        {gameIsInProgress ? <GameInterface /> : <GameStartForm />}
+        {gameIsInProgress ? (
+          <GameInterface />
+        ) : (
+          <GameStartForm setShowInfoDialog={setShowInfoDialog} />
+        )}
         <InfoDialog
           open={showInfoDialog}
           onClose={() => {

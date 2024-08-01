@@ -24,7 +24,6 @@ import { ConfirmationDialog } from "./ConfirmationDialog";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";
 import DirectionsRunOutlinedIcon from "@mui/icons-material/DirectionsRunOutlined";
-import WavingHandOutlinedIcon from "@mui/icons-material/WavingHandOutlined";
 import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";
 import { TimeCounter } from "./TimeCounter";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
@@ -37,6 +36,7 @@ import { addNewGame } from "../../../backend/setters";
 import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
 import MoneyOffOutlinedIcon from "@mui/icons-material/MoneyOffOutlined";
+import { MultiBallDeleteDialog } from "./MultiBallDeleteDialog";
 
 export const GameInterface: FC = () => {
   const dispatch = useDispatch();
@@ -51,6 +51,8 @@ export const GameInterface: FC = () => {
   const [endGameDialogOpen, setEndGameDialogOpen] = useState(false);
   const [discardGameDialogOpen, setDiscardGameDialogOpen] = useState(false);
   const [multiBallDialogOpen, setMultiBallDialogOpen] = useState(false);
+  const [multiBallDeleteDialogOpen, setMultiBallDeleteDialogOpen] =
+    useState(false);
   const startTime = game?.timestamp ? new Date(game?.timestamp) : new Date();
 
   const gamePlayers = players.filter((player) =>
@@ -160,14 +162,15 @@ export const GameInterface: FC = () => {
                     <Button
                       onClick={() => {
                         if (field.multiBall) {
-                          setMultiBallDialogOpen(true);
+                          setMultiBallDeleteDialogOpen(true);
                         } else {
-                          if (statValue !== 0)
+                          if (statValue !== 0) {
                             iterateStat({
                               playerId: gamePlayers[selectedTab].id,
                               statKey: field.stat,
                               delta: -1,
                             });
+                          }
                         }
                       }}
                     >
@@ -257,6 +260,23 @@ export const GameInterface: FC = () => {
             playerId: gamePlayers[selectedTab].id,
             statKey: getStatKeyFromNumBalls(numBalls),
             delta: 1,
+          })
+        }
+      />
+      <MultiBallDeleteDialog
+        open={multiBallDeleteDialogOpen}
+        onClose={() => setMultiBallDeleteDialogOpen(false)}
+        selectedPlayerName={
+          gamePlayers[selectedTab].id === player?.id
+            ? "you"
+            : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
+        }
+        selectedPlayerId={gamePlayers[selectedTab].id}
+        onConfirmDelete={(numBalls: number) =>
+          iterateStat({
+            playerId: gamePlayers[selectedTab].id,
+            statKey: getStatKeyFromNumBalls(numBalls),
+            delta: -1,
           })
         }
       />

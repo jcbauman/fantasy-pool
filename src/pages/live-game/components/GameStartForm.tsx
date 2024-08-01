@@ -10,13 +10,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import DatePicker from "../../../shared-components/DatePicker";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { initializeGame } from "../../../redux/gameSlice";
 import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { getLastGameAdded } from "../../../backend/getters";
 interface FormData {
   date: Date | null;
   location: string;
@@ -32,6 +33,21 @@ export const GameStartForm: FC<{
 
   const dispatch = useDispatch();
   const { players: allPlayers } = useAppContext();
+  const [lastGameAddedLocation, setLastGameAddedLocation] = useState<
+    string | undefined
+  >(undefined);
+
+  useEffect(() => {
+    const fetchLastLoc = async (): Promise<void> => {
+      const res = await getLastGameAdded();
+      if (res) {
+        console.log(res, "bruh");
+        setLastGameAddedLocation(res.location ?? undefined);
+      }
+    };
+    fetchLastLoc();
+  }, []);
+
   const {
     handleSubmit,
     control,
@@ -39,7 +55,7 @@ export const GameStartForm: FC<{
   } = useForm<FormData>({
     defaultValues: {
       date: new Date(),
-      location: player?.defaultLocation ?? "",
+      location: lastGameAddedLocation ?? player?.defaultLocation ?? "",
       playerIds: player?.id ? [player?.id] : [],
     },
   });

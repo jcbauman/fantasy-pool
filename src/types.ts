@@ -22,6 +22,7 @@ export interface League {
   name: string;
   userIds: string[];
   leagueManagerId: string;
+  leagueManagerMessage?: string;
 }
 
 export interface Game {

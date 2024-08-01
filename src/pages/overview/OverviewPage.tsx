@@ -14,7 +14,7 @@ import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import SportsKabaddiOutlinedIcon from "@mui/icons-material/SportsKabaddiOutlined";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
-import { Link as RouterLink, useFetcher } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { sendSuccessNotificaton } from "../../redux/notificationSlice";
 import EightBallIcon from "../../shared-components/icons/EightBallIcon";

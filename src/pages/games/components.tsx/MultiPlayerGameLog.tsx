@@ -23,12 +23,18 @@ import { mockScoringMatrix } from "../../../backend/fixtures";
 import { useAppContext } from "../../../context/AppContext";
 import { PlayerCell } from "../../playersList/components/PlayerCell";
 import { GameFantasyDetailDialog } from "../../playerDetail/components/GameFantasyDetailDialog";
+import { TextEditorField } from "../../../shared-components/TextEditorField";
+import { updateExistingGame } from "../../../backend/setters";
 
 export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
-  const { players } = useAppContext();
+  const {
+    players,
+    authState: { user },
+  } = useAppContext();
   const [detailModalPlayer, setDetailModalPlayer] = useState<
     Player | undefined
   >(undefined);
+  const [editingGameLoc, setEditingGameLoc] = useState(false);
   const authorPlayer = players.find((p) => p.id === game?.authorPlayerId);
   return (
     <Card>
@@ -37,7 +43,32 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
           direction="row"
           sx={{ p: 2, justifyContent: "space-between", alignItems: "center" }}
         >
-          <Typography>{game.location}</Typography>
+          <Stack
+            onClick={() => {
+              if (user?.isAppAdmin || game.authorPlayerId === user?.id) {
+                setEditingGameLoc(true);
+              }
+            }}
+          >
+            {editingGameLoc ? (
+              <TextEditorField
+                placeholder="Edit location"
+                defaultValue={game.location ?? ""}
+                onSave={async (newVal: string) => {
+                  const resolvedGame: Game = {
+                    ...game,
+                    location: newVal,
+                  };
+                  const { id, ...gameNoId } = resolvedGame;
+                  await updateExistingGame(gameNoId, game.id);
+                  setEditingGameLoc(false);
+                }}
+                onClickAway={() => setEditingGameLoc(false)}
+              />
+            ) : (
+              <Typography>{game.location}</Typography>
+            )}
+          </Stack>
           {authorPlayer && (
             <Stack direction="row">
               <Typography variant="caption">By</Typography>

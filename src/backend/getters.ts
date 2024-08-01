@@ -4,7 +4,9 @@ import {
   DocumentData,
   getDoc,
   getDocs,
+  limit,
   onSnapshot,
+  orderBy,
   query,
   QuerySnapshot,
   where,
@@ -172,6 +174,24 @@ export const getAppUserByUID = async (
     return documents[0] as User;
   } catch (error) {
     console.error("Error getting user ", error);
+    return undefined;
+  }
+};
+
+export const getLastGameAdded = async (): Promise<Game | undefined> => {
+  try {
+    const collectionRef = collection(db, "/games");
+    const q = query(collectionRef, orderBy("createdAt", "desc"), limit(1));
+
+    const querySnapshot = await getDocs(q);
+    console.log(querySnapshot);
+    if (querySnapshot.docs.length > 0) {
+      return querySnapshot.docs[0].data() as Game;
+    } else {
+      return undefined;
+    }
+  } catch (e) {
+    console.error("Error getting last game ", e);
     return undefined;
   }
 };

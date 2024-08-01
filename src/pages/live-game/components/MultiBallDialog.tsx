@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { FC, useState } from "react";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
+import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 
 interface MultiBallDialogProps {
   open: boolean;
@@ -82,7 +83,7 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
             onClose();
           }}
         >
-          Confirm
+          Confirm for {getPlayerNameAbbreviation(selectedPlayerName)}
         </Button>
       </DialogActions>
     </Dialog>

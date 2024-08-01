@@ -1,8 +1,15 @@
-import React, { createContext, useState, ReactNode, useContext } from "react";
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  useContext,
+  useEffect,
+} from "react";
 import { AggregateStats, Game, League, Player, User } from "../types";
 import { mockLeague, mockScoringMatrix } from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 import {
+  fetchLeague,
   useFetchGames,
   useFetchPlayers,
   useFetchUsers,
@@ -14,7 +21,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 interface AppContextType {
   users: User[];
   players: Player[];
-  league: League;
+  league: League | undefined;
   games: Game[];
   rankings: Record<string, string[]>;
   allStatsByPlayers: AggregateStats;
@@ -37,8 +44,20 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const players = useFetchPlayers();
   const authState = useAuthState();
   const games = useFetchGames();
-  const [league, setLeague] = useState<League>(mockLeague);
-
+  const [league, setLeague] = useState<League | undefined>(mockLeague);
+  useEffect(() => {
+    const getLeague = async (): Promise<void> => {
+      if (authState.user?.leagueId) {
+        const res = await fetchLeague(authState.user?.leagueId);
+        if (res) {
+          setLeague(res as League);
+        } else {
+          setLeague(undefined);
+        }
+      }
+    };
+    getLeague();
+  }, [authState.user?.leagueId]);
   const [scoringMatrix, setScoringMatrix] = useState(mockScoringMatrix);
   const { rankings, allStatsByPlayers } = useGetRankingByField(players, games);
 

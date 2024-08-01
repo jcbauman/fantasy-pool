@@ -50,7 +50,7 @@ export const OverviewComponent: FC = () => {
             <strong>League</strong>
           </Typography>
           <Typography variant="overline" fontSize={16}>
-            {league.name}
+            {league?.name}
           </Typography>
         </Stack>
         <Box sx={{ width: "100%" }}>

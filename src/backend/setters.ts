@@ -1,5 +1,5 @@
 import { addDoc, doc, updateDoc } from "firebase/firestore";
-import { Game, Player, User } from "../types";
+import { Game, League, Player, User } from "../types";
 import { auth, db } from "./firebase/firebaseConfig";
 import {
   GAMES_COLLECTION,
@@ -84,6 +84,22 @@ export const updateExistingGame = async (
     onSuccess?.();
   } catch (e) {
     console.error("Unable to update game, missing permissions");
+    onError?.();
+  }
+};
+
+export const updateLeague = async (
+  resolvedLeague: Omit<League, "id">,
+  leagueId: string,
+  onSuccess?: () => void,
+  onError?: () => void
+): Promise<void> => {
+  try {
+    const docRef = doc(db, "leagues", leagueId);
+    await updateDoc(docRef, resolvedLeague);
+    onSuccess?.();
+  } catch (e) {
+    console.error("Unable to update league, missing permissions");
     onError?.();
   }
 };

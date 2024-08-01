@@ -178,7 +178,7 @@ export const ProfileEditor: FC<{
                   variant="outlined"
                   type="text"
                   label="League"
-                  defaultValue={league.name}
+                  defaultValue={league?.name}
                   size="small"
                   disabled
                 />

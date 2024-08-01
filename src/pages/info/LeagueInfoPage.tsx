@@ -21,7 +21,7 @@ import { useAppContext } from "../../context/AppContext";
 import { GameStatKeys, GameStatKeysAbbrev } from "../../types";
 
 export const LeagueInfoPage: FC = () => {
-  const { scoringMatrix } = useAppContext();
+  const { scoringMatrix, league } = useAppContext();
   return (
     <PageContainer>
       <Stack
@@ -32,7 +32,10 @@ export const LeagueInfoPage: FC = () => {
         <Card sx={{ p: 2, overflow: "visible" }}>
           <Typography variant="overline">League Manager's Note</Typography>
           <Typography variant="body2">
-            There has not been an LM Note posted.
+            {league?.leagueManagerMessage &&
+            league?.leagueManagerMessage.length > 0
+              ? league?.leagueManagerMessage
+              : "There has not been an LM Note posted."}
           </Typography>
         </Card>
 

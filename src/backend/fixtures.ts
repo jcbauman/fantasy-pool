@@ -47,7 +47,6 @@ export const mockPlayers: Player[] = [
 export const mockLeague: League = {
   id: uuidv4(),
   name: "The Other Other League",
-  userIds: [userId],
   leagueManagerId: userId,
 };
 

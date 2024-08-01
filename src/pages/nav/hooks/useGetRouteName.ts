@@ -31,6 +31,8 @@ export const useTopNav = (): UseTopNav => {
     return { title: "Configure your player", hideButtons: true };
   else if (location.pathname === "/app-admin")
     return { title: "App admin", showBackButton: true };
+  else if (location.pathname === "/league-admin")
+    return { title: "League manager", showBackButton: true };
   else if (location.pathname === "/games")
     return { title: "Recent games", showBackButton: true };
   else return { title: "Fantasy Pool" };

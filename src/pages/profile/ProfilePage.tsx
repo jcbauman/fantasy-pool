@@ -3,7 +3,6 @@ import { FC } from "react";
 import { ProfileEditor, ProfileFormValues } from "./components/ProfileEditor";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { Link } from "react-router-dom";
-import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import { useAppContext } from "../../context/AppContext";
 import { Player } from "../../types";
 import { updateCurrentPlayer } from "../../backend/setters";
@@ -16,6 +15,7 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 
 export const ProfilePage: FC = () => {
   const {
+    league,
     authState: { player, user, refetchPlayer },
   } = useAppContext();
   const dispatch = useDispatch();
@@ -39,6 +39,7 @@ export const ProfilePage: FC = () => {
         )
     );
   };
+  const isLeagueAdmin = league?.leagueManagerId === user?.id;
   return (
     <PageContainer authedRoute>
       <Stack
@@ -50,32 +51,34 @@ export const ProfilePage: FC = () => {
           overflow: "visible",
         }}
       >
-        <Card sx={{ p: 2, mb: 2, overflow: "visible" }}>
-          <Typography variant={"overline"}>Your stats</Typography>
-          <Button
-            fullWidth
-            variant="outlined"
-            color="success"
-            component={Link}
-            to={`/players/${player?.id}`}
-            startIcon={<LeaderboardOutlinedIcon />}
-          >
-            View my player stats
-          </Button>
-        </Card>
         <ProfileEditor player={player} onSubmit={onSubmit} />
-        {user?.isAppAdmin && (
+        {(user?.isAppAdmin || isLeagueAdmin) && (
           <Card sx={{ p: 2, mt: 2, overflow: "visible" }}>
             <Typography variant={"overline"}>Admin</Typography>
-            <Button
-              fullWidth
-              variant="outlined"
-              component={Link}
-              to={`/app-admin`}
-              startIcon={<AdminPanelSettingsOutlinedIcon />}
-            >
-              View app admin page
-            </Button>
+            <Stack direction="column" gap={1}>
+              {isLeagueAdmin && (
+                <Button
+                  fullWidth
+                  variant="contained"
+                  component={Link}
+                  to={`/league-admin`}
+                  startIcon={<AdminPanelSettingsOutlinedIcon />}
+                >
+                  View league manager page
+                </Button>
+              )}
+              {user?.isAppAdmin && (
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  component={Link}
+                  to={`/app-admin`}
+                  startIcon={<AdminPanelSettingsOutlinedIcon />}
+                >
+                  View app admin page
+                </Button>
+              )}
+            </Stack>
           </Card>
         )}
       </Stack>

@@ -128,6 +128,7 @@ export const fetchPlayerById = async (
     console.error("No player record found found for ", id);
   }
 };
+
 export const getPlayerByUserID = async (
   id?: string
 ): Promise<Player | undefined> => {
@@ -156,7 +157,7 @@ export const fetchLeague = async (id: string): Promise<League | undefined> => {
       ...data,
     };
   } else {
-    console.error("No league record found found for ", id);
+    console.error("No league record found for ", id);
   }
 };
 

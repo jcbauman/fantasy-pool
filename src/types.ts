@@ -20,7 +20,6 @@ export interface Player {
 export interface League {
   id: string;
   name: string;
-  userIds: string[];
   leagueManagerId: string;
   leagueManagerMessage?: string;
 }

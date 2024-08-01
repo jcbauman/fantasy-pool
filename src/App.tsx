@@ -19,6 +19,7 @@ import { SignInPage } from "./pages/profile/SignInPage";
 import { CreatePlayerPage } from "./pages/profile/CreatePlayerPage";
 import { AppAdminPage } from "./pages/app-admin/AppAdminPage";
 import { RecentGamesPage } from "./pages/games/RecentGamesPage";
+import { LeagueAdminPage } from "./pages/league-admin/LeagueAdminPage";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
                   <Route path="/create-player" element={<CreatePlayerPage />} />
                   <Route path="/app-admin" element={<AppAdminPage />} />
                   <Route path="/games" element={<RecentGamesPage />} />
+                  <Route path="/league-admin" element={<LeagueAdminPage />} />
                   <Route path="*" element={<OverviewComponent />} />
                 </Routes>
               </Router>

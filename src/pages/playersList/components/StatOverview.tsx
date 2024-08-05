@@ -7,20 +7,19 @@ import {
   normalizePercentage,
   normalizeStat,
 } from "../../../utils/statsUtils";
-import { mockScoringMatrix } from "../../../backend/fixtures";
 
 export const StatOverview: FC<{ player: Player; playerGames: Game[] }> = ({
   player,
   playerGames,
 }) => {
-  const { rankings, allStatsByPlayers } = useAppContext();
+  const { rankings, allStatsByPlayers, scoringMatrix } = useAppContext();
   const fantasyScore = useMemo(() => {
     return getFantasyScoreForPlayerSeason(
       playerGames,
       player?.id,
-      mockScoringMatrix
+      scoringMatrix
     );
-  }, [playerGames, player?.id]);
+  }, [playerGames, player?.id, scoringMatrix]);
   const totalWinRank =
     (rankings["totalWins"].findIndex((id) => id === player.id) ?? 0) + 1;
   const totalGamesRank =

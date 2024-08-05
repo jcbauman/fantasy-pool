@@ -8,9 +8,6 @@ import { GameLog } from "./components/GameLog";
 import { fetchPlayerById, getGamesForPlayer } from "../../backend/getters";
 import { Game, Player } from "../../types";
 import { Link } from "react-router-dom";
-import { mockScoringMatrix } from "../../backend/fixtures";
-import { getFantasyScoreForPlayerSeason } from "../../utils/statsUtils";
-import { GameFantasyDetailDialog } from "./components/GameFantasyDetailDialog";
 
 interface PlayerParams extends Record<string, string | undefined> {
   id: string;

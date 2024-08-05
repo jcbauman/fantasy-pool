@@ -35,7 +35,7 @@ import { MultiBallDialog } from "./MultiBallDialog";
 import { addNewGame } from "../../../backend/setters";
 import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
-import MoneyOffOutlinedIcon from "@mui/icons-material/MoneyOffOutlined";
+import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlined";
 import { MultiBallDeleteDialog } from "./MultiBallDeleteDialog";
 
 export const GameInterface: FC = () => {
@@ -102,10 +102,10 @@ export const GameInterface: FC = () => {
       multiBall: true,
     },
     {
-      stat: GameStatKeys.cueHauler,
-      primary: "Beat cue-hauler",
-      secondary: "Custom cue/glove user",
-      icon: <MoneyOffOutlinedIcon />,
+      stat: GameStatKeys.scratches,
+      primary: "Scratch",
+      secondary: "Scratched (not on 8-ball)",
+      icon: <StrikethroughSOutlinedIcon />,
     },
   ];
   const totalRuns =

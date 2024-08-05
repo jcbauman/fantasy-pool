@@ -19,14 +19,15 @@ import {
   getFantasyScoreForPlayerSeason,
   normalizeStat,
 } from "../../../utils/statsUtils";
-import { mockScoringMatrix } from "../../../backend/fixtures";
 import { GameFantasyDetailDialog } from "./GameFantasyDetailDialog";
 import { sortGamesByDate } from "../../../utils/gameUtils";
+import { useAppContext } from "../../../context/AppContext";
 
 export const GameLog: FC<{ player: Player; games: Game[] }> = ({
   player,
   games,
 }) => {
+  const { scoringMatrix } = useAppContext();
   const [detailModalGame, setDetailModalGame] = useState<Game | undefined>(
     undefined
   );
@@ -115,7 +116,7 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.cueHauler]}
+                      {GameStatKeysAbbrev[GameStatKeys.scratches]}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -126,7 +127,7 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                   const fantasyPoints = getFantasyScoreForPlayerSeason(
                     [g],
                     player.id,
-                    mockScoringMatrix
+                    scoringMatrix
                   );
                   return (
                     <TableRow
@@ -184,7 +185,7 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                         {stats[GameStatKeys.runTheTable] ?? 0}
                       </TableCell>
                       <TableCell>
-                        {stats[GameStatKeys.cueHauler] ?? 0}
+                        {stats[GameStatKeys.scratches] ?? 0}
                       </TableCell>
                     </TableRow>
                   );
@@ -202,7 +203,7 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
         open={Boolean(detailModalGame)}
         onClose={() => setDetailModalGame(undefined)}
         player={player}
-        scoringMatrix={mockScoringMatrix}
+        scoringMatrix={scoringMatrix}
         game={detailModalGame}
       />
     </Card>

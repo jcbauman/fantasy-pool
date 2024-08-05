@@ -6,11 +6,11 @@ import { RootState } from "../../redux/store";
 import { Link as RouterLink } from "react-router-dom";
 import { GameFantasyDetail } from "../playerDetail/components/GameFantasyDetail";
 import { useAppContext } from "../../context/AppContext";
-import { mockScoringMatrix } from "../../backend/fixtures";
 
 export const GameCompletePage: FC = () => {
   const {
     games,
+    scoringMatrix,
     authState: { player },
   } = useAppContext();
   const lastGameId = useSelector((state: RootState) => state.game.lastGameId);
@@ -29,7 +29,7 @@ export const GameCompletePage: FC = () => {
               <GameFantasyDetail
                 game={targetGame}
                 player={player}
-                scoringMatrix={mockScoringMatrix}
+                scoringMatrix={scoringMatrix}
               />
             )}
             <Button to="/" variant="contained" component={RouterLink}>

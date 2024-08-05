@@ -58,7 +58,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
     };
     getLeague();
   }, [authState.user?.leagueId]);
-  const [scoringMatrix, setScoringMatrix] = useState(mockScoringMatrix);
+  const scoringMatrix = league?.scoringMatrix ?? mockScoringMatrix;
   const { rankings, allStatsByPlayers } = useGetRankingByField(players, games);
 
   return (

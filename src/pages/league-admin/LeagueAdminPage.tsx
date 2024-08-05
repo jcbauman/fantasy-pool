@@ -8,6 +8,7 @@ import { sendSuccessNotificaton } from "../../redux/notificationSlice";
 import { useForm } from "react-hook-form";
 import { League } from "../../types";
 import { updateLeague } from "../../backend/setters";
+import { ScoringRubrikForm } from "./components/ScoringRubrikForm";
 
 type FormData = {
   leagueName: string;
@@ -19,7 +20,7 @@ export const LeagueAdminPage: FC = () => {
     league,
     authState: { user },
   } = useAppContext();
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   if (!user || !league || league.leagueManagerId !== user.id) {
     navigate("/profile");
@@ -44,17 +45,25 @@ export const LeagueAdminPage: FC = () => {
         leagueManagerMessage: data.leagueManagerMessage,
       };
       const { id, ...leagueNoId } = resolvedLeague;
-      await updateLeague(leagueNoId, league.id);
+      await updateLeague(leagueNoId, league.id, () =>
+        dispatch(sendSuccessNotificaton("League settings updated"))
+      );
     }
   };
-
+  if (!league) {
+    return (
+      <PageContainer authedRoute>
+        <Typography variant="overline">No league to show</Typography>
+      </PageContainer>
+    );
+  }
   return (
     <PageContainer authedRoute>
       <Stack direction="column" spacing={2} sx={{ p: 2 }}>
-        <Card sx={{ p: 2 }}>
+        <Card sx={{ p: 1 }}>
           <Typography variant="overline">League settings</Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack direction="column" gap={2}>
+            <Stack direction="column" gap={2} sx={{ p: 1 }}>
               <TextField
                 placeholder="My fantasy pool league"
                 label="League name"
@@ -74,6 +83,7 @@ export const LeagueAdminPage: FC = () => {
             </Stack>
           </form>
         </Card>
+        <ScoringRubrikForm league={league} />
       </Stack>
     </PageContainer>
   );

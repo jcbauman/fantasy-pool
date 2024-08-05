@@ -4,11 +4,29 @@ import { Avatar, Stack, Typography } from "@mui/material";
 import { generateColor, getPlayerNameAbbreviation } from "../utils/playerUtils";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { getAbbreviation } from "../../../utils/statsUtils";
+import { Link, useNavigate } from "react-router-dom";
 
-export const PlayerCell: FC<{ player: Player }> = ({ player }) => {
+export const PlayerCell: FC<{ player: Player; linkToPlayer?: boolean }> = ({
+  player,
+  linkToPlayer,
+}) => {
   const displayName = getPlayerNameAbbreviation(player.name);
+  const navigate = useNavigate();
+
   return (
-    <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+    <Stack
+      direction="row"
+      spacing={2}
+      sx={{
+        alignItems: "center",
+        "& a": {
+          textDecoration: "none",
+        },
+      }}
+      onClick={() => {
+        if (linkToPlayer) navigate(`/players/${player.id}`);
+      }}
+    >
       <Avatar
         src={player.profilePictureUrl}
         sx={{

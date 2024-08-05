@@ -19,7 +19,6 @@ import {
   getFantasyScoreForPlayerSeason,
   normalizeStat,
 } from "../../../utils/statsUtils";
-import { mockScoringMatrix } from "../../../backend/fixtures";
 import { useAppContext } from "../../../context/AppContext";
 import { PlayerCell } from "../../playersList/components/PlayerCell";
 import { GameFantasyDetailDialog } from "../../playerDetail/components/GameFantasyDetailDialog";
@@ -30,6 +29,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const {
     players,
     authState: { user },
+    scoringMatrix,
   } = useAppContext();
   const [detailModalPlayer, setDetailModalPlayer] = useState<
     Player | undefined
@@ -155,7 +155,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeysAbbrev[GameStatKeys.cueHauler]}
+                    {GameStatKeysAbbrev[GameStatKeys.scratches]}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -166,7 +166,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                 const fantasyPoints = getFantasyScoreForPlayerSeason(
                   [game],
                   pId,
-                  mockScoringMatrix
+                  scoringMatrix
                 );
                 const thisPlayer = players.find((p) => p.id === pId);
                 if (!thisPlayer) return <></>;
@@ -179,7 +179,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                     }}
                   >
                     <TableCell>
-                      <PlayerCell player={thisPlayer} />
+                      <PlayerCell player={thisPlayer} linkToPlayer />
                     </TableCell>
                     <TableCell
                       onClick={() => setDetailModalPlayer(thisPlayer)}
@@ -222,7 +222,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                     <TableCell>
                       {stats[GameStatKeys.runTheTable] ?? 0}
                     </TableCell>
-                    <TableCell>{stats[GameStatKeys.cueHauler] ?? 0}</TableCell>
+                    <TableCell>{stats[GameStatKeys.scratches] ?? 0}</TableCell>
                   </TableRow>
                 );
               })}
@@ -234,7 +234,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
         open={Boolean(detailModalPlayer)}
         onClose={() => setDetailModalPlayer(undefined)}
         player={detailModalPlayer}
-        scoringMatrix={mockScoringMatrix}
+        scoringMatrix={scoringMatrix}
         game={game}
       />
     </Card>

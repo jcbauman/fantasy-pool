@@ -37,16 +37,16 @@ export const GameStartForm: FC<{
     string | undefined
   >(undefined);
 
-  useEffect(() => {
-    const fetchLastLoc = async (): Promise<void> => {
-      const res = await getLastGameAdded();
-      if (res) {
-        console.log(res, "bruh");
-        setLastGameAddedLocation(res.location ?? undefined);
-      }
-    };
-    fetchLastLoc();
-  }, []);
+  // useEffect(() => {
+  //   const fetchLastLoc = async (): Promise<void> => {
+  //     const res = await getLastGameAdded();
+  //     if (res) {
+  //       console.log(res, "bruh");
+  //       setLastGameAddedLocation(res.location ?? undefined);
+  //     }
+  //   };
+  //   fetchLastLoc();
+  // }, []);
 
   const {
     handleSubmit,

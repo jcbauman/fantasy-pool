@@ -25,7 +25,6 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
   games,
 }) => {
   const stats = getStatsForPlayerGames(player.id, games);
-  console.log(new Date().toString());
   return (
     <Card>
       <Stack direction="column">
@@ -103,7 +102,7 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
-                    {GameStatKeysAbbrev[GameStatKeys.cueHauler]}
+                    {GameStatKeysAbbrev[GameStatKeys.scratches]}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -150,7 +149,7 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
                   {stats[GameStatKeys.sevenBallsPocketedInRow] ?? 0}
                 </TableCell>
                 <TableCell>{stats[GameStatKeys.runTheTable] ?? 0}</TableCell>
-                <TableCell>{stats[GameStatKeys.cueHauler] ?? 0}</TableCell>
+                <TableCell>{stats[GameStatKeys.scratches] ?? 0}</TableCell>
               </TableRow>
             </TableBody>
           </Table>

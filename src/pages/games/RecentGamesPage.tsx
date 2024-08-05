@@ -47,7 +47,7 @@ export const RecentGamesPage: FC = () => {
                 </ListSubheader>
                 {items.map((g) => {
                   return (
-                    <ListItem sx={{ px: 1 }}>
+                    <ListItem sx={{ px: 1 }} key={g.id}>
                       <Card key={g.id} sx={{ overflow: "auto" }}>
                         <MultiPlayerGameLog game={g} />
                       </Card>

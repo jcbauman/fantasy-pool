@@ -11,7 +11,7 @@ export const defaultGameStat: Omit<GameStat, "playerId"> = {
   [GameStatKeys.sixBallsPocketedInRow]: 0,
   [GameStatKeys.sevenBallsPocketedInRow]: 0,
   [GameStatKeys.runTheTable]: 0,
-  [GameStatKeys.cueHauler]: 0,
+  [GameStatKeys.scratches]: 0,
   [GameStatKeys.skillShots]: 0,
 };
 
@@ -38,6 +38,6 @@ export const StatAbbreviations: { [key: string]: string } = {
     "Runs of the table - all 8 balls in a row",
   [GameStatKeysAbbrev[GameStatKeys.skillShots]]:
     "Skill shots - successful called bank-shots, combos, or caroms",
-  [GameStatKeysAbbrev[GameStatKeys.cueHauler]]:
-    "Beat cue-hauler - beat an opponent who used their own cue, glove, or other pool gear in the game",
+  [GameStatKeysAbbrev[GameStatKeys.scratches]]:
+    "Scratches - scratched (not including game-losing scratches)",
 };

@@ -114,10 +114,10 @@ export const getStringFromStatKey = (statKey: string): string => {
       return "7 in a row";
     case GameStatKeys.runTheTable:
       return "Run the table";
-    case GameStatKeys.cueHauler:
-      return "Beat cue-hauler";
     case GameStatKeys.skillShots:
       return "Skill shots";
+    case GameStatKeys.scratches:
+      return "Scratches";
     default:
       return "";
   }

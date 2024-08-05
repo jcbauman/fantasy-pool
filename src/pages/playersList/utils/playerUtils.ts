@@ -31,11 +31,13 @@ export const getStatsForPlayerGames = (
   totalGames: number;
   totalWins: number;
   totalSessions: number;
+  winPercentage: number;
 } => {
   const stats: GameStat & {
     totalGames: number;
     totalWins: number;
     totalSessions: number;
+    winPercentage: number;
   } = games.reduce(
     (acc, game) => {
       const playerStats: GameStat | undefined = game.statsByPlayer.find(
@@ -74,9 +76,9 @@ export const getStatsForPlayerGames = (
         [GameStatKeys.runTheTable]:
           (acc[GameStatKeys.runTheTable] ?? 0) +
           (playerStats[GameStatKeys.runTheTable] ?? 0),
-        [GameStatKeys.cueHauler]:
-          (acc[GameStatKeys.cueHauler] ?? 0) +
-          (playerStats[GameStatKeys.cueHauler] ?? 0),
+        [GameStatKeys.scratches]:
+          (acc[GameStatKeys.scratches] ?? 0) +
+          (playerStats[GameStatKeys.scratches] ?? 0),
         [GameStatKeys.skillShots]:
           (acc[GameStatKeys.skillShots] ?? 0) +
           (playerStats[GameStatKeys.skillShots] ?? 0),
@@ -92,6 +94,7 @@ export const getStatsForPlayerGames = (
           ((playerStats[GameStatKeys.winsBy8BallSink] ?? 0) +
             (playerStats[GameStatKeys.winsByOpponentScratch] ?? 0)),
         playerId,
+        winPercentage: 0,
       };
     },
     {
@@ -99,10 +102,12 @@ export const getStatsForPlayerGames = (
       totalGames: 0,
       totalWins: 0,
       totalSessions: 0,
+      winPercentage: 0,
       playerId,
     }
   );
-  return stats;
+  const winPercentage = stats.totalWins / (stats.totalGames || 1);
+  return { ...stats, winPercentage };
 };
 
 export const generateColor = (str: string) => {

@@ -22,6 +22,7 @@ export interface League {
   name: string;
   leagueManagerId: string;
   leagueManagerMessage?: string;
+  scoringMatrix?: { [key: string]: number };
 }
 
 export interface Game {
@@ -45,7 +46,7 @@ export enum GameStatKeys {
   sixBallsPocketedInRow = "sixBallsPocketedInRow",
   sevenBallsPocketedInRow = "sevenBallsPocketedInRow",
   runTheTable = "runTheTable",
-  cueHauler = "cueHauler",
+  scratches = "scratches",
   skillShots = "skillShots",
 }
 
@@ -60,7 +61,7 @@ export enum GameStatKeysAbbrev {
   sixBallsPocketedInRow = "6PR",
   sevenBallsPocketedInRow = "7PR",
   runTheTable = "8PR",
-  cueHauler = "CH",
+  scratches = "SCR",
   skillShots = "SS",
 }
 export interface GameStat {
@@ -75,7 +76,7 @@ export interface GameStat {
   [GameStatKeys.sixBallsPocketedInRow]?: number;
   [GameStatKeys.sevenBallsPocketedInRow]?: number;
   [GameStatKeys.runTheTable]?: number;
-  [GameStatKeys.cueHauler]?: number;
+  [GameStatKeys.scratches]?: number;
   [GameStatKeys.skillShots]?: number;
 }
 

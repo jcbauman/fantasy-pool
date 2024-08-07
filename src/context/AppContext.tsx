@@ -15,6 +15,10 @@ import {
   useFetchUsers,
 } from "../backend/getters";
 import { UseAuthState, useAuthState } from "../auth/useAuthState";
+import {
+  NotificationBadgesState,
+  useNotificationBadges,
+} from "../shared-components/hooks/useNotificationBadges";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -27,6 +31,7 @@ interface AppContextType {
   allStatsByPlayers: AggregateStats;
   scoringMatrix: Record<string, number>;
   authState: UseAuthState;
+  notificationBadgesState: NotificationBadgesState;
 }
 
 export const useAppContext = () => {
@@ -40,11 +45,12 @@ export const useAppContext = () => {
 export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
+  const [league, setLeague] = useState<League | undefined>(mockLeague);
   const users = useFetchUsers();
   const players = useFetchPlayers();
   const authState = useAuthState();
   const games = useFetchGames();
-  const [league, setLeague] = useState<League | undefined>(mockLeague);
+  const notificationBadgesState = useNotificationBadges(games, league);
   useEffect(() => {
     const getLeague = async (): Promise<void> => {
       if (authState.user?.leagueId) {
@@ -72,6 +78,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
         allStatsByPlayers,
         scoringMatrix,
         authState,
+        notificationBadgesState,
       }}
     >
       {children}

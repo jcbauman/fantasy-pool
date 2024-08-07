@@ -1,4 +1,4 @@
-import { Divider, Stack, Typography } from "@mui/material";
+import { Badge, Divider, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -24,6 +24,7 @@ export const OverviewComponent: FC = () => {
   const {
     league,
     authState: { player },
+    notificationBadgesState,
   } = useAppContext();
   const dispatch = useDispatch();
 
@@ -90,9 +91,19 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton to={`/games`} component={RouterLink}>
+              <ListItemButton
+                to={`/games`}
+                component={RouterLink}
+                onClick={() => notificationBadgesState.viewGamesPage()}
+              >
                 <ListItemIcon>
-                  <ScoreboardOutlinedIcon />
+                  <Badge
+                    variant="dot"
+                    invisible={!notificationBadgesState.newGame}
+                    color="info"
+                  >
+                    <ScoreboardOutlinedIcon />
+                  </Badge>
                 </ListItemIcon>
                 <ListItemText primary="Recent games" />
               </ListItemButton>
@@ -117,9 +128,19 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton to="/info" component={RouterLink}>
+              <ListItemButton
+                to="/info"
+                component={RouterLink}
+                onClick={() => notificationBadgesState.viewInfoPage()}
+              >
                 <ListItemIcon>
-                  <InfoOutlinedIcon />
+                  <Badge
+                    variant="dot"
+                    invisible={!notificationBadgesState.newInfo}
+                    color="info"
+                  >
+                    <InfoOutlinedIcon />
+                  </Badge>
                 </ListItemIcon>
                 <ListItemText primary="League info" />
               </ListItemButton>

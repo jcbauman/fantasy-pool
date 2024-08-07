@@ -39,9 +39,10 @@ export const useNotificationBadges = (
       );
       setNewInfo(currentLeagueMessage !== lastLeagueManagerMessage);
 
-      const lastGameDate = dateSortedGames[0]?.timestamp
-        ? new Date(dateSortedGames[0]?.timestamp)
-        : undefined;
+      const lastGameDate =
+        dateSortedGames.length > 0
+          ? new Date(dateSortedGames[0]?.timestamp)
+          : undefined;
       if (lastGameDate) {
         if (!lastGameCheckedTime) {
           setNewGame(true);

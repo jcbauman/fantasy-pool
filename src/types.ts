@@ -17,6 +17,11 @@ export interface Player {
   defaultLocation?: string;
 }
 
+export interface PoolHallLocation {
+  id: string;
+  name: string;
+}
+
 export interface League {
   id: string;
   name: string;

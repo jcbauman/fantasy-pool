@@ -19,16 +19,6 @@ export const LiveGameModePage: FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (gameIsInProgress) {
-      try {
-        const audio = new Audio("/ball-release-sound.mp3");
-        audio.play();
-      } catch (e) {
-        console.error("Could not play sound effect");
-      }
-    }
-  }, [gameIsInProgress]);
   return (
     <PageContainer authedRoute>
       <Stack direction="column" sx={{ width: "100%", height: "100%", p: 1 }}>

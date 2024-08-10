@@ -24,6 +24,8 @@ import { PlayerCell } from "../../playersList/components/PlayerCell";
 import { GameFantasyDetailDialog } from "../../playerDetail/components/GameFantasyDetailDialog";
 import { TextEditorField } from "../../../shared-components/TextEditorField";
 import { updateExistingGame } from "../../../backend/setters";
+import { useDispatch } from "react-redux";
+import { sendSuccessNotificaton } from "../../../redux/notificationSlice";
 
 export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const {
@@ -36,6 +38,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   >(undefined);
   const [editingGameLoc, setEditingGameLoc] = useState(false);
   const authorPlayer = players.find((p) => p.id === game?.authorPlayerId);
+  const dispatch = useDispatch();
   return (
     <Card>
       <Stack direction="column" sx={{ p: 0, pb: 1 }}>
@@ -76,6 +79,20 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                 sx={{ width: 20, height: 20, ml: 1 }}
                 src={authorPlayer?.profilePictureUrl}
                 alt={authorPlayer?.name}
+                onClick={() => {
+                  if (user?.isAppAdmin) {
+                    navigator.clipboard
+                      .writeText(game.id)
+                      .then(() => {
+                        dispatch(
+                          sendSuccessNotificaton("Copied game ID to clipboard")
+                        );
+                      })
+                      .catch((err) => {
+                        console.error("Failed to copy text: ", err);
+                      });
+                  }
+                }}
               >
                 <Typography variant="caption">
                   {getAbbreviation(authorPlayer?.name)}

@@ -13,10 +13,11 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "./firebase/firebaseConfig";
-import { Game, League, Player, User } from "../types";
+import { Game, League, Player, PoolHallLocation, User } from "../types";
 import {
   firestore,
   GAMES_COLLECTION,
+  LOCATIONS_COLLECTION,
   PLAYERS_COLLECTION,
   USERS_COLLECTION,
 } from "./firebase/controller";
@@ -112,6 +113,28 @@ export const useFetchPlayers = (): Player[] => {
     return () => unsubscribe();
   }, []);
   return players;
+};
+
+export const useFetchLocations = (): PoolHallLocation[] => {
+  const [locations, setLocations] = useState<PoolHallLocation[]>([]);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      LOCATIONS_COLLECTION,
+      (snapshot: QuerySnapshot<DocumentData>) => {
+        setLocations(
+          snapshot.docs.map((doc) => {
+            const data = doc.data() as Omit<PoolHallLocation, "id">;
+            return {
+              id: doc.id,
+              ...data,
+            };
+          })
+        );
+      }
+    );
+    return () => unsubscribe();
+  }, []);
+  return locations;
 };
 
 export const fetchPlayerById = async (

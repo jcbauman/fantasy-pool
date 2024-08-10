@@ -1,8 +1,9 @@
 import { addDoc, doc, updateDoc } from "firebase/firestore";
-import { Game, League, Player, User } from "../types";
+import { Game, League, Player, PoolHallLocation, User } from "../types";
 import { auth, db } from "./firebase/firebaseConfig";
 import {
   GAMES_COLLECTION,
+  LOCATIONS_COLLECTION,
   PLAYERS_COLLECTION,
   USERS_COLLECTION,
 } from "./firebase/controller";
@@ -53,6 +54,18 @@ export const createNewPlayer = async (
   } catch (e) {
     console.error("Unable to add player, missing permissions");
     onFailure?.();
+  }
+};
+
+export const addNewLocation = async (
+  location: Omit<PoolHallLocation, "id">
+): Promise<string | undefined> => {
+  try {
+    const docRef = await addDoc(LOCATIONS_COLLECTION, { ...location });
+
+    return docRef.id;
+  } catch (e) {
+    console.error("Unable to add location, missing permissions");
   }
 };
 

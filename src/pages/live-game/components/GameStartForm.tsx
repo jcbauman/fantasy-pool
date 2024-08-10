@@ -4,20 +4,23 @@ import {
   Card,
   Checkbox,
   Collapse,
+  createFilterOptions,
   FormControlLabel,
   IconButton,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import DatePicker from "../../../shared-components/DatePicker";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { initializeGame } from "../../../redux/gameSlice";
 import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { getLastGameAdded } from "../../../backend/getters";
+import { useFetchLocations } from "../../../backend/getters";
+import { PoolHallLocation } from "../../../types";
+import { addNewLocation } from "../../../backend/setters";
 interface FormData {
   date: Date | null;
   location: string;
@@ -36,6 +39,10 @@ export const GameStartForm: FC<{
   const [lastGameAddedLocation, setLastGameAddedLocation] = useState<
     string | undefined
   >(undefined);
+  const locations = useFetchLocations();
+  const locationOptions = useMemo(() => {
+    return locations.map((l) => l.name).sort();
+  }, [locations]);
 
   // useEffect(() => {
   //   const fetchLastLoc = async (): Promise<void> => {
@@ -51,6 +58,7 @@ export const GameStartForm: FC<{
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -69,9 +77,19 @@ export const GameStartForm: FC<{
       playerIds: data.playerIds,
       authorPlayerId: player?.id ?? "",
     };
+    if (!locations.some((l) => l.name === data.location)) {
+      addNewLocation({ name: data.location });
+    }
     dispatch(initializeGame({ ...resolvedData }));
+    try {
+      const audio = new Audio("/ball-release-sound.mp3");
+      audio.play();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
+  const filter = createFilterOptions<string>();
   return (
     <Card sx={{ p: 2 }}>
       <Stack direction="row" sx={{ alignItems: "center", mb: 1 }}>
@@ -130,13 +148,39 @@ export const GameStartForm: FC<{
               required: "Please enter the location of where you are playing",
             }}
             render={({ field }) => (
-              <TextField
+              <Autocomplete
                 {...field}
+                freeSolo
+                onChange={(_event, newValue) => {
+                  if (typeof newValue === "string") {
+                    setValue("location", newValue);
+                  }
+                }}
+                options={locationOptions}
                 value={field.value}
-                label="Location"
                 defaultValue={player?.defaultLocation}
-                error={!!errors.location}
-                helperText={errors.location?.message}
+                filterOptions={(options, params) => {
+                  const filtered = filter(locationOptions, params);
+
+                  const { inputValue } = params;
+                  const isExisting = options.some(
+                    (option) => inputValue === option
+                  );
+                  if (inputValue !== "" && !isExisting) {
+                    filtered.push(`Add '${inputValue}'`);
+                  }
+
+                  return filtered;
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    error={!!errors.location}
+                    label="Location"
+                    placeholder="Select location or enter a new one"
+                    helperText={errors.location?.message}
+                  />
+                )}
               />
             )}
           />

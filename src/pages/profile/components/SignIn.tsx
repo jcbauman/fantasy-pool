@@ -40,7 +40,7 @@ export const SignIn: FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (signUpMode === 1) {
       // todo - league invite code
-      if (data.leagueInvite !== "rock") {
+      if (data.leagueInvite !== "bill") {
         setError("leagueInvite", {
           message: "Invalid league invite code",
         });

@@ -4,8 +4,11 @@ import { Button, Card, Stack } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { useDispatch } from "react-redux";
-import { sendSuccessNotificaton } from "../../redux/notificationSlice";
-import { collapsRepeatGames } from "./adminUtils";
+import {
+  sendErrorNotification,
+  sendSuccessNotificaton,
+} from "../../redux/notificationSlice";
+import { collapseRepeatGames } from "./adminUtils";
 
 export const AppAdminPage: FC = () => {
   const {
@@ -32,8 +35,11 @@ export const AppAdminPage: FC = () => {
             fullWidth
             variant="outlined"
             onClick={() =>
-              collapsRepeatGames(games, (message: string) =>
-                dispatch(sendSuccessNotificaton(message))
+              collapseRepeatGames(
+                games,
+                (message: string) => dispatch(sendSuccessNotificaton(message)),
+                (message: string) => dispatch(sendErrorNotification(message)),
+                "7/27"
               )
             }
           >

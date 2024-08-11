@@ -1,4 +1,4 @@
-import { Game, GameStat, GameStatKeys } from "../../../types";
+import { Game, GameStat, GameStatKeys, Session } from "../../../types";
 import { defaultGameStat } from "../../../utils/constants";
 
 export const getPlayerNameAbbreviation = (name: string): string => {
@@ -14,6 +14,16 @@ export const getStatsForGame = (
   if (!game) return { ...defaultGameStat, playerId };
   const playerIndex = game.playerIds.findIndex((id) => id === playerId);
   const playerStats = game.statsByPlayer[playerIndex];
+  return playerStats;
+};
+
+export const getStatsForSession = (
+  playerId: string,
+  session: Session | null
+): GameStat => {
+  if (!session) return { ...defaultGameStat, playerId };
+  const playerIndex = session.playerIds.findIndex((id) => id === playerId);
+  const playerStats = session.statsByPlayer[playerIndex];
   return playerStats;
 };
 

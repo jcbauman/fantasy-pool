@@ -110,6 +110,25 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
+              <ListItemButton
+                to={`/sessions`}
+                component={RouterLink}
+                onClick={() => notificationBadgesState.viewGamesPage()}
+              >
+                <ListItemIcon>
+                  <Badge
+                    variant="dot"
+                    invisible={!notificationBadgesState.newGame}
+                    color="info"
+                  >
+                    <ScoreboardOutlinedIcon />
+                  </Badge>
+                </ListItemIcon>
+                <ListItemText primary="Sessions" />
+              </ListItemButton>
+            </ListItem>
+            <Divider component="li" />
+            <ListItem disablePadding>
               <ListItemButton onClick={onClickBlockedField}>
                 <ListItemIcon>
                   <LeaderboardOutlinedIcon />

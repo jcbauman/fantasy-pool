@@ -26,6 +26,7 @@ import { TextEditorField } from "../../../shared-components/TextEditorField";
 import { updateExistingGame } from "../../../backend/setters";
 import { useDispatch } from "react-redux";
 import { sendSuccessNotificaton } from "../../../redux/notificationSlice";
+import { formatElapsedTime, formatTimeString } from "../RecentGamesPage";
 
 export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const {
@@ -36,41 +37,23 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const [detailModalPlayer, setDetailModalPlayer] = useState<
     Player | undefined
   >(undefined);
-  const [editingGameLoc, setEditingGameLoc] = useState(false);
   const authorPlayer = players.find((p) => p.id === game?.authorPlayerId);
   const dispatch = useDispatch();
+  const ellapsedTimeString = game.endTimestamp
+    ? formatElapsedTime(new Date(game.timestamp), new Date(game.endTimestamp))
+    : undefined;
   return (
-    <Card>
+    <Card elevation={3}>
       <Stack direction="column" sx={{ p: 0, pb: 1 }}>
         <Stack
           direction="row"
           sx={{ p: 2, justifyContent: "space-between", alignItems: "center" }}
         >
-          <Stack
-            onClick={() => {
-              if (user?.isAppAdmin || game.authorPlayerId === user?.id) {
-                setEditingGameLoc(true);
-              }
-            }}
-          >
-            {editingGameLoc ? (
-              <TextEditorField
-                placeholder="Edit location"
-                defaultValue={game.location ?? ""}
-                onSave={async (newVal: string) => {
-                  const resolvedGame: Game = {
-                    ...game,
-                    location: newVal,
-                  };
-                  const { id, ...gameNoId } = resolvedGame;
-                  await updateExistingGame(gameNoId, game.id);
-                  setEditingGameLoc(false);
-                }}
-                onClickAway={() => setEditingGameLoc(false)}
-              />
-            ) : (
-              <Typography>{game.location}</Typography>
-            )}
+          <Stack>
+            <Typography variant="caption">
+              {formatTimeString(game.timestamp)}
+              {ellapsedTimeString ? ` - ${ellapsedTimeString}` : ""}
+            </Typography>
           </Stack>
           {authorPlayer && (
             <Stack direction="row">

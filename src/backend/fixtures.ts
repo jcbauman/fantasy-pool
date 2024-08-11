@@ -4,6 +4,7 @@ import {
   GameStatKeysAbbrev,
   League,
   Player,
+  Session,
   User,
 } from "../types";
 import { v4 as uuidv4 } from "uuid";
@@ -72,6 +73,11 @@ export const mockGame: Game = {
       [GameStatKeys.skillShots]: 1,
     },
   ],
+};
+
+export const mockSession: Session = {
+  ...mockGame,
+  games: [mockGame],
 };
 
 export const mockScoringMatrix: { [key: string]: number } = {

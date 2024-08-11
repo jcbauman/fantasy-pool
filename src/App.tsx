@@ -20,6 +20,7 @@ import { CreatePlayerPage } from "./pages/profile/CreatePlayerPage";
 import { AppAdminPage } from "./pages/app-admin/AppAdminPage";
 import { RecentGamesPage } from "./pages/games/RecentGamesPage";
 import { LeagueAdminPage } from "./pages/league-admin/LeagueAdminPage";
+import { RecentSessionsPage } from "./pages/games/RecentSessionsPage";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
                   <Route path="/create-player" element={<CreatePlayerPage />} />
                   <Route path="/app-admin" element={<AppAdminPage />} />
                   <Route path="/games" element={<RecentGamesPage />} />
+                  <Route path="/sessions" element={<RecentSessionsPage />} />
                   <Route path="/league-admin" element={<LeagueAdminPage />} />
                   <Route path="*" element={<OverviewComponent />} />
                 </Routes>

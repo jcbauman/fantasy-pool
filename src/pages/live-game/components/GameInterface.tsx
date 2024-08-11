@@ -232,7 +232,10 @@ export const GameInterface: FC = () => {
         onConfirm={async () => {
           if (game) {
             const { id, ...gameNoId } = game;
-            const gameId = await addNewGame(gameNoId);
+            const gameId = await addNewGame({
+              ...gameNoId,
+              endTimestamp: new Date().toISOString(),
+            });
             dispatch(setLastGameId(gameId ?? null));
           }
           navigate("/game-complete");

@@ -5,13 +5,13 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+  apiKey: "AIzaSyC5Duc79NDuGp68I8IW3IC7FXPrm0bTYwI",
+  authDomain: "rock-fantasy-pool.firebaseapp.com",
+  projectId: "rock-fantasy-pool",
+  storageBucket: "rock-fantasy-pool.appspot.com",
+  messagingSenderId: "878659573592",
+  appId: "1:878659573592:web:535e5653e2405a57ab372d",
+  measurementId: "G-WVN3WYCNZQ",
 };
 
 // Initialize Firebase

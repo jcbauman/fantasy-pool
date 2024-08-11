@@ -38,6 +38,11 @@ export interface Game {
   statsByPlayer: GameStat[];
   excludeGame?: boolean;
   authorPlayerId?: string;
+  endTimestamp?: string;
+}
+
+export interface Session extends Omit<Game, "authorPlayerId"> {
+  games: Game[];
 }
 
 export enum GameStatKeys {

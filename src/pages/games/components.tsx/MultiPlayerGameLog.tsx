@@ -51,7 +51,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
         >
           <Stack>
             <Typography variant="caption">
-              {formatTimeString(game.timestamp)}
+              {formatTimeString(game.timestamp)} {"-"} {game.location}
               {ellapsedTimeString ? ` - ${ellapsedTimeString}` : ""}
             </Typography>
           </Stack>

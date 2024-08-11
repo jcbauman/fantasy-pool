@@ -44,7 +44,14 @@ export const RecentSessionsPage: FC = () => {
                 {items.map((s) => {
                   return (
                     <ListItem sx={{ px: 1 }} key={s.id}>
-                      <Card sx={{ overflow: "auto" }}>
+                      <Card
+                        sx={{
+                          overflow: "auto",
+                          ".MuiCollapse-root": {
+                            backgroundImage: "none!important",
+                          },
+                        }}
+                      >
                         <MultiPlayerSessionLog session={s} />
                       </Card>
                     </ListItem>

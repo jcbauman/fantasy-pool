@@ -235,7 +235,11 @@ export const MultiPlayerSessionLog: FC<{ session: Session }> = ({
         </Stack>
       </Card>
       <Collapse in={gamesExpanded} collapsedSize={0}>
-        <Stack spacing={2} direction="column" sx={{ pt: 2 }}>
+        <Stack
+          spacing={2}
+          direction="column"
+          sx={{ py: 2, px: 1, backgroundColor: "transparent" }}
+        >
           {dateSortedGames.map((game) => {
             return <MultiPlayerGameLog game={game} key={game.id} />;
           })}

@@ -63,7 +63,10 @@ const gamesHaveSameBones = (
       game1TS === omitExceptForTimeStamp &&
       game2TS === omitExceptForTimeStamp)
   ) {
-    if (game1TS === game2TS && game1.location === game2.location) {
+    if (
+      game1TS === game2TS &&
+      game1.location?.toLowerCase() === game2.location?.toLowerCase()
+    ) {
       return true;
     }
   }

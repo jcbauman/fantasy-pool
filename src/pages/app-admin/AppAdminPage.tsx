@@ -39,7 +39,7 @@ export const AppAdminPage: FC = () => {
                 games,
                 (message: string) => dispatch(sendSuccessNotificaton(message)),
                 (message: string) => dispatch(sendErrorNotification(message)),
-                "7/27"
+                "7/28"
               )
             }
           >

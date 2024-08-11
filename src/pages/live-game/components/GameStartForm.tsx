@@ -4,7 +4,6 @@ import {
   Card,
   Checkbox,
   Collapse,
-  createFilterOptions,
   FormControlLabel,
   IconButton,
   Stack,
@@ -19,7 +18,6 @@ import { initializeGame } from "../../../redux/gameSlice";
 import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useFetchLocations } from "../../../backend/getters";
-import { PoolHallLocation } from "../../../types";
 import { addNewLocation } from "../../../backend/setters";
 interface FormData {
   date: Date | null;
@@ -68,7 +66,6 @@ export const GameStartForm: FC<{
     },
   });
   const [checked, setChecked] = useState(true);
-
   const playerOptionIds = allPlayers.map((p) => p.id);
   const onSubmit = (data: FormData): void => {
     const resolvedData = {
@@ -89,7 +86,6 @@ export const GameStartForm: FC<{
     }
   };
 
-  const filter = createFilterOptions<string>();
   return (
     <Card sx={{ p: 2 }}>
       <Stack direction="row" sx={{ alignItems: "center", mb: 1 }}>
@@ -151,27 +147,13 @@ export const GameStartForm: FC<{
               <Autocomplete
                 {...field}
                 freeSolo
-                onChange={(_event, newValue) => {
-                  if (typeof newValue === "string") {
-                    setValue("location", newValue);
-                  }
+                onChange={(_e, newValue) => {
+                  setValue("location", newValue || "");
                 }}
+                onInputChange={(_e, newInputValue) =>
+                  setValue("location", newInputValue || "")
+                }
                 options={locationOptions}
-                value={field.value}
-                defaultValue={player?.defaultLocation}
-                filterOptions={(options, params) => {
-                  const filtered = filter(locationOptions, params);
-
-                  const { inputValue } = params;
-                  const isExisting = options.some(
-                    (option) => inputValue === option
-                  );
-                  if (inputValue !== "" && !isExisting) {
-                    filtered.push(`Add '${inputValue}'`);
-                  }
-
-                  return filtered;
-                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}

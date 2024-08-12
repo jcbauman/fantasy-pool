@@ -29,6 +29,7 @@ export const StatOverview: FC<{ player: Player; playerGames: Game[] }> = ({
   const winPercentage = totalGames
     ? normalizePercentage(totalWins / totalGames)
     : "0%";
+  const fantasyGameAvg = normalizeStat(fantasyScore / (totalGames || 1));
   return (
     <Stack
       direction="row"
@@ -44,23 +45,23 @@ export const StatOverview: FC<{ player: Player; playerGames: Game[] }> = ({
       <Divider orientation="vertical" />
       <Stack direction="column" sx={{ alignItems: "center", p: 2 }}>
         <Typography variant="overline" color="textSecondary" noWrap>
-          # Games rank
-        </Typography>
-        <Typography variant="body1">{totalGamesRank}</Typography>
-      </Stack>
-      <Divider orientation="vertical" />
-      <Stack direction="column" sx={{ alignItems: "center", p: 2 }}>
-        <Typography variant="overline" color="textSecondary" noWrap>
-          FTSY pts
-        </Typography>
-        <Typography variant="body1">{normalizeStat(fantasyScore)}</Typography>
-      </Stack>
-      <Divider orientation="vertical" />
-      <Stack direction="column" sx={{ alignItems: "center", p: 2 }}>
-        <Typography variant="overline" color="textSecondary" noWrap>
           Win%
         </Typography>
         <Typography variant="body1">{winPercentage}</Typography>
+      </Stack>
+      <Divider orientation="vertical" />
+      <Stack direction="column" sx={{ alignItems: "center", p: 2 }}>
+        <Typography variant="overline" color="textSecondary" noWrap>
+          FTSY Avg
+        </Typography>
+        <Typography variant="body1">{fantasyGameAvg}</Typography>
+      </Stack>
+      <Divider orientation="vertical" />
+      <Stack direction="column" sx={{ alignItems: "center", p: 2 }}>
+        <Typography variant="overline" color="textSecondary" noWrap>
+          FTSY tot
+        </Typography>
+        <Typography variant="body1">{normalizeStat(fantasyScore)}</Typography>
       </Stack>
     </Stack>
   );

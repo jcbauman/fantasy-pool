@@ -19,12 +19,14 @@ import {
 } from "@mui/material";
 import { normalizePercentage } from "../../../utils/statsUtils";
 import { getStatsForPlayerGames } from "../../playersList/utils/playerUtils";
+import { useAppContext } from "../../../context/AppContext";
 
 export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
   player,
   games,
 }) => {
-  const stats = getStatsForPlayerGames(player.id, games);
+  const { scoringMatrix } = useAppContext();
+  const stats = getStatsForPlayerGames(player.id, games, scoringMatrix);
   return (
     <Card>
       <Stack direction="column">

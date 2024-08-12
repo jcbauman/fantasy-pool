@@ -1,5 +1,6 @@
 import { Game, GameStat, GameStatKeys } from "../../../types";
 import { defaultGameStat } from "../../../utils/constants";
+import { getFantasyScoreForPlayerSeason } from "../../../utils/statsUtils";
 
 export const getPlayerNameAbbreviation = (name: string): string => {
   const returnName = name.trim().split(" ");
@@ -26,18 +27,23 @@ export const filterPlayedGamesForPlayer = (
 
 export const getStatsForPlayerGames = (
   playerId: string,
-  games: Game[]
+  games: Game[],
+  scoringMatrix: Record<string, number>
 ): GameStat & {
   totalGames: number;
   totalWins: number;
   totalSessions: number;
   winPercentage: number;
+  fantasyScore: number;
+  fantasyGameAvg: number;
 } => {
   const stats: GameStat & {
     totalGames: number;
     totalWins: number;
     totalSessions: number;
     winPercentage: number;
+    fantasyScore: number;
+    fantasyGameAvg: number;
   } = games.reduce(
     (acc, game) => {
       const playerStats: GameStat | undefined = game.statsByPlayer.find(
@@ -95,6 +101,10 @@ export const getStatsForPlayerGames = (
             (playerStats[GameStatKeys.winsByOpponentScratch] ?? 0)),
         playerId,
         winPercentage: 0,
+        fantasyGameAvg: 0,
+        fantasyScore:
+          acc.fantasyScore +
+          getFantasyScoreForPlayerSeason([game], playerId, scoringMatrix),
       };
     },
     {
@@ -103,11 +113,14 @@ export const getStatsForPlayerGames = (
       totalWins: 0,
       totalSessions: 0,
       winPercentage: 0,
+      fantasyScore: 0,
+      fantasyGameAvg: 0,
       playerId,
     }
   );
   const winPercentage = stats.totalWins / (stats.totalGames || 1);
-  return { ...stats, winPercentage };
+  const fantasyGameAvg = stats.fantasyScore / (stats.totalGames || 1);
+  return { ...stats, winPercentage, fantasyGameAvg };
 };
 
 export const generateColor = (str: string) => {

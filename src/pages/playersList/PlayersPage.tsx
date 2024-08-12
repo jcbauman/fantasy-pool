@@ -7,24 +7,25 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { Player } from "../../types";
 import { PlayerCell } from "./components/PlayerCell";
 import { getStatsForPlayerGames } from "./utils/playerUtils";
-import { normalizePercentage } from "../../utils/statsUtils";
+import { normalizePercentage, normalizeStat } from "../../utils/statsUtils";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
 enum OrderByFields {
   Name = "Name",
-  Wins = "Wins",
   Games = "Games",
+  FantasyAvg = "Avg",
   WinPercentage = "Win %",
 }
 export const PlayersPage: FC = () => {
   const { players, rankings } = useAppContext();
-  const [sortBy, setSortBy] = useState("name");
+  const [sortBy, setSortBy] = useState(OrderByFields.Name);
+
   const alphabeticalPlayers = useMemo(
     () => players.sort((a, b) => a.name.localeCompare(b.name)),
     [players]
@@ -41,20 +42,25 @@ export const PlayersPage: FC = () => {
 
   const sortedPlayers = useMemo(() => {
     switch (sortBy) {
-      case "wins":
-        return sortPlayers(alphabeticalPlayers, rankings.totalWins ?? []);
-      case "games":
-        return sortPlayers(alphabeticalPlayers, rankings.totalGames ?? []);
-      case "percentage":
-        return sortPlayers(alphabeticalPlayers, rankings.winPercentage ?? []);
-      case "name":
-        return [...alphabeticalPlayers];
+      case OrderByFields.FantasyAvg:
+        return sortPlayers(
+          [...alphabeticalPlayers],
+          rankings.fantasyGameAvg ?? []
+        );
+      case OrderByFields.Games:
+        return sortPlayers([...alphabeticalPlayers], rankings.totalGames ?? []);
+      case OrderByFields.WinPercentage:
+        return sortPlayers(
+          [...alphabeticalPlayers],
+          rankings.winPercentage ?? []
+        );
+      case OrderByFields.Name:
       default:
-        return [];
+        return alphabeticalPlayers;
     }
   }, [alphabeticalPlayers, rankings, sortBy]);
 
-  const sortByProps = (field: string) => {
+  const sortByProps = (field: OrderByFields) => {
     return {
       onClick: () => setSortBy(field),
       cursor: "pointer",
@@ -68,22 +74,22 @@ export const PlayersPage: FC = () => {
         <Table sx={{ width: "100%" }}>
           <TableHead>
             <TableRow>
-              <TableCell {...sortByProps("name")}>
+              <TableCell {...sortByProps(OrderByFields.Name)}>
                 <Typography variant="overline" noWrap>
                   {OrderByFields.Name}
                 </Typography>
               </TableCell>
-              <TableCell {...sortByProps("wins")}>
-                <Typography variant="overline" noWrap>
-                  {OrderByFields.Wins}
-                </Typography>
-              </TableCell>
-              <TableCell {...sortByProps("games")}>
+              <TableCell {...sortByProps(OrderByFields.Games)}>
                 <Typography variant="overline" noWrap>
                   {OrderByFields.Games}
                 </Typography>
               </TableCell>
-              <TableCell {...sortByProps("percentage")}>
+              <TableCell {...sortByProps(OrderByFields.FantasyAvg)}>
+                <Typography variant="overline" noWrap>
+                  {OrderByFields.FantasyAvg}
+                </Typography>
+              </TableCell>
+              <TableCell {...sortByProps(OrderByFields.WinPercentage)}>
                 <Typography variant="overline" noWrap>
                   {OrderByFields.WinPercentage}
                 </Typography>
@@ -91,9 +97,9 @@ export const PlayersPage: FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedPlayers.map((player) => (
-              <PlayerRow key={player.id} player={player} />
-            ))}
+            {sortedPlayers.map((player) => {
+              return <PlayerRow key={player.id} player={player} />;
+            })}
           </TableBody>
         </Table>
       </Stack>
@@ -102,9 +108,9 @@ export const PlayersPage: FC = () => {
 };
 
 const PlayerRow: FC<{ player: Player }> = ({ player }) => {
-  const { games } = useAppContext();
+  const { games, scoringMatrix } = useAppContext();
   const navigate = useNavigate();
-  const stats = getStatsForPlayerGames(player.id, games);
+  const stats = getStatsForPlayerGames(player.id, games, scoringMatrix);
   const winPercentage = normalizePercentage(stats.totalWins / stats.totalGames);
   const handleRowClick = (): void => {
     navigate("/players/" + player.id);
@@ -114,8 +120,8 @@ const PlayerRow: FC<{ player: Player }> = ({ player }) => {
       <TableCell>
         <PlayerCell player={player} />
       </TableCell>
-      <TableCell>{stats.totalWins}</TableCell>
       <TableCell>{stats.totalGames}</TableCell>
+      <TableCell>{normalizeStat(stats.fantasyGameAvg)}</TableCell>
       <TableCell>{winPercentage}</TableCell>
     </TableRow>
   );

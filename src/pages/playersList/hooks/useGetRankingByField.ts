@@ -4,7 +4,8 @@ import { AggregateStats, Game, Player } from "../../../types";
 
 export const useGetRankingByField = (
   players: Player[],
-  games: Game[]
+  games: Game[],
+  scoringMatrix: Record<string, number>
 ): {
   rankings: Record<string, string[]>;
   allStatsByPlayers: AggregateStats;
@@ -12,12 +13,16 @@ export const useGetRankingByField = (
   const allStatsByPlayers: AggregateStats = useMemo(
     () =>
       players.reduce((acc, { id }) => {
-        acc[id] = getStatsForPlayerGames(id, games) as unknown as {
+        acc[id] = getStatsForPlayerGames(
+          id,
+          games,
+          scoringMatrix
+        ) as unknown as {
           [statName: string]: number;
         };
         return acc;
       }, {} as AggregateStats),
-    [games, players]
+    [games, players, scoringMatrix]
   );
   const rankings: Record<string, string[]> = {};
 

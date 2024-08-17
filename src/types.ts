@@ -90,3 +90,10 @@ export interface AggregateStats {
     [statName: string]: number;
   };
 }
+
+export enum OrderByFields {
+  Name = "Name",
+  Games = "Games",
+  FantasyAvg = "Avg",
+  WinPercentage = "Win %",
+}

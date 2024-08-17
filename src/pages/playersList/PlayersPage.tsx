@@ -7,24 +7,22 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { FC, useMemo, useState } from "react";
-import { Player } from "../../types";
+import { FC, useMemo } from "react";
+import { OrderByFields, Player } from "../../types";
 import { PlayerCell } from "./components/PlayerCell";
 import { getStatsForPlayerGames } from "./utils/playerUtils";
 import { normalizePercentage, normalizeStat } from "../../utils/statsUtils";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { setPlayerSortBy } from "../../redux/navSlice";
 
-enum OrderByFields {
-  Name = "Name",
-  Games = "Games",
-  FantasyAvg = "Avg",
-  WinPercentage = "Win %",
-}
 export const PlayersPage: FC = () => {
   const { players, rankings } = useAppContext();
-  const [sortBy, setSortBy] = useState(OrderByFields.Name);
+  const { sortBy } = useSelector((state: RootState) => state.nav);
+  const dispatch = useDispatch();
 
   const alphabeticalPlayers = useMemo(
     () => players.sort((a, b) => a.name.localeCompare(b.name)),
@@ -62,7 +60,7 @@ export const PlayersPage: FC = () => {
 
   const sortByProps = (field: OrderByFields) => {
     return {
-      onClick: () => setSortBy(field),
+      onClick: () => dispatch(setPlayerSortBy(field)),
       cursor: "pointer",
       sx: { textDecoration: sortBy === field ? "underline" : "default" },
     };

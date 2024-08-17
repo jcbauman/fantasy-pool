@@ -110,6 +110,15 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
+              <ListItemButton to="/weekly" component={RouterLink}>
+                <ListItemIcon>
+                  <LeaderboardOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Weekly standings" />
+              </ListItemButton>
+            </ListItem>
+            <Divider component="li" />
+            <ListItem disablePadding>
               <ListItemButton onClick={onClickBlockedField}>
                 <ListItemIcon>
                   <LeaderboardOutlinedIcon />

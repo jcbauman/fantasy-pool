@@ -35,5 +35,7 @@ export const useTopNav = (): UseTopNav => {
     return { title: "League manager", showBackButton: true };
   else if (location.pathname === "/games")
     return { title: "Recent games", showBackButton: true };
+  else if (location.pathname === "/weekly")
+    return { title: "Weekly standings", showBackButton: true };
   else return { title: "Fantasy Pool" };
 };

@@ -20,6 +20,9 @@ export const ScoreboardCard: FC<{
           Week of {formatDateToMMDD(new Date(dateKey))}
         </Typography>
         <Divider />
+        <Typography noWrap variant="overline" textAlign="center">
+          Fantasy points
+        </Typography>
         <Stack
           direction="row"
           sx={{
@@ -66,7 +69,7 @@ const StatBox: FC<{ player?: Player; badgeContent: string; rank: number }> = ({
         badgeContent={badgeContent}
         sx={{ fontSize: "40px" }}
         overlap="circular"
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Avatar
           sx={{ width: 56 - rank * 8, height: 56 - rank * 8 }}
@@ -74,9 +77,9 @@ const StatBox: FC<{ player?: Player; badgeContent: string; rank: number }> = ({
           src={player?.profilePictureUrl}
         />
       </LargeBadge>
-      <Typography noWrap variant="overline">
+      {/* <Typography noWrap variant="overline">
         {getPlayerNameAbbreviation(player?.name || "?")}
-      </Typography>
+      </Typography> */}
     </Stack>
   );
 };

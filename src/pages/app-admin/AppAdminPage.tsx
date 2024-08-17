@@ -1,11 +1,12 @@
 import { FC } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { Button, Card, Stack } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { useDispatch } from "react-redux";
 import { sendSuccessNotificaton } from "../../redux/notificationSlice";
 import { collapsRepeatGames } from "./adminUtils";
+import { INVITE_PW } from "../../utils/constants";
 
 export const AppAdminPage: FC = () => {
   const {
@@ -17,7 +18,7 @@ export const AppAdminPage: FC = () => {
   if (!user || !user.isAppAdmin) {
     navigate("/profile");
   }
-  const message = `You have been invited to join my Fantasy Pool league. Get started at https://www.fantasy-pool.com?leagueInvite=rock`;
+  const message = `You have been invited to join my Fantasy Pool league. Get started at https://www.fantasy-pool.com?leagueInvite=${INVITE_PW}`;
   const smsUrl = `sms:?body=${message}`;
   return (
     <PageContainer authedRoute>

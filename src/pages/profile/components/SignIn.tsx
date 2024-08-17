@@ -11,6 +11,7 @@ import { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../../context/AppContext";
+import { INVITE_PW } from "../../../utils/constants";
 
 interface FormValues {
   email: string;
@@ -40,7 +41,7 @@ export const SignIn: FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (signUpMode === 1) {
       // todo - league invite code
-      if (data.leagueInvite !== "rock") {
+      if (data.leagueInvite !== INVITE_PW) {
         setError("leagueInvite", {
           message: "Invalid league invite code",
         });

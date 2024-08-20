@@ -11,7 +11,7 @@ import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
-import SportsKabaddiOutlinedIcon from "@mui/icons-material/SportsKabaddiOutlined";
+import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
 import { Link as RouterLink } from "react-router-dom";
@@ -143,6 +143,15 @@ export const OverviewComponent: FC = () => {
                   </Badge>
                 </ListItemIcon>
                 <ListItemText primary="League info" />
+              </ListItemButton>
+            </ListItem>
+            <Divider component="li" />
+            <ListItem disablePadding>
+              <ListItemButton to="/rules" component={RouterLink}>
+                <ListItemIcon>
+                  <LiveHelpOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="FAQs and Rules" />
               </ListItemButton>
             </ListItem>
           </List>

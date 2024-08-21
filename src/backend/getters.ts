@@ -201,21 +201,3 @@ export const getAppUserByUID = async (
     return undefined;
   }
 };
-
-export const getLastGameAdded = async (): Promise<Game | undefined> => {
-  try {
-    const collectionRef = collection(db, "/games");
-    const q = query(collectionRef, orderBy("createdAt", "desc"), limit(1));
-
-    const querySnapshot = await getDocs(q);
-    console.log(querySnapshot);
-    if (querySnapshot.docs.length > 0) {
-      return querySnapshot.docs[0].data() as Game;
-    } else {
-      return undefined;
-    }
-  } catch (e) {
-    console.error("Error getting last game ", e);
-    return undefined;
-  }
-};

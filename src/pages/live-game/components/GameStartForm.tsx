@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Chip,
   Collapse,
   FormControlLabel,
   IconButton,
@@ -10,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import DatePicker from "../../../shared-components/DatePicker";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -19,6 +20,10 @@ import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useFetchLocations } from "../../../backend/getters";
 import { addNewLocation } from "../../../backend/setters";
+import {
+  isMoreThanTwoHoursAgo,
+  sortGamesByDate,
+} from "../../../utils/gameUtils";
 interface FormData {
   date: Date | null;
   location: string;
@@ -29,6 +34,7 @@ export const GameStartForm: FC<{
   setShowInfoDialog: (show: boolean) => void;
 }> = ({ setShowInfoDialog }) => {
   const {
+    games,
     authState: { player },
   } = useAppContext();
 
@@ -42,17 +48,6 @@ export const GameStartForm: FC<{
     return locations.map((l) => l.name).sort();
   }, [locations]);
 
-  // useEffect(() => {
-  //   const fetchLastLoc = async (): Promise<void> => {
-  //     const res = await getLastGameAdded();
-  //     if (res) {
-  //       console.log(res, "bruh");
-  //       setLastGameAddedLocation(res.location ?? undefined);
-  //     }
-  //   };
-  //   fetchLastLoc();
-  // }, []);
-
   const {
     handleSubmit,
     control,
@@ -61,10 +56,22 @@ export const GameStartForm: FC<{
   } = useForm<FormData>({
     defaultValues: {
       date: new Date(),
-      location: lastGameAddedLocation ?? player?.defaultLocation ?? "",
+      location: player?.defaultLocation ?? "",
       playerIds: player?.id ? [player?.id] : [],
     },
   });
+  useEffect(() => {
+    const dateSortedGames = sortGamesByDate(games);
+    if (dateSortedGames.length > 0) {
+      const lastGameIsOld = isMoreThanTwoHoursAgo(dateSortedGames[0].timestamp);
+      if (!lastGameIsOld) {
+        if (dateSortedGames[0].location) {
+          setValue("location", dateSortedGames[0].location);
+          setLastGameAddedLocation(dateSortedGames[0].location);
+        }
+      }
+    }
+  }, [games, setValue]);
   const [checked, setChecked] = useState(true);
   const playerOptionIds = allPlayers.map((p) => p.id);
   const onSubmit = (data: FormData): void => {
@@ -166,6 +173,19 @@ export const GameStartForm: FC<{
               />
             )}
           />
+          {lastGameAddedLocation && Boolean(player?.defaultLocation) && (
+            <Stack direction="row" sx={{ alignItems: "center" }}>
+              <Typography variant="caption">Or use your default:</Typography>
+              <Chip
+                sx={{ flexShrink: 1, ml: 1 }}
+                label={player?.defaultLocation}
+                onClick={() => {
+                  setValue("location", player?.defaultLocation ?? "");
+                  setLastGameAddedLocation(undefined);
+                }}
+              />
+            </Stack>
+          )}
           <FormControlLabel
             control={
               <Checkbox

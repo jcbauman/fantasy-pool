@@ -24,6 +24,7 @@ import {
   isMoreThanTwoHoursAgo,
   sortGamesByDate,
 } from "../../../utils/gameUtils";
+import { Link } from "react-router-dom";
 interface FormData {
   date: Date | null;
   location: string;
@@ -211,6 +212,9 @@ export const GameStartForm: FC<{
           <Button type="submit" fullWidth variant="contained">
             Start balling
           </Button>
+          <Typography variant="caption" sx={{ a: { color: "white" } }}>
+            <Link to="/rules">FAQ's and Rules</Link>
+          </Typography>
         </Stack>
       </form>
     </Card>

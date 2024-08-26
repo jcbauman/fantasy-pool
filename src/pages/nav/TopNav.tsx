@@ -9,20 +9,22 @@ import { useTopNav } from "./hooks/useGetRouteName";
 import { Badge } from "@mui/material";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import SportsKabaddiIcon from "@mui/icons-material/SportsKabaddi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import EightBallIcon from "../../shared-components/icons/EightBallIcon";
+import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 
 export const TopNav: FC = () => {
   const { title, showBackButton, hideButtons } = useTopNav();
+  const location = useLocation();
   const {
     authState: { isAuthed },
   } = useAppContext();
   const navigate = useNavigate();
   const { gameIsInProgress } = useSelector((state: RootState) => state.game);
+  const onGamePage = location.pathname === "/live-game";
   const rightButton = isAuthed ? <ManageAccountsIcon /> : <AccountCircle />;
   return (
     <AppBar position="fixed">
@@ -52,7 +54,7 @@ export const TopNav: FC = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} noWrap>
           {title}
         </Typography>
-        {gameIsInProgress && (
+        {gameIsInProgress && !onGamePage && (
           <IconButton
             size="large"
             aria-label="currentGame"
@@ -68,6 +70,18 @@ export const TopNav: FC = () => {
             >
               <EightBallIcon color="white" />
             </Badge>
+          </IconButton>
+        )}
+        {onGamePage && (
+          <IconButton
+            size="large"
+            aria-label="faqs"
+            aria-haspopup="true"
+            color="inherit"
+            to="/rules"
+            component={RouterLink}
+          >
+            <LiveHelpOutlinedIcon />
           </IconButton>
         )}
         <IconButton

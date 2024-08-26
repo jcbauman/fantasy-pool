@@ -18,6 +18,10 @@ export const RulesPage: FC = () => {
         sx={{ width: "100%", height: "100%", p: 1 }}
         spacing={2}
       >
+        <Typography variant="caption" sx={{ mb: 4 }}>
+          Below is a helpful reference of commonly asked questions about scoring
+          in the Fantasy Pool app.
+        </Typography>
         {FAQS_COPY.map((faq, idx) => {
           return (
             <Accordion key={`rule-${idx}`}>
@@ -28,9 +32,7 @@ export const RulesPage: FC = () => {
               >
                 <Typography>{faq.title}</Typography>
               </AccordionSummary>
-              <AccordionDetails>
-                <Typography variant="body2">{faq.content}</Typography>
-              </AccordionDetails>
+              <AccordionDetails>{faq.content}</AccordionDetails>
             </Accordion>
           );
         })}

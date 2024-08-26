@@ -42,4 +42,4 @@ export const StatAbbreviations: { [key: string]: string } = {
     "Scratches - scratched (not including game-losing scratches)",
 };
 
-export const INVITE_PW = "bill-hom";
+export const INVITE_PW = "wahwahweewah";

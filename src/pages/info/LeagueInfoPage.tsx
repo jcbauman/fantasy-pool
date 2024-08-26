@@ -10,7 +10,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { StatAbbreviations } from "../../utils/constants";
 import {
@@ -18,10 +18,10 @@ import {
   getStringFromStatKey,
 } from "../../utils/statsUtils";
 import { useAppContext } from "../../context/AppContext";
-import { GameStatKeys, GameStatKeysAbbrev } from "../../types";
+import { GameStatKeys } from "../../types";
 
 export const LeagueInfoPage: FC = () => {
-  const { scoringMatrix, league, notificationBadgesState } = useAppContext();
+  const { scoringMatrix, league } = useAppContext();
 
   return (
     <PageContainer>

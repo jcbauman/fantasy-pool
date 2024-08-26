@@ -24,6 +24,7 @@ import {
   isMoreThanTwoHoursAgo,
   sortGamesByDate,
 } from "../../../utils/gameUtils";
+import { Link } from "react-router-dom";
 interface FormData {
   date: Date | null;
   location: string;
@@ -173,19 +174,21 @@ export const GameStartForm: FC<{
               />
             )}
           />
-          {lastGameAddedLocation && Boolean(player?.defaultLocation) && (
-            <Stack direction="row" sx={{ alignItems: "center" }}>
-              <Typography variant="caption">Or use your default:</Typography>
-              <Chip
-                sx={{ flexShrink: 1, ml: 1 }}
-                label={player?.defaultLocation}
-                onClick={() => {
-                  setValue("location", player?.defaultLocation ?? "");
-                  setLastGameAddedLocation(undefined);
-                }}
-              />
-            </Stack>
-          )}
+          {lastGameAddedLocation &&
+            Boolean(player?.defaultLocation) &&
+            lastGameAddedLocation !== player?.defaultLocation && (
+              <Stack direction="row" sx={{ alignItems: "center" }}>
+                <Typography variant="caption">Or use your default:</Typography>
+                <Chip
+                  sx={{ flexShrink: 1, ml: 1 }}
+                  label={player?.defaultLocation}
+                  onClick={() => {
+                    setValue("location", player?.defaultLocation ?? "");
+                    setLastGameAddedLocation(undefined);
+                  }}
+                />
+              </Stack>
+            )}
           <FormControlLabel
             control={
               <Checkbox
@@ -211,6 +214,9 @@ export const GameStartForm: FC<{
           <Button type="submit" fullWidth variant="contained">
             Start balling
           </Button>
+          <Typography variant="caption" sx={{ a: { color: "white" } }}>
+            <Link to="/rules">FAQ's and Rules</Link>
+          </Typography>
         </Stack>
       </form>
     </Card>

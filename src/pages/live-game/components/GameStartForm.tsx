@@ -174,19 +174,21 @@ export const GameStartForm: FC<{
               />
             )}
           />
-          {lastGameAddedLocation && Boolean(player?.defaultLocation) && (
-            <Stack direction="row" sx={{ alignItems: "center" }}>
-              <Typography variant="caption">Or use your default:</Typography>
-              <Chip
-                sx={{ flexShrink: 1, ml: 1 }}
-                label={player?.defaultLocation}
-                onClick={() => {
-                  setValue("location", player?.defaultLocation ?? "");
-                  setLastGameAddedLocation(undefined);
-                }}
-              />
-            </Stack>
-          )}
+          {lastGameAddedLocation &&
+            Boolean(player?.defaultLocation) &&
+            lastGameAddedLocation !== player?.defaultLocation && (
+              <Stack direction="row" sx={{ alignItems: "center" }}>
+                <Typography variant="caption">Or use your default:</Typography>
+                <Chip
+                  sx={{ flexShrink: 1, ml: 1 }}
+                  label={player?.defaultLocation}
+                  onClick={() => {
+                    setValue("location", player?.defaultLocation ?? "");
+                    setLastGameAddedLocation(undefined);
+                  }}
+                />
+              </Stack>
+            )}
           <FormControlLabel
             control={
               <Checkbox

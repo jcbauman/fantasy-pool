@@ -23,8 +23,8 @@ export const FAQS_COPY = [
     content: (
       <ContentWrapper>
         No, but Fantasy Pool players should decide{" "}
-        <strong>before starting a game</strong>
-        whether they want to exclude the game from tracking.
+        <strong>before starting a game</strong> whether they want to exclude the
+        game from tracking.
       </ContentWrapper>
     ),
   },
@@ -89,6 +89,11 @@ export const FAQS_COPY = [
         finished.
         <ul>
           <li>
+            If you sink at least one ball in off the break, you may count that
+            towards a run. However, no matter how many balls you sink off the
+            break, that counts as 1 ball in a row.
+          </li>
+          <li>
             Runs only apply to the shooting player and not to every member of a
             doubles team.
           </li>
@@ -113,10 +118,10 @@ export const FAQS_COPY = [
     title: "What happened to George Washingtons and Cue-hauler stats?",
     content: (
       <ContentWrapper>
-        If you have any cool stat ideas I will add them. Don't want to be overly
-        confusing. Any stats that you have previously tracked in these areas are
-        still there, they just aren't counting towards Fantasy points at the
-        moment.
+        If you have any cool stat ideas, we can discuss adding them. Don't want
+        to be overly confusing. Any stats that you have previously tracked in
+        these areas are still there, they just aren't counting towards Fantasy
+        points at the moment.
       </ContentWrapper>
     ),
   },

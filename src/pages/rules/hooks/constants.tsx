@@ -7,7 +7,7 @@ const ContentWrapper: FC<{ children: ReactNode }> = ({ children }) => {
 
 export const FAQS_COPY = [
   {
-    title: "Do I have to track all stats in a games honestly?",
+    title: "Do you have to track all stats in a game honestly?",
     content: (
       <ContentWrapper>
         We are running this league entirely on the honor code, so please put
@@ -19,12 +19,19 @@ export const FAQS_COPY = [
     ),
   },
   {
-    title: "Do I have to track every time I play pool?",
+    title: "Do you have to track every time you play pool?",
     content: (
       <ContentWrapper>
         No, but Fantasy Pool players should decide{" "}
         <strong>before starting a game</strong> whether they want to exclude the
         game from tracking.
+        <ul>
+          <li>
+            If multiple Fantasy Pool players are playing in a game, everyone
+            should agree whether the game will count or not. No partial tracking
+            please.
+          </li>
+        </ul>
       </ContentWrapper>
     ),
   },

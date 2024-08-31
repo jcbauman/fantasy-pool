@@ -55,7 +55,7 @@ export const FAQS_COPY = [
         (ball glancing off another).{" "}
         <ul>
           <li>
-            Skill shots can only be counted for succesful called shots, not
+            Skill shots can only be counted for successful called shots, not
             incidentals and slops - i.e. if you did not clearly mean to do it,
             it doesn't count.{" "}
           </li>{" "}
@@ -77,7 +77,7 @@ export const FAQS_COPY = [
         <ul>
           <li>
             Don't count scratches that result in the end of a game for this
-            stat, those count towards the 'Loss by 8-ball' scratch stat.{" "}
+            stat, those count towards the 'Loss by scratch' stat.{" "}
           </li>
           <li>
             Scratches only apply to the shooting player and not to every member
@@ -106,7 +106,7 @@ export const FAQS_COPY = [
           </li>
           <li>
             If you are playing scotch doubles, count any personal run and your
-            partner's run seperately - don't add them together for both players.
+            partner's run separately - don't add them together for both players.
           </li>
         </ul>
       </ContentWrapper>
@@ -118,17 +118,6 @@ export const FAQS_COPY = [
       <ContentWrapper>
         It's entirely up to you if you want to aggregate your night of pool into
         one session or track each game individually.
-      </ContentWrapper>
-    ),
-  },
-  {
-    title: "What happened to George Washingtons and Cue-hauler stats?",
-    content: (
-      <ContentWrapper>
-        If you have any cool stat ideas, we can discuss adding them. Don't want
-        to be overly confusing. Any stats that you have previously tracked in
-        these areas are still there, they just aren't counting towards Fantasy
-        points at the moment.
       </ContentWrapper>
     ),
   },

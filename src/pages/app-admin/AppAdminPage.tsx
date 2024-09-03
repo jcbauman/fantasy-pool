@@ -4,7 +4,7 @@ import { Button, Card, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { useDispatch } from "react-redux";
-import { sendSuccessNotificaton } from "../../redux/notificationSlice";
+import { sendSuccessNotification } from "../../redux/notificationSlice";
 import { collapsRepeatGames } from "./adminUtils";
 import { INVITE_PW } from "../../utils/constants";
 
@@ -34,7 +34,7 @@ export const AppAdminPage: FC = () => {
             variant="outlined"
             onClick={() =>
               collapsRepeatGames(games, (message: string) =>
-                dispatch(sendSuccessNotificaton(message))
+                dispatch(sendSuccessNotification(message))
               )
             }
           >

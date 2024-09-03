@@ -6,7 +6,7 @@ import { mockScoringMatrix } from "../../../backend/fixtures";
 import { getStringFromStatKey } from "../../../utils/statsUtils";
 import { updateLeague } from "../../../backend/setters";
 import { useDispatch } from "react-redux";
-import { sendSuccessNotificaton } from "../../../redux/notificationSlice";
+import { sendSuccessNotification } from "../../../redux/notificationSlice";
 
 type FormData = {
   [GameStatKeys.winsBy8BallSink]: number;
@@ -77,7 +77,7 @@ export const ScoringRubrikForm: FC<ScoringRubrikFormProps> = ({ league }) => {
     };
     const { id, ...leagueNoId } = resolvedLeague;
     await updateLeague(leagueNoId, league.id, () =>
-      dispatch(sendSuccessNotificaton("Scoring rubrik updated"))
+      dispatch(sendSuccessNotification("Scoring rubrik updated"))
     );
   };
 

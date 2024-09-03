@@ -9,7 +9,7 @@ import { updateCurrentPlayer } from "../../backend/setters";
 import { useDispatch } from "react-redux";
 import {
   sendErrorNotification,
-  sendSuccessNotificaton,
+  sendSuccessNotification,
 } from "../../redux/notificationSlice";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 
@@ -29,7 +29,9 @@ export const ProfilePage: FC = () => {
       resolvedPlayer,
       player?.id ?? "",
       () => {
-        dispatch(sendSuccessNotificaton("Succesfully updated player profile"));
+        dispatch(
+          sendSuccessNotification("Successfully updated player profile")
+        );
         refetchPlayer();
       },
 

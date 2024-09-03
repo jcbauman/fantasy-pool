@@ -18,7 +18,7 @@ const notificationSlice = createSlice({
   name: "notification",
   initialState,
   reducers: {
-    sendSuccessNotificaton: (state, action: PayloadAction<string>) => {
+    sendSuccessNotification: (state, action: PayloadAction<string>) => {
       state.open = true;
       state.message = action.payload;
       state.error = false;
@@ -35,7 +35,7 @@ const notificationSlice = createSlice({
 });
 
 export const {
-  sendSuccessNotificaton,
+  sendSuccessNotification,
   sendErrorNotification,
   closeNotifications,
 } = notificationSlice.actions;

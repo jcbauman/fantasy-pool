@@ -82,6 +82,7 @@ const formatDateString = (dateStr: string): string => {
   const [month, day] = dateStr.split("/").map(Number);
   const date = new Date(today.getFullYear(), month - 1, day);
 
+  const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "long" });
   const isToday =
     today.getMonth() === date.getMonth() && today.getDate() === date.getDate();
   const isYesterday =
@@ -93,6 +94,6 @@ const formatDateString = (dateStr: string): string => {
   } else if (isYesterday) {
     return "Yesterday";
   } else {
-    return dateStr;
+    return `${dateStr} - ${dayOfWeek}`;
   }
 };

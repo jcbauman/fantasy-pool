@@ -25,7 +25,7 @@ import { GameFantasyDetailDialog } from "../../playerDetail/components/GameFanta
 import { TextEditorField } from "../../../shared-components/TextEditorField";
 import { updateExistingGame } from "../../../backend/setters";
 import { useDispatch } from "react-redux";
-import { sendSuccessNotificaton } from "../../../redux/notificationSlice";
+import { sendSuccessNotification } from "../../../redux/notificationSlice";
 
 export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const {
@@ -85,7 +85,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                       .writeText(game.id)
                       .then(() => {
                         dispatch(
-                          sendSuccessNotificaton("Copied game ID to clipboard")
+                          sendSuccessNotification("Copied game ID to clipboard")
                         );
                       })
                       .catch((err) => {

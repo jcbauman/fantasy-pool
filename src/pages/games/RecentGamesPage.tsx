@@ -16,11 +16,9 @@ import { MultiPlayerGameLog } from "./components.tsx/MultiPlayerGameLog";
 import { sortGamesByDate } from "../../utils/gameUtils";
 import { formatDateToMMDD } from "../../utils/statsUtils";
 import { Game } from "../../types";
-import { Theme } from "@emotion/react";
 
 export const RecentGamesPage: FC = () => {
-  const { games } = useAppContext();
-  const dateSortedGames = useMemo(() => sortGamesByDate(games), [games]);
+  const { games: dateSortedGames } = useAppContext();
   const gamesGroupedByDate = groupByDate(dateSortedGames);
 
   return (
@@ -82,6 +80,7 @@ const formatDateString = (dateStr: string): string => {
   const [month, day] = dateStr.split("/").map(Number);
   const date = new Date(today.getFullYear(), month - 1, day);
 
+  const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "long" });
   const isToday =
     today.getMonth() === date.getMonth() && today.getDate() === date.getDate();
   const isYesterday =
@@ -93,6 +92,6 @@ const formatDateString = (dateStr: string): string => {
   } else if (isYesterday) {
     return "Yesterday";
   } else {
-    return dateStr;
+    return `${dateStr} - ${dayOfWeek}`;
   }
 };

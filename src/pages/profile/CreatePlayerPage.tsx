@@ -1,9 +1,8 @@
-import { Button, Card, Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import { FC } from "react";
 import { ProfileEditor, ProfileFormValues } from "./components/ProfileEditor";
 import { PageContainer } from "../../shared-components/PageContainer";
-import { Link, useNavigate } from "react-router-dom";
-import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
+import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { Player } from "../../types";
 import { createNewPlayer } from "../../backend/setters";
@@ -19,6 +18,7 @@ export const CreatePlayerPage: FC = () => {
   const onSubmit = async (data: ProfileFormValues) => {
     const resolvedPlayer: Omit<Player, "id"> = {
       linkedUserId: user?.id ?? "",
+      joinDate: new Date().toISOString(),
       ...data,
     };
     await createNewPlayer(

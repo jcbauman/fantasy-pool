@@ -21,6 +21,7 @@ import {
   PLAYERS_COLLECTION,
   USERS_COLLECTION,
 } from "./firebase/controller";
+import { sortGamesByDate } from "../utils/gameUtils";
 
 // games
 
@@ -43,7 +44,7 @@ export const useFetchGames = (): Game[] => {
     );
     return () => unsubscribe();
   }, []);
-  return games;
+  return sortGamesByDate(games);
 };
 
 export const getGamesForPlayer = async (

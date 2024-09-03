@@ -16,7 +16,7 @@ import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { sendSuccessNotificaton } from "../../redux/notificationSlice";
+import { sendSuccessNotification } from "../../redux/notificationSlice";
 import EightBallIcon from "../../shared-components/icons/EightBallIcon";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 
@@ -30,7 +30,7 @@ export const OverviewComponent: FC = () => {
 
   const onClickBlockedField = (): void => {
     dispatch(
-      sendSuccessNotificaton(
+      sendSuccessNotification(
         "This tab will become available after a fantasy draft starts!"
       )
     );

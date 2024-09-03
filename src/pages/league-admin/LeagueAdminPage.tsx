@@ -4,7 +4,7 @@ import { Button, Card, Stack, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { useDispatch } from "react-redux";
-import { sendSuccessNotificaton } from "../../redux/notificationSlice";
+import { sendSuccessNotification } from "../../redux/notificationSlice";
 import { useForm } from "react-hook-form";
 import { League } from "../../types";
 import { updateLeague } from "../../backend/setters";
@@ -46,7 +46,7 @@ export const LeagueAdminPage: FC = () => {
       };
       const { id, ...leagueNoId } = resolvedLeague;
       await updateLeague(leagueNoId, league.id, () =>
-        dispatch(sendSuccessNotificaton("League settings updated"))
+        dispatch(sendSuccessNotification("League settings updated"))
       );
     }
   };

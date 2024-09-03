@@ -82,7 +82,12 @@ export const GameStartForm: FC<{
       playerIds: data.playerIds,
       authorPlayerId: player?.id ?? "",
     };
-    if (!locations.some((l) => l.name === data.location)) {
+    if (
+      !locations.some(
+        (l) =>
+          l.name.trim().toLowerCase() === data.location.trim().toLowerCase()
+      )
+    ) {
       addNewLocation({ name: data.location });
     }
     dispatch(initializeGame({ ...resolvedData }));
@@ -156,7 +161,7 @@ export const GameStartForm: FC<{
                 {...field}
                 freeSolo
                 onChange={(_e, newValue) => {
-                  setValue("location", newValue || "");
+                  setValue("location", newValue?.trim() || "");
                 }}
                 onInputChange={(_e, newInputValue) =>
                   setValue("location", newInputValue || "")

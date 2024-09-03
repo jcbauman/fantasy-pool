@@ -15,6 +15,12 @@ export const FAQS_COPY = [
         writing down everything we do, but we only have ourselves. Additionally,
         if we all keep tracking game location and dates accurately, it will
         allow more neat features to be added in the future based on this data.
+        <ul>
+          <li>
+            If you find an issue/error with the stats of an already-submitted
+            game, the league manager can help make adjustments to it.
+          </li>
+        </ul>
       </ContentWrapper>
     ),
   },
@@ -40,9 +46,14 @@ export const FAQS_COPY = [
     content: (
       <ContentWrapper>
         When you're tracking doubles games, a team's overall win or loss
-        (whether by 8-ball or scratch) should apply to every member of the team.
-        Personal shots like potting runs of balls, scratching, skill shots, etc.
-        are applied on a per-player basis.
+        (whether by 8-ball or scratch) should apply to every member of the team,
+        even to players not involved in the game-ending shot.{" "}
+        <ul>
+          <li>
+            Personal shots like potting runs of balls, scratching, skill shots,
+            etc. are applied on a per-player basis.{" "}
+          </li>
+        </ul>
       </ContentWrapper>
     ),
   },

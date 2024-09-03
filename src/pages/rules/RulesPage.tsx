@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { FC } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
-import { FAQS_COPY } from "./hooks/constants";
+import { FAQS_COPY } from "./constants";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 export const RulesPage: FC = () => {

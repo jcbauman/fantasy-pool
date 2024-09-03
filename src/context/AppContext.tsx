@@ -19,6 +19,7 @@ import {
   NotificationBadgesState,
   useNotificationBadges,
 } from "../shared-components/hooks/useNotificationBadges";
+import { checkPlayerInactivity } from "../pages/playersList/utils/inactivityUtils";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -51,6 +52,13 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const authState = useAuthState();
   const games = useFetchGames();
   const notificationBadgesState = useNotificationBadges(games, league);
+
+  useEffect(() => {
+    players.forEach((player) => {
+      checkPlayerInactivity(player, games);
+    });
+  }, [players, games]);
+
   useEffect(() => {
     const getLeague = async (): Promise<void> => {
       if (authState.user?.leagueId) {
@@ -64,6 +72,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
     };
     getLeague();
   }, [authState.user?.leagueId]);
+
   const scoringMatrix = league?.scoringMatrix ?? mockScoringMatrix;
   const { rankings, allStatsByPlayers } = useGetRankingByField(
     players,

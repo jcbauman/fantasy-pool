@@ -16,11 +16,9 @@ import { MultiPlayerGameLog } from "./components.tsx/MultiPlayerGameLog";
 import { sortGamesByDate } from "../../utils/gameUtils";
 import { formatDateToMMDD } from "../../utils/statsUtils";
 import { Game } from "../../types";
-import { Theme } from "@emotion/react";
 
 export const RecentGamesPage: FC = () => {
-  const { games } = useAppContext();
-  const dateSortedGames = useMemo(() => sortGamesByDate(games), [games]);
+  const { games: dateSortedGames } = useAppContext();
   const gamesGroupedByDate = groupByDate(dateSortedGames);
 
   return (

@@ -15,6 +15,7 @@ export interface Player {
   out?: boolean;
   profilePictureUrl?: string;
   defaultLocation?: string;
+  joinDate?: string;
 }
 
 export interface PoolHallLocation {

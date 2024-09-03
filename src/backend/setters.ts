@@ -48,7 +48,9 @@ export const createNewPlayer = async (
   onFailure: () => void
 ): Promise<string | undefined> => {
   try {
-    const docRef = await addDoc(PLAYERS_COLLECTION, { ...player });
+    const docRef = await addDoc(PLAYERS_COLLECTION, {
+      ...player,
+    });
     onSuccess();
     return docRef.id;
   } catch (e) {

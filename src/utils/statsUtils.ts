@@ -13,7 +13,7 @@ export const normalizeStat = (value: number): string => {
 export const getAbbreviation = (input?: string): string => {
   if (!input) return "?";
   if (!input.trim()) return "?";
-  const words = input.trim().split(/\s+/);
+  const words = input.trim().toLowerCase().replace("the ", "").split(/\s+/);
   const abbreviation = words.map((word) => word[0].toUpperCase()).join("");
   if (abbreviation.length >= 3) {
     return abbreviation.substring(0, 3);

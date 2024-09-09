@@ -37,7 +37,10 @@ export const useNotificationBadges = (
       const lastLeagueManagerMessage = localStorage.getItem(
         LAST_INFO_CHECKED_CONTENT_KEY
       );
-      setNewInfo(currentLeagueMessage !== lastLeagueManagerMessage);
+      setNewInfo(
+        Boolean(currentLeagueMessage) &&
+          currentLeagueMessage !== lastLeagueManagerMessage
+      );
 
       const lastGameDate =
         dateSortedGames.length > 0

@@ -6,9 +6,12 @@ import {
   Chip,
   Collapse,
   FormControlLabel,
+  FormLabel,
   IconButton,
   Stack,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import { FC, useEffect, useMemo, useState } from "react";
@@ -25,6 +28,8 @@ import {
   sortGamesByDate,
 } from "../../../utils/gameUtils";
 import { Link } from "react-router-dom";
+import HandshakeOutlinedIcon from "@mui/icons-material/HandshakeOutlined";
+import SportsMmaOutlinedIcon from "@mui/icons-material/SportsMmaOutlined";
 interface FormData {
   date: Date | null;
   location: string;
@@ -53,6 +58,7 @@ export const GameStartForm: FC<{
     handleSubmit,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -61,6 +67,7 @@ export const GameStartForm: FC<{
       playerIds: player?.id ? [player?.id] : [],
     },
   });
+  const watchAll = watch();
   useEffect(() => {
     const dateSortedGames = sortGamesByDate(games);
     if (dateSortedGames.length > 0) {
@@ -74,6 +81,9 @@ export const GameStartForm: FC<{
     }
   }, [games, setValue]);
   const [checked, setChecked] = useState(true);
+  const [gameStyle, setGameStyle] = useState<"singles" | "doubles" | "unset">(
+    "unset"
+  );
   const playerOptionIds = allPlayers.map((p) => p.id);
   const onSubmit = (data: FormData): void => {
     const resolvedData = {
@@ -150,6 +160,38 @@ export const GameStartForm: FC<{
               />
             )}
           />
+          <Collapse in={watchAll.playerIds.length === 2}>
+            <ToggleButtonGroup
+              fullWidth
+              exclusive
+              value={gameStyle}
+              sx={{ mb: 1 }}
+              id="style-selection"
+              onChange={(_e, value) => {
+                if (value !== null) setGameStyle(value);
+              }}
+            >
+              <ToggleButton value="unset">Unset</ToggleButton>
+              <ToggleButton value="singles">
+                <SportsMmaOutlinedIcon sx={{ mr: 1 }} />
+                Singles
+              </ToggleButton>
+              <ToggleButton value="doubles">
+                <HandshakeOutlinedIcon sx={{ mr: 1 }} />
+                Doubles
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <Collapse in={gameStyle === "doubles"}>
+              <Typography variant="caption">
+                We are playing together on a doubles team.
+              </Typography>
+            </Collapse>
+            <Collapse in={gameStyle === "singles"}>
+              <Typography variant="caption">
+                We are playing against each other.
+              </Typography>
+            </Collapse>
+          </Collapse>
           <Controller
             name="location"
             control={control}
@@ -158,6 +200,7 @@ export const GameStartForm: FC<{
             }}
             render={({ field }) => (
               <Autocomplete
+                sx={{ mt: watchAll.playerIds.length === 2 ? 1 : 0 }}
                 {...field}
                 freeSolo
                 onChange={(_e, newValue) => {

@@ -4,11 +4,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
   List,
   ListItem,
   ListItemText,
-  Stack,
 } from "@mui/material";
 import { FC } from "react";
 

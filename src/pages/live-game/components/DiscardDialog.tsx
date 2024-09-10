@@ -4,8 +4,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
-  Stack,
 } from "@mui/material";
 import { FC } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";

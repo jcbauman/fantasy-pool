@@ -29,6 +29,7 @@ const makePlayerOut = async (player: Player): Promise<void> => {
 };
 
 export const checkPlayerInactivity = (player: Player, games: Game[]) => {
+  if (!games.length || !player) return;
   const playersGames = filterPlayedGamesForPlayer(player.id, games);
   if (playersGames.length === 0) {
     if (player.joinDate) {
@@ -48,6 +49,7 @@ export const checkPlayerInactivity = (player: Player, games: Game[]) => {
     const timeDiff = Math.abs(currentDate.getTime() - lastGameDate.getTime());
     const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     if (diffDays > DAYS_TIL_INACTIVE) {
+      console.log("bruh out here 2", player.name);
       makePlayerOut(player);
     }
   }

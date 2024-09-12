@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { Button, Card, Stack, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { sendSuccessNotification } from "../../redux/notificationSlice";
 import { useForm } from "react-hook-form";
 import { League } from "../../types";
-import { updateLeague } from "../../backend/setters";
+import { deleteGame, updateLeague } from "../../backend/setters";
 import { ScoringRubrikForm } from "./components/ScoringRubrikForm";
 
 type FormData = {
@@ -25,6 +25,8 @@ export const LeagueAdminPage: FC = () => {
   if (!user || !league || league.leagueManagerId !== user.id) {
     navigate("/profile");
   }
+
+  const [gameIdToDelete, setGameIdToDelete] = useState("");
 
   const {
     handleSubmit,
@@ -50,6 +52,12 @@ export const LeagueAdminPage: FC = () => {
       );
     }
   };
+
+  const onDeleteGame = async (): Promise<void> => {
+    if (gameIdToDelete.length === 0) return;
+    await deleteGame(gameIdToDelete);
+  };
+
   if (!league) {
     return (
       <PageContainer authedRoute>
@@ -84,6 +92,21 @@ export const LeagueAdminPage: FC = () => {
           </form>
         </Card>
         <ScoringRubrikForm league={league} />
+        <Card sx={{ p: 1 }}>
+          <Stack direction="column" spacing={1}>
+            <Typography variant="overline">Delete repeat game</Typography>
+            <TextField
+              type="text"
+              label="Game ID to delete"
+              onChange={(e) => setGameIdToDelete(e.target.value)}
+            />
+            <Stack direction="row" justifyContent="flex-end">
+              <Button color="error" variant="outlined" onClick={onDeleteGame}>
+                Delete
+              </Button>
+            </Stack>
+          </Stack>
+        </Card>
       </Stack>
     </PageContainer>
   );

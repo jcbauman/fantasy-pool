@@ -29,6 +29,7 @@ const makePlayerOut = async (player: Player): Promise<void> => {
 };
 
 export const checkPlayerInactivity = (player: Player, games: Game[]) => {
+  if (!games.length || !player) return;
   const playersGames = filterPlayedGamesForPlayer(player.id, games);
   if (playersGames.length === 0) {
     if (player.joinDate) {

@@ -1,4 +1,4 @@
-import { addDoc, doc, updateDoc } from "firebase/firestore";
+import { addDoc, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { Game, League, Player, PoolHallLocation, User } from "../types";
 import { auth, db } from "./firebase/firebaseConfig";
 import {
@@ -116,5 +116,25 @@ export const updateLeague = async (
   } catch (e) {
     console.error("Unable to update league, missing permissions");
     onError?.();
+  }
+};
+
+// Function to delete a game by its ID
+export const deleteGame = async (
+  gameId: string,
+  onSuccess?: (msg: string) => void,
+  onError?: (msg: string) => void
+) => {
+  try {
+    // Reference to the document
+    const docRef = doc(db, "games", gameId);
+
+    // Delete the document
+    if (docRef) {
+      await deleteDoc(docRef);
+      onSuccess?.(`Successfully deleted game ${gameId}`);
+    }
+  } catch (error) {
+    onError?.(`Error deleting game, ${error}`);
   }
 };

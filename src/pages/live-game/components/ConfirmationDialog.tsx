@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -7,7 +8,7 @@ import {
   IconButton,
   Stack,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useState } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 interface ConfirmationDialogProps {
@@ -23,6 +24,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
   onConfirm,
   onDiscard,
 }) => {
+  const [loading, setLoading] = useState(false);
   return (
     <Dialog open={open}>
       <DialogTitle>Are you sure you want to end this pool session?</DialogTitle>
@@ -39,17 +41,24 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
             <DeleteOutlinedIcon color="error" />
           </IconButton>
           <Stack direction="row" spacing={1}>
-            <Button variant="text" onClick={onClose}>
+            <Button
+              variant="text"
+              onClick={() => {
+                onClose();
+              }}
+            >
               Cancel
             </Button>
             <Button
+              disabled={loading}
               variant="contained"
               onClick={() => {
+                setLoading(true);
                 onConfirm();
                 onClose();
               }}
             >
-              Save & End
+              {loading ? <CircularProgress size="1.5rem" /> : "Save & End"}
             </Button>
           </Stack>
         </Stack>

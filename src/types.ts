@@ -41,6 +41,10 @@ export interface Game {
   authorPlayerId?: string;
 }
 
+export interface Session extends Omit<Game, "authorPlayerId"> {
+  games: Game[];
+}
+
 export enum GameStatKeys {
   winsBy8BallSink = "winsBy8BallSink",
   winsByOpponentScratch = "winsByOpponentScratch",

@@ -1,4 +1,4 @@
-import { Game, GameStat, GameStatKeys } from "../../../types";
+import { Game, GameStat, GameStatKeys, Session } from "../../../types";
 import { defaultGameStat } from "../../../utils/constants";
 import { getFantasyScoreForPlayerSeason } from "../../../utils/statsUtils";
 
@@ -132,4 +132,14 @@ export const generateColor = (str: string) => {
   }
   const color = (hash & 0x00ffffff).toString(16).toUpperCase();
   return "#" + "00000".substring(0, 6 - color.length) + color;
+};
+
+export const getStatsForSession = (
+  playerId: string,
+  session: Session | null
+): GameStat => {
+  if (!session) return { ...defaultGameStat, playerId };
+  const playerIndex = session.playerIds.findIndex((id) => id === playerId);
+  const playerStats = session.statsByPlayer[playerIndex];
+  return playerStats;
 };

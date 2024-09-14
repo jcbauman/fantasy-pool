@@ -5,7 +5,7 @@ import React, {
   useContext,
   useEffect,
 } from "react";
-import { AggregateStats, Game, League, Player, User } from "../types";
+import { AggregateStats, Game, League, Player, Session, User } from "../types";
 import { mockLeague, mockScoringMatrix } from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 import {
@@ -20,6 +20,7 @@ import {
   useNotificationBadges,
 } from "../shared-components/hooks/useNotificationBadges";
 import { checkPlayerInactivity } from "../pages/playersList/utils/inactivityUtils";
+import { useFetchSessions } from "../backend/sessions";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -33,6 +34,7 @@ interface AppContextType {
   scoringMatrix: Record<string, number>;
   authState: UseAuthState;
   notificationBadgesState: NotificationBadgesState;
+  sessions: Session[];
 }
 
 export const useAppContext = () => {
@@ -51,6 +53,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const players = useFetchPlayers();
   const authState = useAuthState();
   const games = useFetchGames();
+  const sessions = useFetchSessions();
   const notificationBadgesState = useNotificationBadges(games, league);
 
   useEffect(() => {
@@ -92,6 +95,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
         scoringMatrix,
         authState,
         notificationBadgesState,
+        sessions,
       }}
     >
       {children}

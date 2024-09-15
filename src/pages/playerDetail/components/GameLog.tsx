@@ -122,7 +122,7 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {dateSortedGames.map((g) => {
+                {dateSortedGames.map((g, idx) => {
                   const stats = getStatsForGame(player.id, g);
                   const fantasyPoints = getFantasyScoreForPlayerSeason(
                     [g],
@@ -135,6 +135,7 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                         borderColor: "white",
+                        backgroundColor: idx % 2 === 0 ? "#404040" : "inherit",
                       }}
                     >
                       <TableCell>

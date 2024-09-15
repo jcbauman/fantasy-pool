@@ -1,18 +1,16 @@
 import {
-  collection,
   doc,
   DocumentData,
   getDoc,
   getDocs,
-  limit,
   onSnapshot,
   orderBy,
   query,
   QuerySnapshot,
+  Timestamp,
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "./firebase/firebaseConfig";
 import { Game, League, Player, PoolHallLocation, User } from "../types";
 import {
   firestore,
@@ -201,4 +199,26 @@ export const getAppUserByUID = async (
     console.error("Error getting user ", error);
     return undefined;
   }
+};
+
+export const fetchDocumentsByTimestamp = async (startDate: Date) => {
+  const startTimestamp = Timestamp.fromDate(startDate);
+
+  const q = query(
+    GAMES_COLLECTION,
+    where("createdAt", ">=", startTimestamp),
+    orderBy("createdAt", "asc") // Order results by timestamp
+  );
+
+  const querySnapshot = await getDocs(q);
+  const documents: DocumentData[] = [];
+
+  querySnapshot.forEach((doc) => {
+    documents.push({
+      id: doc.id,
+      ...doc.data(),
+    } as DocumentData);
+  });
+
+  return documents;
 };

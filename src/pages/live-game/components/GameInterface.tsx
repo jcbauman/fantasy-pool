@@ -29,7 +29,7 @@ import { TimeCounter } from "./TimeCounter";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import { useAppContext } from "../../../context/AppContext";
 import { useNavigate } from "react-router-dom";
-import { GameStatKeys } from "../../../types";
+import { Game, GameStatKeys } from "../../../types";
 import { useIterateStats } from "../hooks/useIterateStats";
 import { MultiBallDialog } from "./MultiBallDialog";
 import { addNewGame } from "../../../backend/setters";
@@ -37,6 +37,7 @@ import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
 import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlined";
 import { MultiBallDeleteDialog } from "./MultiBallDeleteDialog";
+import { Timestamp } from "firebase/firestore";
 
 export const GameInterface: FC = () => {
   const dispatch = useDispatch();
@@ -231,8 +232,10 @@ export const GameInterface: FC = () => {
         }}
         onConfirm={async () => {
           if (game) {
+            const createdAt = Timestamp.fromDate(new Date(game.timestamp));
             const { id, ...gameNoId } = game;
-            const gameId = await addNewGame(gameNoId);
+            const resolvedGame: Omit<Game, "id"> = { ...gameNoId, createdAt };
+            const gameId = await addNewGame(resolvedGame);
             dispatch(setLastGameId(gameId ?? null));
           }
           navigate("/game-complete");

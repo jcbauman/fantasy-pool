@@ -67,7 +67,7 @@ export const LeagueAdminPage: FC = () => {
   }
   return (
     <PageContainer authedRoute>
-      <Stack direction="column" spacing={2} sx={{ p: 2 }}>
+      <Stack direction="column" spacing={3} sx={{ p: 2 }}>
         <Card sx={{ p: 1 }}>
           <Typography variant="overline">League settings</Typography>
           <form onSubmit={handleSubmit(onSubmit)}>

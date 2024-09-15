@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface User {
   fbID: string;
   id: string;
@@ -39,6 +41,7 @@ export interface Game {
   statsByPlayer: GameStat[];
   excludeGame?: boolean;
   authorPlayerId?: string;
+  createdAt?: Timestamp;
 }
 
 export enum GameStatKeys {

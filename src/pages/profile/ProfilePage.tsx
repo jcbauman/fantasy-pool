@@ -57,7 +57,7 @@ export const ProfilePage: FC = () => {
         {(user?.isAppAdmin || isLeagueAdmin) && (
           <Card sx={{ p: 2, mt: 2, overflow: "visible" }}>
             <Typography variant={"overline"}>Admin</Typography>
-            <Stack direction="column" gap={1}>
+            <Stack direction="column" gap={2}>
               {isLeagueAdmin && (
                 <Button
                   fullWidth

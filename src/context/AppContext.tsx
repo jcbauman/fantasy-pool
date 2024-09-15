@@ -12,6 +12,7 @@ import {
   fetchLeague,
   useFetchGames,
   useFetchPlayers,
+  useFetchRecords,
   useFetchUsers,
 } from "../backend/getters";
 import { UseAuthState, useAuthState } from "../auth/useAuthState";
@@ -51,6 +52,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const players = useFetchPlayers();
   const authState = useAuthState();
   const games = useFetchGames();
+  const records = useFetchRecords();
   const notificationBadgesState = useNotificationBadges(games, league);
 
   useEffect(() => {

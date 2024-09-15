@@ -138,3 +138,18 @@ export const deleteGame = async (
     onError?.(`Error deleting game, ${error}`);
   }
 };
+
+export const updateHistoricalRecords = async (
+  resolvedRecords: Omit<Game, "id">,
+  onSuccess?: () => void,
+  onError?: () => void
+): Promise<void> => {
+  try {
+    const docRef = doc(db, "records", "historical-records");
+    await updateDoc(docRef, resolvedRecords);
+    onSuccess?.();
+  } catch (e) {
+    console.error("Unable to update records");
+    onError?.();
+  }
+};

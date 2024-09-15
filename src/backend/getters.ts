@@ -45,6 +45,28 @@ export const useFetchGames = (): Game[] => {
   return sortGamesByDate(games);
 };
 
+export const useFetchRecords = (): Game[] => {
+  const [records, setRecords] = useState<Game[]>([]);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      GAMES_COLLECTION,
+      (snapshot: QuerySnapshot<DocumentData>) => {
+        setRecords(
+          snapshot.docs.map((doc) => {
+            const data = doc.data() as Omit<Game, "id">;
+            return {
+              id: doc.id,
+              ...data,
+            };
+          })
+        );
+      }
+    );
+    return () => unsubscribe();
+  }, []);
+  return records;
+};
+
 export const getGamesForPlayer = async (
   playerId: string
 ): Promise<Game[] | undefined> => {
@@ -201,12 +223,34 @@ export const getAppUserByUID = async (
   }
 };
 
-export const fetchDocumentsByTimestamp = async (startDate: Date) => {
+export const fetchDocumentsAfterTimestamp = async (startDate: Date) => {
   const startTimestamp = Timestamp.fromDate(startDate);
 
   const q = query(
     GAMES_COLLECTION,
     where("createdAt", ">=", startTimestamp),
+    orderBy("createdAt", "asc") // Order results by timestamp
+  );
+
+  const querySnapshot = await getDocs(q);
+  const documents: DocumentData[] = [];
+
+  querySnapshot.forEach((doc) => {
+    documents.push({
+      id: doc.id,
+      ...doc.data(),
+    } as DocumentData);
+  });
+
+  return documents;
+};
+
+export const fetchDocumentsBeforeTimestamp = async (endDate: Date) => {
+  const endTimestamp = Timestamp.fromDate(endDate);
+
+  const q = query(
+    GAMES_COLLECTION,
+    where("createdAt", "<=", endTimestamp),
     orderBy("createdAt", "asc") // Order results by timestamp
   );
 

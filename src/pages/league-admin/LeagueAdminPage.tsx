@@ -4,7 +4,10 @@ import { Button, Card, Stack, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { useDispatch } from "react-redux";
-import { sendSuccessNotification } from "../../redux/notificationSlice";
+import {
+  sendErrorNotification,
+  sendSuccessNotification,
+} from "../../redux/notificationSlice";
 import { useForm } from "react-hook-form";
 import { League } from "../../types";
 import { deleteGame, updateLeague } from "../../backend/setters";
@@ -55,7 +58,11 @@ export const LeagueAdminPage: FC = () => {
 
   const onDeleteGame = async (): Promise<void> => {
     if (gameIdToDelete.length === 0) return;
-    await deleteGame(gameIdToDelete);
+    await deleteGame(
+      gameIdToDelete,
+      (msg: string) => dispatch(sendSuccessNotification(msg)),
+      (msg: string) => dispatch(sendErrorNotification(msg))
+    );
   };
 
   if (!league) {

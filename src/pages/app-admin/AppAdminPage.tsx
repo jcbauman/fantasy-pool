@@ -45,6 +45,11 @@ export const AppAdminPage: FC = () => {
           </Button>
         </Card>
         <Card sx={{ p: 2 }}>
+          <Button startIcon={<AccessTimeIcon />} fullWidth variant="outlined">
+            Update historical records for last month
+          </Button>
+        </Card>
+        <Card sx={{ p: 2 }}>
           <Button
             startIcon={<AccessTimeIcon />}
             fullWidth

@@ -38,6 +38,7 @@ import { DiscardDialog } from "./DiscardDialog";
 import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlined";
 import { MultiBallDeleteDialog } from "./MultiBallDeleteDialog";
 import { Timestamp } from "firebase/firestore";
+import { useGameIsIncomplete } from "../hooks/useGameIsIncomplete";
 
 export const GameInterface: FC = () => {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ export const GameInterface: FC = () => {
   const [multiBallDeleteDialogOpen, setMultiBallDeleteDialogOpen] =
     useState(false);
   const startTime = game?.timestamp ? new Date(game?.timestamp) : new Date();
+  const gameIsIncomplete = useGameIsIncomplete();
 
   const gamePlayers = players.filter((player) =>
     game?.playerIds.includes(player.id)
@@ -224,6 +226,7 @@ export const GameInterface: FC = () => {
         End session
       </Button>
       <ConfirmationDialog
+        gameIsIncomplete={gameIsIncomplete}
         open={endGameDialogOpen}
         onClose={() => setEndGameDialogOpen(false)}
         onDiscard={() => {

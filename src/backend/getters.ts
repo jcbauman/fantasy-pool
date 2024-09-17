@@ -20,6 +20,8 @@ import {
   USERS_COLLECTION,
 } from "./firebase/controller";
 import { sortGamesByDate } from "../utils/gameUtils";
+import { db } from "./firebase/firebaseConfig";
+import { HISTORICAL_RECORD_KEY } from "./constants";
 
 // games
 
@@ -45,26 +47,27 @@ export const useFetchGames = (): Game[] => {
   return sortGamesByDate(games);
 };
 
-export const useFetchRecords = (): Game[] => {
-  const [records, setRecords] = useState<Game[]>([]);
+export const useFetchRecords = (): Game | undefined => {
+  const [record, setRecord] = useState<Game | undefined>(undefined);
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      GAMES_COLLECTION,
-      (snapshot: QuerySnapshot<DocumentData>) => {
-        setRecords(
-          snapshot.docs.map((doc) => {
-            const data = doc.data() as Omit<Game, "id">;
-            return {
-              id: doc.id,
-              ...data,
-            };
-          })
-        );
+    const fetchRecord = async () => {
+      const docRef = doc(db, "records", HISTORICAL_RECORD_KEY);
+      try {
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setRecord({ id: docSnap.id, ...docSnap.data() } as Game);
+        } else {
+          console.log("No such document!");
+        }
+      } catch (err) {
+        console.error("Error fetching document:", err);
       }
-    );
-    return () => unsubscribe();
+    };
+
+    fetchRecord();
   }, []);
-  return records;
+  return record;
 };
 
 export const getGamesForPlayer = async (
@@ -223,7 +226,7 @@ export const getAppUserByUID = async (
   }
 };
 
-export const fetchDocumentsAfterTimestamp = async (startDate: Date) => {
+export const fetchGamesAfterTimestamp = async (startDate: Date) => {
   const startTimestamp = Timestamp.fromDate(startDate);
 
   const q = query(
@@ -245,7 +248,9 @@ export const fetchDocumentsAfterTimestamp = async (startDate: Date) => {
   return documents;
 };
 
-export const fetchDocumentsBeforeTimestamp = async (endDate: Date) => {
+export const fetchGamesBeforeTimestamp = async (
+  endDate: Date
+): Promise<Game[]> => {
   const endTimestamp = Timestamp.fromDate(endDate);
 
   const q = query(
@@ -255,13 +260,13 @@ export const fetchDocumentsBeforeTimestamp = async (endDate: Date) => {
   );
 
   const querySnapshot = await getDocs(q);
-  const documents: DocumentData[] = [];
+  const documents: Game[] = [];
 
   querySnapshot.forEach((doc) => {
     documents.push({
       id: doc.id,
       ...doc.data(),
-    } as DocumentData);
+    } as Game);
   });
 
   return documents;

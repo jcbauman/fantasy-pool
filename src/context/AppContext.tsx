@@ -52,7 +52,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const players = useFetchPlayers();
   const authState = useAuthState();
   const games = useFetchGames();
-  const records = useFetchRecords();
+  const record = useFetchRecords(); //last month historical record
   const notificationBadgesState = useNotificationBadges(games, league);
 
   useEffect(() => {

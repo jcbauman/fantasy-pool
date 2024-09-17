@@ -8,6 +8,7 @@ import {
   USERS_COLLECTION,
 } from "./firebase/controller";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { HISTORICAL_RECORD_KEY } from "./constants";
 
 export const addNewGame = async (
   game: Omit<Game, "id">
@@ -145,7 +146,7 @@ export const updateHistoricalRecords = async (
   onError?: () => void
 ): Promise<void> => {
   try {
-    const docRef = doc(db, "records", "historical-records");
+    const docRef = doc(db, "records", HISTORICAL_RECORD_KEY);
     await updateDoc(docRef, resolvedRecords);
     onSuccess?.();
   } catch (e) {

@@ -8,6 +8,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { INVITE_PW } from "../../utils/constants";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import { useUpdateHistoricalRecords } from "./historicalRecords";
 
 export const AppAdminPage: FC = () => {
   const {
@@ -18,6 +19,7 @@ export const AppAdminPage: FC = () => {
   if (!user || !user.isAppAdmin) {
     navigate("/profile");
   }
+  useUpdateHistoricalRecords();
   const message = `You have been invited to join my Fantasy Pool league. Get started at https://www.fantasy-pool.com?leagueInvite=${INVITE_PW}`;
   const smsUrl = `sms:?body=${message}`;
   return (

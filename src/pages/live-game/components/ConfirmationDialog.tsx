@@ -16,6 +16,7 @@ interface ConfirmationDialogProps {
   onClose: () => void;
   onConfirm: () => void;
   onDiscard: () => void;
+  gameIsIncomplete?: boolean;
 }
 
 export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
@@ -23,14 +24,19 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
   onClose,
   onConfirm,
   onDiscard,
+  gameIsIncomplete,
 }) => {
   const [loading, setLoading] = useState(false);
+  const title = gameIsIncomplete
+    ? "Game is incomplete"
+    : "Are you sure you want to end this pool session?";
+  const body = gameIsIncomplete
+    ? "Please ensure all players have a win/loss recorded before submitting."
+    : `Your games will be saved and will affect the league's stats.`;
   return (
     <Dialog open={open}>
-      <DialogTitle>Are you sure you want to end this pool session?</DialogTitle>
-      <DialogContent>
-        Your games will be saved and will affect the league's stats.
-      </DialogContent>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>{body}</DialogContent>
       <DialogActions>
         <Stack
           direction="row"
@@ -50,7 +56,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
               Cancel
             </Button>
             <Button
-              disabled={loading}
+              disabled={loading || gameIsIncomplete}
               variant="contained"
               onClick={() => {
                 setLoading(true);

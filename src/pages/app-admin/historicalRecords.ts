@@ -17,6 +17,7 @@ import { updateHistoricalRecords } from "../../backend/setters";
 interface UseUpdateHistoricalRecords {
   historicalGame: Game | undefined;
   saveHistoricalRecord: () => Promise<void>;
+  startOfMonth: Date;
 }
 
 export const useUpdateHistoricalRecords = (): UseUpdateHistoricalRecords => {
@@ -27,11 +28,11 @@ export const useUpdateHistoricalRecords = (): UseUpdateHistoricalRecords => {
   const [historicalGame, setHistoricalGame] = useState<Game | undefined>(
     undefined
   );
+  const startOfMonth = getStartOfMonth(new Date());
 
   // fetch the games before the start of the month
   useEffect(() => {
     const fetchStats = async (): Promise<void> => {
-      const startOfMonth = getStartOfMonth(new Date());
       const gamesBeforeThisMonth = await fetchGamesBeforeTimestamp(
         startOfMonth
       );
@@ -49,10 +50,10 @@ export const useUpdateHistoricalRecords = (): UseUpdateHistoricalRecords => {
   //calculate a new historical record
   useEffect(() => {
     if (gamesBeforeThisMonth.length > 0 && allStatsByPlayers) {
-      const res = convertStatsToGame(allStatsByPlayers, players);
+      const res = convertStatsToGame(allStatsByPlayers, players, startOfMonth);
       if (res) setHistoricalGame(res);
     }
-  }, [gamesBeforeThisMonth, allStatsByPlayers, players]);
+  }, [gamesBeforeThisMonth, allStatsByPlayers, players, startOfMonth]);
 
   const saveHistoricalRecord = async (): Promise<void> => {
     if (!historicalGame) return;
@@ -63,14 +64,14 @@ export const useUpdateHistoricalRecords = (): UseUpdateHistoricalRecords => {
         dispatch(sendErrorNotification("Could not update historical records"))
     );
   };
-  return { historicalGame, saveHistoricalRecord };
+  return { historicalGame, saveHistoricalRecord, startOfMonth };
 };
 
 export const convertStatsToGame = (
   stats: AggregateStats,
-  players: Player[]
+  players: Player[],
+  timestamp: Date
 ) => {
-  const timestamp = new Date();
   let game: Game = {
     id: HISTORICAL_RECORD_KEY,
     timestamp: timestamp.toString(),

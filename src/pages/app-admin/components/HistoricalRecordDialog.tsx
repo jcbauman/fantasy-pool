@@ -9,21 +9,21 @@ import {
 import { FC } from "react";
 import { Game } from "../../../types";
 import { MultiPlayerGameLog } from "../../games/components.tsx/MultiPlayerGameLog";
-import { getStartOfMonth } from "../adminUtils";
 
 interface HistoricalRecordDialogProps {
   open: boolean;
   onClose: () => void;
   historicalGame: Game | undefined;
   onSave: () => Promise<void>;
+  startOfMonth: Date;
 }
 export const HistoricalRecordDialog: FC<HistoricalRecordDialogProps> = ({
   open,
   onClose,
   historicalGame,
   onSave,
+  startOfMonth,
 }) => {
-  const startOfMonth = getStartOfMonth(new Date());
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
       <DialogTitle>Review historical game stats</DialogTitle>

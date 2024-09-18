@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
-import { Button, Card, Stack } from "@mui/material";
+import { Button, Card, Divider, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { handleExportGames, updateGamesWithTimestamps } from "./adminUtils";
@@ -21,7 +21,8 @@ export const AppAdminPage: FC = () => {
     navigate("/profile");
   }
   const [open, setOpen] = useState(false);
-  const { historicalGame, saveHistoricalRecord } = useUpdateHistoricalRecords();
+  const { historicalGame, saveHistoricalRecord, startOfMonth } =
+    useUpdateHistoricalRecords();
   const message = `You have been invited to join my Fantasy Pool league. Get started at https://www.fantasy-pool.com?leagueInvite=${INVITE_PW}`;
   const smsUrl = `sms:?body=${message}`;
   return (
@@ -58,6 +59,7 @@ export const AppAdminPage: FC = () => {
             Update historical records for last month
           </Button>
         </Card>
+        <Divider />
         <Card sx={{ p: 2 }}>
           <Button
             startIcon={<AccessTimeIcon />}
@@ -73,6 +75,7 @@ export const AppAdminPage: FC = () => {
           onClose={() => setOpen(false)}
           historicalGame={historicalGame}
           onSave={saveHistoricalRecord}
+          startOfMonth={startOfMonth}
         />
       </Stack>
     </PageContainer>

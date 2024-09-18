@@ -43,3 +43,7 @@ export const handleExportGames = (data: Game[]) => {
   link.click();
   document.body.removeChild(link);
 };
+
+export const getStartOfMonth = (date: Date): Date => {
+  return new Date(date.getFullYear(), date.getMonth(), 1, 0, 0, 0, 0);
+};

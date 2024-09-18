@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { Button, Card, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { INVITE_PW } from "../../utils/constants";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { useUpdateHistoricalRecords } from "./historicalRecords";
+import { HistoricalRecordDialog } from "./components/HistoricalRecordDialog";
 
 export const AppAdminPage: FC = () => {
   const {
@@ -19,7 +20,8 @@ export const AppAdminPage: FC = () => {
   if (!user || !user.isAppAdmin) {
     navigate("/profile");
   }
-  useUpdateHistoricalRecords();
+  const [open, setOpen] = useState(false);
+  const { historicalGame, saveHistoricalRecord } = useUpdateHistoricalRecords();
   const message = `You have been invited to join my Fantasy Pool league. Get started at https://www.fantasy-pool.com?leagueInvite=${INVITE_PW}`;
   const smsUrl = `sms:?body=${message}`;
   return (
@@ -47,7 +49,12 @@ export const AppAdminPage: FC = () => {
           </Button>
         </Card>
         <Card sx={{ p: 2 }}>
-          <Button startIcon={<AccessTimeIcon />} fullWidth variant="outlined">
+          <Button
+            startIcon={<AccessTimeIcon />}
+            fullWidth
+            variant="outlined"
+            onClick={() => setOpen(true)}
+          >
             Update historical records for last month
           </Button>
         </Card>
@@ -61,6 +68,12 @@ export const AppAdminPage: FC = () => {
             Infill timestamps
           </Button>
         </Card>
+        <HistoricalRecordDialog
+          open={open}
+          onClose={() => setOpen(false)}
+          historicalGame={historicalGame}
+          onSave={saveHistoricalRecord}
+        />
       </Stack>
     </PageContainer>
   );

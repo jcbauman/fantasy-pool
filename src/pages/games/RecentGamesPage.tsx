@@ -1,24 +1,16 @@
-import {
-  Card,
-  List,
-  ListItem,
-  ListSubheader,
-  makeStyles,
-  Stack,
-} from "@mui/material";
-import { FC, Fragment, useMemo, useState } from "react";
+import { Card, List, ListItem, ListSubheader, Stack } from "@mui/material";
+import { FC, Fragment } from "react";
 import {
   NAV_BAR_HEIGHT,
   PageContainer,
 } from "../../shared-components/PageContainer";
-import { useAppContext } from "../../context/AppContext";
 import { MultiPlayerGameLog } from "./components.tsx/MultiPlayerGameLog";
-import { sortGamesByDate } from "../../utils/gameUtils";
 import { formatDateToMMDD } from "../../utils/statsUtils";
 import { Game } from "../../types";
+import { useFetchRecentGames } from "../../backend/getters";
 
 export const RecentGamesPage: FC = () => {
-  const { games: dateSortedGames } = useAppContext();
+  const dateSortedGames = useFetchRecentGames();
   const gamesGroupedByDate = groupByDate(dateSortedGames);
 
   return (

@@ -4,23 +4,23 @@ import React, {
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
 } from "react";
 import { AggregateStats, Game, League, Player, User } from "../types";
 import { mockLeague, mockScoringMatrix } from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 import {
   fetchLeague,
-  useFetchGames,
   useFetchPlayers,
   useFetchRecords,
   useFetchUsers,
+  useWatchGamesAfterRecordTimestamp,
 } from "../backend/getters";
 import { UseAuthState, useAuthState } from "../auth/useAuthState";
 import {
   NotificationBadgesState,
   useNotificationBadges,
 } from "../shared-components/hooks/useNotificationBadges";
-import { checkPlayerInactivity } from "../pages/playersList/utils/inactivityUtils";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -51,15 +51,30 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const users = useFetchUsers();
   const players = useFetchPlayers();
   const authState = useAuthState();
-  const games = useFetchGames();
-  const record = useFetchRecords(); //last month historical record
+  const records = useFetchRecords();
+  const recordDate = useMemo(() => {
+    return records?.createdAt;
+  }, [records]);
+  const gamesAfterRecords = useWatchGamesAfterRecordTimestamp(recordDate);
+  useEffect(() => {
+    console.log("bruh records have changed");
+  }, [records]);
+  useEffect(() => {
+    console.log("bruh games after records have changed");
+  }, [gamesAfterRecords]);
+  const games = useMemo(
+    () => (records ? gamesAfterRecords.concat([records]) : gamesAfterRecords),
+    [records, gamesAfterRecords]
+  );
+
   const notificationBadgesState = useNotificationBadges(games, league);
 
-  useEffect(() => {
-    players.forEach((player) => {
-      checkPlayerInactivity(player, games);
-    });
-  }, [players, games]);
+  //TODO - fix this with records change
+  // useEffect(() => {
+  //   players.forEach((player) => {
+  //     checkPlayerInactivity(player, games);
+  //   });
+  // }, [players, games]);
 
   useEffect(() => {
     const getLeague = async (): Promise<void> => {

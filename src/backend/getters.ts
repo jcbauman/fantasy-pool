@@ -226,28 +226,6 @@ export const getAppUserByUID = async (
   }
 };
 
-export const fetchGamesAfterTimestamp = async (startDate: Date) => {
-  const startTimestamp = Timestamp.fromDate(startDate);
-
-  const q = query(
-    GAMES_COLLECTION,
-    where("createdAt", ">=", startTimestamp),
-    orderBy("createdAt", "asc") // Order results by timestamp
-  );
-
-  const querySnapshot = await getDocs(q);
-  const documents: DocumentData[] = [];
-
-  querySnapshot.forEach((doc) => {
-    documents.push({
-      id: doc.id,
-      ...doc.data(),
-    } as DocumentData);
-  });
-
-  return documents;
-};
-
 export const fetchGamesBeforeTimestamp = async (
   endDate: Date
 ): Promise<Game[]> => {
@@ -270,4 +248,84 @@ export const fetchGamesBeforeTimestamp = async (
   });
 
   return documents;
+};
+
+export const fetchGamesAfterTimestamp = async (
+  endDate: Date
+): Promise<Game[]> => {
+  const endTimestamp = Timestamp.fromDate(endDate);
+
+  const q = query(
+    GAMES_COLLECTION,
+    where("createdAt", "<=", endTimestamp),
+    orderBy("createdAt", "asc") // Order results by timestamp
+  );
+
+  const querySnapshot = await getDocs(q);
+  const documents: Game[] = [];
+
+  querySnapshot.forEach((doc) => {
+    documents.push({
+      id: doc.id,
+      ...doc.data(),
+    } as Game);
+  });
+
+  return documents;
+};
+
+export const useWatchGamesAfterRecordTimestamp = (after?: Timestamp) => {
+  const [games, setGames] = useState<Game[]>([]);
+
+  useEffect(() => {
+    if (!after) return;
+    const q = query(GAMES_COLLECTION, where("createdAt", ">", after));
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot: QuerySnapshot<DocumentData>) => {
+        setGames(
+          snapshot.docs.map((doc) => {
+            const data = doc.data() as Omit<Game, "id">;
+            return {
+              id: doc.id,
+              ...data,
+            };
+          })
+        );
+      }
+    );
+    return () => unsubscribe();
+  }, [after]);
+
+  return sortGamesByDate(games);
+};
+
+export const useFetchRecentGames = () => {
+  const [games, setGames] = useState<Game[]>([]);
+
+  useEffect(() => {
+    const twoWeeksAgo = new Date();
+    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+    const dateTwoWeeksAgo = Timestamp.fromDate(twoWeeksAgo);
+    const q = query(GAMES_COLLECTION, where("createdAt", ">", dateTwoWeeksAgo));
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot: QuerySnapshot<DocumentData>) => {
+        setGames(
+          snapshot.docs.map((doc) => {
+            const data = doc.data() as Omit<Game, "id">;
+            return {
+              id: doc.id,
+              ...data,
+            };
+          })
+        );
+      }
+    );
+    return () => unsubscribe();
+  }, []);
+
+  return sortGamesByDate(games);
 };

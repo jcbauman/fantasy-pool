@@ -34,7 +34,7 @@ export const GameCompletePage: FC = () => {
     launchConfetti();
   }, [launchConfetti]);
 
-  const getNonPlayerString = () => {
+  const getOtherPlayerNames = () => {
     const relevantFirstNames = (targetGame?.playerIds ?? [])
       .map((playerId) => {
         const player = players.find((p) => p.id === playerId);
@@ -68,7 +68,7 @@ export const GameCompletePage: FC = () => {
               />
             ) : (
               <Typography>
-                You didn't play this game, but {getNonPlayerString()}{" "}
+                You didn't play in this game, but {getOtherPlayerNames()}{" "}
                 appreciated you tracking for them.
               </Typography>
             )}

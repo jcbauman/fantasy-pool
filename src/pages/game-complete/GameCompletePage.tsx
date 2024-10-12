@@ -7,6 +7,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { GameFantasyDetail } from "../playerDetail/components/GameFantasyDetail";
 import { useAppContext } from "../../context/AppContext";
 import { makePlayerActive } from "../playersList/utils/inactivityUtils";
+import { useConfetti } from "../../shared-components/hooks/useConfetti";
 
 export const GameCompletePage: FC = () => {
   const {
@@ -15,6 +16,7 @@ export const GameCompletePage: FC = () => {
     players,
     authState: { player, refetchPlayer },
   } = useAppContext();
+  const { confettiComponent, launchConfetti } = useConfetti();
   const lastGameId = useSelector((state: RootState) => state.game.lastGameId);
   const targetGame = games.find((game) => game.id === lastGameId);
 
@@ -28,6 +30,25 @@ export const GameCompletePage: FC = () => {
     }
   }, [targetGame, players, refetchPlayer]);
 
+  useEffect(() => {
+    launchConfetti();
+  }, [launchConfetti]);
+
+  const getNonPlayerString = () => {
+    const relevantFirstNames = (targetGame?.playerIds ?? [])
+      .map((playerId) => {
+        const player = players.find((p) => p.id === playerId);
+        if (player) {
+          // Split the full name and return the first name
+          return player.name.split(" ")?.[0] ?? "";
+        }
+        return null;
+      })
+      .filter(Boolean);
+    if (relevantFirstNames.length === 0) return "they";
+    // Join first names with ' and '
+    return relevantFirstNames.join(" and ");
+  };
   return (
     <PageContainer>
       <Stack
@@ -35,15 +56,21 @@ export const GameCompletePage: FC = () => {
         sx={{ width: "100%", height: "100%", p: 1 }}
         spacing={2}
       >
+        {confettiComponent()}
         <Card sx={{ p: 2, textAlign: "center" }}>
           <Stack direction="column" spacing={2}>
             <Typography variant="h5">GAME COMPLETE</Typography>
-            {player && (
+            {player && targetGame?.playerIds.includes(player.id) ? (
               <GameFantasyDetail
                 game={targetGame}
                 player={player}
                 scoringMatrix={scoringMatrix}
               />
+            ) : (
+              <Typography>
+                You didn't play this game, but {getNonPlayerString()}{" "}
+                appreciated you tracking for them.
+              </Typography>
             )}
             <Button to="/" variant="contained" component={RouterLink}>
               Back to home

@@ -133,7 +133,7 @@ export const useFetchLocations = (): PoolHallLocation[] => {
     );
     return () => unsubscribe();
   }, []);
-  return locations;
+  return [...new Set(locations)];
 };
 
 export const fetchPlayerById = async (

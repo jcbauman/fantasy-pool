@@ -25,26 +25,21 @@ export const filterPlayedGamesForPlayer = (
   return games.filter((game) => game.playerIds.includes(playerId));
 };
 
-export const getStatsForPlayerGames = (
-  playerId: string,
-  games: Game[],
-  scoringMatrix: Record<string, number>
-): GameStat & {
+export type StatsForPlayerGames = GameStat & {
   totalGames: number;
   totalWins: number;
   totalSessions: number;
   winPercentage: number;
   fantasyScore: number;
   fantasyGameAvg: number;
-} => {
-  const stats: GameStat & {
-    totalGames: number;
-    totalWins: number;
-    totalSessions: number;
-    winPercentage: number;
-    fantasyScore: number;
-    fantasyGameAvg: number;
-  } = games.reduce(
+};
+
+export const getStatsForPlayerGames = (
+  playerId: string,
+  games: Game[],
+  scoringMatrix: Record<string, number>
+): StatsForPlayerGames => {
+  const stats: StatsForPlayerGames = games.reduce(
     (acc, game) => {
       const playerStats: GameStat | undefined = game.statsByPlayer.find(
         (s) => s.playerId === playerId
@@ -132,4 +127,11 @@ export const generateColor = (str: string) => {
   }
   const color = (hash & 0x00ffffff).toString(16).toUpperCase();
   return "#" + "00000".substring(0, 6 - color.length) + color;
+};
+
+export const isKeyOfRankings = (
+  key: string,
+  obj: Record<string, string[]>
+): key is keyof Record<string, string[]> => {
+  return key in obj;
 };

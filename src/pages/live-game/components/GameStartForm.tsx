@@ -45,6 +45,7 @@ export const GameStartForm: FC<{
     string | undefined
   >(undefined);
   const locations = useFetchLocations();
+
   const locationOptions = useMemo(() => {
     return locations.map((l) => l.name).sort();
   }, [locations]);
@@ -88,7 +89,7 @@ export const GameStartForm: FC<{
           l.name.trim().toLowerCase() === data.location.trim().toLowerCase()
       )
     ) {
-      addNewLocation({ name: data.location });
+      addNewLocation({ name: data.location.trim() });
     }
     dispatch(initializeGame({ ...resolvedData }));
     try {

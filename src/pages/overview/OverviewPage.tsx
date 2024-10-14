@@ -86,7 +86,7 @@ export const OverviewComponent: FC = () => {
                 <ListItemIcon>
                   <AccountBoxOutlinedIcon />
                 </ListItemIcon>
-                <ListItemText primary="My statistics" />
+                <ListItemText primary="My player profile" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />

@@ -1,20 +1,19 @@
 // src/redux/playerSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { OrderByFields } from "../types";
 
 interface NavState {
-  sortBy: OrderByFields;
+  sortBy: string;
 }
 
 const initialState: NavState = {
-  sortBy: OrderByFields.Name,
+  sortBy: "name",
 };
 
 const navSlice = createSlice({
   name: "nav",
   initialState,
   reducers: {
-    setPlayerSortBy: (state, action: PayloadAction<OrderByFields>) => {
+    setPlayerSortBy: (state, action: PayloadAction<string>) => {
       state.sortBy = action.payload;
     },
   },

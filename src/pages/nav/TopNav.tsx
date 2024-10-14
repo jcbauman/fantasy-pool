@@ -15,9 +15,11 @@ import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import EightBallIcon from "../../shared-components/icons/EightBallIcon";
 import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
+import { usePageTitle } from "../../shared-components/hooks/usePageTitle";
 
 export const TopNav: FC = () => {
   const { title, showBackButton, hideButtons } = useTopNav();
+  usePageTitle(title);
   const location = useLocation();
   const {
     authState: { isAuthed },

@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { FC, useMemo } from "react";
-import { GameStat, OrderByFields, Player } from "../../types";
+import { Player } from "../../types";
 import { PlayerCell } from "./components/PlayerCell";
 import {
   getStatsForPlayerGames,
@@ -24,9 +24,10 @@ import { setPlayerSortBy } from "../../redux/navSlice";
 
 const SortableStatsOrder = [
   { label: "Name", value: "name" },
-  { label: "Games", value: "totalGames" },
   { label: "Avg", value: "fantasyGameAvg" },
   { label: "Win %", value: "winPercentage" },
+  { label: "Games", value: "totalGames" },
+  { label: "Wins", value: "totalWins" },
   { label: "SS", value: "skillShots" },
   { label: "3PR", value: "threeBallsPocketedInRow" },
   { label: "4PR", value: "fourBallsPocketedInRow" },
@@ -79,6 +80,7 @@ export const PlayersPage: FC = () => {
       cursor: "pointer",
       sx: {
         cursor: "pointer",
+        textAlign: field === "name" ? "left" : "center",
         textDecoration: sortBy === field ? "underline" : "default",
       },
     };
@@ -161,12 +163,18 @@ const PlayerRow: FC<{ player: Player }> = ({ player }) => {
             </TableCell>
           );
         else if (f.value === "winPercentage")
-          return <TableCell>{winPercentage}</TableCell>;
+          return (
+            <TableCell sx={{ textAlign: "center" }}>{winPercentage}</TableCell>
+          );
         else if (f.value === "fantasyGameAvg")
-          return <TableCell>{normalizeStat(stats.fantasyGameAvg)}</TableCell>;
+          return (
+            <TableCell sx={{ textAlign: "center" }}>
+              {normalizeStat(stats.fantasyGameAvg)}
+            </TableCell>
+          );
         else
           return (
-            <TableCell>
+            <TableCell sx={{ textAlign: "center" }}>
               {isKeyOfStats(f.value, stats) ? stats[f.value] : "yee"}
             </TableCell>
           );

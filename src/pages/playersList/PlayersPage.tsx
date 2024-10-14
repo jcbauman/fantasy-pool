@@ -8,9 +8,12 @@ import {
   Typography,
 } from "@mui/material";
 import { FC, useMemo } from "react";
-import { OrderByFields, Player } from "../../types";
+import { GameStat, OrderByFields, Player } from "../../types";
 import { PlayerCell } from "./components/PlayerCell";
-import { getStatsForPlayerGames } from "./utils/playerUtils";
+import {
+  getStatsForPlayerGames,
+  StatsForPlayerGames,
+} from "./utils/playerUtils";
 import { normalizePercentage, normalizeStat } from "../../utils/statsUtils";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
@@ -18,6 +21,21 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { setPlayerSortBy } from "../../redux/navSlice";
+
+const SortableStatsOrder = [
+  { label: "Name", value: "name" },
+  { label: "Games", value: "totalGames" },
+  { label: "Avg", value: "fantasyGameAvg" },
+  { label: "Win %", value: "winPercentage" },
+  { label: "SS", value: "skillShots" },
+  { label: "3PR", value: "threeBallsPocketedInRow" },
+  { label: "4PR", value: "fourBallsPocketedInRow" },
+  { label: "5PR", value: "fiveBallsPocketedInRow" },
+  { label: "6PR", value: "sixBallsPocketedInRow" },
+  { label: "7PR", value: "sevenBallsPocketedInRow" },
+  { label: "8PR", value: "runTheTable" },
+  { label: "SCR", value: "scratches" },
+];
 
 export const PlayersPage: FC = () => {
   const { players, rankings } = useAppContext();
@@ -29,6 +47,13 @@ export const PlayersPage: FC = () => {
     [players]
   );
 
+  const isKeyOfRankings = (
+    key: string,
+    obj: Record<string, string[]>
+  ): key is keyof Record<string, string[]> => {
+    return key in obj;
+  };
+
   const sortPlayers = (
     players: Player[],
     sortedPlayerIds: string[]
@@ -39,59 +64,57 @@ export const PlayersPage: FC = () => {
   };
 
   const sortedPlayers = useMemo(() => {
-    switch (sortBy) {
-      case OrderByFields.FantasyAvg:
-        return sortPlayers(
-          [...alphabeticalPlayers],
-          rankings.fantasyGameAvg ?? []
-        );
-      case OrderByFields.Games:
-        return sortPlayers([...alphabeticalPlayers], rankings.totalGames ?? []);
-      case OrderByFields.WinPercentage:
-        return sortPlayers(
-          [...alphabeticalPlayers],
-          rankings.winPercentage ?? []
-        );
-      case OrderByFields.Name:
-      default:
-        return alphabeticalPlayers;
+    if (sortBy === "name") {
+      return alphabeticalPlayers;
+    } else if (isKeyOfRankings(sortBy, rankings)) {
+      return sortPlayers([...alphabeticalPlayers], rankings[sortBy] ?? []);
+    } else {
+      return alphabeticalPlayers;
     }
   }, [alphabeticalPlayers, rankings, sortBy]);
 
-  const sortByProps = (field: OrderByFields) => {
+  const sortByProps = (field: string) => {
     return {
       onClick: () => dispatch(setPlayerSortBy(field)),
       cursor: "pointer",
-      sx: { textDecoration: sortBy === field ? "underline" : "default" },
+      sx: {
+        cursor: "pointer",
+        textDecoration: sortBy === field ? "underline" : "default",
+      },
     };
   };
 
   return (
     <PageContainer>
-      <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
-        <Table sx={{ width: "100%" }}>
+      <Stack
+        direction="column"
+        sx={{ width: "100%", height: "100%", overflowX: "auto" }}
+      >
+        <Table sx={{ width: "100%" }} stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell {...sortByProps(OrderByFields.Name)}>
-                <Typography variant="overline" noWrap>
-                  {OrderByFields.Name}
-                </Typography>
-              </TableCell>
-              <TableCell {...sortByProps(OrderByFields.Games)}>
-                <Typography variant="overline" noWrap>
-                  {OrderByFields.Games}
-                </Typography>
-              </TableCell>
-              <TableCell {...sortByProps(OrderByFields.FantasyAvg)}>
-                <Typography variant="overline" noWrap>
-                  {OrderByFields.FantasyAvg}
-                </Typography>
-              </TableCell>
-              <TableCell {...sortByProps(OrderByFields.WinPercentage)}>
-                <Typography variant="overline" noWrap>
-                  {OrderByFields.WinPercentage}
-                </Typography>
-              </TableCell>
+              {SortableStatsOrder.map((f) => {
+                return (
+                  <TableCell
+                    style={
+                      f.value === "name"
+                        ? {
+                            position: "sticky",
+                            left: 0,
+                            zIndex: 10,
+                            backgroundColor: "#303030",
+                          }
+                        : { position: "relative" }
+                    }
+                    {...sortByProps(f.value)}
+                    key={`${f.label}-cell"`}
+                  >
+                    <Typography variant="overline" noWrap>
+                      {f.label}
+                    </Typography>
+                  </TableCell>
+                );
+              })}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -113,14 +136,41 @@ const PlayerRow: FC<{ player: Player }> = ({ player }) => {
   const handleRowClick = (): void => {
     navigate("/players/" + player.id);
   };
+
+  const isKeyOfStats = (
+    key: string,
+    obj: StatsForPlayerGames
+  ): key is keyof StatsForPlayerGames => {
+    return key in obj;
+  };
+
   return (
     <TableRow onClick={handleRowClick}>
-      <TableCell>
-        <PlayerCell player={player} />
-      </TableCell>
-      <TableCell>{stats.totalGames}</TableCell>
-      <TableCell>{normalizeStat(stats.fantasyGameAvg)}</TableCell>
-      <TableCell>{winPercentage}</TableCell>
+      {SortableStatsOrder.map((f) => {
+        if (f.value === "name")
+          return (
+            <TableCell
+              style={{
+                position: "sticky",
+                left: 0,
+                zIndex: 1,
+                backgroundColor: "#303030",
+              }}
+            >
+              <PlayerCell player={player} />
+            </TableCell>
+          );
+        else if (f.value === "winPercentage")
+          return <TableCell>{winPercentage}</TableCell>;
+        else if (f.value === "fantasyGameAvg")
+          return <TableCell>{normalizeStat(stats.fantasyGameAvg)}</TableCell>;
+        else
+          return (
+            <TableCell>
+              {isKeyOfStats(f.value, stats) ? stats[f.value] : "yee"}
+            </TableCell>
+          );
+      })}
     </TableRow>
   );
 };

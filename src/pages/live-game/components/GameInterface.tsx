@@ -39,6 +39,7 @@ import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlin
 import { MultiBallDeleteDialog } from "./MultiBallDeleteDialog";
 import { Timestamp } from "firebase/firestore";
 import { useGameIsIncomplete } from "../hooks/useGameIsIncomplete";
+import { ButtonGroupIterator } from "./ButtonGroupIterator";
 
 export const GameInterface: FC = () => {
   const dispatch = useDispatch();
@@ -62,7 +63,7 @@ export const GameInterface: FC = () => {
     game?.playerIds.includes(player.id)
   );
   const currentPlayerGameStats = useMemo(
-    () => getStatsForGame(gamePlayers[selectedTab].id, game),
+    () => getStatsForGame(gamePlayers[selectedTab]?.id, game),
     [selectedTab, game, gamePlayers]
   );
   const showTabs = gamePlayers.length > 1;
@@ -158,46 +159,18 @@ export const GameInterface: FC = () => {
                 key={field.primary}
                 disablePadding
                 secondaryAction={
-                  <ButtonGroup
-                    variant="contained"
-                    aria-label="Basic button group"
-                  >
-                    <Button
-                      onClick={() => {
-                        if (field.multiBall) {
-                          setMultiBallDeleteDialogOpen(true);
-                        } else {
-                          if (statValue !== 0) {
-                            iterateStat({
-                              playerId: gamePlayers[selectedTab].id,
-                              statKey: field.stat,
-                              delta: -1,
-                            });
-                          }
-                        }
-                      }}
-                    >
-                      -
-                    </Button>
-                    <Button sx={{ pointerEvents: "none" }}>
-                      {field.multiBall ? totalRuns : statValue}
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        if (field.multiBall) {
-                          setMultiBallDialogOpen(true);
-                        } else {
-                          iterateStat({
-                            playerId: gamePlayers[selectedTab].id,
-                            statKey: field.stat,
-                            delta: 1,
-                          });
-                        }
-                      }}
-                    >
-                      +
-                    </Button>
-                  </ButtonGroup>
+                  <ButtonGroupIterator
+                    {...{
+                      field,
+                      setMultiBallDeleteDialogOpen,
+                      setMultiBallDialogOpen,
+                      totalRuns,
+                      iterateStat,
+                      selectedTab,
+                      currentPlayerGameStats,
+                      gamePlayers,
+                    }}
+                  />
                 }
               >
                 <ListItemIcon sx={{ minWidth: "30px" }}>

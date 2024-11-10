@@ -114,26 +114,30 @@ export const useFetchPlayers = (): Player[] => {
   return players;
 };
 
-export const useFetchLocations = (): PoolHallLocation[] => {
+export const useFetchLocations = (): string[] => {
   const [locations, setLocations] = useState<PoolHallLocation[]>([]);
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      LOCATIONS_COLLECTION,
-      (snapshot: QuerySnapshot<DocumentData>) => {
-        setLocations(
-          snapshot.docs.map((doc) => {
-            const data = doc.data() as Omit<PoolHallLocation, "id">;
-            return {
-              id: doc.id,
-              ...data,
-            };
-          })
-        );
+    const fetchDocuments = async () => {
+      try {
+        const querySnapshot = await getDocs(LOCATIONS_COLLECTION);
+        const docsData: PoolHallLocation[] = querySnapshot.docs.map((doc) => {
+          const data = doc.data() as Omit<PoolHallLocation, "id">;
+          return {
+            id: doc.id,
+            ...data,
+          };
+        });
+        setLocations(docsData);
+      } catch (error) {
+        console.error("Error fetching documents: ", error);
       }
-    );
-    return () => unsubscribe();
+    };
+
+    fetchDocuments();
   }, []);
-  return [...new Set(locations)];
+
+  const reducedLocations = locations.map((l) => l.name);
+  return [...new Set(reducedLocations)].sort();
 };
 
 export const fetchPlayerById = async (

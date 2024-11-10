@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import DatePicker from "../../../shared-components/DatePicker";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -46,10 +46,6 @@ export const GameStartForm: FC<{
   >(undefined);
   const locations = useFetchLocations();
 
-  const locationOptions = useMemo(() => {
-    return locations.map((l) => l.name).sort();
-  }, [locations]);
-
   const {
     handleSubmit,
     control,
@@ -75,7 +71,7 @@ export const GameStartForm: FC<{
     }
   }, [games, setValue]);
   const [checked, setChecked] = useState(true);
-  const playerOptionIds = allPlayers.map((p) => p.id);
+  const playerOptionIds = allPlayers.sort((a, b) => a.name.localeCompare(b.name)).map((p) => p.id);
   const onSubmit = (data: FormData): void => {
     const resolvedData = {
       ...data,
@@ -86,7 +82,7 @@ export const GameStartForm: FC<{
     if (
       !locations.some(
         (l) =>
-          l.name.trim().toLowerCase() === data.location.trim().toLowerCase()
+          l.trim().toLowerCase() === data.location.trim().toLowerCase()
       )
     ) {
       addNewLocation({ name: data.location.trim() });
@@ -167,7 +163,7 @@ export const GameStartForm: FC<{
                 onInputChange={(_e, newInputValue) =>
                   setValue("location", newInputValue || "")
                 }
-                options={locationOptions}
+                options={locations}
                 renderInput={(params) => (
                   <TextField
                     {...params}

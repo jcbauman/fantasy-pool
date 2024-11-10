@@ -2,7 +2,7 @@ import Snackbar from "@mui/material/Snackbar";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { closeNotifications } from "../redux/notificationSlice";
-import { Alert, Slide } from "@mui/material";
+import { Slide } from "@mui/material";
 
 export default function NotificationLayer() {
   const dispatch = useDispatch();

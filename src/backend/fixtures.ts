@@ -1,11 +1,4 @@
-import {
-  Game,
-  GameStatKeys,
-  GameStatKeysAbbrev,
-  League,
-  Player,
-  User,
-} from "../types";
+import { Game, GameStatKeys, League, Player, User } from "../types";
 import { v4 as uuidv4 } from "uuid";
 
 const userId = "e3962e0e-768f-4281-84bd-345cc7ebd270";

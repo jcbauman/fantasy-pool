@@ -1,6 +1,4 @@
-// src/redux/playerSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Player } from "../types";
 
 interface NotificationState {
   open: boolean;

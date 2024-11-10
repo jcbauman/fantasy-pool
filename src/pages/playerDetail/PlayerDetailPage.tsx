@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from "@mui/material";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PlayerDetailHeader } from "./components/PlayerDetailHeader";
 import { PlayerSeasonStats } from "./components/PlayerSeasonStats";

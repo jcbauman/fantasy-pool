@@ -5,16 +5,14 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
   Stack,
   Typography,
 } from "@mui/material";
 import { FC, useState } from "react";
-import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import { GameStat, GameStatKeys } from "../../../types";
+import {  GameStatKeys } from "../../../types";
 
 interface MultiBallDialogProps {
   open: boolean;

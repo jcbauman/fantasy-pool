@@ -1,5 +1,5 @@
-import { FC, useMemo, useState } from "react";
-import { Game, GameStatKeys, Player } from "../../../types";
+import { FC, useMemo } from "react";
+import { Game, Player } from "../../../types";
 import { Divider, Stack, Typography } from "@mui/material";
 import { useAppContext } from "../../../context/AppContext";
 import {
@@ -22,8 +22,6 @@ export const StatOverview: FC<{ player: Player; playerGames: Game[] }> = ({
   }, [playerGames, player?.id, scoringMatrix]);
   const totalWinRank =
     (rankings["totalWins"].findIndex((id) => id === player.id) ?? 0) + 1;
-  const totalGamesRank =
-    (rankings["totalGames"].findIndex((id) => id === player.id) ?? 0) + 1;
   const totalGames = allStatsByPlayers[player.id]?.totalGames ?? 0;
   const totalWins = allStatsByPlayers[player.id]?.totalWins ?? 0;
   const winPercentage = totalGames

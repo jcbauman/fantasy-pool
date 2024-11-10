@@ -1,7 +1,6 @@
 import { FC } from "react";
 import {
   Game,
-  GameStat,
   GameStatKeys,
   GameStatKeysAbbrev,
   Player,
@@ -131,7 +130,7 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
                 </TableCell>
                 <TableCell>
                   {normalizePercentage(
-                    stats["totalWins"] / stats["totalGames"] ?? 0
+                    (stats["totalWins"] / stats["totalGames"])
                   )}
                 </TableCell>
                 <TableCell>{stats[GameStatKeys.skillShots] ?? 0}</TableCell>

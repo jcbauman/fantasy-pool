@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { Player } from "../../../types";
 import { Avatar, Stack, Typography } from "@mui/material";
-import { generateColor, getPlayerNameAbbreviation } from "../utils/playerUtils";
+import { getPlayerNameAbbreviation } from "../utils/playerUtils";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { getAbbreviation } from "../../../utils/statsUtils";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const PlayerCell: FC<{ player: Player; linkToPlayer?: boolean }> = ({
   player,

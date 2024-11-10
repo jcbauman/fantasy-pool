@@ -1,6 +1,5 @@
 import { collection, getFirestore } from "firebase/firestore";
 import { app } from "./firebaseConfig";
-import { Game } from "../../types";
 
 export const firestore = getFirestore(app);
 

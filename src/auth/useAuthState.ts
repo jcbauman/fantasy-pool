@@ -9,7 +9,6 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { auth } from "../backend/firebase/firebaseConfig";
-import { mockUsers } from "../backend/fixtures";
 import { setupNewUser } from "../backend/setters";
 import { sendErrorNotification } from "../redux/notificationSlice";
 import { getAppUserByUID, getPlayerByUserID } from "../backend/getters";

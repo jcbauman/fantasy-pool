@@ -2,7 +2,6 @@ import { FC } from "react";
 import { Game, Player } from "../../../types";
 import { Avatar, Card, Stack, Typography } from "@mui/material";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { StatOverview } from "../../playersList/components/StatOverview";
 
 export const PlayerDetailHeader: FC<{

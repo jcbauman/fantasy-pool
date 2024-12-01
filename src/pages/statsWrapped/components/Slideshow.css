@@ -9,15 +9,15 @@
   flex-direction: column;
   gap: 8px; /* Space between images */
   flex: 1;
-  animation: scroll-up 10s linear infinite;
+  animation: scroll-up 20s linear infinite;
 }
 
 .column.scroll-down {
-  animation: scroll-down 10s linear infinite;
+  animation: scroll-down 20s linear infinite;
 }
 
 .column.scroll-up {
-  animation: scroll-up 10s linear infinite;
+  animation: scroll-up 20s linear infinite;
 }
 
 .image {

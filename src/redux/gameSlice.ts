@@ -1,4 +1,3 @@
-// src/redux/playerSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Game, GameStat } from "../types";
 import { defaultGameStat } from "../utils/constants";

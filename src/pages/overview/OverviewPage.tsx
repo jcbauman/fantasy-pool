@@ -154,6 +154,15 @@ export const OverviewComponent: FC = () => {
                 <ListItemText primary="FAQs and Rules" />
               </ListItemButton>
             </ListItem>
+            <Divider component="li" />
+            <ListItem disablePadding>
+              <ListItemButton to="/wrapped-2024" component={RouterLink}>
+                <ListItemIcon>
+                  <LiveHelpOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Wrapped (remove)" />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Stack>

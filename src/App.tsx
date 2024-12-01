@@ -21,6 +21,7 @@ import { AppAdminPage } from "./pages/app-admin/AppAdminPage";
 import { RecentGamesPage } from "./pages/games/RecentGamesPage";
 import { LeagueAdminPage } from "./pages/league-admin/LeagueAdminPage";
 import { RulesPage } from "./pages/rules/RulesPage";
+import { WrappedPage } from "./pages/statsWrapped/WrappedPage";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
                   <Route path="/games" element={<RecentGamesPage />} />
                   <Route path="/league-admin" element={<LeagueAdminPage />} />
                   <Route path="/rules" element={<RulesPage />} />
+                  <Route path="/wrapped-2024" element={<WrappedPage />} />
                   <Route path="*" element={<OverviewComponent />} />
                 </Routes>
               </Router>

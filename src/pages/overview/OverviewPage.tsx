@@ -156,11 +156,47 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton to="/wrapped-2024" component={RouterLink}>
+              <ListItemButton
+                to={`/wrapped-2024/${player?.id ?? ""}`}
+                component={RouterLink}
+              >
                 <ListItemIcon>
                   <LiveHelpOutlinedIcon />
                 </ListItemIcon>
-                <ListItemText primary="Wrapped (remove)" />
+                <ListItemText primary="Rocko Wrapped (remove)" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton
+                to={`/wrapped-2024/Fwonnaprz0okB0HIYUje`}
+                component={RouterLink}
+              >
+                <ListItemIcon>
+                  <LiveHelpOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="zayn Wrapped (remove)" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton
+                to={`/wrapped-2024/sgBzBphKFqF3zA0c1rJl`}
+                component={RouterLink}
+              >
+                <ListItemIcon>
+                  <LiveHelpOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="amira Wrapped (remove)" />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton
+                to={`/wrapped-2024/x5QiXK4bh88GTIoflUoZ`}
+                component={RouterLink}
+              >
+                <ListItemIcon>
+                  <LiveHelpOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="vinod Wrapped (remove)" />
               </ListItemButton>
             </ListItem>
           </List>

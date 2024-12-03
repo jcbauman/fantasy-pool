@@ -118,6 +118,8 @@ export const getStringFromStatKey = (statKey: string): string => {
       return "Skill shots";
     case GameStatKeys.scratches:
       return "Scratches";
+    case "totalGames":
+      return "Total games";
     default:
       return "";
   }

@@ -46,7 +46,7 @@ function App() {
                   <Route path="/games" element={<RecentGamesPage />} />
                   <Route path="/league-admin" element={<LeagueAdminPage />} />
                   <Route path="/rules" element={<RulesPage />} />
-                  <Route path="/wrapped-2024" element={<WrappedPage />} />
+                  <Route path="/wrapped-2024/:id" element={<WrappedPage />} />
                   <Route path="*" element={<OverviewComponent />} />
                 </Routes>
               </Router>

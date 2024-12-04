@@ -25,7 +25,7 @@ const SlideInTypography: React.FC<SlideInTypographyProps> = ({
             newVisible[index] = true;
             return newVisible;
           });
-        }, index * 1000)
+        }, index * 1500)
       );
     });
 

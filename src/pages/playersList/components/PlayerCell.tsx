@@ -6,10 +6,11 @@ import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { getAbbreviation } from "../../../utils/statsUtils";
 import { useNavigate } from "react-router-dom";
 
-export const PlayerCell: FC<{ player: Player; linkToPlayer?: boolean }> = ({
-  player,
-  linkToPlayer,
-}) => {
+export const PlayerCell: FC<{
+  player: Player;
+  linkToPlayer?: boolean;
+  hideOut?: boolean;
+}> = ({ player, linkToPlayer, hideOut }) => {
   const displayName = getPlayerNameAbbreviation(player.name);
   const navigate = useNavigate();
 
@@ -43,7 +44,7 @@ export const PlayerCell: FC<{ player: Player; linkToPlayer?: boolean }> = ({
         <Typography variant="body2" fontWeight={500} noWrap>
           {displayName}
         </Typography>
-        {player.out && (
+        {player.out && !hideOut && (
           <CircleOutlinedIcon
             color="error"
             sx={{ width: 12, height: 12, ml: 1 }}

@@ -112,7 +112,10 @@ export const FirstPage: FC<{
         height: "100%",
       }}
     >
-      <SlideInTypography text={getContent()} />
+      <SlideInTypography
+        text={getContent()}
+        style={["grow", "slide", "collapse"][(page - 1) % 3] ?? "grow"}
+      />
     </Stack>
   );
 };

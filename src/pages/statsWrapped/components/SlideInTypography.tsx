@@ -3,7 +3,7 @@ import { Typography, Box, Slide, Collapse, Grow } from "@mui/material";
 
 interface SlideInTypographyProps {
   text: string[];
-  style?: "grow" | "slide" | "collapse";
+  style?: string; //"grow" | "slide" | "collapse"
 }
 
 const SlideInTypography: React.FC<SlideInTypographyProps> = ({

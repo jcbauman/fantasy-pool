@@ -6,6 +6,7 @@ import {
   countLocations,
   determineLeadersOfWeirdStats,
   getGoodAndBadDays,
+  getLocationLeader,
   getMainAffirmation,
   getMedal,
   getPercentageBanter,
@@ -26,7 +27,12 @@ export const FirstPage: FC<{
   const { rankings, allStatsByPlayers, scoringMatrix } = useAppContext();
 
   const statLeaderString = determineLeadersOfWeirdStats(rankings, player.id);
-  const locationsInfo = countLocations(playerGames);
+  const locationsInfo = countLocations(playerGames, player.id, scoringMatrix);
+  const locationLeader = getLocationLeader(
+    playerGames,
+    player.id,
+    scoringMatrix
+  );
   const {
     worstDay,
     worstDayPoints,
@@ -58,12 +64,20 @@ export const FirstPage: FC<{
       case 3:
         return [
           "You got around.",
-          `To ${locationsInfo.length} different locations in fact.`,
+          `To ${locationsInfo.rankedLocations.length} different locations in fact.`,
           "But we all know your favorite:",
-          `${locationsInfo[0][0]} 📍`,
-          `(${locationsInfo[0][1]} games!)`,
+          `${locationsInfo.rankedLocations[0][0]} 📍`,
+          `(${locationsInfo.rankedLocations[0][1].games} games!)`,
         ];
       case 4:
+        return [
+          "So many pool halls...",
+          "But only one can be your lucky spot.🍀",
+          "You are the top scorer at:",
+          `${locationLeader.name} 👑`,
+          `(${normalizeStat(locationLeader.score)} points scored there!)`,
+        ];
+      case 5:
         if (statLeaderString === "") {
           return [
             "You're not leading in any stats.",
@@ -76,23 +90,23 @@ export const FirstPage: FC<{
             statLeaderString,
           ];
         }
-      case 5:
+      case 6:
         return [
           "You've had some 🔥 and 🚽 days this season.",
           `${goodDayCount} good days, to be exact.`,
           `And only ${badDayCount} bad days!`,
           "Cause when you're on, you're on.",
         ];
-      case 6:
+      case 7:
         return [
           "Your best day of pool this season:",
           `${bestDay} (${normalizeStat(bestDayPoints)} pts!) 🤩`,
           "Your worst day of pool this season:",
           `${worstDay} (${normalizeStat(worstDayPoints)} pts) 😪`,
         ];
-      case 7:
-        return percentBanter;
       case 8:
+        return percentBanter;
+      case 9:
         return [
           `${playerName}, 🫡`,
           ...getMainAffirmation(mainRank),

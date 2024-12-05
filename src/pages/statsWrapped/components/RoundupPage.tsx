@@ -12,15 +12,19 @@ import {
   Typography,
 } from "@mui/material";
 import { FC } from "react";
-import { Player } from "../../../types";
+import { Game, Player } from "../../../types";
 import { useAppContext } from "../../../context/AppContext";
-import { getMedal, toOrdinal } from "../wrappedUtils";
+import { getLocationLeader, getMedal, toOrdinal } from "../wrappedUtils";
 import { PlayerCell } from "../../playersList/components/PlayerCell";
 import { normalizeStat } from "../../../utils/statsUtils";
 import styled from "@emotion/styled";
 
-export const RoundupPage: FC<{ player: Player }> = ({ player }) => {
-  const { rankings, allStatsByPlayers, players } = useAppContext();
+export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
+  player,
+  playerGames,
+}) => {
+  const { rankings, allStatsByPlayers, players, scoringMatrix } =
+    useAppContext();
   const mainRank = rankings["fantasyScore"].indexOf(player.id);
   const medal = getMedal(mainRank);
   const playerName = player.name.split(" ")[0];
@@ -28,8 +32,12 @@ export const RoundupPage: FC<{ player: Player }> = ({ player }) => {
     players.find((p) => p.id === rankings["fantasyScore"][0]) ?? player,
     players.find((p) => p.id === rankings["fantasyScore"][1]) ?? player,
     players.find((p) => p.id === rankings["fantasyScore"][2]) ?? player,
-    players.find((p) => p.id === rankings["fantasyScore"][3]) ?? player,
   ];
+  const locationLeader = getLocationLeader(
+    playerGames,
+    player.id,
+    scoringMatrix
+  );
   return (
     <Stack direction="column" sx={{ height: "100%" }}>
       <Stack direction="row" sx={{ justifyContent: "space-between", p: 2 }}>
@@ -112,6 +120,15 @@ export const RoundupPage: FC<{ player: Player }> = ({ player }) => {
             <Typography variant="overline">Fsy. Average</Typography>
           </Stack>
         </Stack>
+      </Stack>
+      <Divider />
+      <Stack direction="row" sx={{ alignItems: "center", p: 2 }}>
+        <Typography variant="overline" sx={{ mr: 2 }}>
+          Scoring leader at:
+        </Typography>
+        <Typography variant="h5" noWrap>
+          <i>{locationLeader.name}</i>
+        </Typography>
       </Stack>
       <Divider />
       <Table>

@@ -6,20 +6,18 @@ import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { usePlayerParams } from "../../shared-components/hooks/usePlayerParam";
 import { FirstPage } from "./components/FirstPage";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
-import { sendSuccessNotification } from "../../redux/notificationSlice";
-import { useDispatch } from "react-redux";
 import { handleShare } from "./wrappedUtils";
 import { RoundupPage } from "./components/RoundupPage";
 
 export const WrappedPage: FC = () => {
   const [page, setPage] = useState(0);
   const { player, loading, playerGames } = usePlayerParams();
-  const dispatch = useDispatch();
+  const playerName = player?.name.split(" ")[0] ?? "";
   return (
     <PageContainer authedRoute loading={loading}>
       {player ? (
         <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
-          {page === 0 && <Slideshow />}
+          {page === 0 && <Slideshow name={playerName} />}
           {page === 1 && (
             <FirstPage player={player} page={page} playerGames={playerGames} />
           )}
@@ -44,8 +42,13 @@ export const WrappedPage: FC = () => {
           {page === 8 && (
             <FirstPage player={player} page={page} playerGames={playerGames} />
           )}
-          {page === 9 && <RoundupPage player={player} />}
-          {page < 9 ? (
+          {page === 9 && (
+            <FirstPage player={player} page={page} playerGames={playerGames} />
+          )}
+          {page === 10 && (
+            <RoundupPage player={player} playerGames={playerGames} />
+          )}
+          {page < 10 ? (
             <Button
               endIcon={<SkipNextIcon />}
               variant="contained"

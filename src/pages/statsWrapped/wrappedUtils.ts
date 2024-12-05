@@ -56,21 +56,72 @@ export const getMainAffirmation = (index: number) => {
   return MAIN_AFFIRMATIONS[index];
 };
 
-export const countLocations = (games: Game[]): [string, number][] => {
+export const countLocations = (
+  games: Game[],
+  playerId: string,
+  scoringMatrix: Record<string, number>
+): {
+  rankedLocations: [string, { games: number; totalScore: number }][];
+  rankedPointsLocations: [string, { games: number; totalScore: number }][];
+} => {
   const locations = games.reduce((acc, game) => {
     if (game.location) {
       if (!acc[game.location]) {
-        acc[game.location] = 1;
+        acc[game.location] = {
+          games: 1,
+          totalScore: getFantasyScoreForPlayerSeason(
+            [game],
+            playerId,
+            scoringMatrix
+          ),
+        };
       } else {
-        acc[game.location]++;
+        acc[game.location] = {
+          games: acc[game.location].games + 1,
+          totalScore:
+            acc[game.location].totalScore +
+            getFantasyScoreForPlayerSeason([game], playerId, scoringMatrix),
+        };
       }
     }
     return acc;
-  }, {} as Record<string, number>);
+  }, {} as Record<string, { games: number; totalScore: number }>);
 
   //order locations by most games played
-  const rankedLocations = Object.entries(locations).sort((a, b) => b[1] - a[1]);
-  return rankedLocations;
+  const rankedLocations = Object.entries(locations).sort(
+    (a, b) => b[1].games - a[1].games
+  );
+
+  //order locations by most points scored
+  const rankedPointsLocations = Object.entries(locations).sort(
+    (a, b) => b[1].totalScore - a[1].totalScore
+  );
+  return { rankedLocations, rankedPointsLocations };
+};
+
+export const getLocationLeader = (
+  games: Game[],
+  playerId: string,
+  scoringMatrix: Record<string, number>
+): { name: string; score: number } => {
+  const locationsInfo = countLocations(games, playerId, scoringMatrix);
+  const specialHardcodedLocations: Record<string, string> = {
+    Z8V1bf9Xcze6qnIgcrbU: "Abe's Pagoda Bar",
+    Fwonnaprz0okB0HIYUje: "Bushwick Ice House",
+    x5QiXK4bh88GTIoflUoZ: "The Levee",
+    sgBzBphKFqF3zA0c1rJl: "The Johnson's",
+  };
+  const score = specialHardcodedLocations[playerId]
+    ? locationsInfo.rankedPointsLocations.find(
+        (item) => item[0] === specialHardcodedLocations[playerId]
+      )?.[1].totalScore
+    : locationsInfo.rankedPointsLocations[0][1].totalScore;
+  return {
+    name:
+      specialHardcodedLocations[playerId] ??
+      locationsInfo.rankedPointsLocations[0][0],
+    score: score ?? 0,
+  };
 };
 
 export function toOrdinal(rank: number): string {

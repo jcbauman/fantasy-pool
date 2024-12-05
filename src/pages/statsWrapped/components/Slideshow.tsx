@@ -2,7 +2,7 @@ import React from "react";
 import "./Slideshow.css";
 import { Typography } from "@mui/material";
 
-const Slideshow: React.FC = () => {
+const Slideshow: React.FC<{ name: string }> = ({ name }) => {
   const images = [
     "/images/wrapped/vin.jpeg",
     "/images/wrapped/rock.jpeg",
@@ -54,6 +54,8 @@ const Slideshow: React.FC = () => {
           fontWeight: "bold",
         }}
       >
+        {name}'s
+        <br />
         2024
         <br />
         FANTASY POOL

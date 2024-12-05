@@ -22,7 +22,7 @@ import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import { WrappedOverviewButton } from "../statsWrapped/components/WrappedOverviewButton";
 import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
 
-const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyy";
+const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 
 export const OverviewComponent: FC = () => {
   const {
@@ -178,7 +178,7 @@ export const OverviewComponent: FC = () => {
                   <ListItemIcon>
                     <CardGiftcardOutlinedIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Review 2024 wrapped" />
+                  <ListItemText primary="Review 2024 Wrapped" />
                 </ListItemButton>
               </ListItem>
             )}

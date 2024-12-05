@@ -1,6 +1,7 @@
 import {
   Avatar,
   Badge,
+  Card,
   Divider,
   Stack,
   Table,
@@ -30,7 +31,7 @@ export const RoundupPage: FC<{ player: Player }> = ({ player }) => {
     players.find((p) => p.id === rankings["fantasyScore"][3]) ?? player,
   ];
   return (
-    <Stack direction="column">
+    <Stack direction="column" sx={{ height: "100%" }}>
       <Stack direction="row" sx={{ justifyContent: "space-between", p: 2 }}>
         <Stack direction="column" sx={{ alignItems: "flex-start" }}>
           <LargeBadge
@@ -52,42 +53,63 @@ export const RoundupPage: FC<{ player: Player }> = ({ player }) => {
         </Stack>
         <Stack
           direction="column"
-          sx={{ alignItems: "flex-end", justifyContent: "space-around" }}
+          sx={{ alignItems: "flex-end", justifyContent: "space-between" }}
         >
           <Typography variant="overline">2024 Fantasy Pool Season</Typography>
-          <Typography variant="h3" noWrap>
-            {player.nickname ?? playerName}
-          </Typography>
-          <Typography
-            variant="overline"
-            sx={{ fontWeight: "bold", fontSize: "1.2rem" }}
-          >
-            {player.name}
-          </Typography>
+          <Stack direction="column" sx={{ alignItems: "flex-end" }}>
+            <Typography variant="h3" noWrap>
+              {player.nickname ?? playerName}
+            </Typography>
+            <Typography
+              variant="overline"
+              sx={{ fontWeight: "bold", fontSize: "1.2rem" }}
+            >
+              {player.name}
+            </Typography>
+          </Stack>
+          <div />
         </Stack>
       </Stack>
       <Divider />
       <Stack sx={{ p: 2 }}>
-        <Stack>
-          <Typography variant="h4">
-            {normalizeStat(allStatsByPlayers[player.id].fantasyScore)}
-          </Typography>
-          <Typography variant="overline">
-            Total fantasy points scored
-          </Typography>
-        </Stack>
+        <Card sx={{ p: 2, mb: 2 }}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              justifyContent: "space-between",
+              opacity: 1,
+            }}
+          >
+            <Typography variant="h3" sx={{ mr: 2 }}>
+              {normalizeStat(allStatsByPlayers[player.id].fantasyScore)}
+            </Typography>
+            <Typography variant="overline">
+              Total fantasy points scored
+            </Typography>
+          </Stack>
+        </Card>
         <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-          <Stack>
+          <Stack direction="column" sx={{ alignItems: "center" }}>
+            <Typography variant="h4">
+              {allStatsByPlayers[player.id].totalGames}
+            </Typography>
+            <Typography variant="overline">Games played</Typography>
+          </Stack>
+          <Stack direction="column" sx={{ alignItems: "center" }}>
             <Typography variant="h4">
               {allStatsByPlayers[player.id].totalWins}
             </Typography>
             <Typography variant="overline">Wins</Typography>
           </Stack>
-          <Stack>
+          <Stack direction="column" sx={{ alignItems: "center" }}>
             <Typography variant="h4">
-              {allStatsByPlayers[player.id].totalGames}
+              {normalizeStat(
+                allStatsByPlayers[player.id].fantasyScore /
+                  allStatsByPlayers[player.id].totalGames
+              )}
             </Typography>
-            <Typography variant="overline">Games played</Typography>
+            <Typography variant="overline">Fsy. Average</Typography>
           </Stack>
         </Stack>
       </Stack>

@@ -13,7 +13,6 @@ import {
 } from "../wrappedUtils";
 import { useAppContext } from "../../../context/AppContext";
 import { normalizeStat } from "../../../utils/statsUtils";
-import { RoundupPage } from "./RoundupPage";
 
 const BG_COLORS = ["#ebb604", "#cc1301", "#0c1a7d", "#02694b", "#770504"];
 

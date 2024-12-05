@@ -38,6 +38,6 @@ export const useTopNav = (): UseTopNav => {
   else if (location.pathname === "/rules")
     return { title: "FAQs and Rules", showBackButton: true };
   else if (location.pathname.startsWith("/wrapped-2024"))
-    return { title: "Wrapped" };
+    return { title: "2024 Wrapped" };
   else return { title: "Fantasy Pool" };
 };

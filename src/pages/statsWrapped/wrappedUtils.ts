@@ -276,3 +276,15 @@ export const copyToClipboard = (text: string, onSuccess?: () => void): void => {
       console.error("Failed to copy text: ", err);
     });
 };
+
+export const generateBgColor = (str: string) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash |= 0;
+  }
+  const BG_COLORS = ["#ebb604", "#cc1301", "#0c1a7d", "#02694b", "#770504"];
+  const color = BG_COLORS[Math.abs(Math.round(hash)) % BG_COLORS.length];
+  return color;
+};

@@ -1,4 +1,4 @@
-import { Badge, Divider, Stack, Typography } from "@mui/material";
+import { Badge, Button, Divider, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -19,11 +19,15 @@ import { useDispatch } from "react-redux";
 import { sendSuccessNotification } from "../../redux/notificationSlice";
 import EightBallIcon from "../../shared-components/icons/EightBallIcon";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
+import { WrappedOverviewButton } from "../statsWrapped/components/WrappedOverviewButton";
+import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
+
+const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyy";
 
 export const OverviewComponent: FC = () => {
   const {
     league,
-    authState: { player },
+    authState: { player, user },
     notificationBadgesState,
   } = useAppContext();
   const dispatch = useDispatch();
@@ -35,10 +39,20 @@ export const OverviewComponent: FC = () => {
       )
     );
   };
+  const hasClickedWrapped = Boolean(localStorage.getItem(WRAPPED_STORAGE_KEY));
+  const wrappedEnabled = user?.isAppAdmin || league?.release2024Wrapped;
 
   return (
     <PageContainer authedRoute>
       <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
+        {wrappedEnabled && !hasClickedWrapped && (
+          <WrappedOverviewButton
+            href={`/wrapped-2024/${player?.id ?? "9"}`}
+            onClick={() => {
+              localStorage.setItem(WRAPPED_STORAGE_KEY, "true");
+            }}
+          />
+        )}
         <Stack
           direction="column"
           sx={{
@@ -155,24 +169,26 @@ export const OverviewComponent: FC = () => {
               </ListItemButton>
             </ListItem>
             <Divider component="li" />
-            <ListItem disablePadding>
-              <ListItemButton
-                to={`/wrapped-2024/${player?.id ?? ""}`}
-                component={RouterLink}
-              >
-                <ListItemIcon>
-                  <LiveHelpOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Rocko Wrapped (remove)" />
-              </ListItemButton>
-            </ListItem>
+            {wrappedEnabled && hasClickedWrapped && (
+              <ListItem disablePadding>
+                <ListItemButton
+                  to={`/wrapped-2024/${player?.id ?? ""}`}
+                  component={RouterLink}
+                >
+                  <ListItemIcon>
+                    <CardGiftcardOutlinedIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Review 2024 wrapped" />
+                </ListItemButton>
+              </ListItem>
+            )}
             <ListItem disablePadding>
               <ListItemButton
                 to={`/wrapped-2024/Fwonnaprz0okB0HIYUje`}
                 component={RouterLink}
               >
                 <ListItemIcon>
-                  <LiveHelpOutlinedIcon />
+                  <CardGiftcardOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="zayn Wrapped (remove)" />
               </ListItemButton>
@@ -183,7 +199,7 @@ export const OverviewComponent: FC = () => {
                 component={RouterLink}
               >
                 <ListItemIcon>
-                  <LiveHelpOutlinedIcon />
+                  <CardGiftcardOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="amira Wrapped (remove)" />
               </ListItemButton>
@@ -194,7 +210,7 @@ export const OverviewComponent: FC = () => {
                 component={RouterLink}
               >
                 <ListItemIcon>
-                  <LiveHelpOutlinedIcon />
+                  <CardGiftcardOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="vinod Wrapped (remove)" />
               </ListItemButton>

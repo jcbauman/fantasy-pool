@@ -31,6 +31,7 @@ export interface League {
   leagueManagerId: string;
   leagueManagerMessage?: string;
   scoringMatrix?: { [key: string]: number };
+  release2024Wrapped?: boolean;
 }
 
 export interface Game {

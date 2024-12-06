@@ -31,7 +31,7 @@ export const WrappedPage: FC = () => {
   };
 
   return (
-    <PageContainer authedRoute loading={loading}>
+    <PageContainer loading={loading}>
       {player ? (
         <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
           {page === 0 && <Slideshow name={playerName} />}
@@ -56,7 +56,7 @@ export const WrappedPage: FC = () => {
               onClick={handleNextClick}
               sx={{
                 position: "fixed",
-                bottom: 5,
+                bottom: 10,
                 right: 5,
                 zIndex: 10,
                 textAlign: "center",
@@ -79,7 +79,7 @@ export const WrappedPage: FC = () => {
               }
               sx={{
                 position: "fixed",
-                bottom: 5,
+                bottom: 10,
                 right: 5,
                 zIndex: 10,
                 textAlign: "center",

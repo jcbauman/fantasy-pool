@@ -123,7 +123,7 @@ export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
       </Stack>
       <Divider />
       <Stack direction="row" sx={{ alignItems: "center", p: 2 }}>
-        <Typography variant="overline" sx={{ mr: 2 }}>
+        <Typography variant="overline" sx={{ mr: 2, mt: 0.5 }}>
           Scoring leader at:
         </Typography>
         <Typography variant="h5" noWrap>

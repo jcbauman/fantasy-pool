@@ -159,11 +159,15 @@ export const determineLeadersOfWeirdStats = (
   if (firstsInCount.length === 0) {
     return "";
   }
-  return `You are ${firstsInCount
-    .map((key) => {
-      return `first in ${getStringFromStatKey(key).toLowerCase()}`;
-    })
-    .join(", ")}.`;
+  return `You racked up the most ${firstsInCount.reduce(
+    (acc, curr, idx, arr) => {
+      if (idx === 0) return getStringFromStatKey(curr).toLowerCase();
+      if (idx === arr.length - 1)
+        return `${acc}, and ${getStringFromStatKey(curr).toLowerCase()}`;
+      return `${acc}, ${getStringFromStatKey(curr).toLowerCase()}`;
+    },
+    ""
+  )} of anyone!`;
 };
 
 export const getPerGameRankings = (allStatsByPlayers: AggregateStats) => {

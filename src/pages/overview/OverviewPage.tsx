@@ -182,39 +182,45 @@ export const OverviewComponent: FC = () => {
                 </ListItemButton>
               </ListItem>
             )}
-            <ListItem disablePadding>
-              <ListItemButton
-                to={`/wrapped-2024/Fwonnaprz0okB0HIYUje`}
-                component={RouterLink}
-              >
-                <ListItemIcon>
-                  <CardGiftcardOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="zayn Wrapped (remove)" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton
-                to={`/wrapped-2024/sgBzBphKFqF3zA0c1rJl`}
-                component={RouterLink}
-              >
-                <ListItemIcon>
-                  <CardGiftcardOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="amira Wrapped (remove)" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton
-                to={`/wrapped-2024/x5QiXK4bh88GTIoflUoZ`}
-                component={RouterLink}
-              >
-                <ListItemIcon>
-                  <CardGiftcardOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="vinod Wrapped (remove)" />
-              </ListItemButton>
-            </ListItem>
+            {wrappedEnabled && hasClickedWrapped && (
+              <ListItem disablePadding>
+                <ListItemButton
+                  to={`/wrapped-2024/Fwonnaprz0okB0HIYUje`}
+                  component={RouterLink}
+                >
+                  <ListItemIcon>
+                    <CardGiftcardOutlinedIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="zayn Wrapped (remove)" />
+                </ListItemButton>
+              </ListItem>
+            )}
+            {wrappedEnabled && hasClickedWrapped && (
+              <ListItem disablePadding>
+                <ListItemButton
+                  to={`/wrapped-2024/sgBzBphKFqF3zA0c1rJl`}
+                  component={RouterLink}
+                >
+                  <ListItemIcon>
+                    <CardGiftcardOutlinedIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="amira Wrapped (remove)" />
+                </ListItemButton>
+              </ListItem>
+            )}
+            {wrappedEnabled && hasClickedWrapped && (
+              <ListItem disablePadding>
+                <ListItemButton
+                  to={`/wrapped-2024/x5QiXK4bh88GTIoflUoZ`}
+                  component={RouterLink}
+                >
+                  <ListItemIcon>
+                    <CardGiftcardOutlinedIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="vinod Wrapped (remove)" />
+                </ListItemButton>
+              </ListItem>
+            )}
           </List>
         </Box>
       </Stack>

@@ -92,9 +92,7 @@ export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
             <Typography variant="h3" sx={{ mr: 2 }}>
               {normalizeStat(allStatsByPlayers[player.id].fantasyScore)}
             </Typography>
-            <Typography variant="overline">
-              Total fantasy points scored
-            </Typography>
+            <Typography variant="overline">Total fantasy points</Typography>
           </Stack>
         </Card>
         <Stack direction="row" sx={{ justifyContent: "space-between" }}>
@@ -124,7 +122,7 @@ export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
       <Divider />
       <Stack direction="row" sx={{ alignItems: "center", p: 2 }}>
         <Typography variant="overline" sx={{ mr: 2, mt: 0.5 }}>
-          Scoring leader at:
+          Score leader at:
         </Typography>
         <Typography variant="h5" noWrap>
           <i>{locationLeader.name}</i>

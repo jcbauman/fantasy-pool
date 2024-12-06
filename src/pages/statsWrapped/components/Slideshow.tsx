@@ -48,7 +48,7 @@ const Slideshow: React.FC<{ name: string }> = ({ name }) => {
           color: "white",
           textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)",
           zIndex: 10,
-          fontSize: "5rem",
+          fontSize: "4.5rem",
           textAlign: "center",
           lineHeight: "5rem",
           fontWeight: "bold",

@@ -44,7 +44,13 @@ const SlideInTypography: React.FC<SlideInTypographyProps> = ({
       display="flex"
       flexDirection="column"
       gap={1.5}
-      sx={{ textAlign: "left", fontWeight: "bold" }}
+      sx={{
+        textAlign: "left",
+        fontWeight: "bold",
+        overflowY: "auto",
+        pr: 1,
+        height: "100%",
+      }}
     >
       {text.map((item, index) => {
         if (style === "slide") {
@@ -56,7 +62,7 @@ const SlideInTypography: React.FC<SlideInTypographyProps> = ({
               in={visible[index]}
               timeout={500}
             >
-              <Typography variant="h3">{item}</Typography>
+              <Typography variant="h4">{item}</Typography>
             </Slide>
           );
         }
@@ -68,7 +74,7 @@ const SlideInTypography: React.FC<SlideInTypographyProps> = ({
               in={visible[index]}
               timeout={500}
             >
-              <Typography variant="h3">{item}</Typography>
+              <Typography variant="h4">{item}</Typography>
             </Collapse>
           );
         }
@@ -79,7 +85,7 @@ const SlideInTypography: React.FC<SlideInTypographyProps> = ({
             in={visible[index]}
             timeout={500}
           >
-            <Typography variant="h3">{item}</Typography>
+            <Typography variant="h4">{item}</Typography>
           </Grow>
         );
       })}

@@ -21,7 +21,8 @@ export const FirstPage: FC<{
   player: Player;
   page: number;
   playerGames: Game[];
-}> = ({ player, page, playerGames }) => {
+  revealButton: () => void;
+}> = ({ player, page, playerGames, revealButton }) => {
   const playerName = player.name.split(" ")[0];
 
   const { rankings, allStatsByPlayers, scoringMatrix } = useAppContext();
@@ -129,6 +130,7 @@ export const FirstPage: FC<{
       <SlideInTypography
         text={getContent()}
         style={["grow", "slide", "collapse"][(page - 1) % 3] ?? "grow"}
+        revealButton={revealButton}
       />
     </Stack>
   );

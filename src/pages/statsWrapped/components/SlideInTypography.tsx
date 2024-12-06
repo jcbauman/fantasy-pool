@@ -4,11 +4,13 @@ import { Typography, Box, Slide, Collapse, Grow } from "@mui/material";
 interface SlideInTypographyProps {
   text: string[];
   style?: string; //"grow" | "slide" | "collapse"
+  revealButton: () => void;
 }
 
 const SlideInTypography: React.FC<SlideInTypographyProps> = ({
   text,
   style = "grow",
+  revealButton,
 }) => {
   const [visible, setVisible] = useState<boolean[]>(
     Array(text.length).fill(false)
@@ -23,6 +25,9 @@ const SlideInTypography: React.FC<SlideInTypographyProps> = ({
           setVisible((prev) => {
             const newVisible = [...prev];
             newVisible[index] = true;
+            if (index === text.length - 1) {
+              setTimeout(revealButton, 600);
+            }
             return newVisible;
           });
         }, index * 1500)
@@ -32,7 +37,7 @@ const SlideInTypography: React.FC<SlideInTypographyProps> = ({
     return () => {
       timers.forEach((timer) => clearTimeout(timer));
     };
-  }, [text]);
+  }, [text, revealButton]);
 
   return (
     <Box

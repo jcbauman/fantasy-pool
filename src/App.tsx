@@ -1,6 +1,6 @@
 import "./App.css";
 import { OverviewComponent } from "./pages/overview/OverviewPage";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { PlayersPage } from "./pages/playersList/PlayersPage";
 import { PlayerDetailPage } from "./pages/playerDetail/PlayerDetailPage";
 import { ThemeProvider } from "@emotion/react";

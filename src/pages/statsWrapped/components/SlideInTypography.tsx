@@ -47,7 +47,6 @@ const SlideInTypography: React.FC<SlideInTypographyProps> = ({
       sx={{
         textAlign: "left",
         fontWeight: "bold",
-        overflowY: "auto",
         pr: 1,
         height: "100%",
       }}

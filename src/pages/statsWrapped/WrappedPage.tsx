@@ -32,7 +32,7 @@ export const WrappedPage: FC = () => {
 
   return (
     <PageContainer loading={loading}>
-      {player ? (
+      {player && playerGames.length > 0 ? (
         <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
           {page === 0 && <Slideshow name={playerName} />}
           {page === 1 && <FirstPage player={player} {...pageProps} />}
@@ -91,7 +91,11 @@ export const WrappedPage: FC = () => {
           )}
         </Stack>
       ) : (
-        <Typography>This is not a real wrapped, return to home.</Typography>
+        <Stack sx={{ p: 2 }}>
+          <Typography>
+            Sorry, this player is not eligible for 2024 Wrapped.
+          </Typography>
+        </Stack>
       )}
     </PageContainer>
   );

@@ -27,7 +27,11 @@ export const FirstPage: FC<{
 
   const { rankings, allStatsByPlayers, scoringMatrix } = useAppContext();
 
-  const statLeaderString = determineLeadersOfWeirdStats(rankings, player.id);
+  const statLeaderString = determineLeadersOfWeirdStats(
+    rankings,
+    player.id,
+    allStatsByPlayers
+  );
   const locationsInfo = countLocations(playerGames, player.id, scoringMatrix);
   const locationLeader = getLocationLeader(
     playerGames,

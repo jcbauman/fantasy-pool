@@ -141,7 +141,8 @@ export function toOrdinal(rank: number): string {
 
 export const determineLeadersOfWeirdStats = (
   rankings: Record<string, string[]>,
-  forPlayerId: string
+  forPlayerId: string,
+  allStatsByPlayers: AggregateStats
 ): string => {
   const excludedKeys = [
     GameStatKeys.winsBy8BallSink,
@@ -153,12 +154,16 @@ export const determineLeadersOfWeirdStats = (
   ];
   // list which keys that playerId ranks first in in rankings
   const firstsInCount = Object.keys(rankings).filter(
-    (key) => rankings[key][0] === forPlayerId && !excludedKeys.includes(key)
+    (key) =>
+      rankings[key][0] === forPlayerId &&
+      !excludedKeys.includes(key) &&
+      allStatsByPlayers[forPlayerId][key] > 0
   );
 
   if (firstsInCount.length === 0) {
     return "";
   }
+
   return `You racked up the most ${firstsInCount.reduce(
     (acc, curr, idx, arr) => {
       if (idx === 0) return getStringFromStatKey(curr).toLowerCase();

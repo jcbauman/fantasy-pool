@@ -1,4 +1,4 @@
-import { Badge, Button, Divider, Stack, Typography } from "@mui/material";
+import { Badge, Divider, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -179,45 +179,6 @@ export const OverviewComponent: FC = () => {
                     <CardGiftcardOutlinedIcon />
                   </ListItemIcon>
                   <ListItemText primary="Review 2024 Wrapped" />
-                </ListItemButton>
-              </ListItem>
-            )}
-            {wrappedEnabled && hasClickedWrapped && (
-              <ListItem disablePadding>
-                <ListItemButton
-                  to={`/wrapped-2024/Fwonnaprz0okB0HIYUje`}
-                  component={RouterLink}
-                >
-                  <ListItemIcon>
-                    <CardGiftcardOutlinedIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="zayn Wrapped (remove)" />
-                </ListItemButton>
-              </ListItem>
-            )}
-            {wrappedEnabled && hasClickedWrapped && (
-              <ListItem disablePadding>
-                <ListItemButton
-                  to={`/wrapped-2024/sgBzBphKFqF3zA0c1rJl`}
-                  component={RouterLink}
-                >
-                  <ListItemIcon>
-                    <CardGiftcardOutlinedIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="amira Wrapped (remove)" />
-                </ListItemButton>
-              </ListItem>
-            )}
-            {wrappedEnabled && hasClickedWrapped && (
-              <ListItem disablePadding>
-                <ListItemButton
-                  to={`/wrapped-2024/x5QiXK4bh88GTIoflUoZ`}
-                  component={RouterLink}
-                >
-                  <ListItemIcon>
-                    <CardGiftcardOutlinedIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="vinod Wrapped (remove)" />
                 </ListItemButton>
               </ListItem>
             )}

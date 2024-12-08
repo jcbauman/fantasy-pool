@@ -26,7 +26,7 @@ export const FirstPage: FC<{
   const playerName = player.name.split(" ")[0];
 
   const { rankings, allStatsByPlayers, scoringMatrix } = useAppContext();
-
+  //todo playersGames is not games, but sessions. use the allstats stuff instead
   const statLeaderString = determineLeadersOfWeirdStats(
     rankings,
     player.id,

@@ -205,7 +205,9 @@ export const getAppUserByUID = async (
   }
 };
 
-export const fetchDocumentsByTimestamp = async (startDate: Date) => {
+export const fetchGamesByTimestamp = async (
+  startDate: Date
+): Promise<Game[]> => {
   const startTimestamp = Timestamp.fromDate(startDate);
 
   const q = query(
@@ -215,14 +217,20 @@ export const fetchDocumentsByTimestamp = async (startDate: Date) => {
   );
 
   const querySnapshot = await getDocs(q);
-  const documents: DocumentData[] = [];
+  const documents: Game[] = [];
 
   querySnapshot.forEach((doc) => {
     documents.push({
       id: doc.id,
       ...doc.data(),
-    } as DocumentData);
+    } as Game);
   });
 
   return documents;
+};
+
+export const getXWeeksAgo = (weeks: number): Date => {
+  const today = new Date();
+  const xWeeksAgo = new Date(today.getTime() - weeks * 7 * 24 * 60 * 60 * 1000);
+  return xWeeksAgo;
 };

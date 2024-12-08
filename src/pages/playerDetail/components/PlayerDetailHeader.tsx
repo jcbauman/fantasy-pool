@@ -9,7 +9,10 @@ export const PlayerDetailHeader: FC<{
   playerGames: Game[];
 }> = ({ player, playerGames }) => {
   return (
-    <Card>
+    <Card
+      data-testid="player-detail-header"
+      sx={{ height: "auto", flexShrink: 0 }}
+    >
       <Stack
         direction="row"
         spacing={2}

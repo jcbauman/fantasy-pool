@@ -4,7 +4,6 @@ import { PlayerDetailHeader } from "./components/PlayerDetailHeader";
 import { PlayerSeasonStats } from "./components/PlayerSeasonStats";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { GameLog } from "./components/GameLog";
-import { Player } from "../../types";
 import { Link } from "react-router-dom";
 import { usePlayerParams } from "../../shared-components/hooks/usePlayerParam";
 

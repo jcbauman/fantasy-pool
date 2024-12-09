@@ -58,7 +58,7 @@ export const getMainAffirmation = (index: number) => {
 
 export const countLocations = (
   games: Game[],
-  playerId: string,
+  playerId: string | undefined,
   scoringMatrix: Record<string, number>
 ): {
   rankedLocations: [string, { games: number; totalScore: number }][];
@@ -104,6 +104,9 @@ export const getLocationLeader = (
   playerId: string,
   scoringMatrix: Record<string, number>
 ): { name: string; score: number } => {
+  if (!games.length) {
+    return { name: "", score: 0 };
+  }
   const locationsInfo = countLocations(games, playerId, scoringMatrix);
   const specialHardcodedLocations: Record<string, string> = {
     Z8V1bf9Xcze6qnIgcrbU: "Abe's Pagoda Bar",
@@ -141,7 +144,7 @@ export function toOrdinal(rank: number): string {
 
 export const determineLeadersOfWeirdStats = (
   rankings: Record<string, string[]>,
-  forPlayerId: string,
+  forPlayerId: string | undefined,
   allStatsByPlayers: AggregateStats
 ): string => {
   const excludedKeys = [
@@ -279,6 +282,7 @@ export const getPercentageBanter = (
   allStatsByPlayers: AggregateStats,
   playerId: string
 ): string[] => {
+  if (!playerId.length) return [""];
   const percentage =
     allStatsByPlayers[playerId]["totalWins"] /
     allStatsByPlayers[playerId]["totalGames"];

@@ -1,19 +1,11 @@
-import { Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import { FC } from "react";
 import SlideInTypography from "./SlideInTypography";
 import { Game, Player } from "../../../types";
-import {
-  countLocations,
-  determineLeadersOfWeirdStats,
-  getGoodAndBadDays,
-  getLocationLeader,
-  getMainAffirmation,
-  getMedal,
-  getPercentageBanter,
-  toOrdinal,
-} from "../wrappedUtils";
+import { getMainAffirmation, toOrdinal } from "../wrappedUtils";
 import { useAppContext } from "../../../context/AppContext";
 import { normalizeStat } from "../../../utils/statsUtils";
+import { UseWrappedStats } from "../useWrappedStats";
 
 const BG_COLORS = ["#ebb604", "#cc1301", "#0c1a7d", "#02694b", "#770504"];
 
@@ -21,38 +13,26 @@ export const FirstPage: FC<{
   player: Player;
   page: number;
   playerGames: Game[];
+  wrappedStats: UseWrappedStats;
   revealButton: () => void;
-}> = ({ player, page, playerGames, revealButton }) => {
-  const playerName = player.name.split(" ")[0];
-
-  const { rankings, allStatsByPlayers, scoringMatrix } = useAppContext();
-  //todo playersGames is not games, but sessions. use the allstats stuff instead
-  const statLeaderString = determineLeadersOfWeirdStats(
-    rankings,
-    player.id,
-    allStatsByPlayers
-  );
-  const locationsInfo = countLocations(playerGames, player.id, scoringMatrix);
-  const locationLeader = getLocationLeader(
-    playerGames,
-    player.id,
-    scoringMatrix
-  );
+}> = ({ player, page, playerGames, revealButton, wrappedStats }) => {
   const {
+    statLeaderString,
+    locationsInfo,
+    locationLeader,
     worstDay,
     worstDayPoints,
     bestDay,
     bestDayPoints,
+    percentBanter,
     badDayCount,
     goodDayCount,
-  } = getGoodAndBadDays(playerGames, player.id, scoringMatrix);
-  const percentBanter = getPercentageBanter(
-    rankings,
-    allStatsByPlayers,
-    player.id
-  );
-  const mainRank = rankings["fantasyScore"].indexOf(player.id);
-  const medal = getMedal(mainRank);
+    medal,
+    playerName,
+    mainRank,
+  } = wrappedStats;
+  const { rankings, allStatsByPlayers } = useAppContext();
+
   const getContent = (): string[] => {
     switch (page) {
       case 1:
@@ -60,7 +40,7 @@ export const FirstPage: FC<{
       case 2:
         return [
           "You've played a total of:",
-          `${playerGames.length} games.`,
+          `${allStatsByPlayers[player.id]["totalGames"]} games.`,
           `(${toOrdinal(
             rankings["totalWins"].indexOf(player.id)
           )} in the league)`,

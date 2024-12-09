@@ -8,6 +8,7 @@ import { FirstPage } from "./components/FirstPage";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import { handleShare } from "./wrappedUtils";
 import { RoundupPage } from "./components/RoundupPage";
+import { useWrappedStats } from "./useWrappedStats";
 
 export const WrappedPage: FC = () => {
   const [page, setPage] = useState(0);
@@ -24,10 +25,12 @@ export const WrappedPage: FC = () => {
     setButtonHidden(false);
   };
 
+  const wrappedStats = useWrappedStats(player, playerGames);
   const pageProps = {
     page,
     playerGames,
     revealButton,
+    wrappedStats,
   };
 
   return (

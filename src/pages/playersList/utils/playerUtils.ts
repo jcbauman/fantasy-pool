@@ -124,3 +124,18 @@ export const isKeyOfRankings = (
 ): key is keyof Record<string, string[]> => {
   return key in obj;
 };
+
+export const joinedInTimeFor2024Wrapped = (
+  dateString: string | undefined
+): boolean => {
+  if (!dateString) return true;
+  const inputDate = new Date(dateString);
+  const comparisonDate = new Date("2024-12-13"); // December 13, 2024
+
+  // Ensure the date is valid
+  if (isNaN(inputDate.getTime())) {
+    throw new Error("Invalid date string");
+  }
+
+  return inputDate < comparisonDate;
+};

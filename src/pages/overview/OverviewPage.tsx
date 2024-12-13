@@ -21,13 +21,14 @@ import EightBallIcon from "../../shared-components/icons/EightBallIcon";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import { WrappedOverviewButton } from "../statsWrapped/components/WrappedOverviewButton";
 import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
+import { joinedInTimeFor2024Wrapped } from "../playersList/utils/playerUtils";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 
 export const OverviewComponent: FC = () => {
   const {
     league,
-    authState: { player, user },
+    authState: { player },
     notificationBadgesState,
   } = useAppContext();
   const dispatch = useDispatch();
@@ -40,7 +41,8 @@ export const OverviewComponent: FC = () => {
     );
   };
   const hasClickedWrapped = Boolean(localStorage.getItem(WRAPPED_STORAGE_KEY));
-  const wrappedEnabled = user?.isAppAdmin || league?.release2024Wrapped;
+  const canAccessWrapped = joinedInTimeFor2024Wrapped(player?.joinDate);
+  const wrappedEnabled = league?.release2024Wrapped && canAccessWrapped;
 
   return (
     <PageContainer authedRoute>

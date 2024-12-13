@@ -15,15 +15,16 @@ import { MultiPlayerGameLog } from "./components.tsx/MultiPlayerGameLog";
 import { formatDateToMMDD } from "../../utils/statsUtils";
 import { Game } from "../../types";
 import { fetchGamesByTimestamp, getXWeeksAgo } from "../../backend/getters";
+import { sortGamesByDate } from "../../utils/gameUtils";
 
 export const RecentGamesPage: FC = () => {
   const [games, setGames] = useState<Game[]>([]);
   useEffect(() => {
     const fetchGames = async () => {
-      const twoWeeksAgo = getXWeeksAgo(2);
+      const twoWeeksAgo = getXWeeksAgo(3);
       const res = await fetchGamesByTimestamp(twoWeeksAgo);
       if (res) {
-        setGames(res);
+        setGames(sortGamesByDate(res));
       }
     };
     fetchGames();
@@ -65,9 +66,11 @@ export const RecentGamesPage: FC = () => {
             );
           })}
         </List>
-        <Typography sx={{ textAlign: "center", mb: 2 }}>
-          Currently showing games from the last 2 weeks.
-        </Typography>
+        <Stack sx={{ py: 2, display: games.length ? "block" : "none" }}>
+          <Typography sx={{ textAlign: "center" }}>
+            Currently showing games from the last 3 weeks.
+          </Typography>
+        </Stack>
       </Stack>
     </PageContainer>
   );

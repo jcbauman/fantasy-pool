@@ -18,6 +18,7 @@ import { getLocationLeader, getMedal, toOrdinal } from "../wrappedUtils";
 import { PlayerCell } from "../../playersList/components/PlayerCell";
 import { normalizeStat } from "../../../utils/statsUtils";
 import styled from "@emotion/styled";
+import { AvatarWithBadge } from "../../../shared-components/AvatarWithBade";
 
 export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
   player,
@@ -42,18 +43,7 @@ export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
     <Stack direction="column" sx={{ height: "100%" }}>
       <Stack direction="row" sx={{ justifyContent: "space-between", p: 2 }}>
         <Stack direction="column" sx={{ alignItems: "flex-start" }}>
-          <LargeBadge
-            badgeContent={medal}
-            sx={{ fontSize: "60px" }}
-            overlap="circular"
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          >
-            <Avatar
-              src={player.profilePictureUrl}
-              alt={player.name}
-              sx={{ width: "100px", height: "100px" }}
-            />
-          </LargeBadge>
+          <AvatarWithBadge badgeContent={medal} player={player} size="large" />
           <Typography variant="h2" fontWeight="bold">
             {toOrdinal(mainRank)}
           </Typography>

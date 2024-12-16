@@ -1,8 +1,9 @@
 import { FC } from "react";
 import { Game, Player } from "../../../types";
-import { Avatar, Card, Stack, Typography } from "@mui/material";
+import { Card, Stack, Typography } from "@mui/material";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { StatOverview } from "../../playersList/components/StatOverview";
+import { AvatarWithBadge } from "../../../shared-components/AvatarWithBade";
 
 export const PlayerDetailHeader: FC<{
   player: Player;
@@ -18,11 +19,7 @@ export const PlayerDetailHeader: FC<{
         spacing={2}
         sx={{ width: "100%", p: 1, alignItems: "center" }}
       >
-        <Avatar
-          src={player.profilePictureUrl}
-          sx={{ width: 100, height: 100 }}
-          alt={player.name}
-        />
+        <AvatarWithBadge player={player} />
         <Stack direction="column" sx={{ p: 1 }}>
           <Typography variant="overline" fontWeight={500} fontSize={16}>
             {player.name}

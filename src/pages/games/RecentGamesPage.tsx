@@ -1,12 +1,13 @@
 import {
   Card,
+  CircularProgress,
   List,
   ListItem,
   ListSubheader,
   Stack,
   Typography,
 } from "@mui/material";
-import { FC, Fragment, useEffect, useState } from "react";
+import { FC, Fragment, useMemo } from "react";
 import {
   NAV_BAR_HEIGHT,
   PageContainer,
@@ -14,63 +15,76 @@ import {
 import { MultiPlayerGameLog } from "./components.tsx/MultiPlayerGameLog";
 import { formatDateToMMDD } from "../../utils/statsUtils";
 import { Game } from "../../types";
-import { fetchGamesByTimestamp, getXWeeksAgo } from "../../backend/getters";
-import { sortGamesByDate } from "../../utils/gameUtils";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useInfiniteFetchGames } from "./useInfiniteFetchGames";
 
 export const RecentGamesPage: FC = () => {
-  const [games, setGames] = useState<Game[]>([]);
-  useEffect(() => {
-    const fetchGames = async () => {
-      const twoWeeksAgo = getXWeeksAgo(3);
-      const res = await fetchGamesByTimestamp(twoWeeksAgo);
-      if (res) {
-        setGames(sortGamesByDate(res));
-      }
-    };
-    fetchGames();
-  }, []);
-  const gamesGroupedByDate = groupByDate(games);
+  const { games, hasMore, loadGames, loading } = useInfiniteFetchGames();
+  const gamesGroupedByDate = useMemo(() => groupByDate(games), [games]);
 
   return (
     <PageContainer authedRoute>
       <Stack
         direction="column"
-        sx={{ width: "100%", height: "100%" }}
+        sx={{
+          width: "100%",
+          height: `calc(100vh - ${NAV_BAR_HEIGHT}px)`,
+          overflow: "autos",
+        }}
         spacing={2}
       >
-        <List disablePadding>
-          {Object.entries(gamesGroupedByDate).map(([date, items]) => {
-            return (
-              <Fragment key={`date-${date}`}>
-                <ListSubheader
-                  sx={{
-                    position: "sticky",
-                    top: NAV_BAR_HEIGHT,
-                    my: 1,
-                    elevation: 10,
-                    boxShadow: 5,
-                  }}
-                >
-                  {formatDateString(date)}
-                </ListSubheader>
-                {items.map((g) => {
-                  return (
-                    <ListItem sx={{ px: 1 }} key={g.id}>
-                      <Card key={g.id} sx={{ overflow: "auto" }}>
-                        <MultiPlayerGameLog game={g} />
-                      </Card>
-                    </ListItem>
-                  );
-                })}
-              </Fragment>
-            );
-          })}
-        </List>
-        <Stack sx={{ py: 2, display: games.length ? "block" : "none" }}>
-          <Typography sx={{ textAlign: "center" }}>
-            Currently showing games from the last 3 weeks.
-          </Typography>
-        </Stack>
+        <InfiniteScroll
+          dataLength={games.length}
+          scrollThreshold={1}
+          next={() => {
+            if (!loading) loadGames();
+          }}
+          hasMore={hasMore}
+          loader={
+            <CircularProgress
+              style={{ display: "block", margin: "10px auto" }}
+            />
+          }
+          style={{ overflow: "visible" }}
+          endMessage={
+            <Typography
+              variant="body2"
+              align="center"
+              style={{ margin: "10px 0" }}
+            >
+              No more games to load.
+            </Typography>
+          }
+        >
+          <List disablePadding>
+            {Object.entries(gamesGroupedByDate).map(([date, items]) => {
+              return (
+                <Fragment key={`date-${date}`}>
+                  <ListSubheader
+                    sx={{
+                      position: "sticky",
+                      my: 1,
+                      elevation: 10,
+                      boxShadow: 5,
+                      top: `${NAV_BAR_HEIGHT}px`,
+                    }}
+                  >
+                    {formatDateString(date)}
+                  </ListSubheader>
+                  {items.map((g) => {
+                    return (
+                      <ListItem sx={{ px: 1 }} key={g.id}>
+                        <Card key={g.id} sx={{ overflow: "auto" }}>
+                          <MultiPlayerGameLog game={g} />
+                        </Card>
+                      </ListItem>
+                    );
+                  })}
+                </Fragment>
+              );
+            })}
+          </List>
+        </InfiniteScroll>
       </Stack>
     </PageContainer>
   );

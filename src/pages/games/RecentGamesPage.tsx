@@ -4,20 +4,32 @@ import {
   ListItem,
   ListSubheader,
   Stack,
+  Typography,
 } from "@mui/material";
-import { FC, Fragment, } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import {
   NAV_BAR_HEIGHT,
   PageContainer,
 } from "../../shared-components/PageContainer";
-import { useAppContext } from "../../context/AppContext";
 import { MultiPlayerGameLog } from "./components.tsx/MultiPlayerGameLog";
 import { formatDateToMMDD } from "../../utils/statsUtils";
 import { Game } from "../../types";
+import { fetchGamesByTimestamp, getXWeeksAgo } from "../../backend/getters";
+import { sortGamesByDate } from "../../utils/gameUtils";
 
 export const RecentGamesPage: FC = () => {
-  const { games: dateSortedGames } = useAppContext();
-  const gamesGroupedByDate = groupByDate(dateSortedGames);
+  const [games, setGames] = useState<Game[]>([]);
+  useEffect(() => {
+    const fetchGames = async () => {
+      const twoWeeksAgo = getXWeeksAgo(3);
+      const res = await fetchGamesByTimestamp(twoWeeksAgo);
+      if (res) {
+        setGames(sortGamesByDate(res));
+      }
+    };
+    fetchGames();
+  }, []);
+  const gamesGroupedByDate = groupByDate(games);
 
   return (
     <PageContainer authedRoute>
@@ -54,6 +66,11 @@ export const RecentGamesPage: FC = () => {
             );
           })}
         </List>
+        <Stack sx={{ py: 2, display: games.length ? "block" : "none" }}>
+          <Typography sx={{ textAlign: "center" }}>
+            Currently showing games from the last 3 weeks.
+          </Typography>
+        </Stack>
       </Stack>
     </PageContainer>
   );

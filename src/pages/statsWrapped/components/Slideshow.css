@@ -1,0 +1,45 @@
+.slideshow {
+  display: flex;
+  overflow: hidden;
+  height: 100vh; /* Full height for the slideshow */
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Space between images */
+  flex: 1;
+  animation: scroll-up 20s linear infinite;
+}
+
+.column.scroll-down {
+  animation: scroll-down 20s linear infinite;
+}
+
+.column.scroll-up {
+  animation: scroll-up 20s linear infinite;
+}
+
+.image {
+  width: 100%; /* Stretch to fill column */
+  object-fit: cover; /* Maintain image aspect ratio */
+}
+
+/* Scrolling animations */
+@keyframes scroll-up {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%); /* Scroll up the total height */
+  }
+}
+
+@keyframes scroll-down {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0); /* Scroll down the total height */
+  }
+}

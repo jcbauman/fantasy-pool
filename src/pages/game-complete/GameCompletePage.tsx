@@ -56,8 +56,7 @@ export const GameCompletePage: FC = () => {
         sx={{ width: "100%", height: "100%", p: 1 }}
         spacing={2}
       >
-        {confettiComponent()}
-        <Card sx={{ p: 2, textAlign: "center" }}>
+        <Card sx={{ p: 2, textAlign: "center", flexShrink: 0 }}>
           <Stack direction="column" spacing={2}>
             <Typography variant="h5">GAME COMPLETE</Typography>
             {player && targetGame?.playerIds.includes(player.id) ? (
@@ -77,6 +76,7 @@ export const GameCompletePage: FC = () => {
             </Button>
           </Stack>
         </Card>
+        {confettiComponent()}
       </Stack>
     </PageContainer>
   );

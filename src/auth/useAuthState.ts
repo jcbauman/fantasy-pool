@@ -30,12 +30,14 @@ export interface UseAuthState {
   ) => Promise<string | undefined>;
   fbUser: FBUser | null;
   refetchPlayer: () => void;
+  authLoading: boolean;
 }
 
 export const useAuthState = (): UseAuthState => {
   const { player, user } = useSelector((state: RootState) => state.player);
   const dispatch = useDispatch();
   const [fbUser, setFbUser] = useState<FBUser | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [shouldRefetchPlayer, setShouldRefetchPlayer] = useState(false);
 
   useEffect(() => {
@@ -68,6 +70,7 @@ export const useAuthState = (): UseAuthState => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
       setFbUser(firebaseUser);
+      setAuthLoading(false);
     });
 
     return unsubscribe;
@@ -126,5 +129,6 @@ export const useAuthState = (): UseAuthState => {
     signIn,
     createAccount,
     refetchPlayer: () => setShouldRefetchPlayer(true),
+    authLoading,
   };
 };

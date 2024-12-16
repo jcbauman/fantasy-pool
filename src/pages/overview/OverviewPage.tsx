@@ -19,6 +19,11 @@ import { useDispatch } from "react-redux";
 import { sendSuccessNotification } from "../../redux/notificationSlice";
 import EightBallIcon from "../../shared-components/icons/EightBallIcon";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
+import { WrappedOverviewButton } from "../statsWrapped/components/WrappedOverviewButton";
+import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
+import { joinedInTimeFor2024Wrapped } from "../playersList/utils/playerUtils";
+
+const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 
 export const OverviewComponent: FC = () => {
   const {
@@ -35,10 +40,21 @@ export const OverviewComponent: FC = () => {
       )
     );
   };
+  const hasClickedWrapped = Boolean(localStorage.getItem(WRAPPED_STORAGE_KEY));
+  const canAccessWrapped = joinedInTimeFor2024Wrapped(player?.joinDate);
+  const wrappedEnabled = league?.release2024Wrapped && canAccessWrapped;
 
   return (
     <PageContainer authedRoute>
       <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
+        {wrappedEnabled && !hasClickedWrapped && (
+          <WrappedOverviewButton
+            href={`/wrapped-2024/${player?.id ?? "9"}`}
+            onClick={() => {
+              localStorage.setItem(WRAPPED_STORAGE_KEY, "true");
+            }}
+          />
+        )}
         <Stack
           direction="column"
           sx={{
@@ -154,6 +170,20 @@ export const OverviewComponent: FC = () => {
                 <ListItemText primary="FAQs and Rules" />
               </ListItemButton>
             </ListItem>
+            <Divider component="li" />
+            {wrappedEnabled && hasClickedWrapped && (
+              <ListItem disablePadding>
+                <ListItemButton
+                  to={`/wrapped-2024/${player?.id ?? ""}`}
+                  component={RouterLink}
+                >
+                  <ListItemIcon>
+                    <CardGiftcardOutlinedIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Review 2024 Wrapped" />
+                </ListItemButton>
+              </ListItem>
+            )}
           </List>
         </Box>
       </Stack>

@@ -37,5 +37,7 @@ export const useTopNav = (): UseTopNav => {
     return { title: "Recent games", showBackButton: true };
   else if (location.pathname === "/rules")
     return { title: "FAQs and Rules", showBackButton: true };
+  else if (location.pathname.startsWith("/wrapped-2024"))
+    return { title: "2024 Wrapped" };
   else return { title: "Fantasy Pool" };
 };

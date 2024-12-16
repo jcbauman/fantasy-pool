@@ -118,20 +118,24 @@ export const getStatsForPlayerGames = (
   return { ...stats, winPercentage, fantasyGameAvg };
 };
 
-export const generateColor = (str: string) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash |= 0;
-  }
-  const color = (hash & 0x00ffffff).toString(16).toUpperCase();
-  return "#" + "00000".substring(0, 6 - color.length) + color;
-};
-
 export const isKeyOfRankings = (
   key: string,
   obj: Record<string, string[]>
 ): key is keyof Record<string, string[]> => {
   return key in obj;
+};
+
+export const joinedInTimeFor2024Wrapped = (
+  dateString: string | undefined
+): boolean => {
+  if (!dateString) return true;
+  const inputDate = new Date(dateString);
+  const comparisonDate = new Date("2024-12-13"); // December 13, 2024
+
+  // Ensure the date is valid
+  if (isNaN(inputDate.getTime())) {
+    throw new Error("Invalid date string");
+  }
+
+  return inputDate < comparisonDate;
 };

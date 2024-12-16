@@ -1,38 +1,14 @@
 import { Button, Stack, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { FC } from "react";
 import { PlayerDetailHeader } from "./components/PlayerDetailHeader";
 import { PlayerSeasonStats } from "./components/PlayerSeasonStats";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { GameLog } from "./components/GameLog";
-import { fetchPlayerById, getGamesForPlayer } from "../../backend/getters";
-import { Game, Player } from "../../types";
 import { Link } from "react-router-dom";
-
-interface PlayerParams extends Record<string, string | undefined> {
-  id: string;
-}
+import { usePlayerParams } from "../../shared-components/hooks/usePlayerParam";
 
 export const PlayerDetailPage: FC = () => {
-  const [player, setPlayer] = useState<Player | undefined>(undefined);
-  const [playerGames, setPlayerGames] = useState<Game[]>([]);
-
-  const [loading, setLoading] = useState(false);
-  const { id } = useParams<PlayerParams>();
-
-  useEffect(() => {
-    const fetchPlayerData = async (id: string) => {
-      setLoading(true);
-      const thisPlayer = await fetchPlayerById(id);
-      const thisPlayerGames = await getGamesForPlayer(id);
-      setPlayer(thisPlayer);
-      setPlayerGames(thisPlayerGames || []);
-      setLoading(false);
-    };
-    if (id) {
-      fetchPlayerData(id);
-    }
-  }, [id]);
+  const { player, loading, playerGames } = usePlayerParams();
 
   if (!player) {
     return (

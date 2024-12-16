@@ -17,22 +17,22 @@ export const PageContainer: FC<{
   const location = useLocation();
 
   const {
-    authState: { isAuthed },
+    authState: { isAuthed, authLoading },
   } = useAppContext();
 
   useEffect(() => {
-    if (!isAuthed && authedRoute) {
+    if (!isAuthed && authedRoute && !authLoading) {
       const searchParams = new URLSearchParams(location.search);
       navigate({ pathname: "/sign-in", search: searchParams.toString() });
     }
-  }, [isAuthed, navigate, authedRoute, location.search]);
+  }, [isAuthed, navigate, authedRoute, location.search, authLoading]);
 
   useEffect(() => {
-    if (isAuthed && isUnauthedRoute) {
+    if (isAuthed && isUnauthedRoute && !authLoading) {
       const searchParams = new URLSearchParams(location.search);
       navigate({ pathname: "/", search: searchParams.toString() });
     }
-  }, [isAuthed, navigate, isUnauthedRoute, location.search]);
+  }, [isAuthed, navigate, isUnauthedRoute, location.search, authLoading]);
 
   useEffect(() => {
     window.scrollTo({
@@ -46,11 +46,11 @@ export const PageContainer: FC<{
       direction="column"
       sx={{
         width: "100%",
-        height: `calc(100% - ${NAV_BAR_HEIGHT}px)`,
+        height: `calc(100vh - ${NAV_BAR_HEIGHT}px)`,
         mt: `${NAV_BAR_HEIGHT}px`,
       }}
     >
-      {loading ? (
+      {loading || authLoading ? (
         <Stack
           sx={{
             alignItems: "center",

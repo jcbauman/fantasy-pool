@@ -1,11 +1,22 @@
 import { FC, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
-import { Button, Card, Stack, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { useDispatch } from "react-redux";
 import { sendSuccessNotification } from "../../redux/notificationSlice";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { League } from "../../types";
 import { deleteGame, updateLeague } from "../../backend/setters";
 import { ScoringRubrikForm } from "./components/ScoringRubrikForm";
@@ -13,6 +24,7 @@ import { ScoringRubrikForm } from "./components/ScoringRubrikForm";
 type FormData = {
   leagueName: string;
   leagueManagerMessage?: string;
+  releaseWrapped?: boolean;
 };
 
 export const LeagueAdminPage: FC = () => {
@@ -31,11 +43,13 @@ export const LeagueAdminPage: FC = () => {
   const {
     handleSubmit,
     register,
+    control,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
       leagueName: league?.name ?? "",
       leagueManagerMessage: league?.leagueManagerMessage ?? "",
+      releaseWrapped: league?.release2024Wrapped ?? false,
     },
   });
 
@@ -45,6 +59,7 @@ export const LeagueAdminPage: FC = () => {
         ...league,
         name: data.leagueName,
         leagueManagerMessage: data.leagueManagerMessage,
+        release2024Wrapped: data.releaseWrapped,
       };
       const { id, ...leagueNoId } = resolvedLeague;
       await updateLeague(leagueNoId, league.id, () =>
@@ -85,6 +100,34 @@ export const LeagueAdminPage: FC = () => {
                 defaultValue={league?.leagueManagerMessage}
                 {...register("leagueManagerMessage")}
               />
+              <FormControl>
+                <FormLabel>Release 2024 wrapped?</FormLabel>
+                <Controller
+                  name="releaseWrapped"
+                  control={control}
+                  render={({ field }) => (
+                    <RadioGroup
+                      row
+                      {...field}
+                      value={(field.value ?? false).toString()}
+                      onChange={(e) =>
+                        field.onChange(e.target.value === "true")
+                      }
+                    >
+                      <FormControlLabel
+                        value="true"
+                        control={<Radio />}
+                        label="Release"
+                      />
+                      <FormControlLabel
+                        value="false"
+                        control={<Radio />}
+                        label="Hide"
+                      />
+                    </RadioGroup>
+                  )}
+                />
+              </FormControl>
               <Button type="submit" variant="contained">
                 Save changes
               </Button>

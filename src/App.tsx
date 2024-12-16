@@ -1,6 +1,6 @@
 import "./App.css";
 import { OverviewComponent } from "./pages/overview/OverviewPage";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { PlayersPage } from "./pages/playersList/PlayersPage";
 import { PlayerDetailPage } from "./pages/playerDetail/PlayerDetailPage";
 import { ThemeProvider } from "@emotion/react";
@@ -21,6 +21,7 @@ import { AppAdminPage } from "./pages/app-admin/AppAdminPage";
 import { RecentGamesPage } from "./pages/games/RecentGamesPage";
 import { LeagueAdminPage } from "./pages/league-admin/LeagueAdminPage";
 import { RulesPage } from "./pages/rules/RulesPage";
+import { WrappedPage } from "./pages/statsWrapped/WrappedPage";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
                   <Route path="/games" element={<RecentGamesPage />} />
                   <Route path="/league-admin" element={<LeagueAdminPage />} />
                   <Route path="/rules" element={<RulesPage />} />
+                  <Route path="/wrapped-2024/:id" element={<WrappedPage />} />
                   <Route path="*" element={<OverviewComponent />} />
                 </Routes>
               </Router>

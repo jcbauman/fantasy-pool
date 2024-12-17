@@ -18,8 +18,9 @@ import { useDispatch } from "react-redux";
 import { sendSuccessNotification } from "../../redux/notificationSlice";
 import { Controller, useForm } from "react-hook-form";
 import { League } from "../../types";
-import { deleteGame, updateLeague } from "../../backend/setters";
+import { deleteGame } from "../../backend/fetchers/games";
 import { ScoringRubrikForm } from "./components/ScoringRubrikForm";
+import { updateLeague } from "../../backend/fetchers/league";
 
 type FormData = {
   leagueName: string;

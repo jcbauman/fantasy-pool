@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchPlayerById, getGamesForPlayer } from "../../backend/getters";
+import { fetchPlayerById } from "../../backend/fetchers/players";
 import { Game, Player } from "../../types";
+import { getGamesForPlayer } from "../../backend/fetchers/games";
 
 interface PlayerParams extends Record<string, string | undefined> {
   id: string;

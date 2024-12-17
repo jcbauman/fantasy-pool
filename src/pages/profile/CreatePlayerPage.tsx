@@ -5,7 +5,7 @@ import { PageContainer } from "../../shared-components/PageContainer";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { Player } from "../../types";
-import { createNewPlayer } from "../../backend/setters";
+import { createNewPlayer } from "../../backend/fetchers/players";
 import { useDispatch } from "react-redux";
 import { sendErrorNotification } from "../../redux/notificationSlice";
 

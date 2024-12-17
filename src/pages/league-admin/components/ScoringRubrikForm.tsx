@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { GameStatKeys, League } from "../../../types";
 import { mockScoringMatrix } from "../../../backend/fixtures";
 import { getStringFromStatKey } from "../../../utils/statsUtils";
-import { updateLeague } from "../../../backend/setters";
+import { updateLeague } from "../../../backend/fetchers/league";
 import { useDispatch } from "react-redux";
 import { sendSuccessNotification } from "../../../redux/notificationSlice";
 

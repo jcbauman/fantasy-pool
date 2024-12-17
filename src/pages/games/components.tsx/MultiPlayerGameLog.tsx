@@ -23,7 +23,7 @@ import { useAppContext } from "../../../context/AppContext";
 import { PlayerCell } from "../../playersList/components/PlayerCell";
 import { GameFantasyDetailDialog } from "../../playerDetail/components/GameFantasyDetailDialog";
 import { TextEditorField } from "../../../shared-components/TextEditorField";
-import { updateExistingGame } from "../../../backend/setters";
+import { updateExistingGame } from "../../../backend/fetchers/games";
 import { useDispatch } from "react-redux";
 import { sendSuccessNotification } from "../../../redux/notificationSlice";
 

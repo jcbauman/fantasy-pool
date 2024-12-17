@@ -1,4 +1,4 @@
-import { updateCurrentPlayer } from "../../../backend/setters";
+import { updateCurrentPlayer } from "../../../backend/fetchers/players";
 import { Game, Player } from "../../../types";
 import { filterPlayedGamesForPlayer } from "./playerUtils";
 

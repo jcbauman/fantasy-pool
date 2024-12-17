@@ -9,9 +9,9 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { auth } from "../backend/firebase/firebaseConfig";
-import { setupNewUser } from "../backend/setters";
+import { setupNewUser, getAppUserByUID } from "../backend/fetchers/users";
 import { sendErrorNotification } from "../redux/notificationSlice";
-import { getAppUserByUID, getPlayerByUserID } from "../backend/getters";
+import { getPlayerByUserID } from "../backend/fetchers/players";
 import { clearGame } from "../redux/gameSlice";
 
 export interface UseAuthState {

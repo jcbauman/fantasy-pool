@@ -8,18 +8,16 @@ import React, {
 import { AggregateStats, Game, League, Player, User } from "../types";
 import { mockLeague, mockScoringMatrix } from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
-import {
-  fetchLeague,
-  useFetchGames,
-  useFetchPlayers,
-  useFetchUsers,
-} from "../backend/getters";
 import { UseAuthState, useAuthState } from "../auth/useAuthState";
 import {
   NotificationBadgesState,
   useNotificationBadges,
 } from "../shared-components/hooks/useNotificationBadges";
 import { checkPlayerInactivity } from "../pages/playersList/utils/inactivityUtils";
+import { useFetchUsers } from "../backend/fetchers/users";
+import { useFetchPlayers } from "../backend/fetchers/players";
+import { useFetchGames } from "../backend/fetchers/games";
+import { fetchLeague } from "../backend/fetchers/league";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 

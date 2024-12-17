@@ -18,8 +18,11 @@ import { useDispatch } from "react-redux";
 import { initializeGame } from "../../../redux/gameSlice";
 import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { useFetchLocations } from "../../../backend/getters";
-import { addNewLocation } from "../../../backend/setters";
+import {
+  useFetchLocations,
+  addNewLocation,
+} from "../../../backend/fetchers/locations";
+
 import {
   isMoreThanTwoHoursAgo,
   sortGamesByDate,
@@ -71,7 +74,9 @@ export const GameStartForm: FC<{
     }
   }, [games, setValue]);
   const [checked, setChecked] = useState(true);
-  const playerOptionIds = allPlayers.sort((a, b) => a.name.localeCompare(b.name)).map((p) => p.id);
+  const playerOptionIds = allPlayers
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((p) => p.id);
   const onSubmit = (data: FormData): void => {
     const resolvedData = {
       ...data,
@@ -81,8 +86,7 @@ export const GameStartForm: FC<{
     };
     if (
       !locations.some(
-        (l) =>
-          l.trim().toLowerCase() === data.location.trim().toLowerCase()
+        (l) => l.trim().toLowerCase() === data.location.trim().toLowerCase()
       )
     ) {
       addNewLocation({ name: data.location.trim() });

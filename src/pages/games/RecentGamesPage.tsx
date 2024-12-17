@@ -14,7 +14,10 @@ import {
 import { MultiPlayerGameLog } from "./components.tsx/MultiPlayerGameLog";
 import { formatDateToMMDD } from "../../utils/statsUtils";
 import { Game } from "../../types";
-import { fetchGamesByTimestamp, getXWeeksAgo } from "../../backend/getters";
+import {
+  fetchGamesByTimestamp,
+  getXWeeksAgo,
+} from "../../backend/fetchers/games";
 import { sortGamesByDate } from "../../utils/gameUtils";
 
 export const RecentGamesPage: FC = () => {

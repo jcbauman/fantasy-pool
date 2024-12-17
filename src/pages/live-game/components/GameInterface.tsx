@@ -32,7 +32,7 @@ import { useNavigate } from "react-router-dom";
 import { Game, GameStatKeys } from "../../../types";
 import { useIterateStats } from "../hooks/useIterateStats";
 import { MultiBallDialog } from "./MultiBallDialog";
-import { addNewGame } from "../../../backend/setters";
+import { addNewGame } from "../../../backend/fetchers/games";
 import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
 import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlined";

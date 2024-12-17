@@ -1,5 +1,4 @@
 import {
-  collection,
   doc,
   DocumentData,
   getDoc,
@@ -24,7 +23,6 @@ import {
   USERS_COLLECTION,
 } from "./firebase/controller";
 import { sortGamesByDate } from "../utils/gameUtils";
-import { db } from "./firebase/firebaseConfig";
 
 // games
 
@@ -50,13 +48,17 @@ export const useFetchGames = (): Game[] => {
   return sortGamesByDate(games);
 };
 
-export const getGamesForPlayer = async (
-  playerId: string
+export const fetchGamesForPlayer = async (
+  playerId: string,
+  startDate: Date
 ): Promise<Game[] | undefined> => {
   if (!playerId) return;
+  const startTimestamp = Timestamp.fromDate(startDate);
   const q = query(
     GAMES_COLLECTION,
-    where("playerIds", "array-contains", playerId)
+    where("playerIds", "array-contains", playerId),
+    where("createdAt", ">=", startTimestamp),
+    orderBy("createdAt", "asc") // Order results by timestamp
   );
 
   try {
@@ -65,6 +67,7 @@ export const getGamesForPlayer = async (
       id: doc.id,
       ...doc.data(),
     }));
+    console.log(documents, "bruh");
     return documents as Game[];
   } catch (error) {
     console.error("Error querying games: ", error);

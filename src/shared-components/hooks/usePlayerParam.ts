@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchPlayerById, getGamesForPlayer } from "../../backend/getters";
+import { fetchPlayerById, fetchGamesForPlayer } from "../../backend/getters";
 import { Game, Player } from "../../types";
 
 interface PlayerParams extends Record<string, string | undefined> {
@@ -24,7 +24,10 @@ export const usePlayerParams = (): UsePlayerParams => {
     const fetchPlayerData = async (id: string) => {
       setLoading(true);
       const thisPlayer = await fetchPlayerById(id);
-      const thisPlayerGames = await getGamesForPlayer(id);
+      const thisPlayerGames = await fetchGamesForPlayer(
+        id,
+        new Date("2024-05-05")
+      );
       setPlayer(thisPlayer);
       setPlayerGames(thisPlayerGames || []);
       setLoading(false);

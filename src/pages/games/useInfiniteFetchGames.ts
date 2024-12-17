@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { paginatedFetchGames } from "../../backend/getters";
 import { Game } from "../../types";
 import { sendErrorNotification } from "../../redux/notificationSlice";
 import { useDispatch } from "react-redux";
+import { paginatedFetchGames } from "../../backend/fetchers/games";
 
 const PAGE_SIZE = 10;
 

@@ -4,10 +4,13 @@ import {
   doc,
   DocumentData,
   getDocs,
+  limit,
   onSnapshot,
   orderBy,
   query,
+  QueryDocumentSnapshot,
   QuerySnapshot,
+  startAfter,
   Timestamp,
   updateDoc,
   where,
@@ -84,6 +87,33 @@ export const fetchGamesByTimestamp = async (
   });
 
   return documents;
+};
+
+export const paginatedFetchGames = async (
+  lastDoc: QueryDocumentSnapshot | null,
+  pageSize: number
+): Promise<{ games: Game[]; lastVisible: QueryDocumentSnapshot | null }> => {
+  const q = lastDoc
+    ? query(
+        GAMES_COLLECTION,
+        orderBy("createdAt", "desc"),
+        startAfter(lastDoc),
+        limit(pageSize)
+      )
+    : query(GAMES_COLLECTION, orderBy("createdAt", "desc"), limit(pageSize));
+
+  const querySnapshot = await getDocs(q);
+  const games: Game[] = querySnapshot.docs.map(
+    (doc) =>
+      ({
+        id: doc.id,
+        ...doc.data(),
+      } as Game)
+  );
+
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
+
+  return { games, lastVisible };
 };
 
 export const getXWeeksAgo = (weeks: number): Date => {

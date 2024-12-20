@@ -123,6 +123,9 @@ export const GameInterface: FC = () => {
       <Card sx={{ p: 2 }}>
         {showTabs && (
           <Tabs
+            TabIndicatorProps={{
+              style: { transform: "scaleY(1)", height: "100%" }, // Ensure proper positioning
+            }}
             sx={{ mb: 2 }}
             value={selectedTab}
             onChange={(_e, value) => setSelectedTab(value)}

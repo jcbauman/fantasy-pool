@@ -33,19 +33,34 @@ const theme = createTheme({
     MuiTabs: {
       styleOverrides: {
         indicator: {
-          backgroundColor: "darkred",
+          height: "100%",
+          width: "4px",
+          left: 0,
+          backgroundColor: "black",
+          borderBottom: `4px solid darkred`,
         },
       },
     },
     MuiTab: {
       styleOverrides: {
         root: {
+          position: "relative",
+          minWidth: 120,
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "12px 16px",
+          zIndex: 1,
+          color: "inherit",
           "&.Mui-selected": {
-            fontWeight: 1000,
+            color: "#ffffff",
+            fontWeight: "bold",
+            textDecoration: "underline",
           },
-          "&.Mui-selected .MuiTab-wrapper": {
-            color: "darkred",
-          },
+        },
+        labelIcon: {
+          zIndex: 1,
         },
       },
     },

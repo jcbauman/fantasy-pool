@@ -31,6 +31,17 @@ export const formatDateToMMDD = (date: Date): string => {
   return `${month}/${day}`;
 };
 
+export const formatToDateAndTime = (date: Date): string => {
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const displayHours = hours % 12 || 12;
+
+  return `${month}/${day} (${displayHours}:${minutes}${ampm})`;
+};
+
 export const getFantasyMultiplierForStat = (
   statKey: string,
   scoringMatrix: Record<string, number>

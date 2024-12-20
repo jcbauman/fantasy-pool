@@ -17,7 +17,7 @@ import {
   getStringFromStatKey,
   normalizeStat,
   getFantasyScoreForPlayerSeason,
-  formatDateToMMDD,
+  formatToDateAndTime,
 } from "../../../utils/statsUtils";
 
 export const GameFantasyDetail: FC<{
@@ -28,7 +28,7 @@ export const GameFantasyDetail: FC<{
   if (!game || !player) return <></>;
   const playerStats = game.statsByPlayer.find((s) => s.playerId === player.id);
   if (!playerStats) return <></>;
-  const caption = `${formatDateToMMDD(new Date(game.timestamp))} at ${
+  const caption = `${formatToDateAndTime(new Date(game.timestamp))} @ ${
     game.location ?? "?"
   }`;
   return (

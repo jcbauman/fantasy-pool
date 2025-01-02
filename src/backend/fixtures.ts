@@ -4,6 +4,13 @@ import { v4 as uuidv4 } from "uuid";
 const userId = "e3962e0e-768f-4281-84bd-345cc7ebd270";
 const playerId = "pIswTHPOxcQxlrzuQ2k7";
 const player2Id = "8216f468-e5f2-4391-bb6b-fd438a91f39d";
+
+export const LAST_SEASON_TOP_THREE_PLAYER_IDS = [
+  "Fwonnaprz0okB0HIYUje",
+  "x5QiXK4bh88GTIoflUoZ",
+  "Z8V1bf9Xcze6qnIgcrbU",
+];
+
 export const mockUsers: User[] = [
   {
     fbID: uuidv4(),

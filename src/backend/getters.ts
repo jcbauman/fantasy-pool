@@ -1,5 +1,4 @@
 import {
-  collection,
   doc,
   DocumentData,
   getDoc,
@@ -24,7 +23,7 @@ import {
   USERS_COLLECTION,
 } from "./firebase/controller";
 import { sortGamesByDate } from "../utils/gameUtils";
-import { db } from "./firebase/firebaseConfig";
+import { LAST_SEASON_CUTOFF_DATE } from "../utils/constants";
 
 // games
 
@@ -50,6 +49,39 @@ export const useFetchGames = (): Game[] => {
   return sortGamesByDate(games);
 };
 
+export const useFetchGamesAfterDate = (): Game[] => {
+  const [games, setGames] = useState<Game[]>([]);
+
+  useEffect(() => {
+    const gamesQuery = query(
+      GAMES_COLLECTION,
+      where(
+        "createdAt",
+        ">",
+        Timestamp.fromDate(new Date(LAST_SEASON_CUTOFF_DATE))
+      )
+    );
+
+    const unsubscribe = onSnapshot(
+      gamesQuery,
+      (snapshot: QuerySnapshot<DocumentData>) => {
+        setGames(
+          snapshot.docs.map((doc) => {
+            const data = doc.data() as Omit<Game, "id">;
+            return {
+              id: doc.id,
+              ...data,
+            };
+          })
+        );
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
+  return sortGamesByDate(games);
+};
+
 export const getGamesForPlayer = async (
   playerId: string
 ): Promise<Game[] | undefined> => {
@@ -57,6 +89,32 @@ export const getGamesForPlayer = async (
   const q = query(
     GAMES_COLLECTION,
     where("playerIds", "array-contains", playerId)
+  );
+
+  try {
+    const querySnapshot = await getDocs(q);
+    const documents = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return documents as Game[];
+  } catch (error) {
+    console.error("Error querying games: ", error);
+    return [];
+  }
+};
+
+export const getGamesForPlayerAfterDate = async (
+  playerId: string
+): Promise<Game[] | undefined> => {
+  if (!playerId) return;
+
+  const cutoffDate = Timestamp.fromDate(new Date(LAST_SEASON_CUTOFF_DATE));
+
+  const q = query(
+    GAMES_COLLECTION,
+    where("playerIds", "array-contains", playerId),
+    where("createdAt", ">", cutoffDate) // Add the createdAt filter
   );
 
   try {

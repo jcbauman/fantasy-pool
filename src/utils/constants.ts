@@ -43,3 +43,5 @@ export const StatAbbreviations: { [key: string]: string } = {
 };
 
 export const INVITE_PW = "oyoyoy";
+
+export const LAST_SEASON_CUTOFF_DATE = "2024-12-31T23:59:59Z";

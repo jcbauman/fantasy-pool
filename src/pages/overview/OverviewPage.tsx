@@ -1,5 +1,5 @@
 import { Badge, Divider, Stack, Typography } from "@mui/material";
-import { FC } from "react";
+import { FC, useState } from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -10,7 +10,6 @@ import ScoreboardOutlinedIcon from "@mui/icons-material/ScoreboardOutlined";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
@@ -22,8 +21,10 @@ import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import { WrappedOverviewButton } from "../statsWrapped/components/WrappedOverviewButton";
 import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
 import { joinedInTimeFor2024Wrapped } from "../playersList/utils/playerUtils";
+import { NewSeasonDialog } from "./components/NewSeasonDialog";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
+const NEW_SEASON_STORAGE_KEY = "2024_new_season_storage_key";
 
 export const OverviewComponent: FC = () => {
   const {
@@ -43,6 +44,12 @@ export const OverviewComponent: FC = () => {
   const hasClickedWrapped = Boolean(localStorage.getItem(WRAPPED_STORAGE_KEY));
   const canAccessWrapped = joinedInTimeFor2024Wrapped(player?.joinDate);
   const wrappedEnabled = league?.release2024Wrapped && canAccessWrapped;
+  const hasSeenNewSeasonDialog = Boolean(
+    localStorage.getItem(NEW_SEASON_STORAGE_KEY)
+  );
+  const [showNewSeasonDialog, setShowNewSeasonDialog] = useState(
+    !hasSeenNewSeasonDialog
+  );
 
   return (
     <PageContainer authedRoute>
@@ -88,9 +95,9 @@ export const OverviewComponent: FC = () => {
             <ListItem disablePadding>
               <ListItemButton to="/players" component={RouterLink}>
                 <ListItemIcon>
-                  <GroupOutlinedIcon />
+                  <LeaderboardOutlinedIcon />
                 </ListItemIcon>
-                <ListItemText primary="Players" />
+                <ListItemText primary="Players and Standings" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />
@@ -102,7 +109,7 @@ export const OverviewComponent: FC = () => {
                 <ListItemIcon>
                   <AccountBoxOutlinedIcon />
                 </ListItemIcon>
-                <ListItemText primary="My player profile" />
+                <ListItemText primary="My Player Profile" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />
@@ -122,15 +129,6 @@ export const OverviewComponent: FC = () => {
                   </Badge>
                 </ListItemIcon>
                 <ListItemText primary="Recent games" />
-              </ListItemButton>
-            </ListItem>
-            <Divider component="li" />
-            <ListItem disablePadding>
-              <ListItemButton onClick={onClickBlockedField}>
-                <ListItemIcon>
-                  <LeaderboardOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Standings" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />
@@ -186,6 +184,13 @@ export const OverviewComponent: FC = () => {
             )}
           </List>
         </Box>
+        <NewSeasonDialog
+          onClose={() => {
+            localStorage.setItem(NEW_SEASON_STORAGE_KEY, "true");
+            setShowNewSeasonDialog(false);
+          }}
+          open={showNewSeasonDialog}
+        />
       </Stack>
     </PageContainer>
   );

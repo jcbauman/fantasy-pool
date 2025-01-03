@@ -70,7 +70,9 @@ export const LeagueAdminPage: FC = () => {
 
   const onDeleteGame = async (): Promise<void> => {
     if (gameIdToDelete.length === 0) return;
-    await deleteGame(gameIdToDelete);
+    await deleteGame(gameIdToDelete, () =>
+      dispatch(sendSuccessNotification("Game deleted!"))
+    );
   };
 
   if (!league) {

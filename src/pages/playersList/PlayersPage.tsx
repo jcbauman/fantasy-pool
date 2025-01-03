@@ -121,7 +121,7 @@ export const PlayersPage: FC = () => {
           </TableHead>
           <TableBody>
             {sortedPlayers.map((player) => {
-              return <PlayerRow key={player.id} player={player} />;
+              return <PlayerRow rowKey={player.id} player={player} />;
             })}
           </TableBody>
         </Table>
@@ -130,7 +130,10 @@ export const PlayersPage: FC = () => {
   );
 };
 
-const PlayerRow: FC<{ player: Player }> = ({ player }) => {
+const PlayerRow: FC<{ player: Player; rowKey: string }> = ({
+  player,
+  rowKey,
+}) => {
   const { games, scoringMatrix } = useAppContext();
   const navigate = useNavigate();
   const stats = getStatsForPlayerGames(player.id, games, scoringMatrix);
@@ -147,7 +150,7 @@ const PlayerRow: FC<{ player: Player }> = ({ player }) => {
   };
 
   return (
-    <TableRow onClick={handleRowClick}>
+    <TableRow onClick={handleRowClick} key={rowKey}>
       {SortableStatsOrder.map((f) => {
         if (f.value === "name")
           return (

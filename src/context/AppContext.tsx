@@ -10,7 +10,7 @@ import { mockLeague, mockScoringMatrix } from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 import {
   fetchLeague,
-  useFetchGames,
+  useFetchGamesAfterDate,
   useFetchPlayers,
   useFetchUsers,
 } from "../backend/getters";
@@ -19,7 +19,6 @@ import {
   NotificationBadgesState,
   useNotificationBadges,
 } from "../shared-components/hooks/useNotificationBadges";
-import { checkPlayerInactivity } from "../pages/playersList/utils/inactivityUtils";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -50,14 +49,15 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const users = useFetchUsers();
   const players = useFetchPlayers();
   const authState = useAuthState();
-  const games = useFetchGames();
+  const games = useFetchGamesAfterDate();
   const notificationBadgesState = useNotificationBadges(games, league);
 
-  useEffect(() => {
-    players.forEach((player) => {
-      checkPlayerInactivity(player, games);
-    });
-  }, [players, games]);
+  // TODO: add back inactivity check when more games created
+  // useEffect(() => {
+  //   players.forEach((player) => {
+  //     checkPlayerInactivity(player, games);
+  //   });
+  // }, [players, games]);
 
   useEffect(() => {
     const getLeague = async (): Promise<void> => {

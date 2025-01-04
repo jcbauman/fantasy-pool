@@ -56,7 +56,7 @@ export const PlayerDetailHeader: FC<{
           )}
           {playerPlacedLastSeason !== -1 && (
             <Typography variant="overline">
-              Last season: {getMedal(playerPlacedLastSeason)}{" "}
+              Last season: {getMedal(playerPlacedLastSeason)}
               {toOrdinal(playerPlacedLastSeason)} place
             </Typography>
           )}

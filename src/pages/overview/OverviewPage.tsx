@@ -22,6 +22,7 @@ import { WrappedOverviewButton } from "../statsWrapped/components/WrappedOvervie
 import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
 import { joinedInTimeFor2024Wrapped } from "../playersList/utils/playerUtils";
 import { NewSeasonDialog } from "./components/NewSeasonDialog";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 const NEW_SEASON_STORAGE_KEY = "2024_new_season_storage_key";
@@ -166,6 +167,15 @@ export const OverviewComponent: FC = () => {
                   <LiveHelpOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="FAQs and Rules" />
+              </ListItemButton>
+            </ListItem>
+            <Divider component="li" />
+            <ListItem disablePadding>
+              <ListItemButton to="/profile" component={RouterLink}>
+                <ListItemIcon>
+                  <SettingsOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Settings" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />

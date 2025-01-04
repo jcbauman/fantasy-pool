@@ -41,6 +41,9 @@ const SortableStatsOrder = [
 export const PlayersPage: FC = () => {
   const { players, rankings } = useAppContext();
   const { sortBy } = useSelector((state: RootState) => state.nav);
+  const { hideInactivePlayers } = useSelector(
+    (state: RootState) => state.settings
+  );
   const dispatch = useDispatch();
 
   const alphabeticalPlayers = useMemo(
@@ -121,19 +124,31 @@ export const PlayersPage: FC = () => {
           </TableHead>
           <TableBody>
             {sortedPlayers.map((player) => {
-              return <PlayerRow rowKey={player.id} player={player} />;
+              return (
+                <PlayerRow
+                  rowKey={player.id}
+                  player={player}
+                  hideInactivePlayers={hideInactivePlayers}
+                />
+              );
             })}
           </TableBody>
         </Table>
+        {hideInactivePlayers && (
+          <Stack sx={{ pt: 1, pl: 2 }}>
+            <Typography variant="caption">Inactive players hidden</Typography>
+          </Stack>
+        )}
       </Stack>
     </PageContainer>
   );
 };
 
-const PlayerRow: FC<{ player: Player; rowKey: string }> = ({
-  player,
-  rowKey,
-}) => {
+const PlayerRow: FC<{
+  player: Player;
+  rowKey: string;
+  hideInactivePlayers: boolean;
+}> = ({ player, rowKey, hideInactivePlayers }) => {
   const { games, scoringMatrix } = useAppContext();
   const navigate = useNavigate();
   const stats = getStatsForPlayerGames(player.id, games, scoringMatrix);
@@ -148,6 +163,7 @@ const PlayerRow: FC<{ player: Player; rowKey: string }> = ({
   ): key is keyof StatsForPlayerGames => {
     return key in obj;
   };
+  if (hideInactivePlayers && stats.totalGames === 0) return null;
 
   return (
     <TableRow onClick={handleRowClick} key={rowKey}>

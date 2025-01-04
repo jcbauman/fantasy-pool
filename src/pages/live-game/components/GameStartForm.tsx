@@ -14,7 +14,7 @@ import {
 import { FC, useEffect, useState } from "react";
 import DatePicker from "../../../shared-components/DatePicker";
 import { Controller, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { initializeGame } from "../../../redux/gameSlice";
 import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -25,6 +25,7 @@ import {
   sortGamesByDate,
 } from "../../../utils/gameUtils";
 import { Link } from "react-router-dom";
+import { RootState } from "../../../redux/store";
 interface FormData {
   date: Date | null;
   location: string;
@@ -45,6 +46,9 @@ export const GameStartForm: FC<{
     string | undefined
   >(undefined);
   const locations = useFetchLocations();
+  const { gameStartSoundEffect } = useSelector(
+    (state: RootState) => state.settings
+  );
 
   const {
     handleSubmit,
@@ -71,7 +75,9 @@ export const GameStartForm: FC<{
     }
   }, [games, setValue]);
   const [checked, setChecked] = useState(true);
-  const playerOptionIds = allPlayers.sort((a, b) => a.name.localeCompare(b.name)).map((p) => p.id);
+  const playerOptionIds = allPlayers
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((p) => p.id);
   const onSubmit = (data: FormData): void => {
     const resolvedData = {
       ...data,
@@ -81,18 +87,19 @@ export const GameStartForm: FC<{
     };
     if (
       !locations.some(
-        (l) =>
-          l.trim().toLowerCase() === data.location.trim().toLowerCase()
+        (l) => l.trim().toLowerCase() === data.location.trim().toLowerCase()
       )
     ) {
       addNewLocation({ name: data.location.trim() });
     }
     dispatch(initializeGame({ ...resolvedData }));
-    try {
-      const audio = new Audio("/ball-release-sound.mp3");
-      audio.play();
-    } catch (e) {
-      console.error(e);
+    if (gameStartSoundEffect) {
+      try {
+        const audio = new Audio("/ball-release-sound.mp3");
+        audio.play();
+      } catch (e) {
+        console.error(e);
+      }
     }
   };
 

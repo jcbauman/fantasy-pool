@@ -12,6 +12,7 @@ import {
   sendSuccessNotification,
 } from "../../redux/notificationSlice";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import { SettingsEditor } from "./components/SettingsEditor";
 
 export const ProfilePage: FC = () => {
   const {
@@ -42,10 +43,12 @@ export const ProfilePage: FC = () => {
     );
   };
   const isLeagueAdmin = league?.leagueManagerId === user?.id;
+
   return (
     <PageContainer authedRoute>
       <Stack
         direction={"column"}
+        gap={2}
         sx={{
           width: "100%",
           height: "100%",
@@ -54,6 +57,7 @@ export const ProfilePage: FC = () => {
         }}
       >
         <ProfileEditor player={player} onSubmit={onSubmit} />
+        {Boolean(player) && <SettingsEditor />}
         {(user?.isAppAdmin || isLeagueAdmin) && (
           <Card sx={{ p: 2, mt: 2, overflow: "visible" }}>
             <Typography variant={"overline"}>Admin</Typography>

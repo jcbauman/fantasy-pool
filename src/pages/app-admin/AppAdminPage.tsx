@@ -18,7 +18,7 @@ export const AppAdminPage: FC = () => {
   if (!user || !user.isAppAdmin) {
     navigate("/profile");
   }
-  const message = `You have been invited to join my Fantasy Pool league. Get started at https://www.fantasy-pool.com?leagueInvite=${INVITE_PW}`;
+  const message = `You have been invited to join my Fantasy Pool league. Get started at https://www.fantasy-pool.com/#/sign-in?leagueInvite=${INVITE_PW}`;
   const smsUrl = `sms:?body=${message}`;
   return (
     <PageContainer authedRoute>

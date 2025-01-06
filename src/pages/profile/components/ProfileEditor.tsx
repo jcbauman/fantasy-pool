@@ -16,6 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useAppContext } from "../../../context/AppContext";
 import { Player } from "../../../types";
+import { useLocation } from "react-router-dom";
 
 export interface ProfileFormValues {
   email: string;
@@ -34,6 +35,7 @@ export const ProfileEditor: FC<{
     authState: { user, signOut },
     league,
   } = useAppContext();
+  const location = useLocation();
   const defaultValues = useMemo(() => {
     return {
       email: user?.email,
@@ -185,7 +187,7 @@ export const ProfileEditor: FC<{
               </Card>
             </Stack>
           </form>
-          {window.location.pathname.startsWith("/profile") && (
+          {location.pathname.startsWith("/profile") && (
             <Button variant="text" color="error" fullWidth onClick={signOut}>
               Sign out
             </Button>

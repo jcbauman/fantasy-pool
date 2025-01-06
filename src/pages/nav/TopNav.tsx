@@ -68,7 +68,7 @@ export const TopNav: FC = () => {
             <Badge
               color="secondary"
               variant="dot"
-              invisible={window.location.pathname === "/live-game"}
+              invisible={location.pathname === "/live-game"}
             >
               <EightBallIcon color="white" />
             </Badge>

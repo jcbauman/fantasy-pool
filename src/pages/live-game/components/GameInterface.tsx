@@ -145,7 +145,7 @@ export const GameInterface: FC = () => {
             </Typography>
           </Stack>
           <Stack direction="column" sx={{ alignItems: "flex-end" }}>
-            <Typography variant="overline">Ellapsed time</Typography>
+            <Typography variant="overline">Elapsed time</Typography>
             <TimeCounter startTime={startTime} />
           </Stack>
         </Stack>

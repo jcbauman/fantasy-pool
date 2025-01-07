@@ -25,7 +25,7 @@ export const useTopNav = (): UseTopNav => {
   else if (location.pathname === "/info")
     return { title: "Info", showBackButton: true };
   else if (location.pathname === "/profile")
-    return { title: "My Profile", showBackButton: true };
+    return { title: "Settings", showBackButton: true };
   else if (location.pathname === "/live-game") return { title: "Game Mode" };
   else if (location.pathname === "/create-player")
     return { title: "Configure your player", hideButtons: true };

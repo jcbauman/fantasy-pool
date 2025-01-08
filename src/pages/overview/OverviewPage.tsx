@@ -68,7 +68,8 @@ export const OverviewComponent: FC = () => {
           sx={{
             justifyContent: "flex-start",
             alignItems: "flex-start",
-            p: 2,
+            px: 2,
+            pt: 2,
           }}
         >
           <Typography variant="overline" lineHeight={0.5}>
@@ -76,6 +77,9 @@ export const OverviewComponent: FC = () => {
           </Typography>
           <Typography variant="overline" fontSize={16}>
             {league?.name}
+          </Typography>
+          <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+            2025 Winter Season - through March 31, 2025
           </Typography>
         </Stack>
         <Box sx={{ width: "100%" }}>

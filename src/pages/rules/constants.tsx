@@ -71,6 +71,11 @@ export const FAQS_COPY = [
             it doesn't count.{" "}
           </li>{" "}
           <li>
+            If you call a chain of skill shots in a single a shot, e.g. a
+            triple-ball combo, or bank-shot to a combo, a successful shot can
+            count as two or more skill shots.
+          </li>
+          <li>
             Skill shots only apply to the shooting player and not to every
             member of a doubles team.
           </li>
@@ -82,7 +87,7 @@ export const FAQS_COPY = [
     title: "How do scratches work?",
     content: (
       <ContentWrapper>
-        Scratches in fantasy pool involve the cue ball going into the pocket.
+        Scratches in Fantasy Pool involve the cue ball going into the pocket.
         Table scratches need not count to the scratches stat unless you and any
         partner/opponent agree to include them beforehand.
         <ul>
@@ -133,10 +138,26 @@ export const FAQS_COPY = [
     ),
   },
   {
+    title: "Can I count pool sessions I've had without an opponent?",
+    content: (
+      <ContentWrapper>
+        You must play a competitive game against one or more opponents to log it
+        in Fantasy Pool.
+        <ul>
+          <li>
+            Naturally, your opponent need not be a Fantasy Pool user for your
+            game to be loggable.
+          </li>
+        </ul>
+      </ContentWrapper>
+    ),
+  },
+  {
     title: "Can you track all cue sports in Fantasy Pool?",
     content: (
       <ContentWrapper>
         At the moment the app is only setup to track standard 8-ball pool games.
+        Please don't enter 9-ball, cutthroat, etc.
       </ContentWrapper>
     ),
   },

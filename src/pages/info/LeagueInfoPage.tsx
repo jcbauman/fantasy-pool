@@ -105,9 +105,10 @@ export const LeagueInfoPage: FC = () => {
           </TableContainer>
         </Card>
         <Card sx={{ p: 2, overflow: "visible" }}>
-          <Typography variant="overline">Format</Typography>
+          <Typography variant="overline">Format and Timeline</Typography>
           <Typography variant="body2">
-            The league is set to standard 8-ball bar pool format.
+            The league is set to standard 8-ball bar pool format. Regular
+            seasons will last three months.
           </Typography>
         </Card>
       </Stack>

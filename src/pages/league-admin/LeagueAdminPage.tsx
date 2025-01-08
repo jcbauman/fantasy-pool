@@ -90,7 +90,7 @@ export const LeagueAdminPage: FC = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack direction="column" gap={2} sx={{ p: 1 }}>
               <TextField
-                placeholder="My fantasy pool league"
+                placeholder="My Fantasy Pool league"
                 label="League name"
                 defaultValue={league?.name}
                 error={Boolean(errors.leagueName?.message)}

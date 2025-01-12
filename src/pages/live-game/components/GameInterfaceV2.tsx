@@ -45,6 +45,7 @@ import { useGameIsIncomplete } from "../hooks/useGameIsIncomplete";
 import { DeleteOutline, FavoriteBorder, Undo } from "@mui/icons-material";
 import EightBallIcon from "../../../shared-components/icons/EightBallIcon";
 import { ConfirmationDrawerV2 } from "./ConfirmationDrawerV2";
+import { sendErrorNotification } from "../../../redux/notificationSlice";
 
 export const GameInterfaceV2: FC = () => {
   const dispatch = useDispatch();
@@ -224,7 +225,9 @@ export const GameInterfaceV2: FC = () => {
         endedAt,
       };
       if (!gameIsIncomplete) {
-        console.log("game is incomplete", resolvedGame);
+        dispatch(
+          sendErrorNotification("There was an error submitting your game")
+        );
         setIsSubmitting(false);
       }
       const gameId = await addNewGame(resolvedGame);
@@ -431,6 +434,7 @@ export const GameInterfaceV2: FC = () => {
               variant="contained"
               size="large"
               sx={{ mt: 1 }}
+              color="success"
               onClick={() => setEndGameDialogOpen(true)}
             >
               Save game

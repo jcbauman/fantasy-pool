@@ -5,6 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Drawer,
   Stack,
   Typography,
 } from "@mui/material";
@@ -12,7 +13,7 @@ import { FC, useState } from "react";
 import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import {  GameStatKeys } from "../../../types";
+import { GameStatKeys } from "../../../types";
 
 interface MultiBallDialogProps {
   open: boolean;
@@ -44,7 +45,7 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
     { num: 8, key: GameStatKeys.runTheTable },
   ];
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Drawer open={open} onClose={onClose} anchor="bottom">
       <DialogTitle>
         <Stack
           direction="row"
@@ -95,6 +96,6 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
           Delete this stat for {getPlayerNameAbbreviation(selectedPlayerName)}
         </Button>
       </DialogActions>
-    </Dialog>
+    </Drawer>
   );
 };

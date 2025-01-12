@@ -64,6 +64,7 @@ export const GameCompletePage: FC = () => {
                 game={targetGame}
                 player={player}
                 scoringMatrix={scoringMatrix}
+                includeElapsedTime={true}
               />
             ) : (
               <Typography>

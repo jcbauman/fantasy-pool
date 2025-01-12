@@ -217,7 +217,7 @@ export const GameInterfaceV2: FC = () => {
       const endedGame = resolveGame();
       if (!endedGame) return;
       const createdAt = Timestamp.fromDate(new Date(endedGame.timestamp));
-      const endedAt = new Date().toDateString();
+      const endedAt = new Date().toString();
       const { id, ...gameNoId } = endedGame;
       const resolvedGame: Omit<Game, "id"> = {
         ...gameNoId,
@@ -343,7 +343,7 @@ export const GameInterfaceV2: FC = () => {
           <Stack direction="column">
             {showTabs && (
               <Stack>
-                <Typography variant="overline">We were:</Typography>
+                <Typography variant="overline">Players were:</Typography>
                 <ButtonGroup fullWidth>
                   <Button
                     startIcon={<SportsMmaOutlinedIcon />}
@@ -385,7 +385,7 @@ export const GameInterfaceV2: FC = () => {
               </Stack>
             )}
             {(!showTabs || doubles) && (
-              <Stack sx={{ mt: 2 }}>
+              <Stack sx={{ mt: doubles ? 2 : 0 }}>
                 <Typography variant="overline">Game outcome:</Typography>
                 <ButtonGroup fullWidth>
                   <Button

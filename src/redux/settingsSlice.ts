@@ -9,7 +9,7 @@ interface SettingsState {
 const initialState: SettingsState = {
   hideInactivePlayers: false,
   gameStartSoundEffect: true,
-  useOriginalGameEntryInterface: false,
+  useOriginalGameEntryInterface: true,
 };
 
 const settingsSlice = createSlice({

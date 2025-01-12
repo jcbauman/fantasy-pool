@@ -236,8 +236,13 @@ export const GameInterface: FC = () => {
         onConfirm={async () => {
           if (game) {
             const createdAt = Timestamp.fromDate(new Date(game.timestamp));
+            const endedAt = new Date().toString();
             const { id, ...gameNoId } = game;
-            const resolvedGame: Omit<Game, "id"> = { ...gameNoId, createdAt };
+            const resolvedGame: Omit<Game, "id"> = {
+              ...gameNoId,
+              createdAt,
+              endedAt,
+            };
             const gameId = await addNewGame(resolvedGame);
             dispatch(setLastGameId(gameId ?? null));
           }

@@ -242,7 +242,7 @@ export const GameInterfaceV2: FC = () => {
     }
   };
   return (
-    <Stack direction="column" spacing={2}>
+    <Stack direction="column">
       <Collapse collapsedSize={0} in={!showEndGameSection}>
         <Card sx={{ p: 2 }}>
           {showTabs && (
@@ -340,10 +340,10 @@ export const GameInterfaceV2: FC = () => {
       </Collapse>
       <Collapse collapsedSize={0} in={showEndGameSection}>
         <Card sx={{ p: 2 }}>
-          <Stack direction="column" gap={1}>
+          <Stack direction="column">
             {showTabs && (
-              <Stack gap={1}>
-                <Typography variant="caption">We were:</Typography>
+              <Stack>
+                <Typography variant="overline">We were:</Typography>
                 <ButtonGroup fullWidth>
                   <Button
                     startIcon={<SportsMmaOutlinedIcon />}
@@ -361,8 +361,8 @@ export const GameInterfaceV2: FC = () => {
                   </Button>
                 </ButtonGroup>
                 <Collapse in={doubles === false} collapsedSize={0}>
-                  <Stack gap={1}>
-                    <Typography variant="caption">Winner:</Typography>
+                  <Stack sx={{ mt: 2 }}>
+                    <Typography variant="overline">Winner:</Typography>
                     <ButtonGroup fullWidth>
                       <Button
                         onClick={() => setSelectedTab(0)}
@@ -377,7 +377,7 @@ export const GameInterfaceV2: FC = () => {
                         {gamePlayers[1].name.split(" ")[0]}
                       </Button>
                     </ButtonGroup>
-                    <Typography variant="caption">
+                    <Typography variant="caption" sx={{ mt: 1 }}>
                       {doublesScoringCaption}
                     </Typography>
                   </Stack>
@@ -385,8 +385,8 @@ export const GameInterfaceV2: FC = () => {
               </Stack>
             )}
             {(!showTabs || doubles) && (
-              <Stack gap={1}>
-                <Typography variant="caption">Outcome:</Typography>
+              <Stack sx={{ mt: 2 }}>
+                <Typography variant="overline">Game outcome:</Typography>
                 <ButtonGroup fullWidth>
                   <Button
                     startIcon={<EmojiEventsOutlinedIcon />}
@@ -405,8 +405,8 @@ export const GameInterfaceV2: FC = () => {
                 </ButtonGroup>
               </Stack>
             )}
-            <Typography variant="caption">
-              {wonGame === null || !wonGame ? "Win" : "Loss"} manner:
+            <Typography variant="overline" sx={{ mt: 2 }}>
+              {wonGame === false ? "Lost" : "Won"} by:
             </Typography>
             <ButtonGroup fullWidth>
               <Button
@@ -426,7 +426,7 @@ export const GameInterfaceV2: FC = () => {
                 Scratch
               </Button>
             </ButtonGroup>
-            <Divider sx={{ mt: 1 }} />
+            <Divider sx={{ my: 2 }} />
             <Button
               disabled={!enableSaveGame}
               fullWidth
@@ -442,16 +442,16 @@ export const GameInterfaceV2: FC = () => {
           </Stack>
         </Card>
       </Collapse>
-      <Stack direction="row" sx={{ alignItems: "center" }} gap={1}>
+      <Stack direction="row" sx={{ alignItems: "center", mt: 1 }} gap={1}>
         <Button
-          variant="contained"
+          variant={showEndGameSection ? "outlined" : "contained"}
           color="error"
           onClick={() => setDiscardGameDialogOpen(true)}
         >
           <DeleteOutline />
         </Button>
         <Button
-          color={showEndGameSection ? "secondary" : "primary"}
+          color={"primary"}
           variant={showEndGameSection ? "outlined" : "contained"}
           fullWidth
           onClick={() => setShowEndGameSection(!showEndGameSection)}

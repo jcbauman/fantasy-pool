@@ -4,6 +4,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Drawer,
   List,
   ListItem,
   ListItemText,
@@ -17,7 +18,7 @@ interface ConfirmationDialogProps {
 
 export const InfoDialog: FC<ConfirmationDialogProps> = ({ open, onClose }) => {
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Drawer open={open} onClose={onClose} anchor="bottom">
       <DialogTitle>Welcome to live game mode!</DialogTitle>
       <DialogContent>
         <List>
@@ -48,10 +49,10 @@ export const InfoDialog: FC<ConfirmationDialogProps> = ({ open, onClose }) => {
         </List>
       </DialogContent>
       <DialogActions>
-        <Button variant="text" onClick={onClose}>
+        <Button variant="contained" onClick={onClose}>
           Dismiss
         </Button>
       </DialogActions>
-    </Dialog>
+    </Drawer>
   );
 };

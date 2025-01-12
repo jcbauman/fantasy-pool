@@ -11,7 +11,7 @@ import { RootState } from "../../../redux/store";
 import {
   setGameStartSoundEffect,
   setHideInactivePlayers,
-  setUseOriginalGameEntryInterface,
+  setUseNewGameEntryInterface,
 } from "../../../redux/settingsSlice";
 
 export const SettingsEditor: FC = () => {
@@ -24,13 +24,13 @@ export const SettingsEditor: FC = () => {
         <FormControlLabel
           control={
             <Checkbox
-              checked={settings.useOriginalGameEntryInterface}
+              checked={settings.useNewGameEntryInterface}
               onChange={(_e, checked) =>
-                dispatch(setUseOriginalGameEntryInterface(checked))
+                dispatch(setUseNewGameEntryInterface(checked))
               }
             />
           }
-          label="Use original game entry interface"
+          label="Use new game entry interface"
         />
         <FormControlLabel
           control={

@@ -46,11 +46,11 @@ export const GameStartForm: FC<{
     string | undefined
   >(undefined);
   const locations = useFetchLocations();
-  const { gameStartSoundEffect, useOriginalGameEntryInterface } = useSelector(
+  const { gameStartSoundEffect, useNewGameEntryInterface } = useSelector(
     (state: RootState) => state.settings
   );
 
-  const maxPlayers = useOriginalGameEntryInterface ? 4 : 2;
+  const maxPlayers = !useNewGameEntryInterface ? 4 : 2;
 
   const {
     handleSubmit,

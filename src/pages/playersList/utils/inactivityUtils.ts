@@ -1,8 +1,9 @@
 import { updateCurrentPlayer } from "../../../backend/setters";
 import { Game, Player } from "../../../types";
+import { LAST_SEASON_CUTOFF_DATE } from "../../../utils/constants";
 import { filterPlayedGamesForPlayer } from "./playerUtils";
 
-const DAYS_TIL_INACTIVE = 10;
+export const DAYS_TIL_INACTIVE = 10;
 
 export const makePlayerActive = async (
   player: Player,
@@ -28,8 +29,16 @@ const makePlayerOut = async (player: Player): Promise<void> => {
   }
 };
 
-export const checkPlayerInactivity = (player: Player, games: Game[]) => {
-  if (!games.length || !player) return;
+export const checkPlayerInactivity = (
+  player: Player,
+  games: Game[]
+): boolean => {
+  const currentDate = new Date();
+  const cutoffDate = new Date(LAST_SEASON_CUTOFF_DATE);
+  const isMoreThanNDaysAfterCutoff =
+    currentDate.getTime() - cutoffDate.getTime() >
+    DAYS_TIL_INACTIVE * 24 * 60 * 60 * 1000;
+  if (isMoreThanNDaysAfterCutoff && (!games.length || !player)) return false;
   const playersGames = filterPlayedGamesForPlayer(player.id, games);
   if (playersGames.length === 0) {
     if (player.joinDate) {
@@ -39,9 +48,10 @@ export const checkPlayerInactivity = (player: Player, games: Game[]) => {
       const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
       if (diffDays > DAYS_TIL_INACTIVE) {
         makePlayerOut(player);
+        return true;
       }
-      return;
     }
+    return false;
   } else {
     const lastGame = playersGames[0];
     const lastGameDate = new Date(lastGame.timestamp);
@@ -50,6 +60,8 @@ export const checkPlayerInactivity = (player: Player, games: Game[]) => {
     const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     if (diffDays > DAYS_TIL_INACTIVE) {
       makePlayerOut(player);
+      return true;
     }
+    return false;
   }
 };

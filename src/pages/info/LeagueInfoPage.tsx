@@ -27,8 +27,9 @@ export const LeagueInfoPage: FC = () => {
     <PageContainer>
       <Stack
         direction="column"
-        sx={{ width: "100%", height: "100%", p: 1 }}
+        sx={{ width: "100%", height: "100%", p: 1, mb: 2 }}
         spacing={2}
+        flexShrink={0}
       >
         <Card sx={{ p: 2, overflow: "visible" }}>
           <Typography variant="overline">League Manager's Note</Typography>
@@ -109,6 +110,12 @@ export const LeagueInfoPage: FC = () => {
           <Typography variant="body2">
             The league is set to standard 8-ball bar pool format. Regular
             seasons will last three months.
+          </Typography>
+        </Card>
+        <Card sx={{ p: 2, overflow: "visible", mb: 2 }}>
+          <Typography variant="overline">Credits</Typography>
+          <Typography variant="body2">
+            Fantasy Pool - © 2025 Rocko Bauman, all rights reserved
           </Typography>
         </Card>
       </Stack>

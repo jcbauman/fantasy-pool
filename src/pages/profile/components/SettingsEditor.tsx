@@ -11,6 +11,7 @@ import { RootState } from "../../../redux/store";
 import {
   setGameStartSoundEffect,
   setHideInactivePlayers,
+  setUseOriginalGameEntryInterface,
 } from "../../../redux/settingsSlice";
 
 export const SettingsEditor: FC = () => {
@@ -20,6 +21,17 @@ export const SettingsEditor: FC = () => {
     <Card sx={{ p: 2, flexShrink: 0 }}>
       <Typography variant={"overline"}>General settings</Typography>
       <Stack direction={"column"}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={settings.useOriginalGameEntryInterface}
+              onChange={(_e, checked) =>
+                dispatch(setUseOriginalGameEntryInterface(checked))
+              }
+            />
+          }
+          label="Use original game entry interface"
+        />
         <FormControlLabel
           control={
             <Checkbox

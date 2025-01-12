@@ -19,18 +19,30 @@ import {
   getFantasyScoreForPlayerSeason,
   formatDateToMMDD,
 } from "../../../utils/statsUtils";
+import { formatMinutesToMSS } from "../../../utils/gameUtils";
 
 export const GameFantasyDetail: FC<{
   game: Game | undefined;
   player: Player | undefined;
   scoringMatrix: Record<string, number>;
-}> = ({ game, player, scoringMatrix }) => {
+  includeElapsedTime?: boolean;
+}> = ({ game, player, scoringMatrix, includeElapsedTime }) => {
   if (!game || !player) return <></>;
   const playerStats = game.statsByPlayer.find((s) => s.playerId === player.id);
   if (!playerStats) return <></>;
   const caption = `${formatDateToMMDD(new Date(game.timestamp))} at ${
     game.location ?? "?"
   }`;
+  console.log(game);
+  const elapsedTime = game.endedAt
+    ? `
+        ${formatMinutesToMSS(
+          (new Date(game.endedAt).getTime() -
+            new Date(game.timestamp).getTime()) /
+            60000
+        )}`
+    : undefined;
+
   return (
     <Stack direction="column" sx={{ alignItems: "center" }}>
       <Stack
@@ -41,6 +53,11 @@ export const GameFantasyDetail: FC<{
         <Avatar src={player.profilePictureUrl} alt={player.name} />
         <Typography>{player.name}</Typography>
         <Typography variant="caption">{caption}</Typography>
+        {elapsedTime && includeElapsedTime && (
+          <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+            Elasped time: {elapsedTime}
+          </Typography>
+        )}
       </Stack>
       <TableContainer
         component={Paper}
@@ -72,12 +89,12 @@ export const GameFantasyDetail: FC<{
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.keys(GameStatKeys).map((key) => {
+            {Object.keys(GameStatKeys).map((key, idx) => {
               const pointsPer = getFantasyMultiplierForStat(key, scoringMatrix);
               if (playerStats[key as keyof GameStat] ?? 0) {
                 return (
                   <TableRow
-                    key={`${key}-scoring-row`}
+                    key={`${key}-scoring-row-${idx}`}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       borderColor: "white",

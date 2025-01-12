@@ -43,6 +43,7 @@ export interface Game {
   excludeGame?: boolean;
   authorPlayerId?: string;
   createdAt?: Timestamp;
+  endedAt?: string;
 }
 
 export enum GameStatKeys {

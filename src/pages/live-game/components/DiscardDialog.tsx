@@ -4,6 +4,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Drawer,
 } from "@mui/material";
 import { FC } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
@@ -20,7 +21,7 @@ export const DiscardDialog: FC<ConfirmationDialogProps> = ({
   onConfirm,
 }) => {
   return (
-    <Dialog open={open}>
+    <Drawer open={open} anchor="bottom" onClose={onClose}>
       <DialogTitle>
         Are you sure you want to delete this pool session?
       </DialogTitle>
@@ -28,7 +29,7 @@ export const DiscardDialog: FC<ConfirmationDialogProps> = ({
         The stats you tracked will be permanently deleted.
       </DialogContent>
       <DialogActions>
-        <Button variant="text" onClick={onClose}>
+        <Button variant="outlined" onClick={onClose}>
           Cancel
         </Button>
         <Button
@@ -43,6 +44,6 @@ export const DiscardDialog: FC<ConfirmationDialogProps> = ({
           Delete
         </Button>
       </DialogActions>
-    </Dialog>
+    </Drawer>
   );
 };

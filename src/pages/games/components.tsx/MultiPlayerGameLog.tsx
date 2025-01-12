@@ -209,37 +209,41 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                       {normalizeStat(fantasyPoints)}
                     </TableCell>
                     <TableCell>
-                      {stats[GameStatKeys.winsBy8BallSink] ?? 0}
+                      {stats?.[GameStatKeys.winsBy8BallSink] ?? 0}
                     </TableCell>
                     <TableCell>
-                      {stats[GameStatKeys.winsByOpponentScratch] ?? 0}
+                      {stats?.[GameStatKeys.winsByOpponentScratch] ?? 0}
                     </TableCell>
                     <TableCell>
-                      {stats[GameStatKeys.lossesBy8BallSink] ?? 0}
+                      {stats?.[GameStatKeys.lossesBy8BallSink] ?? 0}
                     </TableCell>
                     <TableCell>
-                      {stats[GameStatKeys.lossesByScratch] ?? 0}
-                    </TableCell>
-                    <TableCell>{stats[GameStatKeys.skillShots] ?? 0}</TableCell>
-                    <TableCell>
-                      {stats[GameStatKeys.threeBallsPocketedInRow] ?? 0}
+                      {stats?.[GameStatKeys.lossesByScratch] ?? 0}
                     </TableCell>
                     <TableCell>
-                      {stats[GameStatKeys.fourBallsPocketedInRow] ?? 0}
+                      {stats?.[GameStatKeys.skillShots] ?? 0}
                     </TableCell>
                     <TableCell>
-                      {stats[GameStatKeys.fiveBallsPocketedInRow] ?? 0}
+                      {stats?.[GameStatKeys.threeBallsPocketedInRow] ?? 0}
                     </TableCell>
                     <TableCell>
-                      {stats[GameStatKeys.sixBallsPocketedInRow] ?? 0}
+                      {stats?.[GameStatKeys.fourBallsPocketedInRow] ?? 0}
                     </TableCell>
                     <TableCell>
-                      {stats[GameStatKeys.sevenBallsPocketedInRow] ?? 0}
+                      {stats?.[GameStatKeys.fiveBallsPocketedInRow] ?? 0}
                     </TableCell>
                     <TableCell>
-                      {stats[GameStatKeys.runTheTable] ?? 0}
+                      {stats?.[GameStatKeys.sixBallsPocketedInRow] ?? 0}
                     </TableCell>
-                    <TableCell>{stats[GameStatKeys.scratches] ?? 0}</TableCell>
+                    <TableCell>
+                      {stats?.[GameStatKeys.sevenBallsPocketedInRow] ?? 0}
+                    </TableCell>
+                    <TableCell>
+                      {stats?.[GameStatKeys.runTheTable] ?? 0}
+                    </TableCell>
+                    <TableCell>
+                      {stats?.[GameStatKeys.scratches] ?? 0}
+                    </TableCell>
                   </TableRow>
                 );
               })}

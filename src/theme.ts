@@ -8,6 +8,7 @@ const theme = createTheme({
     },
     secondary: {
       main: "#f48fb1",
+      light: "#000000",
     },
     background: {
       default: "#303030",
@@ -33,18 +34,30 @@ const theme = createTheme({
     MuiTabs: {
       styleOverrides: {
         indicator: {
-          backgroundColor: "darkred",
+          height: "100%",
+          width: "4px",
+          left: 0,
+          backgroundColor: "black",
+          borderBottom: "2px solid darkred",
         },
       },
     },
     MuiTab: {
       styleOverrides: {
         root: {
+          position: "relative",
+          minWidth: 120,
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "12px 16px",
+          zIndex: 1,
+          color: "inherit",
+          fontWeight: "normal",
           "&.Mui-selected": {
-            fontWeight: 1000,
-          },
-          "&.Mui-selected .MuiTab-wrapper": {
-            color: "darkred",
+            color: "#ffffff",
+            fontWeight: "bold",
           },
         },
       },

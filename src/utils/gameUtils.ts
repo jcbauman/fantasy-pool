@@ -15,3 +15,11 @@ export const isMoreThanTwoHoursAgo = (timestamp: string): boolean => {
 
   return now - timestampInMillis > twoHoursInMillis;
 };
+
+export const formatMinutesToMSS = (minutesFraction: number): string => {
+  const totalSeconds = Math.floor(minutesFraction * 60); // Convert to total seconds
+  const minutes = Math.floor(totalSeconds / 60); // Extract minutes
+  const seconds = totalSeconds % 60; // Extract remaining seconds
+  const formattedSeconds = seconds.toString().padStart(2, "0"); // Pad seconds to always show 2 digits
+  return `${minutes}m ${formattedSeconds}s`;
+};

@@ -46,9 +46,11 @@ export const GameStartForm: FC<{
     string | undefined
   >(undefined);
   const locations = useFetchLocations();
-  const { gameStartSoundEffect } = useSelector(
+  const { gameStartSoundEffect, useOriginalGameEntryInterface } = useSelector(
     (state: RootState) => state.settings
   );
+
+  const maxPlayers = useOriginalGameEntryInterface ? 4 : 2;
 
   const {
     handleSubmit,
@@ -119,7 +121,7 @@ export const GameStartForm: FC<{
         <Stack direction="column" gap={2}>
           <Typography variant="caption">
             Record scores for yourself or another player. <br />
-            You can record scores for up to 4 players simultaneously.
+            You can record scores for up to {maxPlayers} players simultaneously.
           </Typography>
           <Controller
             name="playerIds"

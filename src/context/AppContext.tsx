@@ -19,6 +19,7 @@ import {
   NotificationBadgesState,
   useNotificationBadges,
 } from "../shared-components/hooks/useNotificationBadges";
+import { checkPlayerInactivity } from "../pages/playersList/utils/inactivityUtils";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -52,12 +53,11 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const games = useFetchGamesAfterDate();
   const notificationBadgesState = useNotificationBadges(games, league);
 
-  // TODO: add back inactivity check when more games created
-  // useEffect(() => {
-  //   players.forEach((player) => {
-  //     checkPlayerInactivity(player, games);
-  //   });
-  // }, [players, games]);
+  useEffect(() => {
+    players.forEach((player) => {
+      checkPlayerInactivity(player, games);
+    });
+  }, [players, games]);
 
   useEffect(() => {
     const getLeague = async (): Promise<void> => {

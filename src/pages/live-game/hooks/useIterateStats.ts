@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import { GameStat, GameStatKeys } from "../../../types";
+import { Game, GameStat, GameStatKeys } from "../../../types";
 import { updateStat } from "../../../redux/gameSlice";
 
 interface UseIterateStats {
@@ -9,6 +9,12 @@ interface UseIterateStats {
     statKey: GameStatKeys;
     delta: number;
   }) => void;
+  iterateStatNonRedux: (args: {
+    playerId: string;
+    statKey: GameStatKeys;
+    delta: number;
+    currGame: Game;
+  }) => GameStat[] | undefined;
 }
 
 export const useIterateStats = (): UseIterateStats => {
@@ -45,7 +51,41 @@ export const useIterateStats = (): UseIterateStats => {
       }
     }
   };
+
+  const iterateStatNonRedux = (args: {
+    playerId: string;
+    statKey: GameStatKeys;
+    delta: number;
+    currGame: Game | undefined;
+  }): GameStat[] | undefined => {
+    const { playerId, statKey, delta, currGame } = args;
+    if (currGame) {
+      const statsArray: GameStat[] = currGame.statsByPlayer;
+      if (statsArray) {
+        const playerStatIndex = statsArray.findIndex(
+          (stat) => stat.playerId === playerId
+        );
+        if (playerStatIndex !== undefined) {
+          const newStat = {
+            ...currGame.statsByPlayer[playerStatIndex],
+            [statKey]:
+              (currGame.statsByPlayer[playerStatIndex][statKey] ?? 0) + delta,
+          };
+
+          const resolvedGameStats: GameStat[] = [
+            ...currGame.statsByPlayer.slice(0, playerStatIndex),
+            newStat,
+            ...currGame.statsByPlayer.slice(playerStatIndex + 1),
+          ];
+
+          return resolvedGameStats;
+        }
+      }
+    }
+  };
+
   return {
     iterateStat,
+    iterateStatNonRedux,
   };
 };

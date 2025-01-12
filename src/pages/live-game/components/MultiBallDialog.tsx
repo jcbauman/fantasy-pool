@@ -5,6 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Drawer,
   Stack,
   Typography,
 } from "@mui/material";
@@ -27,7 +28,7 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
   const [numBalls, setNumBalls] = useState(3);
   const buttons = [3, 4, 5, 6, 7, 8];
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Drawer open={open} onClose={onClose} anchor="bottom">
       <DialogTitle>
         <Stack
           direction="row"
@@ -71,7 +72,7 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button variant="text" onClick={onClose}>
+        <Button variant="outlined" onClick={onClose}>
           Cancel
         </Button>
         <Button
@@ -84,6 +85,6 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
           Confirm for {getPlayerNameAbbreviation(selectedPlayerName)}
         </Button>
       </DialogActions>
-    </Dialog>
+    </Drawer>
   );
 };

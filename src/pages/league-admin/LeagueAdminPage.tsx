@@ -136,7 +136,6 @@ export const LeagueAdminPage: FC = () => {
             </Stack>
           </form>
         </Card>
-        <ScoringRubrikForm league={league} />
         <Card sx={{ p: 1 }}>
           <Stack direction="column" spacing={1}>
             <Typography variant="overline">Delete repeat game</Typography>
@@ -152,6 +151,7 @@ export const LeagueAdminPage: FC = () => {
             </Stack>
           </Stack>
         </Card>
+        <ScoringRubrikForm league={league} />
       </Stack>
     </PageContainer>
   );

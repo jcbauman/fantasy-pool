@@ -12,44 +12,40 @@ import {
 import { FC, useState } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
-interface ConfirmationDialogProps {
+interface ConfirmationDrawerProps {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
   onDiscard: () => void;
-  gameIsIncomplete?: boolean;
+  loading: boolean;
 }
 
-export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
+export const ConfirmationDrawerV2: FC<ConfirmationDrawerProps> = ({
   open,
   onClose,
   onConfirm,
   onDiscard,
-  gameIsIncomplete,
+  loading,
 }) => {
-  const [loading, setLoading] = useState(false);
-  const title = gameIsIncomplete
-    ? "Game is incomplete"
-    : "Are you sure you want to end this pool session?";
-  const body = gameIsIncomplete
-    ? "Please ensure all players have a win/loss recorded before submitting."
-    : `Your games will be saved and will affect the league's stats.`;
   return (
-    <Drawer open={open} anchor="bottom" onClose={onClose}>
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent>{body}</DialogContent>
+    <Drawer open={open} anchor="bottom" onClose={loading ? undefined : onClose}>
+      <DialogTitle>Are you sure you want to end this game?</DialogTitle>
+      <DialogContent>
+        Your game will be saved and will affect the league's stats.
+      </DialogContent>
       <DialogActions>
         <Stack
           direction="row"
           spacing={1}
           sx={{ justifyContent: "space-between", width: "100%" }}
         >
-          <IconButton size="large" onClick={onDiscard}>
+          <IconButton size="large" onClick={onDiscard} disabled={loading}>
             <DeleteOutlinedIcon color="error" />
           </IconButton>
           <Stack direction="row" spacing={1}>
             <Button
               variant="outlined"
+              disabled={loading}
               onClick={() => {
                 onClose();
               }}
@@ -57,12 +53,10 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
               Cancel
             </Button>
             <Button
-              disabled={loading || gameIsIncomplete}
+              disabled={loading}
               variant="contained"
               onClick={() => {
-                setLoading(true);
                 onConfirm();
-                onClose();
               }}
             >
               {loading ? <CircularProgress size="1.5rem" /> : "Save & End"}

@@ -72,12 +72,12 @@ export const GameFantasyDetail: FC<{
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.keys(GameStatKeys).map((key) => {
+            {Object.keys(GameStatKeys).map((key, idx) => {
               const pointsPer = getFantasyMultiplierForStat(key, scoringMatrix);
               if (playerStats[key as keyof GameStat] ?? 0) {
                 return (
                   <TableRow
-                    key={`${key}-scoring-row`}
+                    key={`${key}-scoring-row-${idx}`}
                     sx={{
                       "&:last-child td, &:last-child th": { border: 0 },
                       borderColor: "white",

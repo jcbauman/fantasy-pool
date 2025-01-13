@@ -19,7 +19,6 @@ const theme = createTheme({
       secondary: "#bdbdbd",
     },
   },
-
   typography: {
     fontFamily: "Avenir, Arial, sans-serif",
   },
@@ -28,6 +27,17 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0,
+        },
+        outlined: {
+          color: "#ffffff",
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          marginBottom: "32px",
+          color: "#ffffff",
         },
       },
     },
@@ -59,6 +69,13 @@ const theme = createTheme({
             color: "#ffffff",
             fontWeight: "bold",
           },
+        },
+      },
+    },
+    MuiListItemSecondaryAction: {
+      styleOverrides: {
+        root: {
+          right: 0,
         },
       },
     },

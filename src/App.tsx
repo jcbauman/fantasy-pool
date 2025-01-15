@@ -4,7 +4,7 @@ import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { PlayersPage } from "./pages/playersList/PlayersPage";
 import { PlayerDetailPage } from "./pages/playerDetail/PlayerDetailPage";
 import { ThemeProvider } from "@emotion/react";
-import theme from "./theme";
+import { getTheme } from "./theme";
 import { CssBaseline } from "@mui/material";
 import { TopNav } from "./pages/nav/TopNav";
 import { LeagueInfoPage } from "./pages/info/LeagueInfoPage";
@@ -22,12 +22,14 @@ import { RecentGamesPage } from "./pages/games/RecentGamesPage";
 import { LeagueAdminPage } from "./pages/league-admin/LeagueAdminPage";
 import { RulesPage } from "./pages/rules/RulesPage";
 import { WrappedPage } from "./pages/statsWrapped/WrappedPage";
+import useStandaloneMode from "./shared-components/hooks/useStandaloneMode";
 
 function App() {
+  const isStandalone = useStandaloneMode();
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={getTheme(isStandalone)}>
           <CssBaseline>
             <AppContextProvider>
               <Router>

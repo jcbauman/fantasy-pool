@@ -42,7 +42,6 @@ export const ProfilePage: FC = () => {
         )
     );
   };
-  const isLeagueAdmin = league?.leagueManagerId === user?.id;
 
   return (
     <PageContainer authedRoute>
@@ -58,25 +57,14 @@ export const ProfilePage: FC = () => {
       >
         <ProfileEditor player={player} onSubmit={onSubmit} />
         {Boolean(player) && <SettingsEditor />}
-        {(user?.isAppAdmin || isLeagueAdmin) && (
+        {user?.isAppAdmin && (
           <Card sx={{ p: 2, mt: 2, overflow: "visible" }}>
             <Typography variant={"overline"}>Admin</Typography>
             <Stack direction="column" gap={2}>
-              {isLeagueAdmin && (
-                <Button
-                  fullWidth
-                  variant="contained"
-                  component={Link}
-                  to={`/league-admin`}
-                  startIcon={<AdminPanelSettingsOutlinedIcon />}
-                >
-                  View league manager page
-                </Button>
-              )}
               {user?.isAppAdmin && (
                 <Button
                   fullWidth
-                  variant="outlined"
+                  variant="contained"
                   component={Link}
                   to={`/app-admin`}
                   startIcon={<AdminPanelSettingsOutlinedIcon />}

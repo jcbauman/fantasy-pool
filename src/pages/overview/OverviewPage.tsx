@@ -23,6 +23,7 @@ import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
 import { joinedInTimeFor2024Wrapped } from "../playersList/utils/playerUtils";
 import { NewSeasonDialog } from "./components/NewSeasonDialog";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 const NEW_SEASON_STORAGE_KEY = "2024_new_season_storage_key";
@@ -30,9 +31,10 @@ const NEW_SEASON_STORAGE_KEY = "2024_new_season_storage_key";
 export const OverviewComponent: FC = () => {
   const {
     league,
-    authState: { player },
+    authState: { player, user },
     notificationBadgesState,
   } = useAppContext();
+  const isLeagueAdmin = league?.leagueManagerId === user?.id;
   const dispatch = useDispatch();
 
   const onClickBlockedField = (): void => {
@@ -183,6 +185,16 @@ export const OverviewComponent: FC = () => {
               </ListItemButton>
             </ListItem>
             <Divider component="li" />
+            {isLeagueAdmin && (
+              <ListItem disablePadding>
+                <ListItemButton to="/league-admin" component={RouterLink}>
+                  <ListItemIcon>
+                    <AdminPanelSettingsOutlinedIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="League manager settings" />
+                </ListItemButton>
+              </ListItem>
+            )}
             {wrappedEnabled && hasClickedWrapped && (
               <ListItem disablePadding>
                 <ListItemButton

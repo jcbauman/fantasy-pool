@@ -97,6 +97,7 @@ export const LeagueAdminPage: FC = () => {
                 {...register("leagueName", { required: "Name is required" })}
               />
               <TextField
+                multiline
                 placeholder="Enter a league manager message"
                 label="League manager message"
                 defaultValue={league?.leagueManagerMessage}

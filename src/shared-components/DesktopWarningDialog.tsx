@@ -6,7 +6,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { FC, useState } from "react";
-import theme from "../theme";
+import { getTheme } from "../theme";
 
 const DESKTOP_MODAL_INFO_KEY = "desktopInfoModalStoragekey";
 
@@ -14,7 +14,7 @@ export const DesktopWarningDialog: FC = () => {
   const [dismissed, setDismissed] = useState(
     Boolean(localStorage.getItem(DESKTOP_MODAL_INFO_KEY))
   );
-  const isNonPhoneWidth = useMediaQuery(theme.breakpoints.up("sm")); // 'sm' is 600px
+  const isNonPhoneWidth = useMediaQuery(getTheme().breakpoints.up("sm")); // 'sm' is 600px
   const onClose = (): void => {
     localStorage.setItem(DESKTOP_MODAL_INFO_KEY, "true");
     setDismissed(true);

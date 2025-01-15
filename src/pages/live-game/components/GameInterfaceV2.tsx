@@ -23,7 +23,6 @@ import {
   getPlayerNameAbbreviation,
   getStatsForGame,
 } from "../../playersList/utils/playerUtils";
-import { ConfirmationDialog } from "./ConfirmationDialog";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";
 import DirectionsRunOutlinedIcon from "@mui/icons-material/DirectionsRunOutlined";
@@ -284,6 +283,7 @@ export const GameInterfaceV2: FC = () => {
                   secondaryAction={
                     <ButtonGroup variant="contained" aria-label="Run selection">
                       <Button
+                        size="large"
                         onClick={() => {
                           if (field.multiBall) {
                             setMultiBallDeleteDialogOpen(true);
@@ -300,10 +300,11 @@ export const GameInterfaceV2: FC = () => {
                       >
                         -
                       </Button>
-                      <Button sx={{ pointerEvents: "none" }}>
+                      <Button sx={{ pointerEvents: "none" }} size="large">
                         {field.multiBall ? totalRuns : statValue}
                       </Button>
                       <Button
+                        size="large"
                         onClick={() => {
                           if (field.multiBall) {
                             setMultiBallDialogOpen(true);
@@ -341,11 +342,28 @@ export const GameInterfaceV2: FC = () => {
       <Collapse collapsedSize={0} in={showEndGameSection}>
         <Card sx={{ p: 2 }}>
           <Stack direction="column">
+            <Stack
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              width="100%"
+              sx={{ mb: 1 }}
+            >
+              <Divider flexItem />
+              <Typography
+                variant="h6"
+                sx={{ mx: 1, whiteSpace: "nowrap", my: 0.5 }} // `mx` for minimal spacing between the dividers
+              >
+                End game
+              </Typography>
+              <Divider flexItem />
+            </Stack>
             {showTabs && (
               <Stack>
                 <Typography variant="overline">Players were:</Typography>
                 <ButtonGroup fullWidth>
                   <Button
+                    size="large"
                     startIcon={<SportsMmaOutlinedIcon />}
                     onClick={() => setDoubles(false)}
                     variant={doubles === false ? "contained" : "outlined"}
@@ -353,6 +371,7 @@ export const GameInterfaceV2: FC = () => {
                     Opponents
                   </Button>
                   <Button
+                    size="large"
                     startIcon={<FavoriteBorder />}
                     onClick={() => setDoubles(true)}
                     variant={doubles ? "contained" : "outlined"}
@@ -365,12 +384,14 @@ export const GameInterfaceV2: FC = () => {
                     <Typography variant="overline">Winner:</Typography>
                     <ButtonGroup fullWidth>
                       <Button
+                        size="large"
                         onClick={() => setSelectedTab(0)}
                         variant={selectedTab === 0 ? "contained" : "outlined"}
                       >
                         {gamePlayers[0].name.split(" ")[0]}
                       </Button>
                       <Button
+                        size="large"
                         onClick={() => setSelectedTab(1)}
                         variant={selectedTab === 1 ? "contained" : "outlined"}
                       >
@@ -389,6 +410,7 @@ export const GameInterfaceV2: FC = () => {
                 <Typography variant="overline">Game outcome:</Typography>
                 <ButtonGroup fullWidth>
                   <Button
+                    size="large"
                     startIcon={<EmojiEventsOutlinedIcon />}
                     onClick={() => setWonGame(true)}
                     variant={wonGame ? "contained" : "outlined"}
@@ -396,6 +418,7 @@ export const GameInterfaceV2: FC = () => {
                     Win
                   </Button>
                   <Button
+                    size="large"
                     startIcon={<DisabledByDefaultOutlinedIcon />}
                     onClick={() => setWonGame(false)}
                     variant={wonGame === false ? "contained" : "outlined"}
@@ -410,15 +433,15 @@ export const GameInterfaceV2: FC = () => {
             </Typography>
             <ButtonGroup fullWidth>
               <Button
-                startIcon={
-                  <EightBallIcon color={by8Ball ? "white" : "black"} />
-                }
+                size="large"
+                startIcon={<EightBallIcon color={"white"} />}
                 onClick={() => setBy8Ball(true)}
                 variant={by8Ball ? "contained" : "outlined"}
               >
                 8-ball sink
               </Button>
               <Button
+                size="large"
                 startIcon={<StrikethroughSOutlinedIcon />}
                 onClick={() => setBy8Ball(false)}
                 variant={by8Ball === false ? "contained" : "outlined"}
@@ -444,13 +467,15 @@ export const GameInterfaceV2: FC = () => {
       </Collapse>
       <Stack direction="row" sx={{ alignItems: "center", mt: 1 }} gap={1}>
         <Button
+          size="large"
           variant={showEndGameSection ? "outlined" : "contained"}
           color="error"
           onClick={() => setDiscardGameDialogOpen(true)}
         >
-          <DeleteOutline />
+          <DeleteOutline color={showEndGameSection ? "error" : "inherit"} />
         </Button>
         <Button
+          size="large"
           color={"primary"}
           variant={showEndGameSection ? "outlined" : "contained"}
           fullWidth

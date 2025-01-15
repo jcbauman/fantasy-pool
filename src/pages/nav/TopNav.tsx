@@ -14,8 +14,8 @@ import { RootState } from "../../redux/store";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import EightBallIcon from "../../shared-components/icons/EightBallIcon";
-import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import { usePageTitle } from "../../shared-components/hooks/usePageTitle";
+import { LiveHelp } from "@mui/icons-material";
 
 export const TopNav: FC = () => {
   const { title, showBackButton, hideButtons } = useTopNav();
@@ -83,7 +83,7 @@ export const TopNav: FC = () => {
             to="/rules"
             component={RouterLink}
           >
-            <LiveHelpOutlinedIcon />
+            <LiveHelp />
           </IconButton>
         )}
         <IconButton

@@ -23,7 +23,6 @@ import {
   getPlayerNameAbbreviation,
   getStatsForGame,
 } from "../../playersList/utils/playerUtils";
-import { ConfirmationDialog } from "./ConfirmationDialog";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";
 import DirectionsRunOutlinedIcon from "@mui/icons-material/DirectionsRunOutlined";

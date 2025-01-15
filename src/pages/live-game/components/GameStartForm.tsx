@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import DatePicker from "../../../shared-components/DatePicker";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,6 +26,7 @@ import {
 } from "../../../utils/gameUtils";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../redux/store";
+import { Game, Player } from "../../../types";
 interface FormData {
   date: Date | null;
   location: string;
@@ -64,18 +65,33 @@ export const GameStartForm: FC<{
       playerIds: player?.id ? [player?.id] : [],
     },
   });
-  useEffect(() => {
-    const dateSortedGames = sortGamesByDate(games);
-    if (dateSortedGames.length > 0) {
-      const lastGameIsOld = isMoreThanTwoHoursAgo(dateSortedGames[0].timestamp);
-      if (!lastGameIsOld) {
-        if (dateSortedGames[0].location) {
-          setValue("location", dateSortedGames[0].location);
-          setLastGameAddedLocation(dateSortedGames[0].location);
+
+  const repeatLastGameConfiguration = useCallback(
+    (dateSortedGames: Game[], thePlayer: Player | null) => {
+      if (!thePlayer) return;
+      let index = 0;
+      if (dateSortedGames.length > index) {
+        const thisGame = dateSortedGames[index];
+        const lastGameIsOld = isMoreThanTwoHoursAgo(thisGame.timestamp);
+        if (lastGameIsOld) return;
+        if (thisGame.playerIds.includes(thePlayer.id)) {
+          if (thisGame.location) {
+            setValue("location", thisGame.location);
+            setLastGameAddedLocation(thisGame.location);
+          }
+        } else {
+          index += 1;
         }
       }
-    }
-  }, [games, setValue]);
+    },
+    [setValue]
+  );
+
+  useEffect(() => {
+    const dateSortedGames = sortGamesByDate(games);
+    repeatLastGameConfiguration(dateSortedGames, player);
+  }, [games, repeatLastGameConfiguration, setValue, player]);
+
   const [checked, setChecked] = useState(true);
   const playerOptionIds = allPlayers
     .sort((a, b) => a.name.localeCompare(b.name))

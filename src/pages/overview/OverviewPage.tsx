@@ -191,7 +191,7 @@ export const OverviewComponent: FC = () => {
                   <ListItemIcon>
                     <AdminPanelSettingsOutlinedIcon />
                   </ListItemIcon>
-                  <ListItemText primary="League manager settings" />
+                  <ListItemText primary="League Manager" />
                 </ListItemButton>
               </ListItem>
             )}

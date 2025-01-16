@@ -51,7 +51,7 @@ export const PageContainer: FC<{
         mt: `${NAV_BAR_HEIGHT}px`,
       }}
     >
-      {loading || authLoading || true ? (
+      {loading || authLoading ? (
         <Stack
           sx={{
             alignItems: "center",

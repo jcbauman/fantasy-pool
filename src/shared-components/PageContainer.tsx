@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import NotificationLayer from "./NotificationLayer";
 import { DesktopWarningDialog } from "./DesktopWarningDialog";
+import { Loader } from "./Loader";
 
 export const NAV_BAR_HEIGHT = 56;
 
@@ -59,7 +60,7 @@ export const PageContainer: FC<{
             flexShrink: 0,
           }}
         >
-          <CircularProgress color="secondary" sx={{ my: "auto" }} />
+          <Loader />
         </Stack>
       ) : (
         children

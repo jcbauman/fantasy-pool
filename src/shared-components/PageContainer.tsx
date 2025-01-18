@@ -1,4 +1,4 @@
-import { CircularProgress, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { FC, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";

@@ -117,6 +117,7 @@ export const GameInterface: FC = () => {
     (currentPlayerGameStats[GameStatKeys.fiveBallsPocketedInRow] ?? 0) +
     (currentPlayerGameStats[GameStatKeys.sixBallsPocketedInRow] ?? 0) +
     (currentPlayerGameStats[GameStatKeys.sevenBallsPocketedInRow] ?? 0) +
+    (currentPlayerGameStats[GameStatKeys.eightBallsPocketedInRow] ?? 0) +
     (currentPlayerGameStats[GameStatKeys.runTheTable] ?? 0);
   return (
     <Stack direction="column" spacing={2}>
@@ -165,7 +166,7 @@ export const GameInterface: FC = () => {
                     <Button
                       onClick={() => {
                         if (field.multiBall) {
-                          setMultiBallDeleteDialogOpen(true);
+                          if (totalRuns > 0) setMultiBallDeleteDialogOpen(true);
                         } else {
                           if (statValue !== 0) {
                             iterateStat({
@@ -266,10 +267,10 @@ export const GameInterface: FC = () => {
             ? "you"
             : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
         }
-        onConfirm={(numBalls: number) =>
+        onConfirm={(numBalls: number, ranTable?: boolean) =>
           iterateStat({
             playerId: gamePlayers[selectedTab].id,
-            statKey: getStatKeyFromNumBalls(numBalls),
+            statKey: getStatKeyFromNumBalls(numBalls, ranTable),
             delta: 1,
           })
         }
@@ -283,10 +284,10 @@ export const GameInterface: FC = () => {
             : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
         }
         selectedPlayerId={gamePlayers[selectedTab].id}
-        onConfirmDelete={(numBalls: number) =>
+        onConfirmDelete={(numBalls: GameStatKeys) =>
           iterateStat({
             playerId: gamePlayers[selectedTab].id,
-            statKey: getStatKeyFromNumBalls(numBalls),
+            statKey: numBalls,
             delta: -1,
           })
         }

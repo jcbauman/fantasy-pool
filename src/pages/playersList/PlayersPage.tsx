@@ -34,7 +34,8 @@ const SortableStatsOrder = [
   { label: "5PR", value: "fiveBallsPocketedInRow" },
   { label: "6PR", value: "sixBallsPocketedInRow" },
   { label: "7PR", value: "sevenBallsPocketedInRow" },
-  { label: "8PR", value: "runTheTable" },
+  { label: "8PR", value: "eightBallsPocketedInRow" },
+  { label: "RUN", value: "runTheTable" },
   { label: "SCR", value: "scratches" },
 ];
 

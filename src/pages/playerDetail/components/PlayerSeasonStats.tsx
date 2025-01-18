@@ -1,10 +1,5 @@
 import { FC } from "react";
-import {
-  Game,
-  GameStatKeys,
-  GameStatKeysAbbrev,
-  Player,
-} from "../../../types";
+import { Game, GameStatKeys, GameStatKeysAbbrev, Player } from "../../../types";
 import {
   Card,
   Stack,
@@ -98,6 +93,11 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
                 </TableCell>
                 <TableCell>
                   <Typography variant="overline" noWrap>
+                    {GameStatKeysAbbrev[GameStatKeys.eightBallsPocketedInRow]}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="overline" noWrap>
                     {GameStatKeysAbbrev[GameStatKeys.runTheTable]}
                   </Typography>
                 </TableCell>
@@ -130,7 +130,7 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
                 </TableCell>
                 <TableCell>
                   {normalizePercentage(
-                    (stats["totalWins"] / stats["totalGames"])
+                    stats["totalWins"] / stats["totalGames"]
                   )}
                 </TableCell>
                 <TableCell>{stats[GameStatKeys.skillShots] ?? 0}</TableCell>
@@ -148,6 +148,9 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
                 </TableCell>
                 <TableCell>
                   {stats[GameStatKeys.sevenBallsPocketedInRow] ?? 0}
+                </TableCell>
+                <TableCell>
+                  {stats[GameStatKeys.eightBallsPocketedInRow] ?? 0}
                 </TableCell>
                 <TableCell>{stats[GameStatKeys.runTheTable] ?? 0}</TableCell>
                 <TableCell>{stats[GameStatKeys.scratches] ?? 0}</TableCell>

@@ -20,6 +20,7 @@ type FormData = {
   [GameStatKeys.fiveBallsPocketedInRow]: number;
   [GameStatKeys.sixBallsPocketedInRow]: number;
   [GameStatKeys.sevenBallsPocketedInRow]: number;
+  [GameStatKeys.eightBallsPocketedInRow]: number;
   [GameStatKeys.runTheTable]: number;
 };
 
@@ -63,6 +64,9 @@ export const ScoringRubrikForm: FC<ScoringRubrikFormProps> = ({ league }) => {
       [GameStatKeys.sevenBallsPocketedInRow]:
         scoringMatrix?.[GameStatKeys.sevenBallsPocketedInRow] ??
         mockScoringMatrix[GameStatKeys.sevenBallsPocketedInRow],
+      [GameStatKeys.eightBallsPocketedInRow]:
+        scoringMatrix?.[GameStatKeys.eightBallsPocketedInRow] ??
+        mockScoringMatrix[GameStatKeys.eightBallsPocketedInRow],
       [GameStatKeys.runTheTable]:
         scoringMatrix?.[GameStatKeys.runTheTable] ??
         mockScoringMatrix[GameStatKeys.runTheTable],

@@ -321,7 +321,6 @@ export const handleShare = async (title: string) => {
         title,
         url: window.location.href,
       });
-      console.log("Content shared successfully!");
     } catch (error) {
       copyToClipboard(window.location.href);
     }

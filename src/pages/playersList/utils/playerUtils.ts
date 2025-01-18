@@ -74,6 +74,9 @@ export const getStatsForPlayerGames = (
         [GameStatKeys.sevenBallsPocketedInRow]:
           (acc[GameStatKeys.sevenBallsPocketedInRow] ?? 0) +
           (playerStats[GameStatKeys.sevenBallsPocketedInRow] ?? 0),
+        [GameStatKeys.eightBallsPocketedInRow]:
+          (acc[GameStatKeys.eightBallsPocketedInRow] ?? 0) +
+          (playerStats[GameStatKeys.eightBallsPocketedInRow] ?? 0),
         [GameStatKeys.runTheTable]:
           (acc[GameStatKeys.runTheTable] ?? 0) +
           (playerStats[GameStatKeys.runTheTable] ?? 0),

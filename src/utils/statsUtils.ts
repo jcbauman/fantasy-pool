@@ -73,7 +73,10 @@ export const getFantasyScoreForPlayerSeason = (
   return total;
 };
 
-export const getStatKeyFromNumBalls = (numBalls: number): GameStatKeys => {
+export const getStatKeyFromNumBalls = (
+  numBalls: number,
+  ranTable?: boolean
+): GameStatKeys => {
   switch (numBalls) {
     case 3:
       return GameStatKeys.threeBallsPocketedInRow;
@@ -86,7 +89,9 @@ export const getStatKeyFromNumBalls = (numBalls: number): GameStatKeys => {
     case 7:
       return GameStatKeys.sevenBallsPocketedInRow;
     case 8:
-      return GameStatKeys.runTheTable;
+      return ranTable
+        ? GameStatKeys.runTheTable
+        : GameStatKeys.eightBallsPocketedInRow;
     default:
       return GameStatKeys.threeBallsPocketedInRow;
   }
@@ -112,6 +117,8 @@ export const getStringFromStatKey = (statKey: string): string => {
       return "6 in a row";
     case GameStatKeys.sevenBallsPocketedInRow:
       return "7 in a row";
+    case GameStatKeys.eightBallsPocketedInRow:
+      return "8 in a row";
     case GameStatKeys.runTheTable:
       return "Run the table";
     case GameStatKeys.skillShots:

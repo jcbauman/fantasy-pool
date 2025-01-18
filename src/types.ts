@@ -56,6 +56,7 @@ export enum GameStatKeys {
   fiveBallsPocketedInRow = "fiveBallsPocketedInRow",
   sixBallsPocketedInRow = "sixBallsPocketedInRow",
   sevenBallsPocketedInRow = "sevenBallsPocketedInRow",
+  eightBallsPocketedInRow = "eightBallsPocketedInRow",
   runTheTable = "runTheTable",
   scratches = "scratches",
   skillShots = "skillShots",
@@ -71,7 +72,8 @@ export enum GameStatKeysAbbrev {
   fiveBallsPocketedInRow = "5PR",
   sixBallsPocketedInRow = "6PR",
   sevenBallsPocketedInRow = "7PR",
-  runTheTable = "8PR",
+  eightBallsPocketedInRow = "8PR",
+  runTheTable = "RUN",
   scratches = "SCR",
   skillShots = "SS",
 }
@@ -86,6 +88,7 @@ export interface GameStat {
   [GameStatKeys.fiveBallsPocketedInRow]?: number;
   [GameStatKeys.sixBallsPocketedInRow]?: number;
   [GameStatKeys.sevenBallsPocketedInRow]?: number;
+  [GameStatKeys.eightBallsPocketedInRow]?: number;
   [GameStatKeys.runTheTable]?: number;
   [GameStatKeys.scratches]?: number;
   [GameStatKeys.skillShots]?: number;

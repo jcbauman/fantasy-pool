@@ -126,10 +126,10 @@ export const GameInterfaceV2: FC = () => {
     (currentPlayerGameStats[GameStatKeys.fiveBallsPocketedInRow] ?? 0) +
     (currentPlayerGameStats[GameStatKeys.sixBallsPocketedInRow] ?? 0) +
     (currentPlayerGameStats[GameStatKeys.sevenBallsPocketedInRow] ?? 0) +
+    (currentPlayerGameStats[GameStatKeys.eightBallsPocketedInRow] ?? 0) +
     (currentPlayerGameStats[GameStatKeys.runTheTable] ?? 0);
 
   const logWin = (playerTab: number, currGame: Game): GameStat[] => {
-    console.log("logging win");
     return (
       iterateStatNonRedux({
         playerId: gamePlayers[playerTab].id,
@@ -143,7 +143,6 @@ export const GameInterfaceV2: FC = () => {
   };
 
   const logLoss = (playerTab: number, currGame: Game): GameStat[] => {
-    console.log("logging loss");
     return (
       iterateStatNonRedux({
         playerId: gamePlayers[playerTab].id,
@@ -286,7 +285,8 @@ export const GameInterfaceV2: FC = () => {
                         size="large"
                         onClick={() => {
                           if (field.multiBall) {
-                            setMultiBallDeleteDialogOpen(true);
+                            if (totalRuns > 0)
+                              setMultiBallDeleteDialogOpen(true);
                           } else {
                             if (statValue !== 0) {
                               iterateStat({
@@ -511,13 +511,13 @@ export const GameInterfaceV2: FC = () => {
             ? "you"
             : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
         }
-        onConfirm={(numBalls: number) =>
+        onConfirm={(numBalls: number, ranTable?: boolean) => {
           iterateStat({
             playerId: gamePlayers[selectedTab].id,
-            statKey: getStatKeyFromNumBalls(numBalls),
+            statKey: getStatKeyFromNumBalls(numBalls, ranTable),
             delta: 1,
-          })
-        }
+          });
+        }}
       />
       <MultiBallDeleteDialog
         open={multiBallDeleteDialogOpen}
@@ -528,10 +528,10 @@ export const GameInterfaceV2: FC = () => {
             : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
         }
         selectedPlayerId={gamePlayers[selectedTab].id}
-        onConfirmDelete={(numBalls: number) =>
+        onConfirmDelete={(numBalls: GameStatKeys) =>
           iterateStat({
             playerId: gamePlayers[selectedTab].id,
-            statKey: getStatKeyFromNumBalls(numBalls),
+            statKey: numBalls,
             delta: -1,
           })
         }

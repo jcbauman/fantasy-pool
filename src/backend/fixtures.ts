@@ -67,6 +67,7 @@ export const mockGame: Game = {
       [GameStatKeys.fiveBallsPocketedInRow]: 0,
       [GameStatKeys.sixBallsPocketedInRow]: 0,
       [GameStatKeys.sevenBallsPocketedInRow]: 0,
+      [GameStatKeys.eightBallsPocketedInRow]: 0,
       [GameStatKeys.runTheTable]: 0,
       [GameStatKeys.scratches]: 2,
       [GameStatKeys.skillShots]: 1,
@@ -85,6 +86,7 @@ export const mockScoringMatrix: { [key: string]: number } = {
   [GameStatKeys.fourBallsPocketedInRow]: 1,
   [GameStatKeys.fiveBallsPocketedInRow]: 2,
   [GameStatKeys.sixBallsPocketedInRow]: 4,
-  [GameStatKeys.sevenBallsPocketedInRow]: 8,
+  [GameStatKeys.sevenBallsPocketedInRow]: 6,
+  [GameStatKeys.eightBallsPocketedInRow]: 10,
   [GameStatKeys.runTheTable]: 15,
 };

@@ -1,20 +1,23 @@
 import {
   Button,
   ButtonGroup,
+  Checkbox,
+  Collapse,
   DialogActions,
   DialogContent,
   DialogTitle,
   Drawer,
+  FormControlLabel,
   Stack,
   Typography,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 
 interface MultiBallDialogProps {
   open: boolean;
   onClose: () => void;
-  onConfirm: (numBalls: number) => void;
+  onConfirm: (numBalls: number, ranTable?: boolean) => void;
   selectedPlayerName: string;
 }
 
@@ -25,7 +28,13 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
   selectedPlayerName,
 }) => {
   const [numBalls, setNumBalls] = useState(3);
+  const [tableRun, setTableRun] = useState(false);
   const buttons = [3, 4, 5, 6, 7, 8];
+  useEffect(() => {
+    if (numBalls !== 8) {
+      setTableRun(false);
+    }
+  }, [numBalls]);
   return (
     <Drawer open={open} onClose={onClose} anchor="bottom">
       <DialogTitle>
@@ -60,14 +69,25 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
               </Button>,
             ])}
           </ButtonGroup>
-          {numBalls > 6 && (
+          <Collapse in={numBalls === 8} collapsedSize={0}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={tableRun}
+                  onChange={(_e, checked) => setTableRun(checked)}
+                />
+              }
+              label="Off the break (opponent hasn't shot)"
+            />
+          </Collapse>
+          <Collapse in={numBalls > 6} collapsedSize={0}>
             <Stack
               direction="row"
               sx={{ justifyContent: "center", width: "100%" }}
             >
-              <Typography variant="h4">BRUH</Typography>
+              <Typography variant="h4">BRUH{tableRun ? "!" : ""}</Typography>
             </Stack>
-          )}
+          </Collapse>
         </Stack>
       </DialogContent>
       <DialogActions>
@@ -77,7 +97,7 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
         <Button
           variant="contained"
           onClick={() => {
-            onConfirm(numBalls);
+            onConfirm(numBalls, tableRun);
             onClose();
           }}
         >

@@ -111,6 +111,11 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
+                      {GameStatKeysAbbrev[GameStatKeys.eightBallsPocketedInRow]}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="overline" noWrap>
                       {GameStatKeysAbbrev[GameStatKeys.runTheTable]}
                     </Typography>
                   </TableCell>
@@ -181,6 +186,9 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                       </TableCell>
                       <TableCell>
                         {stats[GameStatKeys.sevenBallsPocketedInRow] ?? 0}
+                      </TableCell>
+                      <TableCell>
+                        {stats[GameStatKeys.eightBallsPocketedInRow] ?? 0}
                       </TableCell>
                       <TableCell>
                         {stats[GameStatKeys.runTheTable] ?? 0}

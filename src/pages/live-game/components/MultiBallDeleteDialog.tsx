@@ -1,23 +1,26 @@
 import {
   Button,
-  ButtonGroup,
+  Checkbox,
   DialogActions,
   DialogContent,
   DialogTitle,
   Drawer,
+  FormControlLabel,
   Stack,
   Typography,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { GameStatKeys } from "../../../types";
+import { SimpleStatAbbreviations } from "../../../utils/constants";
+import { RemoveCircle } from "@mui/icons-material";
 
 interface MultiBallDialogProps {
   open: boolean;
   onClose: () => void;
-  onConfirmDelete: (numBalls: number) => void;
+  onConfirmDelete: (numBalls: GameStatKeys) => void;
   selectedPlayerName: string;
   selectedPlayerId: string;
 }
@@ -34,15 +37,34 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
     (stat) => stat.playerId === selectedPlayerId
   );
 
-  const [numBalls, setNumBalls] = useState(0);
-  const buttons = [
-    { num: 3, key: GameStatKeys.threeBallsPocketedInRow },
-    { num: 4, key: GameStatKeys.fourBallsPocketedInRow },
-    { num: 5, key: GameStatKeys.fiveBallsPocketedInRow },
-    { num: 6, key: GameStatKeys.sixBallsPocketedInRow },
-    { num: 7, key: GameStatKeys.sevenBallsPocketedInRow },
-    { num: 8, key: GameStatKeys.runTheTable },
-  ];
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
+
+  const deletableOptions = useMemo(() => {
+    let deletionOptions: GameStatKeys[] = [];
+    const deletableKeys = [
+      GameStatKeys.threeBallsPocketedInRow,
+      GameStatKeys.fourBallsPocketedInRow,
+      GameStatKeys.fiveBallsPocketedInRow,
+      GameStatKeys.sixBallsPocketedInRow,
+      GameStatKeys.sevenBallsPocketedInRow,
+      GameStatKeys.eightBallsPocketedInRow,
+      GameStatKeys.runTheTable,
+    ];
+    Object.keys(thisPlayerStats as unknown as GameStatKeys).forEach((k) => {
+      const key = k as GameStatKeys;
+      if (deletableKeys.includes(key) && (thisPlayerStats?.[key] ?? 0) > 0) {
+        deletionOptions.push(key);
+      }
+    });
+    return deletionOptions;
+  }, [thisPlayerStats]);
+
+  const thisStat =
+    selectedIndex !== null && deletableOptions[selectedIndex]
+      ? SimpleStatAbbreviations[
+          deletableOptions[selectedIndex] ?? "this stat"
+        ]?.split(" ")[0]
+      : "this stat";
   return (
     <Drawer open={open} onClose={onClose} anchor="bottom">
       <DialogTitle>
@@ -51,48 +73,52 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
           sx={{ alignItems: "center", lineHeight: 1 }}
           spacing={2}
         >
-          Delete which stat from {selectedPlayerName}?
+          Delete a run from {selectedPlayerName}
         </Stack>
       </DialogTitle>
       <DialogContent>
-        <Stack direction="column" spacing={2}>
+        <Stack direction="column" spacing={1}>
           <Typography>
-            Select the number of balls pocketed in a row to delete from{" "}
-            {selectedPlayerName}.
+            Select the run to delete from {selectedPlayerName}.
           </Typography>
-          <ButtonGroup
-            variant="outlined"
-            aria-label="# ball selection group"
-            sx={{ width: "100%" }}
-          >
-            {buttons.map((value) => [
-              <Button
-                fullWidth
-                key={value.num}
-                variant={numBalls === value.num ? "contained" : "outlined"}
-                onClick={() => setNumBalls(value.num)}
-                disabled={!thisPlayerStats?.[value.key]}
-              >
-                {value.num}
-              </Button>,
-            ])}
-          </ButtonGroup>
+          {deletableOptions.map((key, idx) => {
+            const checked = selectedIndex === idx;
+            return (
+              <FormControlLabel
+                key={idx}
+                control={
+                  <Checkbox
+                    sx={{ pl: 0 }}
+                    checkedIcon={<RemoveCircle />}
+                    color={checked ? "error" : "primary"}
+                    checked={checked}
+                    onChange={(_e) => setSelectedIndex(idx)}
+                  />
+                }
+                label={SimpleStatAbbreviations[key]}
+              />
+            );
+          })}
         </Stack>
       </DialogContent>
+
       <DialogActions>
         <Button variant="text" onClick={onClose}>
           Cancel
         </Button>
         <Button
-          disabled={numBalls === 0}
+          disabled={selectedIndex === null || deletableOptions.length === 0}
           color="error"
           variant="contained"
           onClick={() => {
-            onConfirmDelete(numBalls);
-            onClose();
+            if (selectedIndex !== null) {
+              onConfirmDelete(deletableOptions[selectedIndex]);
+              setSelectedIndex(0);
+              onClose();
+            }
           }}
         >
-          Delete this stat for {getPlayerNameAbbreviation(selectedPlayerName)}
+          Delete {thisStat} from {getPlayerNameAbbreviation(selectedPlayerName)}
         </Button>
       </DialogActions>
     </Drawer>

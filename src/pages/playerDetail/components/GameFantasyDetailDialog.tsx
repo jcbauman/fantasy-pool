@@ -17,7 +17,7 @@ export const GameFantasyDetailDialog: FC<{
         player={player}
         scoringMatrix={scoringMatrix}
       />
-      <DialogActions>
+      <DialogActions sx={{ mb: 0 }}>
         <Button onClick={onClose} fullWidth variant="outlined">
           Close
         </Button>

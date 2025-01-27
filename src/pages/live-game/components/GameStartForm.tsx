@@ -47,11 +47,11 @@ export const GameStartForm: FC<{
     string | undefined
   >(undefined);
   const locations = useFetchLocations();
-  const { gameStartSoundEffect, useNewGameEntryInterface } = useSelector(
+  const { gameStartSoundEffect, useOldGameEntryInterface } = useSelector(
     (state: RootState) => state.settings
   );
 
-  const maxPlayers = !useNewGameEntryInterface ? 4 : 2;
+  const maxPlayers = useOldGameEntryInterface ? 4 : 2;
 
   const {
     handleSubmit,
@@ -175,8 +175,13 @@ export const GameStartForm: FC<{
             name="playerIds"
             control={control}
             rules={{
-              validate: (value) =>
-                value.length > 0 || "At least one player must be selected",
+              validate: {
+                required: (value) =>
+                  value.length > 0 || "At least one player must be selected",
+                maxTwo: (value) =>
+                  value.length <= maxPlayers ||
+                  `You can select up to ${maxPlayers} players`,
+              },
             }}
             render={({ field }) => (
               <Autocomplete

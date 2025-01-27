@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface SettingsState {
   hideInactivePlayers: boolean;
   gameStartSoundEffect: boolean;
-  useNewGameEntryInterface?: boolean;
+  useOldGameEntryInterface?: boolean;
 }
 
 const initialState: SettingsState = {
   hideInactivePlayers: false,
   gameStartSoundEffect: true,
-  useNewGameEntryInterface: false,
+  useOldGameEntryInterface: false,
 };
 
 const settingsSlice = createSlice({
@@ -22,8 +22,8 @@ const settingsSlice = createSlice({
     setGameStartSoundEffect: (state, action: PayloadAction<boolean>) => {
       state.gameStartSoundEffect = action.payload;
     },
-    setUseNewGameEntryInterface: (state, action: PayloadAction<boolean>) => {
-      state.useNewGameEntryInterface = action.payload;
+    setUseOldGameEntryInterface: (state, action: PayloadAction<boolean>) => {
+      state.useOldGameEntryInterface = action.payload;
     },
   },
 });
@@ -31,7 +31,7 @@ const settingsSlice = createSlice({
 export const {
   setHideInactivePlayers,
   setGameStartSoundEffect,
-  setUseNewGameEntryInterface,
+  setUseOldGameEntryInterface,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

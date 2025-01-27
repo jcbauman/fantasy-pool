@@ -13,7 +13,7 @@ const INFO_MODAL_STORAGE_KEY = "gameInfoModalStoragekey";
 export const LiveGameModePage: FC = () => {
   const { gameIsInProgress } = useSelector((state: RootState) => state.game);
   const [showInfoDialog, setShowInfoDialog] = useState(false);
-  const { useNewGameEntryInterface } = useSelector(
+  const { useOldGameEntryInterface } = useSelector(
     (state: RootState) => state.settings
   );
   useEffect(() => {
@@ -28,11 +28,7 @@ export const LiveGameModePage: FC = () => {
       <Stack direction="column" sx={{ width: "100%", height: "100%", p: 1 }}>
         {gameIsInProgress ? (
           <>
-            {!useNewGameEntryInterface ? (
-              <GameInterface />
-            ) : (
-              <GameInterfaceV2 />
-            )}
+            {useOldGameEntryInterface ? <GameInterface /> : <GameInterfaceV2 />}
           </>
         ) : (
           <GameStartForm setShowInfoDialog={setShowInfoDialog} />

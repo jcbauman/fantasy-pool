@@ -24,6 +24,7 @@ import { joinedInTimeFor2024Wrapped } from "../playersList/utils/playerUtils";
 import { NewSeasonDialog } from "./components/NewSeasonDialog";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import { LocationOnOutlined } from "@mui/icons-material";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 const NEW_SEASON_STORAGE_KEY = "2024_new_season_storage_key";
@@ -140,11 +141,11 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton onClick={onClickBlockedField}>
+              <ListItemButton to={`/locations`} component={RouterLink}>
                 <ListItemIcon>
-                  <EventNoteOutlinedIcon />
+                  <LocationOnOutlined />
                 </ListItemIcon>
-                <ListItemText primary="Schedule" />
+                <ListItemText primary="Explore locations" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />

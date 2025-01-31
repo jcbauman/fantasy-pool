@@ -25,10 +25,10 @@ export interface PoolHallLocation {
   name: string;
   dateAdded?: Timestamp;
   discoveryPlayer?: string;
-  details?: {
-    address?: string;
-    imageUrl?: string;
-  };
+  city?: string;
+  state?: string;
+  imageUrl?: string;
+  mapsUrl?: string;
 }
 
 export interface League {

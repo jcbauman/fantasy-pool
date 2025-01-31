@@ -23,6 +23,7 @@ import { LeagueAdminPage } from "./pages/league-admin/LeagueAdminPage";
 import { RulesPage } from "./pages/rules/RulesPage";
 import { WrappedPage } from "./pages/statsWrapped/WrappedPage";
 import useStandaloneMode from "./shared-components/hooks/useStandaloneMode";
+import { LocationsPage } from "./pages/locations/LocationsPage";
 
 function App() {
   const isStandalone = useStandaloneMode();
@@ -38,6 +39,7 @@ function App() {
                   <Route path="/" element={<OverviewComponent />} />
                   <Route path="/players" element={<PlayersPage />} />
                   <Route path="/players/:id" element={<PlayerDetailPage />} />
+                  <Route path="/locations" element={<LocationsPage />} />
                   <Route path="/info" element={<LeagueInfoPage />} />
                   <Route path="/live-game" element={<LiveGameModePage />} />
                   <Route path="/profile" element={<ProfilePage />} />

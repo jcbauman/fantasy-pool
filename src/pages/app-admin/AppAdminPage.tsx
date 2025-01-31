@@ -14,11 +14,7 @@ import { INVITE_PW } from "../../utils/constants";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import {
-  useFetchLocations,
-  useLeanFetchLocations,
-} from "../../backend/getters";
-import { LOCATIONS_COLLECTION } from "../../backend/firebase/controller";
+import { useFetchLocations } from "../../backend/getters";
 
 export const AppAdminPage: FC = () => {
   const {
@@ -52,17 +48,8 @@ export const AppAdminPage: FC = () => {
             fullWidth
             variant="outlined"
             onClick={() => handleExportGames(games)}
-            sx={{ mb: 2 }}
           >
             Export {games.length} games to file
-          </Button>
-          <Button
-            startIcon={<FileDownloadOutlinedIcon />}
-            fullWidth
-            variant="outlined"
-            onClick={() => handleExportLocations(locations)}
-          >
-            Export {locations.length} locations to file
           </Button>
         </Card>
         <Card sx={{ p: 2 }}>
@@ -78,12 +65,21 @@ export const AppAdminPage: FC = () => {
 
         <Card sx={{ p: 2 }}>
           <Button
+            sx={{ mb: 2 }}
+            startIcon={<FileDownloadOutlinedIcon />}
+            fullWidth
+            variant="outlined"
+            onClick={() => handleExportLocations(locations)}
+          >
+            Export {locations.length} locations to file
+          </Button>
+          <Button
             startIcon={<LocationOnOutlinedIcon />}
             fullWidth
             variant="outlined"
             onClick={() => handleLocationCollapse(locations)}
           >
-            Collapse locations
+            Collapse duplicate locations
           </Button>
         </Card>
       </Stack>

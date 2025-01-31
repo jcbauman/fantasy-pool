@@ -139,5 +139,5 @@ export const handleLocationCollapse = (locations: PoolHallLocation[]) => {
   duplicateLocations.forEach(async (location) => {
     await deleteLocation(location.id);
   });
-  console.log(`Would delete ${duplicateLocations.length} duplicate locations`);
+  console.log(`Deleted ${duplicateLocations.length} duplicate locations`);
 };

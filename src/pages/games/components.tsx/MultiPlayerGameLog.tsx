@@ -3,6 +3,7 @@ import { Game, GameStatKeys, GameStatKeysAbbrev, Player } from "../../../types";
 import {
   Avatar,
   Card,
+  IconButton,
   Paper,
   Stack,
   Table,
@@ -23,14 +24,15 @@ import { useAppContext } from "../../../context/AppContext";
 import { PlayerCell } from "../../playersList/components/PlayerCell";
 import { GameFantasyDetailDialog } from "../../playerDetail/components/GameFantasyDetailDialog";
 import { TextEditorField } from "../../../shared-components/TextEditorField";
-import { updateExistingGame } from "../../../backend/setters";
+import { setGameReaction, updateExistingGame } from "../../../backend/setters";
 import { useDispatch } from "react-redux";
 import { sendSuccessNotification } from "../../../redux/notificationSlice";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
 
 export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const {
     players,
-    authState: { user },
+    authState: { user, player },
     scoringMatrix,
   } = useAppContext();
   const [detailModalPlayer, setDetailModalPlayer] = useState<
@@ -39,6 +41,22 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const [editingGameLoc, setEditingGameLoc] = useState(false);
   const authorPlayer = players.find((p) => p.id === game?.authorPlayerId);
   const dispatch = useDispatch();
+  const gameReactionCount = game?.reactions?.length ?? 0;
+  const hasPlayerReacted = game?.reactions?.some(
+    (p) => p.playerId === player?.id
+  );
+  const copyGameId = (): void => {
+    if (user?.isAppAdmin) {
+      navigator.clipboard
+        .writeText(game.id)
+        .then(() => {
+          dispatch(sendSuccessNotification("Copied game ID to clipboard"));
+        })
+        .catch((err) => {
+          console.error("Failed to copy text: ", err);
+        });
+    }
+  };
   return (
     <Card>
       <Stack direction="column" sx={{ p: 0, pb: 1 }}>
@@ -72,7 +90,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
               <Typography>{game.location}</Typography>
             )}
           </Stack>
-          {authorPlayer && (
+          {/* {authorPlayer && (
             <Stack direction="row">
               <Typography variant="caption">By</Typography>
               <Avatar
@@ -99,7 +117,29 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                 </Typography>
               </Avatar>
             </Stack>
-          )}
+          )} */}
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            {gameReactionCount > 0 ? (
+              <Typography variant="caption">{gameReactionCount}</Typography>
+            ) : (
+              <></>
+            )}
+            <IconButton
+              size="small"
+              onClick={() => {
+                if (player) {
+                  setGameReaction(
+                    game,
+                    player?.id,
+                    hasPlayerReacted ? "" : "like"
+                  );
+                  copyGameId();
+                }
+              }}
+            >
+              {hasPlayerReacted ? <Favorite /> : <FavoriteBorder />}
+            </IconButton>
+          </Stack>
         </Stack>
         <TableContainer component={Paper} style={{ overflowX: "auto" }}>
           <Table size="small" sx={{ borderColor: "white" }}>

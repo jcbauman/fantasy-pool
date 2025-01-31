@@ -138,3 +138,26 @@ export const deleteGame = async (
     onError?.(`Error deleting game, ${error}`);
   }
 };
+
+export const setGameReaction = async (
+  game: Game,
+  playerId: string,
+  msg: string | null,
+  onError?: (msg: string) => void
+): Promise<void> => {
+  try {
+    const docRef = doc(db, "games", game.id);
+    if (!docRef) return;
+    const resolvedGame = {
+      ...game,
+      reactions: msg
+        ? [...(game.reactions ?? []), { playerId, msg }]
+        : (game.reactions ?? []).filter(
+            (reaction) => reaction.playerId !== playerId
+          ),
+    };
+    await updateDoc(docRef, resolvedGame);
+  } catch (_e) {
+    onError?.(`An error occurred`);
+  }
+};

@@ -1,8 +1,9 @@
 import { doc, getDocs, Timestamp, updateDoc } from "firebase/firestore";
-import { Game, GameStat, GameStatKeys } from "../../types";
+import { Game, GameStat, GameStatKeys, PoolHallLocation } from "../../types";
 import { formatDateToMMDD } from "../../utils/statsUtils";
 import { GAMES_COLLECTION } from "../../backend/firebase/controller";
 import { db } from "../../backend/firebase/firebaseConfig";
+import { deleteLocation } from "../../backend/setters";
 
 export const collapsRepeatGames = (
   games: Game[],
@@ -107,4 +108,36 @@ export const handleExportGames = (data: Game[]) => {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+};
+
+export const handleExportLocations = (data: PoolHallLocation[]) => {
+  const dataStr = JSON.stringify(data);
+  const blob = new Blob([dataStr], { type: "text/plain;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  const date = new Date();
+  link.download = `locations-db-${date.toString()}.txt`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+export const handleLocationCollapse = (locations: PoolHallLocation[]) => {
+  console.log("bruh", locations);
+
+  const duplicateLocations: PoolHallLocation[] = [];
+  const locationNames = new Set<string>();
+
+  locations.forEach((location) => {
+    if (locationNames.has(location.name)) {
+      duplicateLocations.push(location);
+    } else {
+      locationNames.add(location.name);
+    }
+  });
+
+  duplicateLocations.forEach(async (location) => {
+    await deleteLocation(location.id);
+  });
+  console.log(`Would delete ${duplicateLocations.length} duplicate locations`);
 };

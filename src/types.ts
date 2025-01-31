@@ -23,6 +23,12 @@ export interface Player {
 export interface PoolHallLocation {
   id: string;
   name: string;
+  dateAdded?: Timestamp;
+  discoveryPlayer?: string;
+  details?: {
+    address?: string;
+    imageUrl?: string;
+  };
 }
 
 export interface League {

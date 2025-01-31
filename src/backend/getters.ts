@@ -177,7 +177,7 @@ export const useFetchPlayers = (): Player[] => {
   return players;
 };
 
-export const useFetchLocations = (): string[] => {
+export const useLeanFetchLocations = (): string[] => {
   const [locations, setLocations] = useState<PoolHallLocation[]>([]);
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -201,6 +201,31 @@ export const useFetchLocations = (): string[] => {
 
   const reducedLocations = locations.map((l) => l.name);
   return [...new Set(reducedLocations)].sort();
+};
+
+export const useFetchLocations = (): PoolHallLocation[] => {
+  const [locations, setLocations] = useState<PoolHallLocation[]>([]);
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const querySnapshot = await getDocs(LOCATIONS_COLLECTION);
+        const docsData: PoolHallLocation[] = querySnapshot.docs.map((doc) => {
+          const data = doc.data() as Omit<PoolHallLocation, "id">;
+          return {
+            id: doc.id,
+            ...data,
+          };
+        });
+        setLocations(docsData);
+      } catch (error) {
+        console.error("Error fetching documents: ", error);
+      }
+    };
+
+    fetchDocuments();
+  }, []);
+
+  return locations;
 };
 
 export const fetchPlayerById = async (

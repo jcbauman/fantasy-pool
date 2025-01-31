@@ -71,6 +71,18 @@ export const addNewLocation = async (
   }
 };
 
+export const deleteLocation = async (
+  id: string
+): Promise<string | undefined> => {
+  try {
+    const docRef = doc(db, "locations", id);
+    await deleteDoc(docRef);
+    return id;
+  } catch (e) {
+    console.error("Unable to delete location, missing permissions");
+  }
+};
+
 export const updateCurrentPlayer = async (
   player: Omit<Player, "id">,
   playerId: string,

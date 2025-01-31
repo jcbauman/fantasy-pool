@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { initializeGame } from "../../../redux/gameSlice";
 import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { useFetchLocations } from "../../../backend/getters";
+import { useLeanFetchLocations } from "../../../backend/getters";
 import { addNewLocation } from "../../../backend/setters";
 import {
   isMoreThanTwoHoursAgo,
@@ -27,6 +27,7 @@ import {
 import { Link } from "react-router-dom";
 import { RootState } from "../../../redux/store";
 import { Game, Player } from "../../../types";
+import { Timestamp } from "firebase/firestore";
 interface FormData {
   date: Date | null;
   location: string;
@@ -46,7 +47,7 @@ export const GameStartForm: FC<{
   const [lastGameAddedLocation, setLastGameAddedLocation] = useState<
     string | undefined
   >(undefined);
-  const locations = useFetchLocations();
+  const locations = useLeanFetchLocations();
   const { gameStartSoundEffect, useOldGameEntryInterface } = useSelector(
     (state: RootState) => state.settings
   );
@@ -136,11 +137,17 @@ export const GameStartForm: FC<{
       authorPlayerId: player?.id ?? "",
     };
     if (
+      data.location &&
+      locations &&
       !locations.some(
         (l) => l.trim().toLowerCase() === data.location.trim().toLowerCase()
       )
     ) {
-      addNewLocation({ name: data.location.trim() });
+      addNewLocation({
+        name: data.location.trim(),
+        discoveryPlayer: player?.id,
+        dateAdded: Timestamp.fromDate(new Date()),
+      });
     }
     dispatch(initializeGame({ ...resolvedData }));
     if (gameStartSoundEffect) {

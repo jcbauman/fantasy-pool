@@ -129,7 +129,6 @@ export const GameInterfaceV2: FC = () => {
     (currentPlayerGameStats[GameStatKeys.runTheTable] ?? 0);
 
   const logWin = (playerTab: number, currGame: Game): GameStat[] => {
-    console.log("logging win");
     return (
       iterateStatNonRedux({
         playerId: gamePlayers[playerTab].id,
@@ -143,7 +142,6 @@ export const GameInterfaceV2: FC = () => {
   };
 
   const logLoss = (playerTab: number, currGame: Game): GameStat[] => {
-    console.log("logging loss");
     return (
       iterateStatNonRedux({
         playerId: gamePlayers[playerTab].id,

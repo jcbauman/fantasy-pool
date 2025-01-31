@@ -123,8 +123,6 @@ export const handleExportLocations = (data: PoolHallLocation[]) => {
 };
 
 export const handleLocationCollapse = (locations: PoolHallLocation[]) => {
-  console.log("bruh", locations);
-
   const duplicateLocations: PoolHallLocation[] = [];
   const locationNames = new Set<string>();
 

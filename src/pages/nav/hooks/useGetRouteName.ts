@@ -13,13 +13,24 @@ export const useTopNav = (): UseTopNav => {
     { path: "/players/:id" },
     location.pathname
   );
-  const params = matchPlayerDetail?.params as { id?: string };
-  const player = players.find((p) => p.id === params?.id);
+  const matchLocationDetail = matchPath(
+    { path: "/locations/:id" },
+    location.pathname
+  );
+  const playerParams = matchPlayerDetail?.params as { id?: string };
+  const locationParams = matchLocationDetail?.params as { id?: string };
+  const player = players.find((p) => p.id === playerParams?.id);
   if (location.pathname.startsWith("/players")) {
-    if (params?.id) {
+    if (playerParams?.id) {
       return { title: player?.name ?? "Player Detail", showBackButton: true };
     } else {
       return { title: "Players", showBackButton: true };
+    }
+  } else if (location.pathname.startsWith("/locations")) {
+    if (locationParams?.id) {
+      return { title: "Location Detail", showBackButton: true };
+    } else {
+      return { title: "Pool halls", showBackButton: true };
     }
   } else if (location.pathname === "/") return { title: "Fantasy Pool Home" };
   else if (location.pathname === "/info")

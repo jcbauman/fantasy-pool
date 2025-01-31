@@ -130,6 +130,32 @@ export const getGamesForPlayerAfterDate = async (
   }
 };
 
+export const getGamesForLocationAfterDate = async (
+  locationName: string
+): Promise<Game[] | undefined> => {
+  if (!locationName) return;
+
+  const cutoffDate = Timestamp.fromDate(new Date(LAST_SEASON_CUTOFF_DATE));
+
+  const q = query(
+    GAMES_COLLECTION,
+    where("location", "==", locationName),
+    where("createdAt", ">", cutoffDate)
+  );
+
+  try {
+    const querySnapshot = await getDocs(q);
+    const documents = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return documents as Game[];
+  } catch (error) {
+    console.error("Error querying games for location: ", error);
+    return [];
+  }
+};
+
 export const useFetchUsers = (): User[] => {
   const [users, setUsers] = useState<User[]>([]);
   useEffect(() => {
@@ -240,6 +266,21 @@ export const fetchPlayerById = async (
     };
   } else {
     console.error("No player record found found for ", id);
+  }
+};
+
+export const fetchLocationById = async (
+  id: string
+): Promise<PoolHallLocation | undefined> => {
+  const docSnap = await getDoc(doc(firestore, `locations/${id}`));
+  if (docSnap.exists()) {
+    const data = docSnap.data() as Omit<PoolHallLocation, "id">;
+    return {
+      id: docSnap.id,
+      ...data,
+    };
+  } else {
+    console.error("No location record found found for ", id);
   }
 };
 

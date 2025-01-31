@@ -24,6 +24,7 @@ import { RulesPage } from "./pages/rules/RulesPage";
 import { WrappedPage } from "./pages/statsWrapped/WrappedPage";
 import useStandaloneMode from "./shared-components/hooks/useStandaloneMode";
 import { LocationsPage } from "./pages/locations/LocationsPage";
+import { LocationDetailPage } from "./pages/location-detail/LocationDetailPage";
 
 function App() {
   const isStandalone = useStandaloneMode();
@@ -40,6 +41,10 @@ function App() {
                   <Route path="/players" element={<PlayersPage />} />
                   <Route path="/players/:id" element={<PlayerDetailPage />} />
                   <Route path="/locations" element={<LocationsPage />} />
+                  <Route
+                    path="/locations/:id"
+                    element={<LocationDetailPage />}
+                  />
                   <Route path="/info" element={<LeagueInfoPage />} />
                   <Route path="/live-game" element={<LiveGameModePage />} />
                   <Route path="/profile" element={<ProfilePage />} />

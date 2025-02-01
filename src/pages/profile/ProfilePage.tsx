@@ -16,7 +16,6 @@ import { SettingsEditor } from "./components/SettingsEditor";
 
 export const ProfilePage: FC = () => {
   const {
-    league,
     authState: { player, user, refetchPlayer },
   } = useAppContext();
   const dispatch = useDispatch();

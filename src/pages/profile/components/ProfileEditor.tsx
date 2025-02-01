@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Avatar,
   Button,
   Card,
@@ -17,6 +18,7 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useAppContext } from "../../../context/AppContext";
 import { Player } from "../../../types";
 import { useLocation } from "react-router-dom";
+import { useFetchLocations } from "../../../backend/getters";
 
 export interface ProfileFormValues {
   email: string;
@@ -35,6 +37,7 @@ export const ProfileEditor: FC<{
     authState: { user, signOut },
     league,
   } = useAppContext();
+  const locations = useFetchLocations();
   const location = useLocation();
   const defaultValues = useMemo(() => {
     return {
@@ -115,14 +118,26 @@ export const ProfileEditor: FC<{
               )}
               <Stack direction="row" gap={1} sx={{ alignItems: "center" }}>
                 <LocationOnOutlinedIcon />
-                <TextField
-                  fullWidth
-                  variant="outlined"
-                  type="text"
-                  label="Default pool hall"
+                <Autocomplete
                   size="small"
+                  fullWidth
+                  value={watchAll.defaultLocation}
                   {...register("defaultLocation")}
-                  defaultValue={watchAll.defaultLocation}
+                  freeSolo
+                  onChange={(_e, newValue) => {
+                    setValue("defaultLocation", newValue?.trim() || "");
+                  }}
+                  onInputChange={(_e, newInputValue) =>
+                    setValue("defaultLocation", newInputValue || "")
+                  }
+                  options={locations}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Default pool hall"
+                      placeholder="Select location or enter a new one"
+                    />
+                  )}
                 />
               </Stack>
               <FormControl>

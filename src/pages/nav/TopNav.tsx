@@ -27,7 +27,6 @@ export const TopNav: FC = () => {
   const navigate = useNavigate();
   const { gameIsInProgress } = useSelector((state: RootState) => state.game);
   const onGamePage = location.pathname === "/live-game";
-  const rightButton = isAuthed ? <ManageAccountsIcon /> : <AccountCircle />;
   return (
     <AppBar position="fixed">
       <Toolbar>
@@ -95,7 +94,7 @@ export const TopNav: FC = () => {
           component={RouterLink}
           to="/profile"
         >
-          {!hideButtons && rightButton}
+          {!hideButtons && <AccountCircle />}
         </IconButton>
       </Toolbar>
     </AppBar>

@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { paginatedFetchGames } from "../../backend/getters";
 import { Game } from "../../types";
-import { sendErrorNotification } from "../../redux/notificationSlice";
-import { useDispatch } from "react-redux";
+import { sendErrorNotification } from "../../shared-components/toasts/notificationToasts";
 
 const PAGE_SIZE = 10;
 
@@ -18,7 +17,6 @@ export const useInfiniteFetchGames = (): UseInfiniteFetchGames => {
   const [loading, setLoading] = useState(false);
   const [lastDoc, setLastDoc] = useState<any>(null);
   const [hasMore, setHasMore] = useState(true);
-  const dispatch = useDispatch();
 
   const loadGames = useCallback(async () => {
     try {
@@ -40,13 +38,13 @@ export const useInfiniteFetchGames = (): UseInfiniteFetchGames => {
         setHasMore(false);
       }
     } catch (error) {
-      dispatch(sendErrorNotification("Unable to load games, please try again"));
+      sendErrorNotification("Unable to load games, please try again");
       console.error("Failed to load games:", error);
       setHasMore(false);
     } finally {
       setLoading(false);
     }
-  }, [lastDoc, dispatch]);
+  }, [lastDoc]);
 
   useEffect(() => {
     loadGames();

@@ -1,8 +1,7 @@
-import { CircularProgress, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { FC, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
-import NotificationLayer from "./NotificationLayer";
 import { DesktopWarningDialog } from "./DesktopWarningDialog";
 import { Loader } from "./Loader";
 
@@ -66,7 +65,6 @@ export const PageContainer: FC<{
         children
       )}
       <DesktopWarningDialog />
-      <NotificationLayer />
     </Stack>
   );
 };

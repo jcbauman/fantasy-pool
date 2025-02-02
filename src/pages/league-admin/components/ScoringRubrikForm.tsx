@@ -5,8 +5,7 @@ import { GameStatKeys, League } from "../../../types";
 import { mockScoringMatrix } from "../../../backend/fixtures";
 import { getStringFromStatKey } from "../../../utils/statsUtils";
 import { updateLeague } from "../../../backend/setters";
-import { useDispatch } from "react-redux";
-import { sendSuccessNotification } from "../../../redux/notificationSlice";
+import { sendSuccessNotification } from "../../../shared-components/toasts/notificationToasts";
 
 type FormData = {
   [GameStatKeys.winsBy8BallSink]: number;
@@ -69,7 +68,6 @@ export const ScoringRubrikForm: FC<ScoringRubrikFormProps> = ({ league }) => {
     },
   });
   const watchAll = watch();
-  const dispatch = useDispatch();
   const onSubmit = async (data: FormData): Promise<void> => {
     const resolvedLeague: League = {
       ...league,
@@ -77,7 +75,7 @@ export const ScoringRubrikForm: FC<ScoringRubrikFormProps> = ({ league }) => {
     };
     const { id, ...leagueNoId } = resolvedLeague;
     await updateLeague(leagueNoId, league.id, () =>
-      dispatch(sendSuccessNotification("Scoring rubrik updated"))
+      sendSuccessNotification("Scoring rubrik updated")
     );
   };
 

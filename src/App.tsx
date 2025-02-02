@@ -23,6 +23,7 @@ import { LeagueAdminPage } from "./pages/league-admin/LeagueAdminPage";
 import { RulesPage } from "./pages/rules/RulesPage";
 import { WrappedPage } from "./pages/statsWrapped/WrappedPage";
 import useStandaloneMode from "./shared-components/hooks/useStandaloneMode";
+import { NotificationProvider } from "./shared-components/toasts/NotificationProvider";
 
 function App() {
   const isStandalone = useStandaloneMode();
@@ -34,23 +35,31 @@ function App() {
             <AppContextProvider>
               <Router>
                 <TopNav />
-                <Routes>
-                  <Route path="/" element={<OverviewComponent />} />
-                  <Route path="/players" element={<PlayersPage />} />
-                  <Route path="/players/:id" element={<PlayerDetailPage />} />
-                  <Route path="/info" element={<LeagueInfoPage />} />
-                  <Route path="/live-game" element={<LiveGameModePage />} />
-                  <Route path="/profile" element={<ProfilePage />} />
-                  <Route path="/sign-in" element={<SignInPage />} />
-                  <Route path="/game-complete" element={<GameCompletePage />} />
-                  <Route path="/create-player" element={<CreatePlayerPage />} />
-                  <Route path="/app-admin" element={<AppAdminPage />} />
-                  <Route path="/games" element={<RecentGamesPage />} />
-                  <Route path="/league-admin" element={<LeagueAdminPage />} />
-                  <Route path="/rules" element={<RulesPage />} />
-                  <Route path="/wrapped-2024/:id" element={<WrappedPage />} />
-                  <Route path="*" element={<OverviewComponent />} />
-                </Routes>
+                <NotificationProvider>
+                  <Routes>
+                    <Route path="/" element={<OverviewComponent />} />
+                    <Route path="/players" element={<PlayersPage />} />
+                    <Route path="/players/:id" element={<PlayerDetailPage />} />
+                    <Route path="/info" element={<LeagueInfoPage />} />
+                    <Route path="/live-game" element={<LiveGameModePage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/sign-in" element={<SignInPage />} />
+                    <Route
+                      path="/game-complete"
+                      element={<GameCompletePage />}
+                    />
+                    <Route
+                      path="/create-player"
+                      element={<CreatePlayerPage />}
+                    />
+                    <Route path="/app-admin" element={<AppAdminPage />} />
+                    <Route path="/games" element={<RecentGamesPage />} />
+                    <Route path="/league-admin" element={<LeagueAdminPage />} />
+                    <Route path="/rules" element={<RulesPage />} />
+                    <Route path="/wrapped-2024/:id" element={<WrappedPage />} />
+                    <Route path="*" element={<OverviewComponent />} />
+                  </Routes>
+                </NotificationProvider>
               </Router>
             </AppContextProvider>
           </CssBaseline>

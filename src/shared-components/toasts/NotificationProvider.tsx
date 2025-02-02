@@ -37,20 +37,6 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({
     <NotificationContext.Provider value={{ sendNotification }}>
       {children}
       {notification && (
-        // <Snackbar
-        //   open={open}
-        //   autoHideDuration={3000}
-        //   onClose={handleClose}
-        //   anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        // >
-        //   <Alert
-        //     onClose={handleClose}
-        //     severity={notification.severity}
-        //     sx={{ width: "100%" }}
-        //   >
-        //     {notification.message}
-        //   </Alert>
-        // </Snackbar>
         <Snackbar
           open={open}
           sx={{

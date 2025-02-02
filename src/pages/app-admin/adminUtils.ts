@@ -91,10 +91,10 @@ export const updateGamesWithTimestamps = async () => {
         createdAt: convertedTimestamp,
       });
 
-      console.log(`bruh Updated document ID: ${documentSnapshot.id}`);
+      // console.log(`bruh Updated document ID: ${documentSnapshot.id}`);
     }
   });
-  console.log(`bruh ${count} have it`);
+  // console.log(`bruh ${count} have it`);
 };
 
 export const handleExportGames = (data: Game[]) => {

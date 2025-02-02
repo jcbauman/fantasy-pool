@@ -45,6 +45,7 @@ import { DeleteOutline, FavoriteBorder, Undo } from "@mui/icons-material";
 import EightBallIcon from "../../../shared-components/icons/EightBallIcon";
 import { ConfirmationDrawerV2 } from "./ConfirmationDrawerV2";
 import { sendErrorNotification } from "../../../shared-components/toasts/notificationToasts";
+import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 
 export const GameInterfaceV2: FC = () => {
   const dispatch = useDispatch();
@@ -290,6 +291,10 @@ export const GameInterfaceV2: FC = () => {
                                 statKey: field.stat,
                                 delta: -1,
                               });
+                              fireAnalyticsEvent(
+                                "GameMode_Clicked_DecreaseStat",
+                                { statKey: field.stat }
+                              );
                             }
                           }
                         }}
@@ -466,7 +471,10 @@ export const GameInterfaceV2: FC = () => {
           size="large"
           variant={showEndGameSection ? "outlined" : "contained"}
           color="error"
-          onClick={() => setDiscardGameDialogOpen(true)}
+          onClick={() => {
+            setDiscardGameDialogOpen(true);
+            fireAnalyticsEvent("GameMode_Clicked_DeleteGame");
+          }}
         >
           <DeleteOutline color={showEndGameSection ? "error" : "inherit"} />
         </Button>
@@ -475,7 +483,10 @@ export const GameInterfaceV2: FC = () => {
           color={"primary"}
           variant={showEndGameSection ? "outlined" : "contained"}
           fullWidth
-          onClick={() => setShowEndGameSection(!showEndGameSection)}
+          onClick={() => {
+            setShowEndGameSection(!showEndGameSection);
+            fireAnalyticsEvent("GameMode_Clicked_EndGame");
+          }}
           startIcon={showEndGameSection ? <Undo /> : <DoneOutlinedIcon />}
         >
           {showEndGameSection ? "Back" : "End game"}

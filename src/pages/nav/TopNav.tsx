@@ -8,7 +8,6 @@ import { FC } from "react";
 import { useTopNav } from "./hooks/useGetRouteName";
 import { Badge } from "@mui/material";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
@@ -16,6 +15,7 @@ import { useAppContext } from "../../context/AppContext";
 import EightBallIcon from "../../shared-components/icons/EightBallIcon";
 import { usePageTitle } from "../../shared-components/hooks/usePageTitle";
 import { LiveHelp } from "@mui/icons-material";
+import { fireAnalyticsEvent } from "../../shared-components/hooks/analytics";
 
 export const TopNav: FC = () => {
   const { title, showBackButton, hideButtons } = useTopNav();
@@ -40,8 +40,10 @@ export const TopNav: FC = () => {
             onClick={() => {
               if (showBackButton && window.history.length > 2) {
                 window.history.back();
+                fireAnalyticsEvent("TopNav_Clicked_BackButton");
               } else {
                 navigate("/");
+                fireAnalyticsEvent("TopNav_Clicked_MenuButton");
               }
             }}
           >

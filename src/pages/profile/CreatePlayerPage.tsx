@@ -6,14 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { Player } from "../../types";
 import { createNewPlayer } from "../../backend/setters";
-import { useDispatch } from "react-redux";
-import { sendErrorNotification } from "../../redux/notificationSlice";
+import { sendErrorNotification } from "../../shared-components/toasts/notificationToasts";
 
 export const CreatePlayerPage: FC = () => {
   const {
     authState: { user, refetchPlayer },
   } = useAppContext();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const onSubmit = async (data: ProfileFormValues) => {
     const resolvedPlayer: Omit<Player, "id"> = {
@@ -28,10 +26,8 @@ export const CreatePlayerPage: FC = () => {
         navigate("/");
       },
       () =>
-        dispatch(
-          sendErrorNotification(
-            "An error occurred, unable to create player profile"
-          )
+        sendErrorNotification(
+          "An error occurred, unable to create player profile"
         )
     );
   };

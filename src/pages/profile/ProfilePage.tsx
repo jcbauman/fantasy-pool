@@ -6,19 +6,17 @@ import { Link } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { Player } from "../../types";
 import { updateCurrentPlayer } from "../../backend/setters";
-import { useDispatch } from "react-redux";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import { SettingsEditor } from "./components/SettingsEditor";
 import {
   sendErrorNotification,
   sendSuccessNotification,
-} from "../../redux/notificationSlice";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import { SettingsEditor } from "./components/SettingsEditor";
+} from "../../shared-components/toasts/notificationToasts";
 
 export const ProfilePage: FC = () => {
   const {
     authState: { player, user, refetchPlayer },
   } = useAppContext();
-  const dispatch = useDispatch();
 
   const onSubmit = async (data: ProfileFormValues) => {
     const resolvedPlayer: Omit<Player, "id"> = {
@@ -29,16 +27,12 @@ export const ProfilePage: FC = () => {
       resolvedPlayer,
       player?.id ?? "",
       () => {
-        dispatch(
-          sendSuccessNotification("Successfully updated player profile")
-        );
+        sendSuccessNotification("Successfully updated player profile");
+
         refetchPlayer();
       },
 
-      () =>
-        dispatch(
-          sendErrorNotification("An error occurred, unable to update profile")
-        )
+      () => sendErrorNotification("An error occurred, unable to update profile")
     );
   };
 

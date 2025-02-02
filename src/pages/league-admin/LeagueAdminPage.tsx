@@ -14,12 +14,11 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
-import { useDispatch } from "react-redux";
-import { sendSuccessNotification } from "../../redux/notificationSlice";
 import { Controller, useForm } from "react-hook-form";
 import { League } from "../../types";
 import { deleteGame, updateLeague } from "../../backend/setters";
 import { ScoringRubrikForm } from "./components/ScoringRubrikForm";
+import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
 
 type FormData = {
   leagueName: string;
@@ -32,7 +31,6 @@ export const LeagueAdminPage: FC = () => {
     league,
     authState: { user },
   } = useAppContext();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   if (!user || !league || league.leagueManagerId !== user.id) {
     navigate("/profile");
@@ -63,7 +61,7 @@ export const LeagueAdminPage: FC = () => {
       };
       const { id, ...leagueNoId } = resolvedLeague;
       await updateLeague(leagueNoId, league.id, () =>
-        dispatch(sendSuccessNotification("League settings updated"))
+        sendSuccessNotification("League settings updated")
       );
     }
   };
@@ -71,7 +69,7 @@ export const LeagueAdminPage: FC = () => {
   const onDeleteGame = async (): Promise<void> => {
     if (gameIdToDelete.length === 0) return;
     await deleteGame(gameIdToDelete, () =>
-      dispatch(sendSuccessNotification("Game deleted!"))
+      sendSuccessNotification("Game deleted!")
     );
   };
 

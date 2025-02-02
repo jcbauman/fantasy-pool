@@ -14,8 +14,6 @@ import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
 import { Link as RouterLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { sendSuccessNotification } from "../../redux/notificationSlice";
 import EightBallIcon from "../../shared-components/icons/EightBallIcon";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import { WrappedOverviewButton } from "../statsWrapped/components/WrappedOverviewButton";
@@ -24,6 +22,7 @@ import { joinedInTimeFor2024Wrapped } from "../playersList/utils/playerUtils";
 import { NewSeasonDialog } from "./components/NewSeasonDialog";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 const NEW_SEASON_STORAGE_KEY = "2024_new_season_storage_key";
@@ -35,13 +34,10 @@ export const OverviewComponent: FC = () => {
     notificationBadgesState,
   } = useAppContext();
   const isLeagueAdmin = league?.leagueManagerId === user?.id;
-  const dispatch = useDispatch();
 
   const onClickBlockedField = (): void => {
-    dispatch(
-      sendSuccessNotification(
-        "This tab will become available after a fantasy draft starts!"
-      )
+    sendSuccessNotification(
+      "This tab will become available after a fantasy draft starts!"
     );
   };
   const hasClickedWrapped = Boolean(localStorage.getItem(WRAPPED_STORAGE_KEY));

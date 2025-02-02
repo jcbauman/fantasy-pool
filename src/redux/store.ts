@@ -5,7 +5,6 @@ import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers } from "redux";
 import playerReducer from "./playerSlice";
 import gameReducer from "./gameSlice";
-import notificationReducer from "./notificationSlice";
 import settingsReducer from "./settingsSlice";
 import navReducer from "./navSlice";
 
@@ -17,7 +16,6 @@ const persistConfig = {
 const rootReducer = combineReducers({
   player: playerReducer,
   game: gameReducer,
-  notifications: notificationReducer,
   nav: navReducer,
   settings: settingsReducer,
 });

@@ -10,9 +10,9 @@ import {
 } from "firebase/auth";
 import { auth } from "../backend/firebase/firebaseConfig";
 import { setupNewUser } from "../backend/setters";
-import { sendErrorNotification } from "../redux/notificationSlice";
 import { getAppUserByUID, getPlayerByUserID } from "../backend/getters";
 import { clearGame } from "../redux/gameSlice";
+import { sendErrorNotification } from "../shared-components/toasts/notificationToasts";
 
 export interface UseAuthState {
   userId: string | null;
@@ -85,9 +85,7 @@ export const useAuthState = (): UseAuthState => {
       return result;
     } catch (error) {
       console.error(error);
-      dispatch(
-        sendErrorNotification("There was an error creating your account")
-      );
+      sendErrorNotification("There was an error creating your account");
     }
   };
 
@@ -99,7 +97,7 @@ export const useAuthState = (): UseAuthState => {
       const result = await signInWithEmailAndPassword(auth, email, password);
       return result;
     } catch (error) {
-      dispatch(sendErrorNotification("An error occurred signing in"));
+      sendErrorNotification("An error occurred signing in");
       console.error(error);
       return undefined;
     }
@@ -110,7 +108,7 @@ export const useAuthState = (): UseAuthState => {
       await auth.signOut();
       dispatch(clearGame());
     } catch (e) {
-      dispatch(sendErrorNotification("An error occurred while signing out"));
+      sendErrorNotification("An error occurred while signing out");
       console.error(e);
     }
   };

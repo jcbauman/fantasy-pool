@@ -13,6 +13,7 @@ import {
   setHideInactivePlayers,
   setUseOldGameEntryInterface,
 } from "../../../redux/settingsSlice";
+import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 
 export const SettingsEditor: FC = () => {
   const settings = useSelector((state: RootState) => state.settings);
@@ -25,9 +26,13 @@ export const SettingsEditor: FC = () => {
           control={
             <Checkbox
               checked={settings.useOldGameEntryInterface}
-              onChange={(_e, checked) =>
-                dispatch(setUseOldGameEntryInterface(checked))
-              }
+              onChange={(_e, checked) => {
+                dispatch(setUseOldGameEntryInterface(checked));
+                fireAnalyticsEvent("Settings_Toggled_Setting", {
+                  setting: "old game interface",
+                  on: checked,
+                });
+              }}
             />
           }
           label="Use legacy game entry interface"
@@ -36,9 +41,13 @@ export const SettingsEditor: FC = () => {
           control={
             <Checkbox
               checked={settings.hideInactivePlayers}
-              onChange={(_e, checked) =>
-                dispatch(setHideInactivePlayers(checked))
-              }
+              onChange={(_e, checked) => {
+                dispatch(setHideInactivePlayers(checked));
+                fireAnalyticsEvent("Settings_Toggled_Setting", {
+                  setting: "hide players",
+                  on: checked,
+                });
+              }}
             />
           }
           label="Hide inactive players from standings"
@@ -47,9 +56,13 @@ export const SettingsEditor: FC = () => {
           control={
             <Checkbox
               checked={settings.gameStartSoundEffect}
-              onChange={(_e, checked) =>
-                dispatch(setGameStartSoundEffect(checked))
-              }
+              onChange={(_e, checked) => {
+                dispatch(setGameStartSoundEffect(checked));
+                fireAnalyticsEvent("Settings_Toggled_Setting", {
+                  setting: "sound effect",
+                  on: checked,
+                });
+              }}
             />
           }
           label="Play sound effect on game start"

@@ -9,6 +9,7 @@ import { FC } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { FAQS_COPY } from "./constants";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { fireAnalyticsEvent } from "../../shared-components/hooks/analytics";
 
 export const RulesPage: FC = () => {
   return (
@@ -26,6 +27,11 @@ export const RulesPage: FC = () => {
           return (
             <Accordion key={`rule-${idx}`}>
               <AccordionSummary
+                onClick={() =>
+                  fireAnalyticsEvent("Rules_Opened_Rule", {
+                    rule: faq.title,
+                  })
+                }
                 expandIcon={<ArrowDropDownIcon />}
                 aria-controls="panel1-content"
                 id="panel1-header"

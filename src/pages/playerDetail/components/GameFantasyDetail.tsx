@@ -33,7 +33,6 @@ export const GameFantasyDetail: FC<{
   const caption = `${formatDateToMMDD(new Date(game.timestamp))} at ${
     game.location ?? "?"
   }`;
-  console.log(game);
   const elapsedTime = game.endedAt
     ? `
         ${formatMinutesToMSS(

@@ -1,3 +1,4 @@
+import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
 import { AggregateStats, Game, GameStatKeys } from "../../types";
 import {
   formatDateToMMDD,
@@ -321,7 +322,7 @@ export const handleShare = async (title: string) => {
         title,
         url: window.location.href,
       });
-      console.log("Content shared successfully!");
+      sendSuccessNotification("Content shared successfully!");
     } catch (error) {
       copyToClipboard(window.location.href);
     }

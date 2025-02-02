@@ -12,6 +12,7 @@ import {
   sendErrorNotification,
   sendSuccessNotification,
 } from "../../shared-components/toasts/notificationToasts";
+import { fireAnalyticsEvent } from "../../shared-components/hooks/analytics";
 
 export const ProfilePage: FC = () => {
   const {
@@ -34,6 +35,7 @@ export const ProfilePage: FC = () => {
 
       () => sendErrorNotification("An error occurred, unable to update profile")
     );
+    fireAnalyticsEvent("Profile_Clicked_SaveProfile");
   };
 
   return (

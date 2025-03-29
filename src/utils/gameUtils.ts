@@ -23,3 +23,33 @@ export const formatMinutesToMSS = (minutesFraction: number): string => {
   const formattedSeconds = seconds.toString().padStart(2, "0"); // Pad seconds to always show 2 digits
   return `${minutes}m ${formattedSeconds}s`;
 };
+
+export const formatSeasonString = (): string => {
+  const date = new Date();
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth();
+  const seasons = ["Winter", "Spring", "Summer", "Fall"];
+  const seasonIndex = Math.floor(month / 3);
+  const seasonYear = seasonIndex === 3 ? year + 1 : year;
+  const endMonths = [2, 5, 8, 11];
+  const endDate = new Date(Date.UTC(seasonYear, endMonths[seasonIndex] + 1, 0));
+  return `${seasonYear} ${
+    seasons[seasonIndex]
+  } Season - through ${endDate.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  })}`;
+};
+
+export const getSeasonStart = (): string => {
+  const now = new Date();
+  const year = now.getUTCFullYear();
+  const quarters = [0, 3, 6, 9];
+  const lastQuarter = quarters.reduce(
+    (prev, curr) => (now.getUTCMonth() >= curr ? curr : prev),
+    0
+  );
+  return new Date(Date.UTC(year, lastQuarter, 1, 23, 59, 59)).toISOString();
+};

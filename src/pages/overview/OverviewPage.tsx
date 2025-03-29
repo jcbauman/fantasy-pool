@@ -23,6 +23,7 @@ import { NewSeasonDialog } from "./components/NewSeasonDialog";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
+import { formatSeasonString } from "../../utils/gameUtils";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 const NEW_SEASON_STORAGE_KEY = "2024_new_season_storage_key";
@@ -34,6 +35,7 @@ export const OverviewComponent: FC = () => {
     notificationBadgesState,
   } = useAppContext();
   const isLeagueAdmin = league?.leagueManagerId === user?.id;
+  const seasonString = formatSeasonString();
 
   const onClickBlockedField = (): void => {
     sendSuccessNotification(
@@ -77,7 +79,7 @@ export const OverviewComponent: FC = () => {
             {league?.name}
           </Typography>
           <Typography variant="caption" sx={{ fontStyle: "italic" }}>
-            2025 Winter Season - through March 31, 2025
+            {seasonString}
           </Typography>
         </Stack>
         <Box sx={{ width: "100%" }}>

@@ -22,8 +22,7 @@ import {
   PLAYERS_COLLECTION,
   USERS_COLLECTION,
 } from "./firebase/controller";
-import { sortGamesByDate } from "../utils/gameUtils";
-import { LAST_SEASON_CUTOFF_DATE } from "../utils/constants";
+import { getSeasonStart, sortGamesByDate } from "../utils/gameUtils";
 
 // games
 
@@ -50,16 +49,13 @@ export const useFetchGames = (): Game[] => {
 };
 
 export const useFetchGamesAfterDate = (): Game[] => {
+  const lastSeasonCutoff = getSeasonStart();
   const [games, setGames] = useState<Game[]>([]);
 
   useEffect(() => {
     const gamesQuery = query(
       GAMES_COLLECTION,
-      where(
-        "createdAt",
-        ">",
-        Timestamp.fromDate(new Date(LAST_SEASON_CUTOFF_DATE))
-      )
+      where("createdAt", ">", Timestamp.fromDate(new Date(lastSeasonCutoff)))
     );
 
     const unsubscribe = onSnapshot(
@@ -109,7 +105,7 @@ export const getGamesForPlayerAfterDate = async (
 ): Promise<Game[] | undefined> => {
   if (!playerId) return;
 
-  const cutoffDate = Timestamp.fromDate(new Date(LAST_SEASON_CUTOFF_DATE));
+  const cutoffDate = Timestamp.fromDate(new Date(getSeasonStart()));
 
   const q = query(
     GAMES_COLLECTION,

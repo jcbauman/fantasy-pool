@@ -109,7 +109,7 @@ export const PlayersPage: FC = () => {
                             zIndex: 10,
                             backgroundColor: "#303030",
                           }
-                        : { position: "relative" }
+                        : { position: "sticky" }
                     }
                     {...sortByProps(f.value)}
                     key={`${f.label}-cell"`}

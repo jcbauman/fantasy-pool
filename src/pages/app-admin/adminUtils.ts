@@ -1,8 +1,8 @@
 import { doc, getDocs, Timestamp, updateDoc } from "firebase/firestore";
 import { Game, GameStat, GameStatKeys } from "../../types";
-import { formatDateToMMDD } from "../../utils/statsUtils";
 import { GAMES_COLLECTION } from "../../backend/firebase/controller";
 import { db } from "../../backend/firebase/firebaseConfig";
+import { formatDateToMMDD } from "../../utils/dateUtils";
 
 export const collapsRepeatGames = (
   games: Game[],

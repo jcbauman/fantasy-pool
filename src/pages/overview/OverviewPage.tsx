@@ -39,9 +39,7 @@ export const OverviewComponent: FC = () => {
   const NEW_SEASON_STORAGE_KEY = seasonString;
 
   const onClickBlockedField = (): void => {
-    sendSuccessNotification(
-      "This tab will become available after a fantasy draft starts!"
-    );
+    sendSuccessNotification("This tab will become available shortly");
   };
   const hasClickedWrapped = Boolean(localStorage.getItem(WRAPPED_STORAGE_KEY));
   const canAccessWrapped = joinedInTimeFor2024Wrapped(player?.joinDate);
@@ -139,7 +137,7 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton to={"/last-season"} component={RouterLink}>
+              <ListItemButton onClick={onClickBlockedField}>
                 <ListItemIcon>
                   <HistoryOutlined />
                 </ListItemIcon>

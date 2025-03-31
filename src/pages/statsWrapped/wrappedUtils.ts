@@ -1,7 +1,7 @@
 import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
 import { AggregateStats, Game, GameStatKeys } from "../../types";
+import { formatDateToMMDD } from "../../utils/dateUtils";
 import {
-  formatDateToMMDD,
   getFantasyScoreForPlayerSeason,
   getStringFromStatKey,
   normalizePercentage,

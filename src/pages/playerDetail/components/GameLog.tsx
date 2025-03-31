@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { getStatsForGame } from "../../playersList/utils/playerUtils";
 import {
-  formatDateToMMDD,
   getAbbreviation,
   getFantasyScoreForPlayerSeason,
   normalizeStat,
@@ -22,6 +21,7 @@ import {
 import { GameFantasyDetailDialog } from "./GameFantasyDetailDialog";
 import { sortGamesByDate } from "../../../utils/gameUtils";
 import { useAppContext } from "../../../context/AppContext";
+import { formatDateToMMDD } from "../../../utils/dateUtils";
 
 export const GameLog: FC<{ player: Player; games: Game[] }> = ({
   player,

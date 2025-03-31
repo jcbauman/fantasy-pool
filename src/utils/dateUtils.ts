@@ -1,3 +1,10 @@
+export const formatDateToMMDD = (date: Date): string => {
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  return `${month}/${day}`;
+};
+
 export const isMoreThanTwoHoursAgo = (timestamp: string): boolean => {
   const now = new Date().getTime(); // Current time in milliseconds
   const timestampInMillis = new Date(timestamp).getTime(); // Convert Firestore Timestamp to JavaScript Date and then to milliseconds

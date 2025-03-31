@@ -26,7 +26,6 @@ import { sendSuccessNotification } from "../../shared-components/toasts/notifica
 import { formatSeasonString } from "../../utils/gameUtils";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
-const NEW_SEASON_STORAGE_KEY = "2024_new_season_storage_key";
 
 export const OverviewComponent: FC = () => {
   const {
@@ -36,6 +35,7 @@ export const OverviewComponent: FC = () => {
   } = useAppContext();
   const isLeagueAdmin = league?.leagueManagerId === user?.id;
   const seasonString = formatSeasonString();
+  const NEW_SEASON_STORAGE_KEY = seasonString;
 
   const onClickBlockedField = (): void => {
     sendSuccessNotification(

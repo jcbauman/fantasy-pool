@@ -12,10 +12,8 @@ export const NewSeasonDialog: React.FC<{
 }> = ({ open, onClose }) => {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>🎉 A new Fantasy Pool season has begun</DialogTitle>
-      <DialogContent>
-        Everyone deserves a fresh start. Best of luck in 2025!
-      </DialogContent>
+      <DialogTitle>🌞 A new Fantasy Pool season has begun</DialogTitle>
+      <DialogContent>Let's get it on. Best of luck in Spring!</DialogContent>
       <DialogActions>
         <Button onClick={onClose} fullWidth variant="contained">
           Start Balling

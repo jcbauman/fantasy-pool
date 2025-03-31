@@ -24,6 +24,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
 import { formatSeasonString } from "../../utils/dateUtils";
+import { HistoryOutlined } from "@mui/icons-material";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 
@@ -138,11 +139,11 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton onClick={onClickBlockedField}>
+              <ListItemButton to={"/last-season"} component={RouterLink}>
                 <ListItemIcon>
-                  <EventNoteOutlinedIcon />
+                  <HistoryOutlined />
                 </ListItemIcon>
-                <ListItemText primary="Schedule" />
+                <ListItemText primary="Last season" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />

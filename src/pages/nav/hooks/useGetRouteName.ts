@@ -1,5 +1,6 @@
 import { matchPath, useLocation } from "react-router-dom";
 import { useAppContext } from "../../../context/AppContext";
+import { getSeasonString, getThreeMonthsAgo } from "../../../utils/dateUtils";
 
 interface UseTopNav {
   title: string;
@@ -40,5 +41,10 @@ export const useTopNav = (): UseTopNav => {
   else if (location.pathname === "/game-complete") return { title: "Summary" };
   else if (location.pathname.startsWith("/wrapped-2024"))
     return { title: "2024 Wrapped" };
+  else if (location.pathname === "/last-season")
+    return {
+      title: `${getSeasonString(getThreeMonthsAgo())} season history`,
+      showBackButton: true,
+    };
   else return { title: "Fantasy Pool" };
 };

@@ -19,7 +19,7 @@ import {
   getFantasyScoreForPlayerSeason,
   formatDateToMMDD,
 } from "../../../utils/statsUtils";
-import { formatMinutesToMSS } from "../../../utils/gameUtils";
+import { formatMinutesToMSS } from "../../../utils/dateUtils";
 
 export const GameFantasyDetail: FC<{
   game: Game | undefined;

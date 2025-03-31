@@ -23,7 +23,7 @@ import { NewSeasonDialog } from "./components/NewSeasonDialog";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
-import { formatSeasonString } from "../../utils/gameUtils";
+import { formatSeasonString } from "../../utils/dateUtils";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 

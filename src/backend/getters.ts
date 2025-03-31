@@ -22,7 +22,8 @@ import {
   PLAYERS_COLLECTION,
   USERS_COLLECTION,
 } from "./firebase/controller";
-import { getSeasonStart, sortGamesByDate } from "../utils/gameUtils";
+import { sortGamesByDate } from "../utils/gameUtils";
+import { getSeasonStart } from "../utils/dateUtils";
 
 // games
 

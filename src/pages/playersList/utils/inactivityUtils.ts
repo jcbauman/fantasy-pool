@@ -1,6 +1,6 @@
 import { updateCurrentPlayer } from "../../../backend/setters";
 import { Game, Player } from "../../../types";
-import { getSeasonStart } from "../../../utils/gameUtils";
+import { getSeasonStart } from "../../../utils/dateUtils";
 import { filterPlayedGamesForPlayer } from "./playerUtils";
 
 export const DAYS_TIL_INACTIVE = 10;

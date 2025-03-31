@@ -9,7 +9,7 @@ import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import { handleShare } from "./wrappedUtils";
 import { RoundupPage } from "./components/RoundupPage";
 import { useWrappedStats } from "./useWrappedStats";
-import { getSeasonStart } from "../../utils/gameUtils";
+import { getSeasonStart } from "../../utils/dateUtils";
 
 export const WrappedPage: FC = () => {
   const [page, setPage] = useState(0);

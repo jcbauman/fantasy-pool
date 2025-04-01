@@ -9,7 +9,7 @@ import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import { handleShare } from "./wrappedUtils";
 import { RoundupPage } from "./components/RoundupPage";
 import { useWrappedStats } from "./useWrappedStats";
-import { LAST_SEASON_CUTOFF_DATE } from "../../utils/constants";
+import { getSeasonStart } from "../../utils/dateUtils";
 
 export const WrappedPage: FC = () => {
   const [page, setPage] = useState(0);
@@ -34,7 +34,7 @@ export const WrappedPage: FC = () => {
     wrappedStats,
   };
 
-  if (new Date() > new Date(LAST_SEASON_CUTOFF_DATE)) {
+  if (new Date() > new Date(getSeasonStart())) {
     return (
       <PageContainer loading={loading}>
         <Stack sx={{ p: 2 }}>

@@ -17,9 +17,8 @@ import {
   getStringFromStatKey,
   normalizeStat,
   getFantasyScoreForPlayerSeason,
-  formatDateToMMDD,
 } from "../../../utils/statsUtils";
-import { formatMinutesToMSS } from "../../../utils/gameUtils";
+import { formatDateToMMDD, formatMinutesToMSS } from "../../../utils/dateUtils";
 
 export const GameFantasyDetail: FC<{
   game: Game | undefined;

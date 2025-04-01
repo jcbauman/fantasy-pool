@@ -13,10 +13,10 @@ import {
   PageContainer,
 } from "../../shared-components/PageContainer";
 import { MultiPlayerGameLog } from "./components.tsx/MultiPlayerGameLog";
-import { formatDateToMMDD } from "../../utils/statsUtils";
 import { Game } from "../../types";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteFetchGames } from "./useInfiniteFetchGames";
+import { formatDateToMMDD } from "../../utils/dateUtils";
 
 export const RecentGamesPage: FC = () => {
   const { games, hasMore, loadGames, loading } = useInfiniteFetchGames();
@@ -42,8 +42,11 @@ export const RecentGamesPage: FC = () => {
           hasMore={hasMore}
           loader={
             <CircularProgress
-              color="secondary"
-              style={{ display: "block", margin: "10px auto" }}
+              style={{
+                display: "block",
+                margin: "10px auto",
+                color: "darkred",
+              }}
             />
           }
           style={{ overflow: "visible" }}

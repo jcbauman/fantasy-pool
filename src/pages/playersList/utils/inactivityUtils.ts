@@ -1,6 +1,6 @@
 import { updateCurrentPlayer } from "../../../backend/setters";
 import { Game, Player } from "../../../types";
-import { LAST_SEASON_CUTOFF_DATE } from "../../../utils/constants";
+import { getSeasonStart } from "../../../utils/dateUtils";
 import { filterPlayedGamesForPlayer } from "./playerUtils";
 
 export const DAYS_TIL_INACTIVE = 10;
@@ -34,7 +34,7 @@ export const checkPlayerInactivity = (
   games: Game[]
 ): boolean => {
   const currentDate = new Date();
-  const cutoffDate = new Date(LAST_SEASON_CUTOFF_DATE);
+  const cutoffDate = new Date(getSeasonStart());
   const isMoreThanNDaysAfterCutoff =
     currentDate.getTime() - cutoffDate.getTime() >
     DAYS_TIL_INACTIVE * 24 * 60 * 60 * 1000;

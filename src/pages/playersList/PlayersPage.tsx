@@ -1,4 +1,5 @@
 import {
+  Link,
   Stack,
   Table,
   TableBody,
@@ -21,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { setPlayerSortBy } from "../../redux/navSlice";
+import { setHideInactivePlayers } from "../../redux/settingsSlice";
 
 const SortableStatsOrder = [
   { label: "Name", value: "name" },
@@ -109,7 +111,7 @@ export const PlayersPage: FC = () => {
                             zIndex: 10,
                             backgroundColor: "#303030",
                           }
-                        : { position: "relative" }
+                        : { position: "sticky" }
                     }
                     {...sortByProps(f.value)}
                     key={`${f.label}-cell"`}
@@ -135,8 +137,15 @@ export const PlayersPage: FC = () => {
           </TableBody>
         </Table>
         {hideInactivePlayers && (
-          <Stack sx={{ pt: 1, pl: 2 }}>
+          <Stack direction="row" sx={{ pt: 1, pl: 2, alignItems: "center" }}>
             <Typography variant="caption">Inactive players hidden</Typography>
+            <Link
+              color="secondary"
+              sx={{ ml: 1 }}
+              onClick={() => dispatch(setHideInactivePlayers(false))}
+            >
+              <Typography variant="caption">Show</Typography>
+            </Link>
           </Stack>
         )}
       </Stack>

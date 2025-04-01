@@ -24,13 +24,6 @@ export const getAbbreviation = (input?: string): string => {
   return abbreviation;
 };
 
-export const formatDateToMMDD = (date: Date): string => {
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-
-  return `${month}/${day}`;
-};
-
 export const getFantasyMultiplierForStat = (
   statKey: string,
   scoringMatrix: Record<string, number>

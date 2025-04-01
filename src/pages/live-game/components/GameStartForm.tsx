@@ -20,13 +20,11 @@ import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useFetchLocations } from "../../../backend/getters";
 import { addNewLocation } from "../../../backend/setters";
-import {
-  isMoreThanTwoHoursAgo,
-  sortGamesByDate,
-} from "../../../utils/gameUtils";
+import { sortGamesByDate } from "../../../utils/gameUtils";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../redux/store";
 import { Game, Player } from "../../../types";
+import { isMoreThanTwoHoursAgo } from "../../../utils/dateUtils";
 interface FormData {
   date: Date | null;
   location: string;

@@ -1,8 +1,8 @@
 import { doc, getDocs, Timestamp, updateDoc } from "firebase/firestore";
 import { Game, GameStat, GameStatKeys } from "../../types";
-import { formatDateToMMDD } from "../../utils/statsUtils";
 import { GAMES_COLLECTION } from "../../backend/firebase/controller";
 import { db } from "../../backend/firebase/firebaseConfig";
+import { formatDateToMMDD } from "../../utils/dateUtils";
 
 export const collapsRepeatGames = (
   games: Game[],
@@ -76,7 +76,6 @@ const convertStringToTimestamp = (dateString: string): Timestamp => {
 // Function to update documents with correct Timestamp format
 export const updateGamesWithTimestamps = async () => {
   const querySnapshot = await getDocs(GAMES_COLLECTION);
-  let count = 0;
   querySnapshot.forEach(async (documentSnapshot) => {
     const documentData = documentSnapshot.data();
     if (Boolean(documentData.createdAt)) return;

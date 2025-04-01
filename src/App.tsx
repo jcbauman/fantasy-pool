@@ -24,6 +24,7 @@ import { RulesPage } from "./pages/rules/RulesPage";
 import { WrappedPage } from "./pages/statsWrapped/WrappedPage";
 import useStandaloneMode from "./shared-components/hooks/useStandaloneMode";
 import { NotificationProvider } from "./shared-components/toasts/NotificationProvider";
+import { LastSeasonPage } from "./pages/last-season/LastSeasonPage";
 
 function App() {
   const isStandalone = useStandaloneMode();
@@ -44,6 +45,7 @@ function App() {
                     <Route path="/live-game" element={<LiveGameModePage />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/sign-in" element={<SignInPage />} />
+                    <Route path="/last-season" element={<LastSeasonPage />} />
                     <Route
                       path="/game-complete"
                       element={<GameCompletePage />}

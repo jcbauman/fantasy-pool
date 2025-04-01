@@ -50,10 +50,10 @@ export const useFetchGames = (): Game[] => {
 };
 
 export const useFetchGamesAfterDate = (): Game[] => {
-  const lastSeasonCutoff = getSeasonStart();
   const [games, setGames] = useState<Game[]>([]);
 
   useEffect(() => {
+    const lastSeasonCutoff = getSeasonStart();
     const gamesQuery = query(
       GAMES_COLLECTION,
       where("createdAt", ">", Timestamp.fromDate(new Date(lastSeasonCutoff)))

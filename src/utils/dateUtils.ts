@@ -29,6 +29,14 @@ export const getSeasonString = (date?: Date): string => {
   return seasons[seasonIndex];
 };
 
+export const getSeasonEmoji = (date?: Date): string => {
+  const now = date ?? new Date();
+  const month = now.getUTCMonth();
+  const seasons = ["🎉", "🌺", "🌞", "🎃"];
+  const seasonIndex = Math.floor(month / 3);
+  return seasons[seasonIndex];
+};
+
 export const getThreeMonthsAgo = (specificDate?: Date): Date => {
   const now = specificDate ?? new Date();
   now.setMonth(now.getMonth() - 3);

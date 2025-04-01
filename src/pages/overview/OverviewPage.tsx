@@ -8,7 +8,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ScoreboardOutlinedIcon from "@mui/icons-material/ScoreboardOutlined";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
-import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import { PageContainer } from "../../shared-components/PageContainer";
@@ -24,7 +23,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
 import { formatSeasonString } from "../../utils/dateUtils";
-import { HistoryOutlined } from "@mui/icons-material";
+import { CalendarMonthOutlined } from "@mui/icons-material";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 
@@ -39,7 +38,7 @@ export const OverviewComponent: FC = () => {
   const NEW_SEASON_STORAGE_KEY = seasonString;
 
   const onClickBlockedField = (): void => {
-    sendSuccessNotification("This tab will become available shortly");
+    sendSuccessNotification("This tab will become available shortly 👀");
   };
   const hasClickedWrapped = Boolean(localStorage.getItem(WRAPPED_STORAGE_KEY));
   const canAccessWrapped = joinedInTimeFor2024Wrapped(player?.joinDate);
@@ -139,7 +138,7 @@ export const OverviewComponent: FC = () => {
             <ListItem disablePadding>
               <ListItemButton onClick={onClickBlockedField}>
                 <ListItemIcon>
-                  <HistoryOutlined />
+                  <CalendarMonthOutlined />
                 </ListItemIcon>
                 <ListItemText primary="Last season" />
               </ListItemButton>

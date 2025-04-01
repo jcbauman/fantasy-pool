@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { getSeasonString } from "../../../utils/dateUtils";
+import { getSeasonEmoji, getSeasonString } from "../../../utils/dateUtils";
 
 export const NewSeasonDialog: React.FC<{
   open: boolean;
@@ -13,7 +13,9 @@ export const NewSeasonDialog: React.FC<{
 }> = ({ open, onClose }) => {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>🌞 A new Fantasy Pool season has begun</DialogTitle>
+      <DialogTitle>
+        {getSeasonEmoji()} A new Fantasy Pool season has begun
+      </DialogTitle>
       <DialogContent>
         Let's get it on. Best of luck in {getSeasonString()}!
       </DialogContent>

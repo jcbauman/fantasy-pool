@@ -76,7 +76,6 @@ const convertStringToTimestamp = (dateString: string): Timestamp => {
 // Function to update documents with correct Timestamp format
 export const updateGamesWithTimestamps = async () => {
   const querySnapshot = await getDocs(GAMES_COLLECTION);
-  let count = 0;
   querySnapshot.forEach(async (documentSnapshot) => {
     const documentData = documentSnapshot.data();
     if (Boolean(documentData.createdAt)) return;

@@ -15,7 +15,7 @@ export const Loader: FC = () => {
         alignItems="center"
         justifyContent="center"
       >
-        <EightBallIcon width="40px" height="40px" />
+        <EightBallIcon width="40px" height="40px" color="white" />
       </Box>
     </Box>
   );

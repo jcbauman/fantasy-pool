@@ -42,8 +42,11 @@ export const RecentGamesPage: FC = () => {
           hasMore={hasMore}
           loader={
             <CircularProgress
-              color="secondary"
-              style={{ display: "block", margin: "10px auto" }}
+              style={{
+                display: "block",
+                margin: "10px auto",
+                color: "darkred",
+              }}
             />
           }
           style={{ overflow: "visible" }}

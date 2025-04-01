@@ -1,10 +1,4 @@
-import {
-  Autocomplete,
-  MenuItem,
-  Select,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { MenuItem, Select, Stack, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { RunningAverageGraph } from "./components/RunningAverageGraph";

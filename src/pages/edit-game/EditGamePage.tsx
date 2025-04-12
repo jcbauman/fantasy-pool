@@ -41,7 +41,7 @@ export const EditGameModePage: FC = () => {
             </Button>
           </Stack>
         )}
-        {game && <GameEditingInterface gameToEdit={game} />}
+        {game && canEdit && <GameEditingInterface gameToEdit={game} />}
       </Stack>
     </PageContainer>
   );

@@ -12,7 +12,7 @@ import { FC, useState } from "react";
 import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import { GameStatKeys } from "../../../types";
+import { Game, GameStatKeys } from "../../../types";
 
 interface MultiBallDialogProps {
   open: boolean;
@@ -20,6 +20,7 @@ interface MultiBallDialogProps {
   onConfirmDelete: (numBalls: number) => void;
   selectedPlayerName: string;
   selectedPlayerId: string;
+  currentGame: Game | null;
 }
 
 export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
@@ -28,8 +29,8 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
   onConfirmDelete,
   selectedPlayerName,
   selectedPlayerId,
+  currentGame,
 }) => {
-  const currentGame = useSelector((state: RootState) => state.game.currentGame);
   const thisPlayerStats = currentGame?.statsByPlayer.find(
     (stat) => stat.playerId === selectedPlayerId
   );

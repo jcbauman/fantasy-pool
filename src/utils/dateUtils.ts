@@ -72,3 +72,11 @@ export const getSeasonStart = (specificDate?: Date): string => {
   );
   return new Date(Date.UTC(year, lastQuarter, 1, 23, 59, 59)).toISOString();
 };
+
+export const formatDateStringToMMDDYYY = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  const mm = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const dd = String(date.getDate()).padStart(2, "0");
+  const yyyy = date.getFullYear();
+  return `${mm}/${dd}/${yyyy}`;
+};

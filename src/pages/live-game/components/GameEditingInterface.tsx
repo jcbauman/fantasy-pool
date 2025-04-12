@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Button,
   ButtonGroup,
   Card,
@@ -10,12 +11,12 @@ import {
   Stack,
   Tab,
   Tabs,
+  TextField,
   Typography,
 } from "@mui/material";
 import { FC, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { clearGame, setLastGameId } from "../../../redux/gameSlice";
-import { RootState } from "../../../redux/store";
+import { useDispatch } from "react-redux";
+import { setLastGameId } from "../../../redux/gameSlice";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import {
   getPlayerNameAbbreviation,
@@ -27,23 +28,22 @@ import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";
 import DirectionsRunOutlinedIcon from "@mui/icons-material/DirectionsRunOutlined";
 import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";
 import { TimeCounter } from "./TimeCounter";
-import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import { useAppContext } from "../../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { Game, GameStatKeys } from "../../../types";
 import { useIterateStats } from "../hooks/useIterateStats";
 import { MultiBallDialog } from "./MultiBallDialog";
-import {
-  addNewGame,
-  deleteGame,
-  updateExistingGame,
-} from "../../../backend/setters";
+import { deleteGame, updateExistingGame } from "../../../backend/setters";
 import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
 import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlined";
 import { MultiBallDeleteDialog } from "./MultiBallDeleteDialog";
+import { useFetchLocations } from "../../../backend/getters";
+import { DeleteOutlined } from "@mui/icons-material";
+import DatePicker from "../../../shared-components/DatePicker";
 import { Timestamp } from "firebase/firestore";
-import { useGameIsIncomplete } from "../hooks/useGameIsIncomplete";
+import { formatDateStringToMMDDYYY } from "../../../utils/dateUtils";
+import { sendSuccessNotification } from "../../../shared-components/toasts/notificationToasts";
 
 export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
   gameToEdit,
@@ -55,6 +55,7 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
     players,
     authState: { player },
   } = useAppContext();
+  const locations = useFetchLocations();
   const { iterateStatNonRedux } = useIterateStats();
   const [selectedTab, setSelectedTab] = useState(0);
   const [endGameDialogOpen, setEndGameDialogOpen] = useState(false);
@@ -132,6 +133,42 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
     (currentPlayerGameStats[GameStatKeys.runTheTable] ?? 0);
   return (
     <Stack direction="column" spacing={2}>
+      <Card sx={{ p: 2 }}>
+        <Typography variant="overline">Details</Typography>
+        <Stack direction="column" gap={2}>
+          <Autocomplete
+            sx={{ mt: 1 }}
+            value={currGame.location}
+            freeSolo
+            onChange={(_e, newValue) => {
+              setCurrGame({ ...currGame, location: newValue?.trim() || "" });
+            }}
+            onInputChange={(_e, newInputValue) =>
+              setCurrGame({ ...currGame, location: newInputValue || "" })
+            }
+            options={locations}
+            renderInput={(params) => (
+              <TextField
+                value={currGame.location}
+                {...params}
+                label="Location"
+                placeholder="Select location or enter a new one"
+              />
+            )}
+          />
+          <DatePicker
+            label="Original game date"
+            defValue={formatDateStringToMMDDYYY(currGame.timestamp)}
+            onChange={(date) => {
+              setCurrGame({
+                ...currGame,
+                createdAt: Timestamp.fromDate(date),
+                timestamp: date.toString(),
+              });
+            }}
+          />
+        </Stack>
+      </Card>
       <Card sx={{ p: 2 }}>
         {showTabs && (
           <Tabs
@@ -243,17 +280,23 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
           })}
         </List>
       </Card>
-      <Button
-        color="success"
-        variant="contained"
-        fullWidth
-        onClick={() => setEndGameDialogOpen(true)}
-        startIcon={<SaveOutlinedIcon />}
-      >
-        Save edits
-      </Button>
+      <Stack direction="row" sx={{ alignItems: "center", gap: 2 }}>
+        <Button color="error" onClick={() => setDiscardGameDialogOpen(true)}>
+          <DeleteOutlined />
+        </Button>
+        <Button
+          color="success"
+          variant="contained"
+          fullWidth
+          onClick={() => setEndGameDialogOpen(true)}
+          startIcon={<SaveOutlinedIcon />}
+        >
+          Save edits
+        </Button>
+      </Stack>
       <Stack sx={{ h: 4 }} />
       <ConfirmationDialog
+        action="edit"
         open={endGameDialogOpen}
         onClose={() => setEndGameDialogOpen(false)}
         onDiscard={() => {
@@ -278,7 +321,10 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
         open={discardGameDialogOpen}
         onClose={() => setDiscardGameDialogOpen(false)}
         onConfirm={async () => {
-          await deleteGame(currGame.id);
+          await deleteGame(currGame.id, () =>
+            sendSuccessNotification("Game deleted successfully")
+          );
+
           navigate("/recent-games");
         }}
       />
@@ -306,6 +352,7 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
         }}
       />
       <MultiBallDeleteDialog
+        currentGame={currGame}
         open={multiBallDeleteDialogOpen}
         onClose={() => setMultiBallDeleteDialogOpen(false)}
         selectedPlayerName={

@@ -1,12 +1,11 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { Game, GameStatKeys, GameStatKeysAbbrev, Player } from "../../../types";
 import {
   Avatar,
-  Button,
   Card,
-  IconButton,
+  Menu,
+  MenuItem,
   Paper,
-  Snackbar,
   Stack,
   Table,
   TableBody,
@@ -25,10 +24,6 @@ import {
 import { useAppContext } from "../../../context/AppContext";
 import { PlayerCell } from "../../playersList/components/PlayerCell";
 import { GameFantasyDetailDialog } from "../../playerDetail/components/GameFantasyDetailDialog";
-import { TextEditorField } from "../../../shared-components/TextEditorField";
-import { updateExistingGame } from "../../../backend/setters";
-import { sendSuccessNotification } from "../../../shared-components/toasts/notificationToasts";
-import CloseIcon from "@mui/icons-material/Close";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { useNavigate } from "react-router-dom";
 import { canEditGame } from "../../edit-game/utils";
@@ -44,7 +39,8 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
     Player | undefined
   >(undefined);
   const authorPlayer = players.find((p) => p.id === game?.authorPlayerId);
-  const [showEditingToast, setShowEditingToast] = useState(false);
+  const [showEditingDropdownAnchor, setShowEditingDropdownAnchor] =
+    useState<null | HTMLElement>(null);
 
   return (
     <Card>
@@ -53,19 +49,11 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
         sx={{
           p: 0,
           pb: 1,
-          transition: "border 0.3s ease-in-out",
-          border: showEditingToast ? "1px solid white" : "default",
         }}
       >
         <Stack
           direction="row"
           sx={{ p: 2, justifyContent: "space-between", alignItems: "center" }}
-          onClick={() => {
-            if (canEditGame(game, player?.id ?? "", user?.isAppAdmin)) {
-              fireAnalyticsEvent("RecentGames_Clicked_Header");
-              setShowEditingToast(true);
-            }
-          }}
         >
           <Stack>
             <Typography>{game.location}</Typography>
@@ -79,15 +67,9 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                 alt={authorPlayer?.name}
                 onClick={(e) => {
                   e.preventDefault();
-                  if (user?.isAppAdmin) {
-                    navigator.clipboard
-                      .writeText(game.id)
-                      .then(() => {
-                        sendSuccessNotification("Copied game ID to clipboard");
-                      })
-                      .catch((err) => {
-                        console.error("Failed to copy text: ", err);
-                      });
+                  if (canEditGame(game, player?.id ?? "", user?.isAppAdmin)) {
+                    fireAnalyticsEvent("RecentGames_Clicked_Header");
+                    setShowEditingDropdownAnchor(e.currentTarget);
                   }
                 }}
               >
@@ -95,6 +77,29 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                   {getAbbreviation(authorPlayer?.name)}
                 </Typography>
               </Avatar>
+              <Menu
+                sx={{
+                  ".MuiList-root": { backgroundColor: "black", py: 0 },
+                  mt: 1,
+                }}
+                anchorEl={showEditingDropdownAnchor}
+                open={Boolean(showEditingDropdownAnchor)}
+                onClose={() => setShowEditingDropdownAnchor(null)}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem
+                  sx={{ p: 1 }}
+                  onClick={() => {
+                    fireAnalyticsEvent("RecentGames_Clicked_EditToast");
+                    navigate(`/edit-game/${game.id}`);
+                    setShowEditingDropdownAnchor(null);
+                  }}
+                >
+                  Edit game
+                </MenuItem>
+              </Menu>
             </Stack>
           )}
         </Stack>
@@ -255,34 +260,6 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
         scoringMatrix={scoringMatrix}
         game={game}
       />
-      {showEditingToast && (
-        <Snackbar
-          sx={{
-            ".MuiSnackbarContent-root": {
-              backgroundColor: "black",
-              color: "white",
-            },
-          }}
-          autoHideDuration={3000}
-          message="You can still edit the stats of this game"
-          open={showEditingToast}
-          onClose={() => setShowEditingToast(false)}
-          action={
-            <Button
-              color="secondary"
-              sx={{ fontWeight: 600 }}
-              size="small"
-              onClick={() => {
-                fireAnalyticsEvent("RecentGames_Clicked_EditToast");
-                setShowEditingToast(false);
-                navigate(`/edit-game/${game.id}`);
-              }}
-            >
-              Edit
-            </Button>
-          }
-        />
-      )}
     </Card>
   );
 };

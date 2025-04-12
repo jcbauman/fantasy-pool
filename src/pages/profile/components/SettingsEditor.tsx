@@ -11,7 +11,6 @@ import { RootState } from "../../../redux/store";
 import {
   setGameStartSoundEffect,
   setHideInactivePlayers,
-  setUseOldGameEntryInterface,
 } from "../../../redux/settingsSlice";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 
@@ -22,21 +21,6 @@ export const SettingsEditor: FC = () => {
     <Card sx={{ p: 2, flexShrink: 0 }}>
       <Typography variant={"overline"}>General settings</Typography>
       <Stack direction={"column"}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={settings.useOldGameEntryInterface}
-              onChange={(_e, checked) => {
-                dispatch(setUseOldGameEntryInterface(checked));
-                fireAnalyticsEvent("Settings_Toggled_Setting", {
-                  setting: "old game interface",
-                  on: checked,
-                });
-              }}
-            />
-          }
-          label="Use legacy game entry interface"
-        />
         <FormControlLabel
           control={
             <Checkbox

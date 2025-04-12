@@ -54,7 +54,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
           p: 0,
           pb: 1,
           transition: "border 0.3s ease-in-out",
-          border: showEditingToast ? "1px dashed white" : "default",
+          border: showEditingToast ? "1px solid white" : "default",
         }}
       >
         <Stack

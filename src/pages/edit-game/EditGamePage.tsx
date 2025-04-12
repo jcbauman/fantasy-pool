@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
-import { GameInterface } from "../live-game/components/GameInterface";
+import { GameEditingInterface } from "../live-game/components/GameEditingInterface";
 import { useGameParams } from "./hooks/useGameParams";
 import { useAppContext } from "../../context/AppContext";
 import { canEditGame } from "./utils";
@@ -41,7 +41,7 @@ export const EditGameModePage: FC = () => {
             </Button>
           </Stack>
         )}
-        {/* <GameInterface /> */}
+        {game && <GameEditingInterface gameToEdit={game} />}
       </Stack>
     </PageContainer>
   );

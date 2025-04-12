@@ -1,4 +1,3 @@
-// notificationUtils.ts
 import { sendNotification } from "./NotificationProvider";
 
 export const sendSuccessNotification = (message: string) => {

@@ -25,6 +25,7 @@ import { WrappedPage } from "./pages/statsWrapped/WrappedPage";
 import useStandaloneMode from "./shared-components/hooks/useStandaloneMode";
 import { NotificationProvider } from "./shared-components/toasts/NotificationProvider";
 import { LastSeasonPage } from "./pages/last-season/LastSeasonPage";
+import { EditGameModePage } from "./pages/edit-game/EditGamePage";
 
 function App() {
   const isStandalone = useStandaloneMode();
@@ -41,6 +42,10 @@ function App() {
                     <Route path="/" element={<OverviewComponent />} />
                     <Route path="/players" element={<PlayersPage />} />
                     <Route path="/players/:id" element={<PlayerDetailPage />} />
+                    <Route
+                      path="/edit-game/:id"
+                      element={<EditGameModePage />}
+                    />
                     <Route path="/info" element={<LeagueInfoPage />} />
                     <Route path="/live-game" element={<LiveGameModePage />} />
                     <Route path="/profile" element={<ProfilePage />} />

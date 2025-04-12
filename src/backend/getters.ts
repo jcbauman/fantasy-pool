@@ -101,6 +101,19 @@ export const getGamesForPlayer = async (
   }
 };
 
+export const fetchGameById = async (id: string): Promise<Game | undefined> => {
+  const docSnap = await getDoc(doc(firestore, `games/${id}`));
+  if (docSnap.exists()) {
+    const data = docSnap.data() as Omit<Game, "id">;
+    return {
+      id: docSnap.id,
+      ...data,
+    };
+  } else {
+    console.error("No game record found found for ", id);
+  }
+};
+
 export const getGamesForPlayerAfterDate = async (
   playerId: string
 ): Promise<Game[] | undefined> => {

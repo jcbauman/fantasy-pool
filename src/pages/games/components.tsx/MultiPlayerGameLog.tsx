@@ -1,9 +1,12 @@
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import { Game, GameStatKeys, GameStatKeysAbbrev, Player } from "../../../types";
 import {
   Avatar,
+  Button,
   Card,
+  IconButton,
   Paper,
+  Snackbar,
   Stack,
   Table,
   TableBody,
@@ -25,50 +28,47 @@ import { GameFantasyDetailDialog } from "../../playerDetail/components/GameFanta
 import { TextEditorField } from "../../../shared-components/TextEditorField";
 import { updateExistingGame } from "../../../backend/setters";
 import { sendSuccessNotification } from "../../../shared-components/toasts/notificationToasts";
+import CloseIcon from "@mui/icons-material/Close";
+import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
+import { useNavigate } from "react-router-dom";
+import { canEditGame } from "../../edit-game/utils";
 
 export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const {
     players,
-    authState: { user },
+    authState: { user, player },
     scoringMatrix,
   } = useAppContext();
+  const navigate = useNavigate();
   const [detailModalPlayer, setDetailModalPlayer] = useState<
     Player | undefined
   >(undefined);
-  const [editingGameLoc, setEditingGameLoc] = useState(false);
   const authorPlayer = players.find((p) => p.id === game?.authorPlayerId);
+  const [showEditingToast, setShowEditingToast] = useState(false);
+
   return (
     <Card>
-      <Stack direction="column" sx={{ p: 0, pb: 1 }}>
+      <Stack
+        direction="column"
+        sx={{
+          p: 0,
+          pb: 1,
+          transition: "border 0.3s ease-in-out",
+          border: showEditingToast ? "1px dashed white" : "default",
+        }}
+      >
         <Stack
           direction="row"
           sx={{ p: 2, justifyContent: "space-between", alignItems: "center" }}
+          onClick={() => {
+            if (canEditGame(game, player?.id ?? "", user?.isAppAdmin)) {
+              fireAnalyticsEvent("RecentGames_Clicked_Header");
+              setShowEditingToast(true);
+            }
+          }}
         >
-          <Stack
-            onClick={() => {
-              if (user?.isAppAdmin || game.authorPlayerId === user?.id) {
-                setEditingGameLoc(true);
-              }
-            }}
-          >
-            {editingGameLoc ? (
-              <TextEditorField
-                placeholder="Edit location"
-                defaultValue={game.location ?? ""}
-                onSave={async (newVal: string) => {
-                  const resolvedGame: Game = {
-                    ...game,
-                    location: newVal,
-                  };
-                  const { id, ...gameNoId } = resolvedGame;
-                  await updateExistingGame(gameNoId, game.id);
-                  setEditingGameLoc(false);
-                }}
-                onClickAway={() => setEditingGameLoc(false)}
-              />
-            ) : (
-              <Typography>{game.location}</Typography>
-            )}
+          <Stack>
+            <Typography>{game.location}</Typography>
           </Stack>
           {authorPlayer && (
             <Stack direction="row">
@@ -77,7 +77,8 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                 sx={{ width: 20, height: 20, ml: 1 }}
                 src={authorPlayer?.profilePictureUrl}
                 alt={authorPlayer?.name}
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   if (user?.isAppAdmin) {
                     navigator.clipboard
                       .writeText(game.id)
@@ -254,6 +255,34 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
         scoringMatrix={scoringMatrix}
         game={game}
       />
+      {showEditingToast && (
+        <Snackbar
+          sx={{
+            ".MuiSnackbarContent-root": {
+              backgroundColor: "black",
+              color: "white",
+            },
+          }}
+          autoHideDuration={3000}
+          message="You can still edit the stats of this game"
+          open={showEditingToast}
+          onClose={() => setShowEditingToast(false)}
+          action={
+            <Button
+              color="secondary"
+              sx={{ fontWeight: 600 }}
+              size="small"
+              onClick={() => {
+                fireAnalyticsEvent("RecentGames_Clicked_EditToast");
+                setShowEditingToast(false);
+                navigate(`/edit-game/${game.id}`);
+              }}
+            >
+              Edit
+            </Button>
+          }
+        />
+      )}
     </Card>
   );
 };

@@ -44,6 +44,7 @@ export interface Game {
   authorPlayerId?: string;
   createdAt?: Timestamp;
   endedAt?: string;
+  editedAt?: string;
 }
 
 export enum GameStatKeys {

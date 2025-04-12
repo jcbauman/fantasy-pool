@@ -527,6 +527,7 @@ export const GameInterfaceV2: FC = () => {
         }
       />
       <MultiBallDeleteDialog
+        currentGame={game}
         open={multiBallDeleteDialogOpen}
         onClose={() => setMultiBallDeleteDialogOpen(false)}
         selectedPlayerName={

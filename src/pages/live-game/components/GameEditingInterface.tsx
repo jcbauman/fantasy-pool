@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Button,
   ButtonGroup,
   Card,
@@ -10,12 +11,13 @@ import {
   Stack,
   Tab,
   Tabs,
+  TextField,
   Typography,
 } from "@mui/material";
 import { FC, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { clearGame, setLastGameId } from "../../../redux/gameSlice";
-import { RootState } from "../../../redux/store";
+import { useDispatch } from "react-redux";
+import { setLastGameId } from "../../../redux/gameSlice";
+import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import {
   getPlayerNameAbbreviation,
   getStatsForGame,
@@ -26,45 +28,56 @@ import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";
 import DirectionsRunOutlinedIcon from "@mui/icons-material/DirectionsRunOutlined";
 import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";
 import { TimeCounter } from "./TimeCounter";
-import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import { useAppContext } from "../../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { Game, GameStatKeys } from "../../../types";
 import { useIterateStats } from "../hooks/useIterateStats";
 import { MultiBallDialog } from "./MultiBallDialog";
-import { addNewGame } from "../../../backend/setters";
+import { deleteGame, updateExistingGame } from "../../../backend/setters";
 import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
 import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlined";
 import { MultiBallDeleteDialog } from "./MultiBallDeleteDialog";
+import { useFetchLocations } from "../../../backend/getters";
+import { DeleteOutlined } from "@mui/icons-material";
+import DatePicker from "../../../shared-components/DatePicker";
 import { Timestamp } from "firebase/firestore";
-import { useGameIsIncomplete } from "../hooks/useGameIsIncomplete";
+import { formatDateStringToMMDDYYY } from "../../../utils/dateUtils";
+import { sendSuccessNotification } from "../../../shared-components/toasts/notificationToasts";
 
-export const GameInterface: FC = () => {
+export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
+  gameToEdit,
+}) => {
+  const [currGame, setCurrGame] = useState(gameToEdit);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     players,
     authState: { player },
   } = useAppContext();
-  const game = useSelector((state: RootState) => state.game.currentGame);
-  const { iterateStat } = useIterateStats();
+  const locations = useFetchLocations();
+  const { iterateStatNonRedux } = useIterateStats();
   const [selectedTab, setSelectedTab] = useState(0);
   const [endGameDialogOpen, setEndGameDialogOpen] = useState(false);
   const [discardGameDialogOpen, setDiscardGameDialogOpen] = useState(false);
   const [multiBallDialogOpen, setMultiBallDialogOpen] = useState(false);
   const [multiBallDeleteDialogOpen, setMultiBallDeleteDialogOpen] =
     useState(false);
-  const startTime = game?.timestamp ? new Date(game?.timestamp) : new Date();
-  const gameIsIncomplete = useGameIsIncomplete();
+  const startTime = currGame?.timestamp
+    ? new Date(currGame?.timestamp)
+    : new Date();
+  const endTime = currGame?.endedAt
+    ? new Date(currGame?.endedAt)
+    : new Date(new Date().toString());
 
   const gamePlayers = players.filter((player) =>
-    game?.playerIds.includes(player.id)
+    currGame?.playerIds.includes(player.id)
   );
   const currentPlayerGameStats = useMemo(
-    () => getStatsForGame(gamePlayers[selectedTab].id, game),
-    [selectedTab, game, gamePlayers]
+    () => getStatsForGame(gamePlayers[selectedTab]?.id, currGame),
+    [selectedTab, currGame, gamePlayers]
   );
+
   const showTabs = gamePlayers.length > 1;
   const scorableFields = [
     {
@@ -121,6 +134,42 @@ export const GameInterface: FC = () => {
   return (
     <Stack direction="column" spacing={2}>
       <Card sx={{ p: 2 }}>
+        <Typography variant="overline">Details</Typography>
+        <Stack direction="column" gap={2}>
+          <Autocomplete
+            sx={{ mt: 1 }}
+            value={currGame.location}
+            freeSolo
+            onChange={(_e, newValue) => {
+              setCurrGame({ ...currGame, location: newValue?.trim() || "" });
+            }}
+            onInputChange={(_e, newInputValue) =>
+              setCurrGame({ ...currGame, location: newInputValue || "" })
+            }
+            options={locations}
+            renderInput={(params) => (
+              <TextField
+                value={currGame.location}
+                {...params}
+                label="Location"
+                placeholder="Select location or enter a new one"
+              />
+            )}
+          />
+          <DatePicker
+            label="Original game date"
+            defValue={formatDateStringToMMDDYYY(currGame.timestamp)}
+            onChange={(date) => {
+              setCurrGame({
+                ...currGame,
+                createdAt: Timestamp.fromDate(date),
+                timestamp: date.toString(),
+              });
+            }}
+          />
+        </Stack>
+      </Card>
+      <Card sx={{ p: 2 }}>
         {showTabs && (
           <Tabs
             sx={{ mb: 2 }}
@@ -146,7 +195,7 @@ export const GameInterface: FC = () => {
           </Stack>
           <Stack direction="column" sx={{ alignItems: "flex-end" }}>
             <Typography variant="overline">Elapsed time</Typography>
-            <TimeCounter startTime={startTime} />
+            <TimeCounter startTime={startTime} endTime={endTime} />
           </Stack>
         </Stack>
         <Divider />
@@ -168,10 +217,18 @@ export const GameInterface: FC = () => {
                           setMultiBallDeleteDialogOpen(true);
                         } else {
                           if (statValue !== 0) {
-                            iterateStat({
+                            const resolvedStats = iterateStatNonRedux({
                               playerId: gamePlayers[selectedTab].id,
                               statKey: field.stat,
                               delta: -1,
+                              currGame,
+                            });
+
+                            setCurrGame({
+                              ...currGame,
+                              statsByPlayer: resolvedStats
+                                ? resolvedStats
+                                : currGame.statsByPlayer,
                             });
                           }
                         }
@@ -187,10 +244,17 @@ export const GameInterface: FC = () => {
                         if (field.multiBall) {
                           setMultiBallDialogOpen(true);
                         } else {
-                          iterateStat({
+                          const resolvedStats = iterateStatNonRedux({
                             playerId: gamePlayers[selectedTab].id,
                             statKey: field.stat,
                             delta: 1,
+                            currGame,
+                          });
+                          setCurrGame({
+                            ...currGame,
+                            statsByPlayer: resolvedStats
+                              ? resolvedStats
+                              : currGame.statsByPlayer,
                           });
                         }
                       }}
@@ -216,17 +280,23 @@ export const GameInterface: FC = () => {
           })}
         </List>
       </Card>
-      <Button
-        color="error"
-        variant="contained"
-        fullWidth
-        onClick={() => setEndGameDialogOpen(true)}
-        startIcon={<DoneOutlinedIcon />}
-      >
-        End session
-      </Button>
+      <Stack direction="row" sx={{ alignItems: "center", gap: 2 }}>
+        <Button color="error" onClick={() => setDiscardGameDialogOpen(true)}>
+          <DeleteOutlined />
+        </Button>
+        <Button
+          color="success"
+          variant="contained"
+          fullWidth
+          onClick={() => setEndGameDialogOpen(true)}
+          startIcon={<SaveOutlinedIcon />}
+        >
+          Save edits
+        </Button>
+      </Stack>
+      <Stack sx={{ h: 4 }} />
       <ConfirmationDialog
-        gameIsIncomplete={gameIsIncomplete}
+        action="edit"
         open={endGameDialogOpen}
         onClose={() => setEndGameDialogOpen(false)}
         onDiscard={() => {
@@ -234,28 +304,28 @@ export const GameInterface: FC = () => {
           setDiscardGameDialogOpen(true);
         }}
         onConfirm={async () => {
-          if (game) {
-            const createdAt = Timestamp.fromDate(new Date(game.timestamp));
-            const endedAt = new Date().toString();
-            const { id, ...gameNoId } = game;
+          if (currGame) {
+            const editedAt = new Date().toString();
+            const { id, ...gameNoId } = currGame;
             const resolvedGame: Omit<Game, "id"> = {
               ...gameNoId,
-              createdAt,
-              endedAt,
+              editedAt,
             };
-            const gameId = await addNewGame(resolvedGame);
-            dispatch(setLastGameId(gameId ?? null));
+            await updateExistingGame(resolvedGame, currGame.id);
+            dispatch(setLastGameId(currGame.id ?? null));
           }
           navigate("/game-complete");
-          dispatch(clearGame());
         }}
       />
       <DiscardDialog
         open={discardGameDialogOpen}
         onClose={() => setDiscardGameDialogOpen(false)}
         onConfirm={async () => {
-          dispatch(clearGame());
-          navigate("/");
+          await deleteGame(currGame.id, () =>
+            sendSuccessNotification("Game deleted successfully")
+          );
+
+          navigate("/recent-games");
         }}
       />
       <MultiBallDialog
@@ -266,15 +336,23 @@ export const GameInterface: FC = () => {
             ? "you"
             : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
         }
-        onConfirm={(numBalls: number) =>
-          iterateStat({
+        onConfirm={(numBalls: number) => {
+          const resolvedStats = iterateStatNonRedux({
             playerId: gamePlayers[selectedTab].id,
             statKey: getStatKeyFromNumBalls(numBalls),
             delta: 1,
-          })
-        }
+            currGame,
+          });
+          setCurrGame({
+            ...currGame,
+            statsByPlayer: resolvedStats
+              ? resolvedStats
+              : currGame.statsByPlayer,
+          });
+        }}
       />
       <MultiBallDeleteDialog
+        currentGame={currGame}
         open={multiBallDeleteDialogOpen}
         onClose={() => setMultiBallDeleteDialogOpen(false)}
         selectedPlayerName={
@@ -283,13 +361,20 @@ export const GameInterface: FC = () => {
             : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
         }
         selectedPlayerId={gamePlayers[selectedTab].id}
-        onConfirmDelete={(numBalls: number) =>
-          iterateStat({
+        onConfirmDelete={(numBalls: number) => {
+          const resolvedStats = iterateStatNonRedux({
             playerId: gamePlayers[selectedTab].id,
             statKey: getStatKeyFromNumBalls(numBalls),
             delta: -1,
-          })
-        }
+            currGame,
+          });
+          setCurrGame({
+            ...currGame,
+            statsByPlayer: resolvedStats
+              ? resolvedStats
+              : currGame.statsByPlayer,
+          });
+        }}
       />
     </Stack>
   );

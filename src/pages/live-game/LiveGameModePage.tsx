@@ -4,7 +4,6 @@ import { GameStartForm } from "./components/GameStartForm";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { GameInterface } from "./components/GameInterface";
 import { InfoDialog } from "./components/InfoDialog";
 import { GameInterfaceV2 } from "./components/GameInterfaceV2";
 
@@ -13,9 +12,7 @@ const INFO_MODAL_STORAGE_KEY = "gameInfoModalStoragekey";
 export const LiveGameModePage: FC = () => {
   const { gameIsInProgress } = useSelector((state: RootState) => state.game);
   const [showInfoDialog, setShowInfoDialog] = useState(false);
-  const { useOldGameEntryInterface } = useSelector(
-    (state: RootState) => state.settings
-  );
+
   useEffect(() => {
     const hasSeenModal = localStorage.getItem(INFO_MODAL_STORAGE_KEY);
     if (!hasSeenModal) {
@@ -27,9 +24,7 @@ export const LiveGameModePage: FC = () => {
     <PageContainer authedRoute>
       <Stack direction="column" sx={{ width: "100%", height: "100%", p: 1 }}>
         {gameIsInProgress ? (
-          <>
-            {useOldGameEntryInterface ? <GameInterface /> : <GameInterfaceV2 />}
-          </>
+          <GameInterfaceV2 />
         ) : (
           <GameStartForm setShowInfoDialog={setShowInfoDialog} />
         )}

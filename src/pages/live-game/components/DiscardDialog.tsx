@@ -21,19 +21,18 @@ export const DiscardDialog: FC<ConfirmationDialogProps> = ({
 }) => {
   return (
     <Drawer open={open} anchor="bottom" onClose={onClose}>
-      <DialogTitle>
-        Are you sure you want to delete this pool session?
-      </DialogTitle>
+      <DialogTitle>Are you sure you want to delete this pool game?</DialogTitle>
       <DialogContent>
         The stats you tracked will be permanently deleted.
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={onClose}>
+        <Button variant="outlined" onClick={onClose} size="large">
           Cancel
         </Button>
         <Button
           variant="contained"
           color="error"
+          size="large"
           startIcon={<DeleteOutlinedIcon />}
           onClick={() => {
             onConfirm();

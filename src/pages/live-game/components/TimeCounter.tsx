@@ -1,13 +1,16 @@
 import { FC, useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 
-export const TimeCounter: FC<{ startTime: Date }> = ({ startTime }) => {
+export const TimeCounter: FC<{ startTime: Date; endTime?: Date }> = ({
+  startTime,
+  endTime,
+}) => {
   const [time, setTime] = useState(calculateTimeDifference(startTime));
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTime((prevTime) => {
-        const now = new Date();
+      setTime(() => {
+        const now = endTime ?? new Date();
         const elapsed = now.getTime() - startTime.getTime();
         const totalSeconds = Math.floor(elapsed / 1000);
         const hours = Math.floor(totalSeconds / 3600);
@@ -18,7 +21,7 @@ export const TimeCounter: FC<{ startTime: Date }> = ({ startTime }) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [startTime]);
+  }, [startTime, endTime]);
   return (
     <Typography variant="h5">
       {formatTime(time.hours, time.minutes, time.seconds)}

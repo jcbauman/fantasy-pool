@@ -41,7 +41,9 @@ export const useTopNav = (): UseTopNav => {
   else if (location.pathname === "/game-complete") return { title: "Summary" };
   else if (location.pathname.startsWith("/wrapped-2024"))
     return { title: "2024 Wrapped" };
-  else if (location.pathname === "/last-season")
+  else if (location.pathname.startsWith("/edit-game")) {
+    return { title: "Edit game", showBackButton: true };
+  } else if (location.pathname === "/last-season")
     return {
       title: `${getSeasonString(getThreeMonthsAgo())} season history`,
       showBackButton: true,

@@ -4,10 +4,15 @@ import { TextField } from "@mui/material";
 interface DatePickerProps {
   label?: string;
   onChange: (date: Date) => void;
+  defValue?: string;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ label, onChange }) => {
-  const [date, setDate] = useState("");
+const DatePicker: React.FC<DatePickerProps> = ({
+  label,
+  onChange,
+  defValue = "",
+}) => {
+  const [date, setDate] = useState(defValue);
   const [error, setError] = useState("");
 
   // Function to format input value as mm/dd/yyyy

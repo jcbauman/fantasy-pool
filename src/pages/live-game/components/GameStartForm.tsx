@@ -45,11 +45,11 @@ export const GameStartForm: FC<{
     string | undefined
   >(undefined);
   const locations = useFetchLocations();
-  const { gameStartSoundEffect, useOldGameEntryInterface } = useSelector(
+  const { gameStartSoundEffect } = useSelector(
     (state: RootState) => state.settings
   );
 
-  const maxPlayers = useOldGameEntryInterface ? 4 : 2;
+  const MAX_PLAYERS = 2;
 
   const {
     handleSubmit,
@@ -167,7 +167,8 @@ export const GameStartForm: FC<{
         <Stack direction="column" gap={2}>
           <Typography variant="caption">
             Record scores for yourself or another player. <br />
-            You can record scores for up to {maxPlayers} players simultaneously.
+            You can record scores for up to {MAX_PLAYERS} players
+            simultaneously.
           </Typography>
           <Controller
             name="playerIds"
@@ -177,8 +178,8 @@ export const GameStartForm: FC<{
                 required: (value) =>
                   value.length > 0 || "At least one player must be selected",
                 maxTwo: (value) =>
-                  value.length <= maxPlayers ||
-                  `You can select up to ${maxPlayers} players`,
+                  value.length <= MAX_PLAYERS ||
+                  `You can select up to ${MAX_PLAYERS} players`,
               },
             }}
             render={({ field }) => (

@@ -117,3 +117,35 @@ export const getStringFromStatKey = (statKey: string): string => {
       return "";
   }
 };
+
+export const getSingularStringFromScratchKey = (statKey: string): string => {
+  switch (statKey) {
+    case GameStatKeys.winsBy8BallSink:
+      return "win by 8 ball sink";
+    case GameStatKeys.winsByOpponentScratch:
+      return "win by opponent scratch";
+    case GameStatKeys.lossesBy8BallSink:
+      return "loss by 8 ball sink";
+    case GameStatKeys.lossesByScratch:
+      return "losses by scratch";
+    case GameStatKeys.threeBallsPocketedInRow:
+      return "3-ball run";
+    case GameStatKeys.fourBallsPocketedInRow:
+      return "4-ball run";
+    case GameStatKeys.fiveBallsPocketedInRow:
+      return "5-ball run";
+    case GameStatKeys.sixBallsPocketedInRow:
+      return "6-ball run";
+    case GameStatKeys.sevenBallsPocketedInRow:
+      return "7-ball run";
+    case GameStatKeys.runTheTable:
+      return "run of the table";
+    case GameStatKeys.skillShots:
+      return "skill shot";
+    case GameStatKeys.scratches:
+      return "scratch";
+
+    default:
+      return "";
+  }
+};

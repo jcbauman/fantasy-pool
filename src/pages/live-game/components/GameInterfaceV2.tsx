@@ -46,6 +46,7 @@ import EightBallIcon from "../../../shared-components/icons/EightBallIcon";
 import { ConfirmationDrawerV2 } from "./ConfirmationDrawerV2";
 import { sendErrorNotification } from "../../../shared-components/toasts/notificationToasts";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
+import { sendIterationNotificationMessage } from "../hooks/utils";
 
 export const GameInterfaceV2: FC = () => {
   const dispatch = useDispatch();
@@ -64,6 +65,9 @@ export const GameInterfaceV2: FC = () => {
   const [multiBallDeleteDialogOpen, setMultiBallDeleteDialogOpen] =
     useState(false);
   const [showEndGameSection, setShowEndGameSection] = useState(false);
+  const [btnFlashStates, setBtnFlashStates] = useState<Record<number, boolean>>(
+    {}
+  );
 
   //game end states
   const [wonGame, setWonGame] = useState<boolean | null>(null);
@@ -237,6 +241,14 @@ export const GameInterfaceV2: FC = () => {
       setEndGameDialogOpen(false);
     }
   };
+  const handleButtonAnimation = (idx: number) => {
+    setBtnFlashStates((prev) => ({ ...prev, [idx]: true }));
+
+    setTimeout(() => {
+      setBtnFlashStates((prev) => ({ ...prev, [idx]: false }));
+    }, 300);
+  };
+
   return (
     <Stack direction="column">
       <Collapse collapsedSize={0} in={!showEndGameSection}>
@@ -271,10 +283,13 @@ export const GameInterfaceV2: FC = () => {
           </Stack>
           <Divider />
           <List disablePadding>
-            {scorableFields.map((field) => {
+            {scorableFields.map((field, idx) => {
               const statValue = currentPlayerGameStats[field.stat] ?? 0;
               return (
                 <ListItem
+                  sx={
+                    idx === 1 ? { borderBottom: "1px solid", pb: 2, mb: 1 } : {}
+                  }
                   key={field.primary}
                   disablePadding
                   secondaryAction={
@@ -283,7 +298,8 @@ export const GameInterfaceV2: FC = () => {
                         size="large"
                         onClick={() => {
                           if (field.multiBall) {
-                            setMultiBallDeleteDialogOpen(true);
+                            if (totalRuns > 0)
+                              setMultiBallDeleteDialogOpen(true);
                           } else {
                             if (statValue !== 0) {
                               iterateStat({
@@ -291,6 +307,13 @@ export const GameInterfaceV2: FC = () => {
                                 statKey: field.stat,
                                 delta: -1,
                               });
+                              if (gamePlayers.length > 1)
+                                sendIterationNotificationMessage(
+                                  gamePlayers[selectedTab].name,
+                                  field.stat,
+                                  -1
+                                );
+                              handleButtonAnimation(idx);
                               fireAnalyticsEvent(
                                 "GameMode_Clicked_DecreaseStat",
                                 { statKey: field.stat }
@@ -301,10 +324,21 @@ export const GameInterfaceV2: FC = () => {
                       >
                         -
                       </Button>
-                      <Button sx={{ pointerEvents: "none" }} size="large">
+                      <Button
+                        sx={{
+                          pointerEvents: "none",
+                          backgroundColor: btnFlashStates[idx]
+                            ? "white"
+                            : "black",
+                          color: btnFlashStates[idx] ? "black" : "white",
+                          transition: "background-color 0.3s, color 0.3s",
+                        }}
+                        size="large"
+                      >
                         {field.multiBall ? totalRuns : statValue}
                       </Button>
                       <Button
+                        disableRipple
                         size="large"
                         onClick={() => {
                           if (field.multiBall) {
@@ -315,6 +349,13 @@ export const GameInterfaceV2: FC = () => {
                               statKey: field.stat,
                               delta: 1,
                             });
+                            handleButtonAnimation(idx);
+                            if (gamePlayers.length > 1)
+                              sendIterationNotificationMessage(
+                                gamePlayers[selectedTab].name,
+                                field.stat,
+                                1
+                              );
                           }
                         }}
                       >
@@ -518,13 +559,20 @@ export const GameInterfaceV2: FC = () => {
             ? "you"
             : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
         }
-        onConfirm={(numBalls: number) =>
+        onConfirm={(numBalls: number) => {
           iterateStat({
             playerId: gamePlayers[selectedTab].id,
             statKey: getStatKeyFromNumBalls(numBalls),
             delta: 1,
-          })
-        }
+          });
+          handleButtonAnimation(1);
+          if (gamePlayers.length > 1)
+            sendIterationNotificationMessage(
+              gamePlayers[selectedTab].name,
+              getStatKeyFromNumBalls(numBalls),
+              1
+            );
+        }}
       />
       <MultiBallDeleteDialog
         currentGame={game}
@@ -536,13 +584,20 @@ export const GameInterfaceV2: FC = () => {
             : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
         }
         selectedPlayerId={gamePlayers[selectedTab].id}
-        onConfirmDelete={(numBalls: number) =>
+        onConfirmDelete={(numBalls: number) => {
           iterateStat({
             playerId: gamePlayers[selectedTab].id,
             statKey: getStatKeyFromNumBalls(numBalls),
             delta: -1,
-          })
-        }
+          });
+          handleButtonAnimation(1);
+          if (gamePlayers.length > 1) handleButtonAnimation(1);
+          sendIterationNotificationMessage(
+            gamePlayers[selectedTab].name,
+            getStatKeyFromNumBalls(numBalls),
+            -1
+          );
+        }}
       />
     </Stack>
   );

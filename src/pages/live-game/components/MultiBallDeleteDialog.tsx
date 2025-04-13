@@ -1,6 +1,5 @@
 import {
   Button,
-  ButtonGroup,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -8,7 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 import { Game, GameStatKeys } from "../../../types";
 
@@ -32,8 +31,6 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
   const thisPlayerStats = currentGame?.statsByPlayer.find(
     (stat) => stat.playerId === selectedPlayerId
   );
-
-  const [numBalls, setNumBalls] = useState(0);
   const buttons = [
     { num: 3, key: GameStatKeys.threeBallsPocketedInRow },
     { num: 4, key: GameStatKeys.fourBallsPocketedInRow },
@@ -42,6 +39,16 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
     { num: 7, key: GameStatKeys.sevenBallsPocketedInRow },
     { num: 8, key: GameStatKeys.runTheTable },
   ];
+
+  const initialValue =
+    buttons.find((value) => {
+      return (thisPlayerStats?.[value.key] ?? 0) > 0;
+    })?.num ?? 0;
+
+  const [numBalls, setNumBalls] = useState(initialValue);
+  useEffect(() => {
+    setNumBalls(initialValue);
+  }, [initialValue]);
   return (
     <Drawer open={open} onClose={onClose} anchor="bottom">
       <DialogTitle>
@@ -59,27 +66,34 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
             Select the number of balls pocketed in a row to delete from{" "}
             {selectedPlayerName}.
           </Typography>
-          <ButtonGroup
-            variant="outlined"
-            aria-label="# ball selection group"
-            sx={{ width: "100%" }}
+          <Stack
+            direction="row"
+            sx={{ width: "100%", justifyContent: "space-between" }}
           >
             {buttons.map((value) => [
               <Button
-                fullWidth
                 key={value.num}
-                variant={numBalls === value.num ? "contained" : "outlined"}
+                sx={{
+                  width: 48,
+                  height: 48,
+                  minWidth: 0,
+                  padding: 0,
+                  borderRadius: "50%",
+                  fontSize: "1rem",
+                  color: "white",
+                }}
+                variant={numBalls === value.num ? "contained" : "text"}
                 onClick={() => setNumBalls(value.num)}
                 disabled={!thisPlayerStats?.[value.key]}
               >
                 {value.num}
               </Button>,
             ])}
-          </ButtonGroup>
+          </Stack>
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button variant="text" onClick={onClose}>
+        <Button variant="outlined" onClick={onClose}>
           Cancel
         </Button>
         <Button
@@ -91,7 +105,7 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
             onClose();
           }}
         >
-          Delete this stat for {getPlayerNameAbbreviation(selectedPlayerName)}
+          Delete for {getPlayerNameAbbreviation(selectedPlayerName)}
         </Button>
       </DialogActions>
     </Drawer>

@@ -1,6 +1,7 @@
 import {
   Button,
   ButtonGroup,
+  Collapse,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -44,30 +45,38 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
             before missing or ending the game. (If you made a ball off the break
             count, that counts as 1.)
           </Typography>
-          <ButtonGroup
-            variant="outlined"
-            aria-label="# ball selection group"
-            sx={{ width: "100%" }}
+          <Stack
+            direction="row"
+            sx={{ width: "100%", justifyContent: "space-between" }}
           >
             {buttons.map((value) => [
               <Button
-                fullWidth
                 key={value}
-                variant={numBalls === value ? "contained" : "outlined"}
+                sx={{
+                  width: 48,
+                  height: 48,
+                  minWidth: 0,
+                  padding: 0,
+                  borderRadius: "50%",
+                  fontSize: "1rem",
+                  color: "white",
+                }}
+                variant={numBalls === value ? "contained" : "text"}
                 onClick={() => setNumBalls(value)}
               >
                 {value}
               </Button>,
             ])}
-          </ButtonGroup>
-          {numBalls > 6 && (
-            <Stack
-              direction="row"
-              sx={{ justifyContent: "center", width: "100%" }}
-            >
-              <Typography variant="h4">BRUH</Typography>
-            </Stack>
-          )}
+          </Stack>
+          <Collapse
+            collapsedSize={0}
+            in={numBalls > 6}
+            sx={{ justifyContent: "center", width: "100%" }}
+          >
+            <Typography variant="h4" align="center">
+              BRUH
+            </Typography>
+          </Collapse>
         </Stack>
       </DialogContent>
       <DialogActions>

@@ -106,18 +106,6 @@ export const OverviewComponent: FC = () => {
             <Divider component="li" />
             <ListItem disablePadding>
               <ListItemButton
-                to={`/players/${player?.id ?? ""}`}
-                component={RouterLink}
-              >
-                <ListItemIcon>
-                  <AccountBoxOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="My Player Profile" />
-              </ListItemButton>
-            </ListItem>
-            <Divider component="li" />
-            <ListItem disablePadding>
-              <ListItemButton
                 to={`/games`}
                 component={RouterLink}
                 onClick={() => notificationBadgesState.viewGamesPage()}
@@ -132,6 +120,18 @@ export const OverviewComponent: FC = () => {
                   </Badge>
                 </ListItemIcon>
                 <ListItemText primary="Recent games" />
+              </ListItemButton>
+            </ListItem>
+            <Divider component="li" />
+            <ListItem disablePadding>
+              <ListItemButton
+                to={`/players/${player?.id ?? ""}`}
+                component={RouterLink}
+              >
+                <ListItemIcon>
+                  <AccountBoxOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="My Player Profile" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />

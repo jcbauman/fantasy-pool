@@ -338,7 +338,6 @@ export const GameInterfaceV2: FC = () => {
                         {field.multiBall ? totalRuns : statValue}
                       </Button>
                       <Button
-                        disableRipple
                         size="large"
                         onClick={() => {
                           if (field.multiBall) {

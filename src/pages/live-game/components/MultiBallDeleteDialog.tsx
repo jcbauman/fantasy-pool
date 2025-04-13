@@ -93,11 +93,10 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" size="large" onClick={onClose}>
+        <Button variant="outlined" onClick={onClose}>
           Cancel
         </Button>
         <Button
-          size="large"
           disabled={numBalls === 0}
           color="error"
           variant="contained"
@@ -106,7 +105,7 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
             onClose();
           }}
         >
-          Delete this stat for {getPlayerNameAbbreviation(selectedPlayerName)}
+          Delete for {getPlayerNameAbbreviation(selectedPlayerName)}
         </Button>
       </DialogActions>
     </Drawer>

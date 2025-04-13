@@ -17,7 +17,6 @@ import { Game } from "../../types";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteFetchGames } from "./useInfiniteFetchGames";
 import { formatDateToMMDD } from "../../utils/dateUtils";
-import { useAppContext } from "../../context/AppContext";
 
 export const RecentGamesPage: FC = () => {
   const { games, hasMore, loadGames, loading } = useInfiniteFetchGames();

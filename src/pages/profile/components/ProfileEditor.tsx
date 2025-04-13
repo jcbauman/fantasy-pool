@@ -19,6 +19,7 @@ import { useAppContext } from "../../../context/AppContext";
 import { Player } from "../../../types";
 import { useLocation } from "react-router-dom";
 import { useFetchLocations } from "../../../backend/getters";
+import { ProfileUpload } from "./ProfilePictureUpload";
 
 export interface ProfileFormValues {
   email: string;
@@ -140,6 +141,26 @@ export const ProfileEditor: FC<{
                   )}
                 />
               </Stack>
+              <Stack direction="row" gap={1} sx={{ alignItems: "center" }}>
+                <Avatar src={watchAll.profilePictureUrl} />
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  type="text"
+                  label="Profile image URL"
+                  size="small"
+                  {...register("profilePictureUrl")}
+                  defaultValue={watchAll.profilePictureUrl}
+                />
+                {player && (
+                  <ProfileUpload
+                    playerId={player.id}
+                    onUpload={(url) => {
+                      setValue("profilePictureUrl", url);
+                    }}
+                  />
+                )}
+              </Stack>
               <FormControl>
                 <FormLabel>
                   <Typography variant="overline">Status</Typography>
@@ -174,18 +195,6 @@ export const ProfileEditor: FC<{
                   />
                 </FormControl>
               </FormControl>
-              <Stack direction="row" gap={1} sx={{ alignItems: "center" }}>
-                <Avatar src={watchAll.profilePictureUrl} />
-                <TextField
-                  fullWidth
-                  variant="outlined"
-                  type="text"
-                  label="Profile image URL"
-                  size="small"
-                  {...register("profilePictureUrl")}
-                  defaultValue={watchAll.profilePictureUrl}
-                />
-              </Stack>
               <Button variant="contained" color="primary" type="submit">
                 Save changes
               </Button>

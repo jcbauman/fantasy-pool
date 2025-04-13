@@ -18,7 +18,8 @@ export const FAQS_COPY = [
         <ul>
           <li>
             If you find an issue/error with the stats of an already-submitted
-            game, the league manager can help make adjustments to it.
+            game, you can edit it within 2 days. Otherwise contact the league
+            manager, they can help make adjustments to it.
           </li>
         </ul>
       </ContentWrapper>
@@ -129,15 +130,6 @@ export const FAQS_COPY = [
     ),
   },
   {
-    title: "Should I submit by game or by full session?",
-    content: (
-      <ContentWrapper>
-        It's entirely up to you if you want to aggregate your night of pool into
-        one session or track each game individually.
-      </ContentWrapper>
-    ),
-  },
-  {
     title: "Can I count pool sessions I've had without an opponent?",
     content: (
       <ContentWrapper>
@@ -158,6 +150,24 @@ export const FAQS_COPY = [
       <ContentWrapper>
         At the moment the app is only setup to track standard 8-ball pool games.
         Please don't enter 9-ball, cutthroat, etc.
+      </ContentWrapper>
+    ),
+  },
+  {
+    title: "Can I edit a game that I already submitted?",
+    content: (
+      <ContentWrapper>
+        Yes, you can now edit the stats and details of a submitted game.
+        <ul>
+          <li>
+            On the Recent Games page, tap your Avatar picture in the header of
+            the game card, and select 'Edit.'
+          </li>
+          <li>
+            You can only edit a game if you are the game's author, and the game
+            occurred less than two days ago.
+          </li>
+        </ul>
       </ContentWrapper>
     ),
   },

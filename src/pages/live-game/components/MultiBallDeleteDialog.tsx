@@ -10,8 +10,6 @@ import {
 } from "@mui/material";
 import { FC, useState } from "react";
 import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
 import { Game, GameStatKeys } from "../../../types";
 
 interface MultiBallDialogProps {

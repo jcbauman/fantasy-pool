@@ -30,7 +30,9 @@ export const ForgotPasswordPage: FC = () => {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      await sendPasswordResetEmail(auth, data.email);
+      await sendPasswordResetEmail(auth, data.email, {
+        url: "https://fantasy-pool.com",
+      });
       sendSuccessNotification("Sent! Check your email");
     } catch (_e) {
       sendErrorNotification("Could not send password reset email");

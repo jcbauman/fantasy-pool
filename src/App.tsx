@@ -26,6 +26,7 @@ import useStandaloneMode from "./shared-components/hooks/useStandaloneMode";
 import { NotificationProvider } from "./shared-components/toasts/NotificationProvider";
 import { LastSeasonPage } from "./pages/last-season/LastSeasonPage";
 import { EditGameModePage } from "./pages/edit-game/EditGamePage";
+import { ForgotPasswordPage } from "./pages/forgot-password/ForgotPasswordPage";
 
 function App() {
   const isStandalone = useStandaloneMode();
@@ -63,6 +64,10 @@ function App() {
                     <Route path="/games" element={<RecentGamesPage />} />
                     <Route path="/league-admin" element={<LeagueAdminPage />} />
                     <Route path="/rules" element={<RulesPage />} />
+                    <Route
+                      path="/forgot-password"
+                      element={<ForgotPasswordPage />}
+                    />
                     <Route path="/wrapped-2024/:id" element={<WrappedPage />} />
                     <Route path="*" element={<OverviewComponent />} />
                   </Routes>

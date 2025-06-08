@@ -48,5 +48,7 @@ export const useTopNav = (): UseTopNav => {
       title: `${getSeasonString(getThreeMonthsAgo())} season history`,
       showBackButton: true,
     };
+  else if (location.pathname === "/forgot-password")
+    return { title: "Reset password" };
   else return { title: "Fantasy Pool" };
 };

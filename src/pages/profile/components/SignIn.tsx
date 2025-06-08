@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  Link,
   Stack,
   Tab,
   Tabs,
@@ -9,8 +10,8 @@ import {
 } from "@mui/material";
 import { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../../context/AppContext";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 
 interface FormValues {
   email: string;
@@ -104,6 +105,19 @@ export const SignIn: FC = () => {
               {errors.password.message}
             </Typography>
           )}
+          {!signUpMode && (
+            <Link
+              sx={{
+                textAlign: "right",
+                color: "white",
+                textDecorationColor: "white",
+              }}
+              to="/forgot-password"
+              component={RouterLink}
+            >
+              <Typography variant="caption">Forgot password?</Typography>
+            </Link>
+          )}
           {signUpMode ? (
             <TextField
               variant="outlined"
@@ -122,8 +136,8 @@ export const SignIn: FC = () => {
               {errors.leagueInvite.message}
             </Typography>
           )}
-          <Button type="submit" variant="contained">
-            {signUpMode === 0 ? "Sign in" : "Sign up"}
+          <Button type="submit" variant="contained" size="large">
+            {signUpMode === 0 ? "Sign in" : "Create account"}
           </Button>
         </Stack>
       </form>

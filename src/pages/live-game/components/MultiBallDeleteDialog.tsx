@@ -93,13 +93,14 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={onClose}>
+        <Button variant="outlined" onClick={onClose} size="large">
           Cancel
         </Button>
         <Button
           disabled={numBalls === 0}
           color="error"
           variant="contained"
+          size="large"
           onClick={() => {
             onConfirmDelete(numBalls);
             onClose();

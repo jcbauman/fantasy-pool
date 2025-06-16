@@ -44,6 +44,7 @@ import DatePicker from "../../../shared-components/DatePicker";
 import { Timestamp } from "firebase/firestore";
 import { formatDateStringToMMDDYYY } from "../../../utils/dateUtils";
 import { sendSuccessNotification } from "../../../shared-components/toasts/notificationToasts";
+import { capitalizeLocation } from "../../../utils/gameUtils";
 
 export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
   gameToEdit,
@@ -141,10 +142,16 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
             value={currGame.location}
             freeSolo
             onChange={(_e, newValue) => {
-              setCurrGame({ ...currGame, location: newValue?.trim() || "" });
+              setCurrGame({
+                ...currGame,
+                location: capitalizeLocation(newValue),
+              });
             }}
             onInputChange={(_e, newInputValue) =>
-              setCurrGame({ ...currGame, location: newInputValue || "" })
+              setCurrGame({
+                ...currGame,
+                location: capitalizeLocation(newInputValue),
+              })
             }
             options={locations}
             renderInput={(params) => (

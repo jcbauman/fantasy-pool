@@ -80,10 +80,11 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={onClose}>
+        <Button variant="outlined" onClick={onClose} size="large">
           Cancel
         </Button>
         <Button
+          size="large"
           variant="contained"
           onClick={() => {
             onConfirm(numBalls);

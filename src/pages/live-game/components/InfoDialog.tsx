@@ -48,7 +48,7 @@ export const InfoDialog: FC<ConfirmationDialogProps> = ({ open, onClose }) => {
         </List>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" onClick={onClose}>
+        <Button variant="contained" onClick={onClose} size="large">
           Dismiss
         </Button>
       </DialogActions>

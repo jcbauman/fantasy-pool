@@ -274,7 +274,7 @@ export const GameStartForm: FC<{
               )}
             />
           </Collapse>
-          <Button type="submit" fullWidth variant="contained">
+          <Button type="submit" fullWidth variant="contained" size="large">
             Start balling
           </Button>
           <Typography variant="caption" sx={{ a: { color: "white" } }}>

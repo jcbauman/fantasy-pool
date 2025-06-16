@@ -19,6 +19,7 @@ import { useAppContext } from "../../../context/AppContext";
 import { Player } from "../../../types";
 import { useLocation } from "react-router-dom";
 import { useFetchLocations } from "../../../backend/getters";
+import { capitalizeLocation } from "../../../utils/gameUtils";
 
 export interface ProfileFormValues {
   email: string;
@@ -125,10 +126,13 @@ export const ProfileEditor: FC<{
                   {...register("defaultLocation")}
                   freeSolo
                   onChange={(_e, newValue) => {
-                    setValue("defaultLocation", newValue?.trim() || "");
+                    setValue("defaultLocation", capitalizeLocation(newValue));
                   }}
                   onInputChange={(_e, newInputValue) =>
-                    setValue("defaultLocation", newInputValue || "")
+                    setValue(
+                      "defaultLocation",
+                      capitalizeLocation(newInputValue)
+                    )
                   }
                   options={locations}
                   renderInput={(params) => (

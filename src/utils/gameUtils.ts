@@ -7,3 +7,12 @@ export const sortGamesByDate = (games: Game[]): Game[] => {
     return dateB.getTime() - dateA.getTime();
   });
 };
+
+export const capitalizeLocation = (str: string | null): string => {
+  if (!str || !str.trim().length) return "";
+  return str
+    .trim()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};

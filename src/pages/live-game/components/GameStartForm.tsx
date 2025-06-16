@@ -20,7 +20,7 @@ import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useFetchLocations } from "../../../backend/getters";
 import { addNewLocation } from "../../../backend/setters";
-import { sortGamesByDate } from "../../../utils/gameUtils";
+import { capitalizeLocation, sortGamesByDate } from "../../../utils/gameUtils";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../redux/store";
 import { Game, Player } from "../../../types";
@@ -219,10 +219,10 @@ export const GameStartForm: FC<{
                 {...field}
                 freeSolo
                 onChange={(_e, newValue) => {
-                  setValue("location", newValue?.trim() || "");
+                  setValue("location", capitalizeLocation(newValue));
                 }}
                 onInputChange={(_e, newInputValue) =>
-                  setValue("location", newInputValue || "")
+                  setValue("location", capitalizeLocation(newInputValue))
                 }
                 options={locations}
                 renderInput={(params) => (

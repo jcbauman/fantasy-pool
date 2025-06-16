@@ -3,6 +3,7 @@ import { Game, GameStatKeys, GameStatKeysAbbrev, Player } from "../../../types";
 import {
   Avatar,
   Card,
+  IconButton,
   Menu,
   MenuItem,
   Paper,
@@ -27,6 +28,7 @@ import { GameFantasyDetailDialog } from "../../playerDetail/components/GameFanta
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { useNavigate } from "react-router-dom";
 import { canEditGame } from "../../edit-game/utils";
+import { EditOutlined } from "@mui/icons-material";
 
 export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const {
@@ -58,7 +60,24 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
           <Stack>
             <Typography>{game.location}</Typography>
           </Stack>
-          {authorPlayer && (
+          {canEditGame(game, player?.id ?? "", false) ? (
+            <Stack direction="row" sx={{ alignItems: "center" }}>
+              <IconButton
+                aria-label="Edit game"
+                onClick={() => {
+                  fireAnalyticsEvent("RecentGames_Clicked_EditToast");
+                  navigate(`/edit-game/${game.id}`);
+                }}
+                sx={{
+                  width: 20,
+                  height: 20,
+                  p: 0,
+                }}
+              >
+                <EditOutlined sx={{ fontSize: 16 }} />
+              </IconButton>
+            </Stack>
+          ) : (
             <Stack direction="row">
               <Typography variant="caption">By</Typography>
               <Avatar
@@ -67,8 +86,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                 alt={authorPlayer?.name}
                 onClick={(e) => {
                   e.preventDefault();
-                  if (canEditGame(game, player?.id ?? "", user?.isAppAdmin)) {
-                    fireAnalyticsEvent("RecentGames_Clicked_Header");
+                  if (user?.isAppAdmin) {
                     setShowEditingDropdownAnchor(e.currentTarget);
                   }
                 }}

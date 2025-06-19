@@ -59,10 +59,10 @@ export const PlayerSynergy: FC<{ player: Player; games: Game[] }> = ({
                   Games
                 </Typography>
                 <Typography variant="body1">
-                  {synergy.versusGameCount}/{synergy.partnersGameCount}
+                  {synergy.versusGameCount} / {synergy.partnersGameCount}
                 </Typography>
                 <Typography variant="caption" color="textSecondary" noWrap>
-                  vs/partners
+                  vs / partners
                 </Typography>
               </Stack>
               <Stack direction="column" sx={{ alignItems: "center" }}>

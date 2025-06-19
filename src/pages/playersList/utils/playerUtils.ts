@@ -139,3 +139,67 @@ export const joinedInTimeFor2024Wrapped = (
 
   return inputDate < comparisonDate;
 };
+
+export const getPlayerSynergyStats = (
+  games: Game[],
+  currPlayerId: string | undefined,
+  player2Id: string | undefined
+): {
+  versusGameCount: number;
+  partnersGameCount: number;
+  versusGameWins: number;
+  partnersGameWins: number;
+  totalGames: number;
+} => {
+  let versusGameCount = 0;
+  let partnersGameCount = 0;
+  let versusGameWins = 0;
+  let partnersGameWins = 0;
+  if (!currPlayerId || !player2Id)
+    return {
+      versusGameCount,
+      partnersGameCount,
+      versusGameWins,
+      partnersGameWins,
+      totalGames: 0,
+    };
+  const jointGames = games.filter(
+    (game) =>
+      game.playerIds.includes(currPlayerId) &&
+      game.playerIds.includes(player2Id)
+  );
+
+  jointGames.forEach((game) => {
+    const currPlayerStats = game.statsByPlayer.find(
+      (s) => s.playerId === currPlayerId
+    );
+    const player2Stats = game.statsByPlayer.find(
+      (s) => s.playerId === player2Id
+    );
+
+    if (currPlayerStats && player2Stats) {
+      const currPlayerWon =
+        (currPlayerStats[GameStatKeys.winsBy8BallSink] ?? 0) > 0 ||
+        (currPlayerStats[GameStatKeys.winsByOpponentScratch] ?? 0) > 0;
+      const player2Won =
+        (player2Stats[GameStatKeys.winsBy8BallSink] ?? 0) > 0 ||
+        (player2Stats[GameStatKeys.winsByOpponentScratch] ?? 0) > 0;
+
+      if ((currPlayerWon && player2Won) || (!currPlayerWon && !player2Won)) {
+        partnersGameCount++;
+        partnersGameWins += currPlayerWon ? 1 : 0;
+      } else {
+        versusGameCount++;
+        versusGameWins += currPlayerWon ? 1 : 0;
+      }
+    }
+  });
+
+  return {
+    versusGameCount,
+    partnersGameCount,
+    versusGameWins,
+    partnersGameWins,
+    totalGames: jointGames.length,
+  };
+};

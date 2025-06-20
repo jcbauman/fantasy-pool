@@ -7,7 +7,6 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import TimelineIcon from "@mui/icons-material/Timeline";
 import { getPlayerTrends } from "../../playersList/utils/playerUtils";
 import { useAppContext } from "../../../context/AppContext";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
@@ -18,6 +17,7 @@ import {
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
+import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 
 export const PlayerTrends: FC<{ player: Player; games: Game[] }> = ({
   player,
@@ -33,7 +33,7 @@ export const PlayerTrends: FC<{ player: Player; games: Game[] }> = ({
   );
   const fullSeasonFantasyAverage = fantasyScore / (games.length || 1);
 
-  if (trends.fortnight.gamesCount === 0) return <></>;
+  if (trends[2].gamesCount === 0) return <></>;
   return (
     <Card elevation={5}>
       <Stack direction="column">
@@ -55,7 +55,12 @@ export const PlayerTrends: FC<{ player: Player; games: Game[] }> = ({
             exclusive
             value={trendType}
             size="small"
-            onChange={(_e, newVal) => setTrendType(newVal)}
+            onChange={(_e, newVal) => {
+              fireAnalyticsEvent("PlayerDetail_Clicked_TrendTypeChange", {
+                newVal,
+              });
+              setTrendType(newVal);
+            }}
           >
             <ToggleButton value={0}>Pts</ToggleButton>
             <ToggleButton value={1}>Avg</ToggleButton>
@@ -70,27 +75,17 @@ export const PlayerTrends: FC<{ player: Player; games: Game[] }> = ({
             justifyContent: "space-around",
           }}
         >
-          <TrendNode
-            period="Day"
-            points={trends.day.points}
-            gamesCount={trends.day.gamesCount}
-            useAvg={trendType === 1}
-            fullSeasonAvg={fullSeasonFantasyAverage}
-          />
-          <TrendNode
-            period="Week"
-            points={trends.week.points}
-            gamesCount={trends.week.gamesCount}
-            useAvg={trendType === 1}
-            fullSeasonAvg={fullSeasonFantasyAverage}
-          />
-          <TrendNode
-            period="2 Weeks"
-            points={trends.fortnight.points}
-            gamesCount={trends.fortnight.gamesCount}
-            useAvg={trendType === 1}
-            fullSeasonAvg={fullSeasonFantasyAverage}
-          />
+          {trends.map((trend) => {
+            return (
+              <TrendNode
+                period={trend.period}
+                points={trend.points}
+                gamesCount={trend.gamesCount}
+                useAvg={trendType === 1}
+                fullSeasonAvg={fullSeasonFantasyAverage}
+              />
+            );
+          })}
         </Stack>
       </Stack>
     </Card>

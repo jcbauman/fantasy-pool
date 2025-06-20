@@ -205,25 +205,16 @@ export const getPlayerSynergyStats = (
 };
 
 export interface PlayerTrends {
-  day: {
-    gamesCount: number;
-    points: number;
-  };
-  week: {
-    gamesCount: number;
-    points: number;
-  };
-  fortnight: {
-    gamesCount: number;
-    points: number;
-  };
+  gamesCount: number;
+  points: number;
+  period: string;
 }
 
 export const getPlayerTrends = (
   games: Game[],
   playerId: string,
   scoringMatrix: { [key: string]: number }
-): PlayerTrends => {
+): PlayerTrends[] => {
   //last 24 hours
   const twentyFourHoursAgo = new Date(
     new Date().getTime() - 24 * 60 * 60 * 1000
@@ -262,9 +253,17 @@ export const getPlayerTrends = (
     scoringMatrix
   );
 
-  return {
-    day: { gamesCount: lastDayGames.length, points: dayPoints },
-    week: { gamesCount: thisWeekGames.length, points: weekPoints },
-    fortnight: { gamesCount: fortnightGames.length, points: fortnightPoints },
-  };
+  return [
+    { gamesCount: lastDayGames.length, points: dayPoints, period: "Day" },
+    {
+      gamesCount: thisWeekGames.length,
+      points: weekPoints,
+      period: "Week",
+    },
+    {
+      gamesCount: fortnightGames.length,
+      points: fortnightPoints,
+      period: "2 Weeks",
+    },
+  ];
 };

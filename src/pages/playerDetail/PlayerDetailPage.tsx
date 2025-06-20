@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { usePlayerParams } from "../../shared-components/hooks/usePlayerParam";
 import { PlayerSynergy } from "./components/PlayerSynergy";
 import { useAppContext } from "../../context/AppContext";
+import { PlayerTrends } from "./components/PlayerTrends";
 
 export const PlayerDetailPage: FC = () => {
   const { player, loading, playerGames } = usePlayerParams();
@@ -43,6 +44,7 @@ export const PlayerDetailPage: FC = () => {
           {currentPlayer?.id !== player.id && (
             <PlayerSynergy player={player} games={playerGames} />
           )}
+          <PlayerTrends player={player} games={playerGames} />
           <PlayerSeasonStats player={player} games={playerGames} />
           <GameLog player={player} games={playerGames} />
         </Stack>

@@ -128,6 +128,7 @@ export const PlayersPage: FC = () => {
             {sortedPlayers.map((player) => {
               return (
                 <PlayerRow
+                  key={player.id}
                   rowKey={player.id}
                   player={player}
                   hideInactivePlayers={hideInactivePlayers}

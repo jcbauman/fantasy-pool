@@ -203,3 +203,67 @@ export const getPlayerSynergyStats = (
     totalGames: jointGames.length,
   };
 };
+
+export interface PlayerTrends {
+  gamesCount: number;
+  points: number;
+  period: string;
+}
+
+export const getPlayerTrends = (
+  games: Game[],
+  playerId: string,
+  scoringMatrix: { [key: string]: number }
+): PlayerTrends[] => {
+  //last 24 hours
+  const twentyFourHoursAgo = new Date(
+    new Date().getTime() - 24 * 60 * 60 * 1000
+  );
+  const lastDayGames = games.filter((game) => {
+    const gameDate = new Date(game.timestamp);
+    return gameDate > twentyFourHoursAgo;
+  });
+  const dayPoints = getFantasyScoreForPlayerSeason(
+    lastDayGames,
+    playerId,
+    scoringMatrix
+  );
+
+  //last week games
+  const oneWeekAgo = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+  const thisWeekGames = games.filter((game) => {
+    const gameDate = new Date(game.timestamp);
+    return gameDate > oneWeekAgo;
+  });
+  const weekPoints = getFantasyScoreForPlayerSeason(
+    thisWeekGames,
+    playerId,
+    scoringMatrix
+  );
+
+  //fortnight games
+  const twoWeeksAgo = new Date(new Date().getTime() - 14 * 24 * 60 * 60 * 1000);
+  const fortnightGames = games.filter((game) => {
+    const gameDate = new Date(game.timestamp);
+    return gameDate > twoWeeksAgo;
+  });
+  const fortnightPoints = getFantasyScoreForPlayerSeason(
+    fortnightGames,
+    playerId,
+    scoringMatrix
+  );
+
+  return [
+    { gamesCount: lastDayGames.length, points: dayPoints, period: "Day" },
+    {
+      gamesCount: thisWeekGames.length,
+      points: weekPoints,
+      period: "Week",
+    },
+    {
+      gamesCount: fortnightGames.length,
+      points: fortnightPoints,
+      period: "2 Weeks",
+    },
+  ];
+};

@@ -23,7 +23,7 @@ export const CreatePlayerPage: FC = () => {
       resolvedPlayer,
       () => {
         refetchPlayer();
-        navigate("/");
+        navigate("/home");
       },
       () =>
         sendErrorNotification(

@@ -29,7 +29,7 @@ export const PlayerDetailPage: FC = () => {
           }}
         >
           <Typography variant="overline">Player not found</Typography>
-          <Button variant="contained" to="/" component={Link}>
+          <Button variant="contained" to="/home" component={Link}>
             Back to home
           </Button>
         </Stack>

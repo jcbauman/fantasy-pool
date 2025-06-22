@@ -12,7 +12,8 @@ export const PageContainer: FC<{
   children: JSX.Element;
   authedRoute?: boolean;
   isUnauthedRoute?: boolean; //kick off page if authed
-}> = ({ loading, children, authedRoute, isUnauthedRoute }) => {
+  isLandingPage?: boolean;
+}> = ({ loading, children, authedRoute, isUnauthedRoute, isLandingPage }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -28,11 +29,18 @@ export const PageContainer: FC<{
   }, [isAuthed, navigate, authedRoute, location.search, authLoading]);
 
   useEffect(() => {
-    if (isAuthed && isUnauthedRoute && !authLoading) {
+    if (isAuthed && isUnauthedRoute && !authLoading && !isLandingPage) {
       const searchParams = new URLSearchParams(location.search);
-      navigate({ pathname: "/", search: searchParams.toString() });
+      navigate({ pathname: "/home", search: searchParams.toString() });
     }
-  }, [isAuthed, navigate, isUnauthedRoute, location.search, authLoading]);
+  }, [
+    isAuthed,
+    navigate,
+    isUnauthedRoute,
+    location.search,
+    authLoading,
+    isLandingPage,
+  ]);
 
   useEffect(() => {
     window.scrollTo({

@@ -72,7 +72,7 @@ export const GameCompletePage: FC = () => {
                 appreciated you tracking for them.
               </Typography>
             )}
-            <Button to="/" variant="contained" component={RouterLink}>
+            <Button to="/home" variant="contained" component={RouterLink}>
               Back to home
             </Button>
           </Stack>

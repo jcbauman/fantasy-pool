@@ -547,7 +547,7 @@ export const GameInterfaceV2: FC = () => {
         onClose={() => setDiscardGameDialogOpen(false)}
         onConfirm={async () => {
           dispatch(clearGame());
-          navigate("/");
+          navigate("/home");
         }}
       />
       <MultiBallDialog

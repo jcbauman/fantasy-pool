@@ -27,6 +27,7 @@ import { NotificationProvider } from "./shared-components/toasts/NotificationPro
 import { LastSeasonPage } from "./pages/last-season/LastSeasonPage";
 import { EditGameModePage } from "./pages/edit-game/EditGamePage";
 import { ForgotPasswordPage } from "./pages/forgot-password/ForgotPasswordPage";
+import { LandingPage } from "./pages/landing-page/LandingPage";
 
 function App() {
   const isStandalone = useStandaloneMode();
@@ -40,7 +41,8 @@ function App() {
                 <TopNav />
                 <NotificationProvider>
                   <Routes>
-                    <Route path="/" element={<OverviewComponent />} />
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/home" element={<OverviewComponent />} />
                     <Route path="/players" element={<PlayersPage />} />
                     <Route path="/players/:id" element={<PlayerDetailPage />} />
                     <Route
@@ -69,7 +71,7 @@ function App() {
                       element={<ForgotPasswordPage />}
                     />
                     <Route path="/wrapped-2024/:id" element={<WrappedPage />} />
-                    <Route path="*" element={<OverviewComponent />} />
+                    <Route path="*" element={<LandingPage />} />
                   </Routes>
                 </NotificationProvider>
               </Router>

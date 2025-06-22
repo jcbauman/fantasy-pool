@@ -52,7 +52,7 @@ export const SignIn: FC = () => {
       navigate("/create-player");
     } else {
       const result = await signIn(data.email, data.password);
-      if (result) navigate("/");
+      if (result) navigate("/home");
     }
   };
 

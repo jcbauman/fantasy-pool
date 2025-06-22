@@ -6,6 +6,7 @@ interface UseTopNav {
   title: string;
   showBackButton?: boolean;
   hideButtons?: boolean;
+  showSignInButton?: boolean;
 }
 export const useTopNav = (): UseTopNav => {
   const location = useLocation();
@@ -22,7 +23,8 @@ export const useTopNav = (): UseTopNav => {
     } else {
       return { title: "Players", showBackButton: true };
     }
-  } else if (location.pathname === "/") return { title: "Fantasy Pool Home" };
+  } else if (location.pathname === "/home")
+    return { title: "Fantasy Pool Home" };
   else if (location.pathname === "/info")
     return { title: "Info", showBackButton: true };
   else if (location.pathname === "/profile")
@@ -50,5 +52,7 @@ export const useTopNav = (): UseTopNav => {
     };
   else if (location.pathname === "/forgot-password")
     return { title: "Reset password" };
+  else if (location.pathname === "/")
+    return { title: "Fantasy Pool", hideButtons: true, showSignInButton: true };
   else return { title: "Fantasy Pool" };
 };

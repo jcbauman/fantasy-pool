@@ -6,7 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { FC } from "react";
 import { useTopNav } from "./hooks/useGetRouteName";
-import { Badge } from "@mui/material";
+import { Badge, Button, Stack } from "@mui/material";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -18,7 +18,7 @@ import { LiveHelp } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../shared-components/hooks/analytics";
 
 export const TopNav: FC = () => {
-  const { title, showBackButton, hideButtons } = useTopNav();
+  const { title, showBackButton, hideButtons, showSignInButton } = useTopNav();
   usePageTitle(title);
   const location = useLocation();
   const {
@@ -30,6 +30,11 @@ export const TopNav: FC = () => {
   return (
     <AppBar position="fixed">
       <Toolbar>
+        {showSignInButton && (
+          <Stack sx={{ mr: 1 }}>
+            <EightBallIcon color="white" />
+          </Stack>
+        )}
         {!hideButtons && (
           <IconButton
             size="large"
@@ -42,7 +47,7 @@ export const TopNav: FC = () => {
                 window.history.back();
                 fireAnalyticsEvent("TopNav_Clicked_BackButton");
               } else {
-                navigate("/");
+                navigate("/home");
                 fireAnalyticsEvent("TopNav_Clicked_MenuButton");
               }
             }}
@@ -87,17 +92,24 @@ export const TopNav: FC = () => {
             <LiveHelp />
           </IconButton>
         )}
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          color="inherit"
-          component={RouterLink}
-          to="/profile"
-        >
-          {!hideButtons && <AccountCircle />}
-        </IconButton>
+        {!hideButtons && (
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+            component={RouterLink}
+            to="/profile"
+          >
+            <AccountCircle />
+          </IconButton>
+        )}
+        {showSignInButton && (
+          <Button variant="contained" component={RouterLink} to="/sign-in">
+            Login
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );

@@ -36,7 +36,7 @@ export const EditGameModePage: FC = () => {
                 ? "Game not found"
                 : "You are not allowed to edit this game"}
             </Typography>
-            <Button variant="contained" to="/" component={Link}>
+            <Button variant="contained" to="/home" component={Link}>
               Back to home
             </Button>
           </Stack>

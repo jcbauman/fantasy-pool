@@ -46,7 +46,7 @@ export const ScorableFieldItem: FC<ScorableFieldItemProps> = ({
   const { iterateStat } = useIterateStats();
   return (
     <ListItem
-      sx={idx === 1 ? { borderBottom: "1px solid", pb: 2, mb: 1 } : {}}
+      sx={idx === 2 ? { borderTop: "1px solid", pt: 2, mt: 1 } : {}}
       disablePadding
       secondaryAction={
         <ButtonGroup variant="contained" aria-label="Run selection">

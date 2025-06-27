@@ -48,6 +48,7 @@ import { sendErrorNotification } from "../../../shared-components/toasts/notific
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { sendIterationNotificationMessage } from "../hooks/utils";
 import { ScorableFieldItem } from "./ScorableFieldItem";
+import { MultiBallCollapse } from "./MultiBallCollapse";
 
 export const GameInterfaceV2: FC = () => {
   const dispatch = useDispatch();
@@ -96,7 +97,7 @@ export const GameInterfaceV2: FC = () => {
   const enableSaveGame = showTabs
     ? enableSubmitForDoubles
     : enableSubmitForSingles;
-  const scorableFields = [
+  const positiveFields = [
     {
       stat: GameStatKeys.skillShots,
       primary: "Skill shot",
@@ -110,6 +111,8 @@ export const GameInterfaceV2: FC = () => {
       icon: <DirectionsRunOutlinedIcon />,
       multiBall: true,
     },
+  ];
+  const negativeFields = [
     {
       stat: GameStatKeys.scratches,
       primary: "Scratch",
@@ -284,21 +287,63 @@ export const GameInterfaceV2: FC = () => {
           </Stack>
           <Divider />
           <List disablePadding>
-            {scorableFields.map((field, idx) => {
+            {positiveFields.map((field, idx) => {
               const statValue = currentPlayerGameStats[field.stat] ?? 0;
               return (
                 <ScorableFieldItem
                   key={field.primary}
-                  field={field}
-                  statValue={statValue}
-                  setMultiBallDeleteDialogOpen={setMultiBallDeleteDialogOpen}
-                  setMultiBallDialogOpen={setMultiBallDialogOpen}
-                  idx={idx}
-                  totalRuns={totalRuns}
-                  gamePlayers={gamePlayers}
-                  selectedTab={selectedTab}
-                  handleButtonAnimation={handleButtonAnimation}
-                  btnFlashStates={btnFlashStates}
+                  {...{
+                    field,
+                    statValue,
+                    setMultiBallDeleteDialogOpen,
+                    setMultiBallDialogOpen,
+                    idx,
+                    totalRuns,
+                    gamePlayers,
+                    selectedTab,
+                    handleButtonAnimation,
+                    btnFlashStates,
+                  }}
+                />
+              );
+            })}
+          </List>
+          <MultiBallCollapse
+            open={multiBallDialogOpen}
+            onClose={() => setMultiBallDialogOpen(false)}
+            onConfirm={(numBalls: number) => {
+              iterateStat({
+                playerId: gamePlayers[selectedTab].id,
+                statKey: getStatKeyFromNumBalls(numBalls),
+                delta: 1,
+              });
+              handleButtonAnimation(1);
+              if (gamePlayers.length > 1)
+                sendIterationNotificationMessage(
+                  gamePlayers[selectedTab].name,
+                  getStatKeyFromNumBalls(numBalls),
+                  1
+                );
+            }}
+          />
+          <List disablePadding>
+            {negativeFields.map((field, idx) => {
+              const statValue = currentPlayerGameStats[field.stat] ?? 0;
+              return (
+                <ScorableFieldItem
+                  key={field.primary}
+                  {...{
+                    field,
+                    statValue,
+                    setMultiBallDeleteDialogOpen,
+                    setMultiBallDialogOpen,
+                    idx: idx + positiveFields.length,
+                    totalRuns,
+                    gamePlayers,
+                    selectedTab,
+                    handleButtonAnimation,
+                    btnFlashStates,
+                  }}
                 />
               );
             })}
@@ -475,7 +520,7 @@ export const GameInterfaceV2: FC = () => {
           navigate("/");
         }}
       />
-      <MultiBallDialog
+      {/* <MultiBallDialog
         open={multiBallDialogOpen}
         onClose={() => setMultiBallDialogOpen(false)}
         selectedPlayerName={
@@ -497,7 +542,7 @@ export const GameInterfaceV2: FC = () => {
               1
             );
         }}
-      />
+      /> */}
       <MultiBallDeleteDialog
         currentGame={game}
         open={multiBallDeleteDialogOpen}

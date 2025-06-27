@@ -18,7 +18,16 @@ import {
   normalizeStat,
   getFantasyScoreForPlayerSeason,
 } from "../../../utils/statsUtils";
-import { formatDateToMMDD, formatMinutesToMSS } from "../../../utils/dateUtils";
+import {
+  formatDateToMMDD,
+  formatDateToTimeOfDay,
+  formatMinutesToMSS,
+} from "../../../utils/dateUtils";
+import {
+  getIsGamePartnership,
+  getOtherGamePlayer,
+} from "../../../utils/gameUtils";
+import { useAppContext } from "../../../context/AppContext";
 
 export const GameFantasyDetail: FC<{
   game: Game | undefined;
@@ -26,12 +35,14 @@ export const GameFantasyDetail: FC<{
   scoringMatrix: Record<string, number>;
   includeElapsedTime?: boolean;
 }> = ({ game, player, scoringMatrix, includeElapsedTime }) => {
+  const { players } = useAppContext();
   if (!game || !player) return <></>;
   const playerStats = game.statsByPlayer.find((s) => s.playerId === player.id);
   if (!playerStats) return <></>;
+  const timeOfDay = formatDateToTimeOfDay(new Date(game.timestamp));
   const caption = `${formatDateToMMDD(new Date(game.timestamp))} at ${
     game.location ?? "?"
-  }`;
+  } - ${timeOfDay}`;
   const elapsedTime = game.endedAt
     ? `
         ${formatMinutesToMSS(
@@ -40,7 +51,14 @@ export const GameFantasyDetail: FC<{
             60000
         )}`
     : undefined;
-
+  const isGamePartnership = getIsGamePartnership(game);
+  const otherGamePlayer = getOtherGamePlayer(game, player?.id, players);
+  const partnershipCaption =
+    isGamePartnership !== undefined
+      ? `${isGamePartnership ? "partnered w/" : "against"} ${
+          otherGamePlayer?.name
+        }`
+      : undefined;
   return (
     <Stack direction="column" sx={{ alignItems: "center" }}>
       <Stack
@@ -51,9 +69,17 @@ export const GameFantasyDetail: FC<{
         <Avatar src={player.profilePictureUrl} alt={player.name} />
         <Typography>{player.name}</Typography>
         <Typography variant="caption">{caption}</Typography>
+        {partnershipCaption && (
+          <Typography
+            variant="caption"
+            sx={{ fontStyle: "italic", textDecoration: "underline" }}
+          >
+            {partnershipCaption}
+          </Typography>
+        )}
         {elapsedTime && includeElapsedTime && (
           <Typography variant="caption" sx={{ fontStyle: "italic" }}>
-            Elasped time: {elapsedTime}
+            Elapsed time: {elapsedTime}
           </Typography>
         )}
       </Stack>

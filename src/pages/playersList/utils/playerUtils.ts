@@ -1,5 +1,6 @@
 import { Game, GameStat, GameStatKeys } from "../../../types";
 import { defaultGameStat } from "../../../utils/constants";
+import { didPlayerWinGame } from "../../../utils/gameUtils";
 import { getFantasyScoreForPlayerSeason } from "../../../utils/statsUtils";
 
 export const getPlayerNameAbbreviation = (name: string): string => {
@@ -170,21 +171,9 @@ export const getPlayerSynergyStats = (
   );
 
   jointGames.forEach((game) => {
-    const currPlayerStats = game.statsByPlayer.find(
-      (s) => s.playerId === currPlayerId
-    );
-    const player2Stats = game.statsByPlayer.find(
-      (s) => s.playerId === player2Id
-    );
-
-    if (currPlayerStats && player2Stats) {
-      const currPlayerWon =
-        (currPlayerStats[GameStatKeys.winsBy8BallSink] ?? 0) > 0 ||
-        (currPlayerStats[GameStatKeys.winsByOpponentScratch] ?? 0) > 0;
-      const player2Won =
-        (player2Stats[GameStatKeys.winsBy8BallSink] ?? 0) > 0 ||
-        (player2Stats[GameStatKeys.winsByOpponentScratch] ?? 0) > 0;
-
+    const currPlayerWon = didPlayerWinGame(game, currPlayerId);
+    const player2Won = didPlayerWinGame(game, player2Id);
+    if (currPlayerWon !== undefined && player2Won !== undefined) {
       if ((currPlayerWon && player2Won) || (!currPlayerWon && !player2Won)) {
         partnersGameCount++;
         partnersGameWins += currPlayerWon ? 1 : 0;

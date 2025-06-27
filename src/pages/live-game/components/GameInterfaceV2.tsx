@@ -5,9 +5,6 @@ import {
   Collapse,
   Divider,
   List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Stack,
   Tab,
   Tabs,
@@ -33,7 +30,6 @@ import { useAppContext } from "../../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { Game, GameStat, GameStatKeys } from "../../../types";
 import { useIterateStats } from "../hooks/useIterateStats";
-import { MultiBallDialog } from "./MultiBallDialog";
 import { addNewGame } from "../../../backend/setters";
 import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
@@ -294,6 +290,7 @@ export const GameInterfaceV2: FC = () => {
                   key={field.primary}
                   {...{
                     field,
+                    currentPlayerGameStats,
                     statValue,
                     setMultiBallDeleteDialogOpen,
                     setMultiBallDialogOpen,
@@ -335,6 +332,7 @@ export const GameInterfaceV2: FC = () => {
                   {...{
                     field,
                     statValue,
+                    currentPlayerGameStats,
                     setMultiBallDeleteDialogOpen,
                     setMultiBallDialogOpen,
                     idx: idx + positiveFields.length,

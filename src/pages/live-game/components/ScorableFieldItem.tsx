@@ -10,7 +10,7 @@ import { FC } from "react";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { sendIterationNotificationMessage } from "../hooks/utils";
 import { useIterateStats } from "../hooks/useIterateStats";
-import { GameStatKeys, Player } from "../../../types";
+import { GameStat, GameStatKeys, Player } from "../../../types";
 
 interface ScorableFieldItemProps {
   setMultiBallDialogOpen: (open: boolean) => void;
@@ -29,6 +29,7 @@ interface ScorableFieldItemProps {
   gamePlayers: Player[];
   selectedTab: number;
   btnFlashStates: Record<number, boolean>;
+  currentPlayerGameStats: GameStat;
 }
 
 export const ScorableFieldItem: FC<ScorableFieldItemProps> = ({
@@ -42,6 +43,7 @@ export const ScorableFieldItem: FC<ScorableFieldItemProps> = ({
   gamePlayers,
   selectedTab,
   btnFlashStates,
+  currentPlayerGameStats,
 }) => {
   const { iterateStat } = useIterateStats();
   return (
@@ -54,7 +56,29 @@ export const ScorableFieldItem: FC<ScorableFieldItemProps> = ({
             size="large"
             onClick={() => {
               if (field.multiBall) {
-                if (totalRuns > 0) setMultiBallDeleteDialogOpen(true);
+                if (totalRuns > 1) {
+                  setMultiBallDeleteDialogOpen(true);
+                  return;
+                }
+                if (totalRuns === 1) {
+                  const stat = findMultiBallStat(currentPlayerGameStats);
+                  if (!stat) return;
+                  iterateStat({
+                    playerId: gamePlayers[selectedTab].id,
+                    statKey: stat,
+                    delta: -1,
+                  });
+                  if (gamePlayers.length > 1)
+                    sendIterationNotificationMessage(
+                      gamePlayers[selectedTab].name,
+                      stat,
+                      -1
+                    );
+                  handleButtonAnimation(idx);
+                  fireAnalyticsEvent("GameMode_Clicked_DecreaseStat", {
+                    statKey: stat,
+                  });
+                }
               } else {
                 if (statValue !== 0) {
                   iterateStat({
@@ -125,5 +149,23 @@ export const ScorableFieldItem: FC<ScorableFieldItemProps> = ({
         }
       />
     </ListItem>
+  );
+};
+
+const findMultiBallStat = (
+  currentPlayerGameStats: GameStat
+): GameStatKeys | undefined => {
+  const multiballStats = [
+    GameStatKeys.threeBallsPocketedInRow,
+    GameStatKeys.fourBallsPocketedInRow,
+    GameStatKeys.fiveBallsPocketedInRow,
+    GameStatKeys.sixBallsPocketedInRow,
+    GameStatKeys.sevenBallsPocketedInRow,
+    GameStatKeys.runTheTable,
+  ];
+  return multiballStats.find(
+    (stat) =>
+      Boolean(currentPlayerGameStats?.[stat]) &&
+      (currentPlayerGameStats?.[stat] ?? 0) > 0
   );
 };

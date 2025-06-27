@@ -47,6 +47,7 @@ import { ConfirmationDrawerV2 } from "./ConfirmationDrawerV2";
 import { sendErrorNotification } from "../../../shared-components/toasts/notificationToasts";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { sendIterationNotificationMessage } from "../hooks/utils";
+import { ScorableFieldItem } from "./ScorableFieldItem";
 
 export const GameInterfaceV2: FC = () => {
   const dispatch = useDispatch();
@@ -81,7 +82,7 @@ export const GameInterfaceV2: FC = () => {
     game?.playerIds.includes(player.id)
   );
   const currentPlayerGameStats = useMemo(
-    () => getStatsForGame(gamePlayers[selectedTab].id, game),
+    () => getStatsForGame(gamePlayers[selectedTab]?.id, game),
     [selectedTab, game, gamePlayers]
   );
   const showTabs = gamePlayers.length > 1;
@@ -286,95 +287,19 @@ export const GameInterfaceV2: FC = () => {
             {scorableFields.map((field, idx) => {
               const statValue = currentPlayerGameStats[field.stat] ?? 0;
               return (
-                <ListItem
-                  sx={
-                    idx === 1 ? { borderBottom: "1px solid", pb: 2, mb: 1 } : {}
-                  }
+                <ScorableFieldItem
                   key={field.primary}
-                  disablePadding
-                  secondaryAction={
-                    <ButtonGroup variant="contained" aria-label="Run selection">
-                      <Button
-                        size="large"
-                        onClick={() => {
-                          if (field.multiBall) {
-                            if (totalRuns > 0)
-                              setMultiBallDeleteDialogOpen(true);
-                          } else {
-                            if (statValue !== 0) {
-                              iterateStat({
-                                playerId: gamePlayers[selectedTab].id,
-                                statKey: field.stat,
-                                delta: -1,
-                              });
-                              if (gamePlayers.length > 1)
-                                sendIterationNotificationMessage(
-                                  gamePlayers[selectedTab].name,
-                                  field.stat,
-                                  -1
-                                );
-                              handleButtonAnimation(idx);
-                              fireAnalyticsEvent(
-                                "GameMode_Clicked_DecreaseStat",
-                                { statKey: field.stat }
-                              );
-                            }
-                          }
-                        }}
-                      >
-                        -
-                      </Button>
-                      <Button
-                        sx={{
-                          pointerEvents: "none",
-                          backgroundColor: btnFlashStates[idx]
-                            ? "white"
-                            : "black",
-                          color: btnFlashStates[idx] ? "black" : "white",
-                          transition: "background-color 0.3s, color 0.3s",
-                        }}
-                        size="large"
-                      >
-                        {field.multiBall ? totalRuns : statValue}
-                      </Button>
-                      <Button
-                        size="large"
-                        onClick={() => {
-                          if (field.multiBall) {
-                            setMultiBallDialogOpen(true);
-                          } else {
-                            iterateStat({
-                              playerId: gamePlayers[selectedTab].id,
-                              statKey: field.stat,
-                              delta: 1,
-                            });
-                            handleButtonAnimation(idx);
-                            if (gamePlayers.length > 1)
-                              sendIterationNotificationMessage(
-                                gamePlayers[selectedTab].name,
-                                field.stat,
-                                1
-                              );
-                          }
-                        }}
-                      >
-                        +
-                      </Button>
-                    </ButtonGroup>
-                  }
-                >
-                  <ListItemIcon sx={{ minWidth: "30px" }}>
-                    {field.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={field.primary}
-                    secondary={
-                      <Typography variant="caption" noWrap>
-                        {field.secondary}
-                      </Typography>
-                    }
-                  />
-                </ListItem>
+                  field={field}
+                  statValue={statValue}
+                  setMultiBallDeleteDialogOpen={setMultiBallDeleteDialogOpen}
+                  setMultiBallDialogOpen={setMultiBallDialogOpen}
+                  idx={idx}
+                  totalRuns={totalRuns}
+                  gamePlayers={gamePlayers}
+                  selectedTab={selectedTab}
+                  handleButtonAnimation={handleButtonAnimation}
+                  btnFlashStates={btnFlashStates}
+                />
               );
             })}
           </List>
@@ -393,7 +318,7 @@ export const GameInterfaceV2: FC = () => {
               <Divider flexItem />
               <Typography
                 variant="h6"
-                sx={{ mx: 1, whiteSpace: "nowrap", my: 0.5 }} // `mx` for minimal spacing between the dividers
+                sx={{ mx: 1, whiteSpace: "nowrap", my: 0.5 }}
               >
                 End game
               </Typography>

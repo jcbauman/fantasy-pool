@@ -106,8 +106,14 @@ export const TopNav: FC = () => {
           </IconButton>
         )}
         {showSignInButton && (
-          <Button variant="contained" component={RouterLink} to="/sign-in">
-            Login
+          <Button
+            color="secondary"
+            // sx={{ background: "secondary", color: "black" }}
+            variant="contained"
+            component={RouterLink}
+            to="/sign-in"
+          >
+            {isAuthed ? "Home" : "Login"}
           </Button>
         )}
       </Toolbar>

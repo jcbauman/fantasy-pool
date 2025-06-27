@@ -137,18 +137,24 @@ export const PlayersPage: FC = () => {
             })}
           </TableBody>
         </Table>
-        {hideInactivePlayers && (
-          <Stack direction="row" sx={{ pt: 1, pl: 2, alignItems: "center" }}>
-            <Typography variant="caption">Inactive players hidden</Typography>
-            <Link
-              color="secondary"
-              sx={{ ml: 1 }}
-              onClick={() => dispatch(setHideInactivePlayers(false))}
-            >
-              <Typography variant="caption">Show</Typography>
-            </Link>
-          </Stack>
-        )}
+        <Stack direction="row" sx={{ pt: 1, pl: 2, alignItems: "center" }}>
+          <Typography variant="caption">
+            {hideInactivePlayers
+              ? "Inactive players hidden"
+              : "All players shown"}
+          </Typography>
+          <Link
+            color="secondary"
+            sx={{ ml: 1 }}
+            onClick={() =>
+              dispatch(setHideInactivePlayers(!hideInactivePlayers))
+            }
+          >
+            <Typography variant="caption">
+              {hideInactivePlayers ? "Show" : "Hide inactive"}
+            </Typography>
+          </Link>
+        </Stack>
       </Stack>
     </PageContainer>
   );

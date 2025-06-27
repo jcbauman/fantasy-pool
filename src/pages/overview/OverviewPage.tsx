@@ -114,7 +114,7 @@ export const OverviewComponent: FC = () => {
                   <Badge
                     variant="dot"
                     invisible={!notificationBadgesState.newGame}
-                    color="info"
+                    color="secondary"
                   >
                     <ScoreboardOutlinedIcon />
                   </Badge>
@@ -154,7 +154,7 @@ export const OverviewComponent: FC = () => {
                   <Badge
                     variant="dot"
                     invisible={!notificationBadgesState.newInfo}
-                    color="info"
+                    color="secondary"
                   >
                     <InfoOutlinedIcon />
                   </Badge>

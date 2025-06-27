@@ -518,29 +518,6 @@ export const GameInterfaceV2: FC = () => {
           navigate("/");
         }}
       />
-      {/* <MultiBallDialog
-        open={multiBallDialogOpen}
-        onClose={() => setMultiBallDialogOpen(false)}
-        selectedPlayerName={
-          gamePlayers[selectedTab].id === player?.id
-            ? "you"
-            : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
-        }
-        onConfirm={(numBalls: number) => {
-          iterateStat({
-            playerId: gamePlayers[selectedTab].id,
-            statKey: getStatKeyFromNumBalls(numBalls),
-            delta: 1,
-          });
-          handleButtonAnimation(1);
-          if (gamePlayers.length > 1)
-            sendIterationNotificationMessage(
-              gamePlayers[selectedTab].name,
-              getStatKeyFromNumBalls(numBalls),
-              1
-            );
-        }}
-      /> */}
       <MultiBallDeleteDialog
         currentGame={game}
         open={multiBallDeleteDialogOpen}

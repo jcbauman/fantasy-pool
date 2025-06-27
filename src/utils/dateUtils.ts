@@ -5,6 +5,16 @@ export const formatDateToMMDD = (date: Date): string => {
   return `${month}/${day}`;
 };
 
+export const formatDateToTimeOfDay = (date: Date): string => {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const formattedHours = hours % 12 || 12; // Convert to 12-hour format
+  const formattedMinutes = String(minutes).padStart(2, "0"); // Pad minutes to always show 2 digits
+
+  return `${formattedHours}:${formattedMinutes} ${ampm}`;
+};
+
 export const isMoreThanTwoHoursAgo = (timestamp: string): boolean => {
   const now = new Date().getTime(); // Current time in milliseconds
   const timestampInMillis = new Date(timestamp).getTime(); // Convert Firestore Timestamp to JavaScript Date and then to milliseconds

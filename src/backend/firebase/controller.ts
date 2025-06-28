@@ -9,5 +9,6 @@ export const USERS_COLLECTION = collection(firestore, "users");
 export const PLAYERS_COLLECTION = collection(firestore, "players");
 export const LEAGUE_COLLECTION = collection(firestore, "leagues");
 export const LOCATIONS_COLLECTION = collection(firestore, "locations");
+export const RECORDS_COLLECTION = collection(firestore, "records");
 
 //setters

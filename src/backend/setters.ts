@@ -5,9 +5,11 @@ import {
   GAMES_COLLECTION,
   LOCATIONS_COLLECTION,
   PLAYERS_COLLECTION,
+  RECORDS_COLLECTION,
   USERS_COLLECTION,
 } from "./firebase/controller";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
 
 export const addNewGame = async (
   game: Omit<Game, "id">
@@ -136,5 +138,24 @@ export const deleteGame = async (
     }
   } catch (error) {
     onError?.(`Error deleting game, ${error}`);
+  }
+};
+
+//records
+
+export interface FullSeasonRecordObject {
+  seasonEndDate: string;
+  records: SeasonRecords;
+  leagueId: string;
+}
+
+export const addNewSeasonRecords = async (
+  record: FullSeasonRecordObject
+): Promise<string | undefined> => {
+  try {
+    const docRef = await addDoc(RECORDS_COLLECTION, { ...record });
+    return docRef.id;
+  } catch (e) {
+    console.error("Unable to add records, missing permissions");
   }
 };

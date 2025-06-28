@@ -10,6 +10,7 @@ import { mockLeague, mockScoringMatrix } from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 import {
   fetchLeague,
+  getLastSeasonHistoricalRecord,
   useFetchGamesAfterDate,
   useFetchPlayers,
   useFetchUsers,
@@ -20,6 +21,7 @@ import {
   useNotificationBadges,
 } from "../shared-components/hooks/useNotificationBadges";
 import { checkPlayerInactivity } from "../pages/playersList/utils/inactivityUtils";
+import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -33,6 +35,7 @@ interface AppContextType {
   scoringMatrix: Record<string, number>;
   authState: UseAuthState;
   notificationBadgesState: NotificationBadgesState;
+  records: SeasonRecords | undefined;
 }
 
 export const useAppContext = () => {
@@ -47,6 +50,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [league, setLeague] = useState<League | undefined>(mockLeague);
+  const [records, setRecords] = useState<SeasonRecords | undefined>(undefined);
   const users = useFetchUsers();
   const players = useFetchPlayers();
   const authState = useAuthState();
@@ -73,6 +77,20 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
     getLeague();
   }, [authState.user?.leagueId]);
 
+  useEffect(() => {
+    const getLastSeasonRecords = async (): Promise<void> => {
+      if (authState.user?.leagueId) {
+        const res = await getLastSeasonHistoricalRecord();
+        if (res) {
+          setRecords(res);
+        } else {
+          setRecords(undefined);
+        }
+      }
+    };
+    getLastSeasonRecords();
+  }, [authState.user?.leagueId]);
+
   const scoringMatrix = league?.scoringMatrix ?? mockScoringMatrix;
   const { rankings, allStatsByPlayers } = useGetRankingByField(
     players,
@@ -92,6 +110,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
         scoringMatrix,
         authState,
         notificationBadgesState,
+        records,
       }}
     >
       {children}

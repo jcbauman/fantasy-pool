@@ -20,10 +20,13 @@ import {
   GAMES_COLLECTION,
   LOCATIONS_COLLECTION,
   PLAYERS_COLLECTION,
+  RECORDS_COLLECTION,
   USERS_COLLECTION,
 } from "./firebase/controller";
 import { sortGamesByDate } from "../utils/gameUtils";
-import { getSeasonStart } from "../utils/dateUtils";
+import { getSeasonStart, getThreeMonthsAgo } from "../utils/dateUtils";
+import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
+import { FullSeasonRecordObject } from "./setters";
 
 // games
 
@@ -125,6 +128,33 @@ export const getGamesForPlayerAfterDate = async (
     GAMES_COLLECTION,
     where("playerIds", "array-contains", playerId),
     where("createdAt", ">", cutoffDate) // Add the createdAt filter
+  );
+
+  try {
+    const querySnapshot = await getDocs(q);
+    const documents = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return documents as Game[];
+  } catch (error) {
+    console.error("Error querying games: ", error);
+    return [];
+  }
+};
+
+export const getAllGamesForLastSeason = async (): Promise<
+  Game[] | undefined
+> => {
+  const startDate = Timestamp.fromDate(
+    new Date(getSeasonStart(getThreeMonthsAgo()))
+  );
+  const endDate = Timestamp.fromDate(new Date(getSeasonStart()));
+
+  const q = query(
+    GAMES_COLLECTION,
+    where("createdAt", "<", endDate),
+    where("createdAt", ">", startDate)
   );
 
   try {
@@ -333,4 +363,26 @@ export const getXWeeksAgo = (weeks: number): Date => {
   const today = new Date();
   const xWeeksAgo = new Date(today.getTime() - weeks * 7 * 24 * 60 * 60 * 1000);
   return xWeeksAgo;
+};
+
+export const getLastSeasonHistoricalRecord = async (): Promise<
+  SeasonRecords | undefined
+> => {
+  const lastSeasonEnd = getSeasonStart();
+  try {
+    if (!lastSeasonEnd) throw new Error("No date");
+    const q = query(
+      RECORDS_COLLECTION,
+      where("seasonEndDate", "==", lastSeasonEnd)
+    );
+    const querySnapshot = await getDocs(q);
+    const documents = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+    }));
+    const fullRec = documents[0] as FullSeasonRecordObject;
+    return fullRec?.records;
+  } catch (error) {
+    console.error("Error querying historical record: ", error);
+    return undefined;
+  }
 };

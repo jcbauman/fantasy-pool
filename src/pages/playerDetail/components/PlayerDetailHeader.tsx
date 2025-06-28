@@ -3,16 +3,18 @@ import { Game, Player } from "../../../types";
 import { Avatar, Card, Stack, Typography } from "@mui/material";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { StatOverview } from "../../playersList/components/StatOverview";
-import { LAST_SEASON_TOP_THREE_PLAYER_IDS } from "../../../backend/fixtures";
 import { getMedal, toOrdinal } from "../../statsWrapped/wrappedUtils";
+import { useAppContext } from "../../../context/AppContext";
 
 export const PlayerDetailHeader: FC<{
   player: Player;
   playerGames: Game[];
 }> = ({ player, playerGames }) => {
-  const playerPlacedLastSeason = LAST_SEASON_TOP_THREE_PLAYER_IDS.indexOf(
-    player.id
-  );
+  const { records } = useAppContext();
+  const playerRankLastSeason = records ? records[player.id]?.rank : 0;
+  const playerPlacedLastSeason = playerRankLastSeason
+    ? playerRankLastSeason < 4
+    : false;
   return (
     <Card
       data-testid="player-detail-header"
@@ -54,10 +56,10 @@ export const PlayerDetailHeader: FC<{
               </Typography>
             </Stack>
           )}
-          {playerPlacedLastSeason !== -1 && (
+          {playerPlacedLastSeason && (
             <Typography variant="overline">
-              Last season: {getMedal(playerPlacedLastSeason)}
-              {toOrdinal(playerPlacedLastSeason)} place
+              Last season: {getMedal(playerRankLastSeason)}
+              {toOrdinal(playerRankLastSeason)} place
             </Typography>
           )}
         </Stack>

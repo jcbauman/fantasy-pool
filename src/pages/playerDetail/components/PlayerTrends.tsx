@@ -78,6 +78,7 @@ export const PlayerTrends: FC<{ player: Player; games: Game[] }> = ({
           {trends.map((trend) => {
             return (
               <TrendNode
+                key={trend.period}
                 period={trend.period}
                 points={trend.points}
                 gamesCount={trend.gamesCount}

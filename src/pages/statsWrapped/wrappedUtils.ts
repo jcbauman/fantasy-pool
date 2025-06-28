@@ -130,7 +130,7 @@ export const getLocationLeader = (
 
 export function toOrdinal(rank: number): string {
   const suffixes = ["th", "st", "nd", "rd"];
-  const value = rank + 1;
+  const value = rank;
 
   const lastDigit = value % 10;
   const lastTwoDigits = value % 100;
@@ -302,13 +302,13 @@ export const getPercentageBanter = (
 
 export const getMedal = (index: number, include4th?: boolean): string => {
   switch (index) {
-    case 0:
-      return "🏆";
     case 1:
-      return "🥈";
+      return "🏆";
     case 2:
-      return "🥉";
+      return "🥈";
     case 3:
+      return "🥉";
+    case 4:
       return include4th ? "🏅" : "";
     default:
       return "";

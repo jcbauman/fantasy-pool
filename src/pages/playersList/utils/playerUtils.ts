@@ -1,3 +1,4 @@
+import { getAllGamesForLastSeason } from "../../../backend/getters";
 import { Game, GameStat, GameStatKeys } from "../../../types";
 import { defaultGameStat } from "../../../utils/constants";
 import { didPlayerWinGame } from "../../../utils/gameUtils";
@@ -255,4 +256,38 @@ export const getPlayerTrends = (
       period: "2 Weeks",
     },
   ];
+};
+
+export interface SeasonRecords {
+  [playerId: string]: StatsForPlayerGames & { rank: number };
+}
+
+export const createRecordsForPlayers = async (
+  playerIds: string[],
+  scoringMatrix: Record<string, number>
+): Promise<SeasonRecords | undefined> => {
+  const games = await getAllGamesForLastSeason();
+  if (!games || !games.length) return undefined;
+  let records: SeasonRecords = {};
+  let rankings: { playerId: string; fantasyScore: number }[] = [];
+  playerIds.forEach((playerId) => {
+    const stats = getStatsForPlayerGames(playerId, games, scoringMatrix);
+    if (stats.totalGames > 0) {
+      records[playerId] = {
+        ...stats,
+        rank: 1000, // Placeholder for rank, to be updated next
+      };
+      rankings.push({
+        playerId,
+        fantasyScore: stats.fantasyScore,
+      });
+    }
+  });
+  // Sort rankings by fantasy score in descending order
+  rankings.sort((a, b) => b.fantasyScore - a.fantasyScore);
+  // Assign ranks based on sorted order
+  rankings.forEach((ranking, index) => {
+    records[ranking.playerId].rank = index + 1; // Rank starts from 1
+  });
+  return records;
 };

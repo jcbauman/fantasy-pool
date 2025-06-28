@@ -7,10 +7,25 @@ import { handleExportGames, updateGamesWithTimestamps } from "./adminUtils";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import {
+  getSeasonStart,
+  getSeasonString,
+  getThreeMonthsAgo,
+} from "../../utils/dateUtils";
+import { createRecordsForPlayers } from "../playersList/utils/playerUtils";
+import { addNewSeasonRecords } from "../../backend/setters";
+import {
+  sendErrorNotification,
+  sendSuccessNotification,
+} from "../../shared-components/toasts/notificationToasts";
 
 export const AppAdminPage: FC = () => {
   const {
     games,
+    players,
+    scoringMatrix,
+    league,
     authState: { user },
   } = useAppContext();
   const navigate = useNavigate();
@@ -51,6 +66,36 @@ export const AppAdminPage: FC = () => {
             onClick={() => updateGamesWithTimestamps()}
           >
             Infill timestamps
+          </Button>
+        </Card>
+        <Card sx={{ p: 2 }}>
+          <Button
+            startIcon={<QueryStatsIcon />}
+            fullWidth
+            variant="outlined"
+            onClick={async () => {
+              const records = await createRecordsForPlayers(
+                players.map((p) => p.id),
+                scoringMatrix
+              );
+              if (!records) {
+                sendErrorNotification("No records to save");
+                return;
+              }
+              const resolvedRecords = {
+                records,
+                leagueId: league?.id ?? "",
+                seasonEndDate: getSeasonStart(),
+              };
+              const newId = await addNewSeasonRecords(resolvedRecords);
+              if (newId) {
+                sendSuccessNotification("Successfully added new record");
+              } else {
+                sendErrorNotification("Failed to add new record");
+              }
+            }}
+          >
+            Calculate and infill {getSeasonString(getThreeMonthsAgo())} season
           </Button>
         </Card>
       </Stack>

@@ -146,11 +146,6 @@ export const getGamesForPlayerAfterDate = async (
 export const getAllGamesForLastSeason = async (): Promise<
   Game[] | undefined
 > => {
-  // const startDate = Timestamp.fromDate(
-  //   new Date(getSeasonStart(getThreeMonthsAgo()))
-  // );
-  // const endDate = Timestamp.fromDate(new Date(getSeasonStart()));
-
   const startDate = Timestamp.fromDate(
     new Date(getSeasonStart(getThreeMonthsAgo()))
   );

@@ -1,12 +1,5 @@
 import { addDoc, deleteDoc, doc, updateDoc } from "firebase/firestore";
-import {
-  Game,
-  GameStat,
-  League,
-  Player,
-  PoolHallLocation,
-  User,
-} from "../types";
+import { Game, League, Player, PoolHallLocation, User } from "../types";
 import { auth, db } from "./firebase/firebaseConfig";
 import {
   GAMES_COLLECTION,
@@ -16,10 +9,7 @@ import {
   USERS_COLLECTION,
 } from "./firebase/controller";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import {
-  SeasonRecords,
-  StatsForPlayerGames,
-} from "../pages/playersList/utils/playerUtils";
+import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
 
 export const addNewGame = async (
   game: Omit<Game, "id">

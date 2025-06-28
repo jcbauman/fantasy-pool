@@ -3,7 +3,6 @@ import { Game, Player } from "../../../types";
 import { Avatar, Card, Stack, Typography } from "@mui/material";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { StatOverview } from "../../playersList/components/StatOverview";
-import { LAST_SEASON_TOP_THREE_PLAYER_IDS } from "../../../backend/fixtures";
 import { getMedal, toOrdinal } from "../../statsWrapped/wrappedUtils";
 import { useAppContext } from "../../../context/AppContext";
 

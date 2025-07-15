@@ -170,6 +170,34 @@ export const getAllGamesForLastSeason = async (): Promise<
   }
 };
 
+export const getPlayerGamesForLastSeason = async (
+  playerId: string
+): Promise<Game[] | undefined> => {
+  const startDate = Timestamp.fromDate(
+    new Date(getSeasonStart(getThreeMonthsAgo()))
+  );
+  const endDate = Timestamp.fromDate(new Date(getSeasonStart()));
+
+  const q = query(
+    GAMES_COLLECTION,
+    where("createdAt", "<", endDate),
+    where("createdAt", ">", startDate),
+    where("playerIds", "array-contains", playerId)
+  );
+
+  try {
+    const querySnapshot = await getDocs(q);
+    const documents = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return documents as Game[];
+  } catch (error) {
+    console.error("Error querying games: ", error);
+    return [];
+  }
+};
+
 export const useFetchUsers = (): User[] => {
   const [users, setUsers] = useState<User[]>([]);
   useEffect(() => {
@@ -365,10 +393,10 @@ export const getXWeeksAgo = (weeks: number): Date => {
   return xWeeksAgo;
 };
 
-export const getLastSeasonHistoricalRecord = async (): Promise<
-  SeasonRecords | undefined
-> => {
-  const lastSeasonEnd = getSeasonStart();
+export const getPastSeasonHistoricalRecord = async (
+  seasonStart?: string
+): Promise<SeasonRecords | undefined> => {
+  const lastSeasonEnd = seasonStart ?? getSeasonStart();
   try {
     if (!lastSeasonEnd) throw new Error("No date");
     const q = query(

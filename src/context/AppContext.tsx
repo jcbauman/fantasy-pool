@@ -10,7 +10,7 @@ import { mockLeague, mockScoringMatrix } from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 import {
   fetchLeague,
-  getLastSeasonHistoricalRecord,
+  getPastSeasonHistoricalRecord,
   useFetchGamesAfterDate,
   useFetchPlayers,
   useFetchUsers,
@@ -36,6 +36,7 @@ interface AppContextType {
   authState: UseAuthState;
   notificationBadgesState: NotificationBadgesState;
   records: SeasonRecords | undefined;
+  initialLoading: boolean;
 }
 
 export const useAppContext = () => {
@@ -51,6 +52,8 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [league, setLeague] = useState<League | undefined>(mockLeague);
   const [records, setRecords] = useState<SeasonRecords | undefined>(undefined);
+  const [loadingLeague, setLoadingLeague] = useState(true);
+  const [loadingRecords, setLoadingRecords] = useState(true);
   const users = useFetchUsers();
   const players = useFetchPlayers();
   const authState = useAuthState();
@@ -65,6 +68,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const getLeague = async (): Promise<void> => {
+      setLoadingLeague(true);
       if (authState.user?.leagueId) {
         const res = await fetchLeague(authState.user?.leagueId);
         if (res) {
@@ -72,6 +76,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
         } else {
           setLeague(undefined);
         }
+        setLoadingLeague(false);
       }
     };
     getLeague();
@@ -79,14 +84,16 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const getLastSeasonRecords = async (): Promise<void> => {
+      setLoadingRecords(true);
       if (authState.user?.leagueId) {
-        const res = await getLastSeasonHistoricalRecord();
+        const res = await getPastSeasonHistoricalRecord();
         if (res) {
           setRecords(res);
         } else {
           setRecords(undefined);
         }
       }
+      setLoadingRecords(false);
     };
     getLastSeasonRecords();
   }, [authState.user?.leagueId]);
@@ -111,6 +118,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
         authState,
         notificationBadgesState,
         records,
+        initialLoading: loadingLeague || loadingRecords,
       }}
     >
       {children}

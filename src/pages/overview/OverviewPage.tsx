@@ -21,37 +21,40 @@ import { joinedInTimeFor2024Wrapped } from "../playersList/utils/playerUtils";
 import { NewSeasonDialog } from "./components/NewSeasonDialog";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
 import { formatSeasonString } from "../../utils/dateUtils";
 import { CalendarMonthOutlined } from "@mui/icons-material";
+import { canSeeLastSeason } from "../../utils/gameUtils";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 
 export const OverviewComponent: FC = () => {
   const {
     league,
+    records,
     authState: { player, user },
     notificationBadgesState,
+    initialLoading,
   } = useAppContext();
   const isLeagueAdmin = league?.leagueManagerId === user?.id;
   const seasonString = formatSeasonString();
   const NEW_SEASON_STORAGE_KEY = seasonString;
-
-  const onClickBlockedField = (): void => {
-    sendSuccessNotification("This tab will become available shortly 👀");
-  };
+  const LAST_SEASON_STORAGE_KEY = `${seasonString}-last-season`;
   const hasClickedWrapped = Boolean(localStorage.getItem(WRAPPED_STORAGE_KEY));
   const canAccessWrapped = joinedInTimeFor2024Wrapped(player?.joinDate);
   const wrappedEnabled = league?.release2024Wrapped && canAccessWrapped;
   const hasSeenNewSeasonDialog = Boolean(
     localStorage.getItem(NEW_SEASON_STORAGE_KEY)
   );
+  const hasSeenLastSeasonDialog = Boolean(
+    localStorage.getItem(LAST_SEASON_STORAGE_KEY)
+  );
   const [showNewSeasonDialog, setShowNewSeasonDialog] = useState(
     !hasSeenNewSeasonDialog
   );
+  const showLastSeasonTab = canSeeLastSeason(records, player?.id);
 
   return (
-    <PageContainer authedRoute>
+    <PageContainer authedRoute loading={initialLoading}>
       <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
         {wrappedEnabled && !hasClickedWrapped && (
           <WrappedOverviewButton
@@ -134,15 +137,29 @@ export const OverviewComponent: FC = () => {
                 <ListItemText primary="My Player Profile" />
               </ListItemButton>
             </ListItem>
-            <Divider component="li" />
-            <ListItem disablePadding>
-              <ListItemButton onClick={onClickBlockedField}>
-                <ListItemIcon>
-                  <CalendarMonthOutlined />
-                </ListItemIcon>
-                <ListItemText primary="Last season" />
-              </ListItemButton>
-            </ListItem>
+            {showLastSeasonTab && <Divider component="li" />}
+            {showLastSeasonTab && (
+              <ListItem disablePadding>
+                <ListItemButton
+                  to="/last-season"
+                  component={RouterLink}
+                  onClick={() =>
+                    localStorage.setItem(LAST_SEASON_STORAGE_KEY, "true")
+                  }
+                >
+                  <ListItemIcon>
+                    <Badge
+                      variant="dot"
+                      invisible={hasSeenLastSeasonDialog}
+                      color="info"
+                    >
+                      <CalendarMonthOutlined />
+                    </Badge>
+                  </ListItemIcon>
+                  <ListItemText primary="Last season" />
+                </ListItemButton>
+              </ListItem>
+            )}
             <Divider component="li" />
             <ListItem disablePadding>
               <ListItemButton

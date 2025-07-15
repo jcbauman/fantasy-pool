@@ -1,57 +1,45 @@
-import { MenuItem, Select, Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
-import { RunningAverageGraph } from "./components/RunningAverageGraph";
 import { useAppContext } from "../../context/AppContext";
-import { getGamesForPlayerAfterDate } from "../../backend/getters";
+import { getPlayerGamesForLastSeason } from "../../backend/getters";
 import { Game } from "../../types";
+import { RankingTable } from "./components/RankingTable";
+import { YourPosition } from "./components/YourPosition";
+import { TopLocation } from "./components/TopLocation";
+
+import { PlayerSeasonStats } from "../playerDetail/components/PlayerSeasonStats";
 
 export const LastSeasonPage: FC = () => {
   const {
-    players,
     authState: { player },
   } = useAppContext();
-  const [loading, setLoading] = useState(false);
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string | undefined>(
-    player?.id
-  );
+
   const [playerGames, setPlayerGames] = useState<Game[]>([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchPlayerData = async (id: string) => {
       setLoading(true);
-      const thisPlayerGames = await getGamesForPlayerAfterDate(id);
+      const thisPlayerGames = await getPlayerGamesForLastSeason(id);
       setPlayerGames(thisPlayerGames || []);
       setLoading(false);
     };
-    if (selectedPlayerId) {
-      fetchPlayerData(selectedPlayerId);
+    if (player?.id) {
+      fetchPlayerData(player?.id);
     }
-  }, [selectedPlayerId]);
+  }, [player]);
+
   return (
     <PageContainer loading={loading}>
       <Stack
         direction="column"
-        sx={{ width: "100%", height: "100%", p: 1 }}
+        sx={{ width: "100%", height: "100%", p: 1, overflowY: "auto" }}
         spacing={2}
       >
-        <Select
-          placeholder="Select a player"
-          value={selectedPlayerId}
-          onChange={(e) => setSelectedPlayerId(e.target.value)}
-        >
-          {players.map((player) => (
-            <MenuItem value={player.id}>{player.name}</MenuItem>
-          ))}
-        </Select>
-        <Typography align="center" variant="h6">
-          Average over time
-        </Typography>
-        {selectedPlayerId && (
-          <RunningAverageGraph
-            playerId={selectedPlayerId}
-            playerGames={playerGames}
-          />
-        )}
+        <YourPosition />
+        {player && <PlayerSeasonStats games={playerGames} player={player} />}
+        <RankingTable />
+        <TopLocation games={playerGames} />
       </Stack>
     </PageContainer>
   );

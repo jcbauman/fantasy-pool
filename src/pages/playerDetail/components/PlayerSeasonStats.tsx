@@ -1,10 +1,5 @@
 import { FC } from "react";
-import {
-  Game,
-  GameStatKeys,
-  GameStatKeysAbbrev,
-  Player,
-} from "../../../types";
+import { Game, GameStatKeys, GameStatKeysAbbrev, Player } from "../../../types";
 import {
   Card,
   Stack,
@@ -27,7 +22,7 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
   const { scoringMatrix } = useAppContext();
   const stats = getStatsForPlayerGames(player.id, games, scoringMatrix);
   return (
-    <Card>
+    <Card sx={{ flexShrink: 0 }}>
       <Stack direction="column">
         <Stack direction="column" sx={{ p: 2 }}>
           <Typography>Season Stats</Typography>
@@ -130,7 +125,7 @@ export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
                 </TableCell>
                 <TableCell>
                   {normalizePercentage(
-                    (stats["totalWins"] / stats["totalGames"])
+                    stats["totalWins"] / stats["totalGames"]
                   )}
                 </TableCell>
                 <TableCell>{stats[GameStatKeys.skillShots] ?? 0}</TableCell>

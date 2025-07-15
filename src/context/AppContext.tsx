@@ -10,7 +10,7 @@ import { mockLeague, mockScoringMatrix } from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 import {
   fetchLeague,
-  getLastSeasonHistoricalRecord,
+  getPastSeasonHistoricalRecord,
   useFetchGamesAfterDate,
   useFetchPlayers,
   useFetchUsers,
@@ -80,7 +80,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     const getLastSeasonRecords = async (): Promise<void> => {
       if (authState.user?.leagueId) {
-        const res = await getLastSeasonHistoricalRecord();
+        const res = await getPastSeasonHistoricalRecord();
         if (res) {
           setRecords(res);
         } else {

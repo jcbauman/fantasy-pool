@@ -160,8 +160,8 @@ export const FAQS_COPY = [
         Yes, you can now edit the stats and details of a submitted game.
         <ul>
           <li>
-            On the Recent Games page, tap your Avatar picture in the header of
-            the game card, and select 'Edit.'
+            On the Recent Games page, tap the pencil icon in the header of the
+            game you wish to edit.
           </li>
           <li>
             You can only edit a game if you are the game's author, and the game

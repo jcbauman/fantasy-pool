@@ -136,7 +136,7 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton onClick={onClickBlockedField}>
+              <ListItemButton to="/last-season" component={RouterLink}>
                 <ListItemIcon>
                   <CalendarMonthOutlined />
                 </ListItemIcon>

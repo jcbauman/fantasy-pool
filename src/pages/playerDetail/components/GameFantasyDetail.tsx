@@ -55,9 +55,7 @@ export const GameFantasyDetail: FC<{
   const otherGamePlayer = getOtherGamePlayer(game, player?.id, players);
   const partnershipCaption =
     isGamePartnership !== undefined
-      ? `${isGamePartnership ? "partnered w/" : "against"} ${
-          otherGamePlayer?.name
-        }`
+      ? `${isGamePartnership ? "w/" : "vs."} ${otherGamePlayer?.name}`
       : undefined;
   return (
     <Stack direction="column" sx={{ alignItems: "center" }}>

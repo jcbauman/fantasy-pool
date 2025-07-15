@@ -1,3 +1,4 @@
+import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
 import { Game, GameStatKeys, Player } from "../types";
 
 export const sortGamesByDate = (games: Game[]): Game[] => {
@@ -47,4 +48,12 @@ export const getOtherGamePlayer = (
   const otherPlayerId = game.playerIds.find((p) => p !== currentPlayerId);
   if (!otherPlayerId) return undefined;
   return players.find((p) => p.id === otherPlayerId);
+};
+
+export const canSeeLastSeason = (
+  records: SeasonRecords | undefined,
+  playerId: string | undefined
+): boolean => {
+  if (!records || !playerId || !records[playerId]) return false;
+  return true;
 };

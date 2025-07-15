@@ -1,5 +1,6 @@
-import { Game } from "../../../types";
+import { Game, GameStatKeys, Player } from "../../../types";
 import { getFantasyScoreForPlayerSeason } from "../../../utils/statsUtils";
+import { SeasonRecords } from "../../playersList/utils/playerUtils";
 
 export const getBestAndWorstLocation = (
   games: Game[],
@@ -38,5 +39,25 @@ export const getBestAndWorstLocation = (
       totalPoints: locations[locations.length - 1][1],
       name: locations[locations.length - 1][0],
     },
+  };
+};
+
+export const getPlayerWithMostScratches = (
+  records: SeasonRecords | undefined,
+  players: Player[]
+): { scratcher: Player | undefined; count: number } => {
+  if (!records) return { scratcher: undefined, count: 0 };
+  let maxScratches = 0;
+  let playerId: string | undefined = undefined;
+
+  Object.keys(records).forEach((pId) => {
+    if ((records[pId][GameStatKeys.scratches] ?? 0) > maxScratches) {
+      maxScratches = records[pId][GameStatKeys.scratches] ?? 0;
+      playerId = pId;
+    }
+  });
+  return {
+    scratcher: playerId ? players.find((p) => p.id === playerId) : undefined,
+    count: maxScratches,
   };
 };

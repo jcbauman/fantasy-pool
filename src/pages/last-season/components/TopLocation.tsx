@@ -27,8 +27,9 @@ export const TopLocation: FC<{ games: Game[] }> = ({ games }) => {
     scoringMatrix
   );
   return (
-    <Card>
-      <TableContainer sx={{ p: 1 }}>
+    <Card sx={{ flexShrink: 0, p: 2 }}>
+      <Typography sx={{ mb: 1 }}>Performance By Location</Typography>
+      <TableContainer>
         <Table>
           <TableHead>
             <TableRow>

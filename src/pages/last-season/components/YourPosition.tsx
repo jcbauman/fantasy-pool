@@ -14,7 +14,7 @@ export const YourPosition: FC = () => {
   const rank = records[player.id]?.rank;
   const medal = getMedal(rank);
   return (
-    <Card elevation={10}>
+    <Card elevation={10} sx={{ flexShrink: 0 }}>
       <Stack
         direction="row"
         sx={{ justifyContent: "space-around", p: 2, alignItems: "center" }}

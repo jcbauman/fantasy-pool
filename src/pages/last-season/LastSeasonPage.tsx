@@ -1,7 +1,6 @@
 import { MenuItem, Select, Stack, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
-import { RunningAverageGraph } from "./components/RunningAverageGraph";
 import { useAppContext } from "../../context/AppContext";
 import {
   getAllGamesForLastSeason,
@@ -12,18 +11,17 @@ import { Game } from "../../types";
 import { RankingTable } from "./components/RankingTable";
 import { YourPosition } from "./components/YourPosition";
 import { TopLocation } from "./components/TopLocation";
+import { ScratchKing } from "./components/ScratchKing";
+import { PlayerSeasonStats } from "../playerDetail/components/PlayerSeasonStats";
 
 export const LastSeasonPage: FC = () => {
   const {
     players,
-    records,
     authState: { player },
   } = useAppContext();
-  const [loading, setLoading] = useState(false);
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string | undefined>(
-    player?.id
-  );
+
   const [playerGames, setPlayerGames] = useState<Game[]>([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchPlayerData = async (id: string) => {
       setLoading(true);
@@ -31,13 +29,10 @@ export const LastSeasonPage: FC = () => {
       setPlayerGames(thisPlayerGames || []);
       setLoading(false);
     };
-    if (selectedPlayerId) {
-      fetchPlayerData(selectedPlayerId);
+    if (player?.id) {
+      fetchPlayerData(player?.id);
     }
-  }, [selectedPlayerId]);
-  const alphabeticalPlayers = [...players].sort((a, b) =>
-    a.name.localeCompare(b.name)
-  );
+  }, [player]);
 
   return (
     <PageContainer loading={loading}>
@@ -47,28 +42,10 @@ export const LastSeasonPage: FC = () => {
         spacing={2}
       >
         <YourPosition />
+        {player && <PlayerSeasonStats games={playerGames} player={player} />}
         <RankingTable />
         <TopLocation games={playerGames} />
-        {/* <Select
-          placeholder="Select a player"
-          value={selectedPlayerId}
-          onChange={(e) => setSelectedPlayerId(e.target.value)}
-        >
-          {alphabeticalPlayers.map((player) => (
-            <MenuItem key={player.id} value={player.id}>
-              {player.name}
-            </MenuItem>
-          ))}
-        </Select>
-        <Typography align="center" variant="h6">
-          Average over time
-        </Typography> */}
-        {/* {selectedPlayerId && (
-          <RunningAverageGraph
-            playerId={selectedPlayerId}
-            playerGames={playerGames}
-          />
-        )} */}
+        {/* <ScratchKing /> */}
       </Stack>
     </PageContainer>
   );

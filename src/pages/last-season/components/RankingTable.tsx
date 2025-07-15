@@ -54,12 +54,9 @@ export const RankingTable: FC = () => {
       records[p.id]?.fantasyScore !== 0
   );
   return (
-    <Card>
-      <TableContainer
-        component={Paper}
-        style={{ overflowX: "auto" }}
-        sx={{ p: 1 }}
-      >
+    <Card sx={{ flexShrink: 0, p: 2 }}>
+      <Typography sx={{ mb: 1 }}>All Players</Typography>
+      <TableContainer style={{ overflowX: "auto" }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -67,7 +64,9 @@ export const RankingTable: FC = () => {
                 <Typography variant="overline">Rank</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="overline">Name</Typography>
+                <Typography variant="overline" sx={{ maxWidth: 10 }}>
+                  Name
+                </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="overline">Score</Typography>

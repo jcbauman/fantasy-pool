@@ -1,6 +1,5 @@
 import {
   Card,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -55,7 +54,7 @@ export const RankingTable: FC = () => {
   );
   return (
     <Card sx={{ flexShrink: 0, p: 2 }}>
-      <Typography sx={{ mb: 1 }}>All Players</Typography>
+      <Typography sx={{ mb: 1 }}>League Players</Typography>
       <TableContainer style={{ overflowX: "auto" }}>
         <Table>
           <TableHead>

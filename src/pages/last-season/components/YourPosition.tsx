@@ -3,7 +3,7 @@ import { FC } from "react";
 import { useAppContext } from "../../../context/AppContext";
 import { getMedal, toOrdinal } from "../../statsWrapped/wrappedUtils";
 import styled from "@emotion/styled";
-import { normalizeStat } from "../../../utils/statsUtils";
+import { normalizePercentage, normalizeStat } from "../../../utils/statsUtils";
 
 export const YourPosition: FC = () => {
   const {
@@ -31,21 +31,59 @@ export const YourPosition: FC = () => {
             sx={{ width: "100px", height: "100px" }}
           />
         </LargeBadge>
-        <Stack direction="column">
+        <Stack direction="column" sx={{ width: "100%", ml: 2 }}>
           <Stack direction="row" sx={{ alignItems: "center" }}>
             <Typography variant="h2" fontWeight="bold">
-              {toOrdinal(rank)}
+              <i>{toOrdinal(rank)}</i>
             </Typography>
-            <Typography variant="overline" sx={{ ml: 3, fontSize: "16px" }}>
-              Place
+            <Typography
+              sx={{
+                ml: 2,
+                fontSize: "20px",
+              }}
+            >
+              <i>place</i>
             </Typography>
           </Stack>
-          <Typography variant="overline" sx={{ fontSize: "16px" }}>
-            <i>
-              {normalizeStat(records[player.id]?.fantasyScore)} total fantasy
-              points
-            </i>
+          <Typography
+            variant="overline"
+            sx={{
+              fontSize: "16px",
+              width: "100%",
+              textAlign: "center",
+              borderTop: "1px solid",
+              borderBottom: "1px solid",
+              letterSpacing: 1.5,
+            }}
+          >
+            {normalizeStat(records[player.id]?.fantasyScore)} fantasy points
           </Typography>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography variant="overline" sx={{ fontSize: "12px" }}>
+              <i>{records[player.id]?.totalGames} games</i>
+            </Typography>
+            <Typography variant="overline" sx={{ fontSize: "12px" }}>
+              <i>|</i>
+            </Typography>
+            <Typography variant="overline" sx={{ fontSize: "12px" }}>
+              <i>
+                {normalizePercentage(records[player.id]?.winPercentage)} wins
+              </i>
+            </Typography>
+            <Typography variant="overline" sx={{ fontSize: "12px" }}>
+              <i>|</i>
+            </Typography>
+            <Typography variant="overline" sx={{ fontSize: "12px" }}>
+              <i>{normalizeStat(records[player.id]?.fantasyGameAvg)} avg</i>
+            </Typography>
+          </Stack>
         </Stack>
       </Stack>
     </Card>

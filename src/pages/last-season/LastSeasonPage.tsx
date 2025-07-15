@@ -1,22 +1,17 @@
-import { MenuItem, Select, Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
-import {
-  getAllGamesForLastSeason,
-  getGamesForPlayerAfterDate,
-  getPlayerGamesForLastSeason,
-} from "../../backend/getters";
+import { getPlayerGamesForLastSeason } from "../../backend/getters";
 import { Game } from "../../types";
 import { RankingTable } from "./components/RankingTable";
 import { YourPosition } from "./components/YourPosition";
 import { TopLocation } from "./components/TopLocation";
-import { ScratchKing } from "./components/ScratchKing";
+
 import { PlayerSeasonStats } from "../playerDetail/components/PlayerSeasonStats";
 
 export const LastSeasonPage: FC = () => {
   const {
-    players,
     authState: { player },
   } = useAppContext();
 
@@ -45,7 +40,6 @@ export const LastSeasonPage: FC = () => {
         {player && <PlayerSeasonStats games={playerGames} player={player} />}
         <RankingTable />
         <TopLocation games={playerGames} />
-        {/* <ScratchKing /> */}
       </Stack>
     </PageContainer>
   );

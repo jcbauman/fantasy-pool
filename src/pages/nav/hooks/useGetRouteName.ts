@@ -45,7 +45,7 @@ export const useTopNav = (): UseTopNav => {
     return { title: "Edit game", showBackButton: true };
   } else if (location.pathname === "/last-season")
     return {
-      title: `${getSeasonString(getThreeMonthsAgo())} season history`,
+      title: `${getSeasonString(getThreeMonthsAgo())} season`,
       showBackButton: true,
     };
   else if (location.pathname === "/forgot-password")

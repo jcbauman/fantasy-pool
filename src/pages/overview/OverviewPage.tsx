@@ -21,7 +21,6 @@ import { joinedInTimeFor2024Wrapped } from "../playersList/utils/playerUtils";
 import { NewSeasonDialog } from "./components/NewSeasonDialog";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
 import { formatSeasonString } from "../../utils/dateUtils";
 import { CalendarMonthOutlined } from "@mui/icons-material";
 import { canSeeLastSeason } from "../../utils/gameUtils";

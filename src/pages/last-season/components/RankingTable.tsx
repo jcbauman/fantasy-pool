@@ -1,8 +1,10 @@
 import {
   Card,
+  Paper,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   Typography,
@@ -52,52 +54,58 @@ export const RankingTable: FC = () => {
       records[p.id]?.fantasyScore !== 0
   );
   return (
-    <Card sx={{ py: 2, px: 1 }}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <Typography variant="overline">Rank</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="overline">Name</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="overline">Score</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="overline">Change</Typography>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {filteredPlayers.map((player, rank) => {
-            return (
-              <TableRow key={player.id}>
-                <TableCell sx={{ textAlign: "center" }}>
-                  <Typography>{rank + 1}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography noWrap>
-                    {getPlayerNameAbbreviation(player.name)}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography>
-                    {normalizeStat(records[player.id]?.fantasyScore ?? 0)}
-                  </Typography>
-                </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>
-                  {getDeltaIcon(
-                    rank + 1,
-                    twoSeasonsAgoRecords?.[player.id]?.rank
-                  )}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+    <Card>
+      <TableContainer
+        component={Paper}
+        style={{ overflowX: "auto" }}
+        sx={{ p: 1 }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <Typography variant="overline">Rank</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="overline">Name</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="overline">Score</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="overline">Change</Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredPlayers.map((player, rank) => {
+              return (
+                <TableRow key={player.id}>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    <Typography>{rank + 1}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography noWrap>
+                      {getPlayerNameAbbreviation(player.name)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    <Typography>
+                      {normalizeStat(records[player.id]?.fantasyScore ?? 0)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {getDeltaIcon(
+                      rank + 1,
+                      twoSeasonsAgoRecords?.[player.id]?.rank
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Card>
   );
 };

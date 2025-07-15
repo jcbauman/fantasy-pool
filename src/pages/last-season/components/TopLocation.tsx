@@ -1,0 +1,80 @@
+import { FC } from "react";
+import { Game } from "../../../types";
+import {
+  Card,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
+import { useAppContext } from "../../../context/AppContext";
+import { getBestAndWorstLocation } from "../hooks/utils";
+import { normalizeStat } from "../../../utils/statsUtils";
+
+export const TopLocation: FC<{ games: Game[] }> = ({ games }) => {
+  const {
+    scoringMatrix,
+    players,
+    authState: { player },
+  } = useAppContext();
+  const locationCalculations = getBestAndWorstLocation(
+    games,
+    player?.id,
+    scoringMatrix
+  );
+  return (
+    <Card>
+      <TableContainer sx={{ p: 1 }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell>
+                <Typography variant="overline">Location</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="overline">Total PTS</Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <Typography variant="caption">Best</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography noWrap>
+                  <i>{locationCalculations.best.name}</i>
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography>
+                  {normalizeStat(locationCalculations.best.totalPoints)}
+                </Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>
+                <Typography variant="caption">Worst</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography noWrap>
+                  <i>{locationCalculations.worst.name}</i>
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography>
+                  {normalizeStat(locationCalculations.worst.totalPoints)}
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Card>
+  );
+};

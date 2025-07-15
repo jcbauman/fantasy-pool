@@ -11,6 +11,7 @@ import {
 import { Game } from "../../types";
 import { RankingTable } from "./components/RankingTable";
 import { YourPosition } from "./components/YourPosition";
+import { TopLocation } from "./components/TopLocation";
 
 export const LastSeasonPage: FC = () => {
   const {
@@ -23,17 +24,17 @@ export const LastSeasonPage: FC = () => {
     player?.id
   );
   const [playerGames, setPlayerGames] = useState<Game[]>([]);
-  // useEffect(() => {
-  //   const fetchPlayerData = async (id: string) => {
-  //     setLoading(true);
-  //     const thisPlayerGames = await getPlayerGamesForLastSeason(id);
-  //     setPlayerGames(thisPlayerGames || []);
-  //     setLoading(false);
-  //   };
-  //   if (selectedPlayerId) {
-  //     fetchPlayerData(selectedPlayerId);
-  //   }
-  // }, [selectedPlayerId]);
+  useEffect(() => {
+    const fetchPlayerData = async (id: string) => {
+      setLoading(true);
+      const thisPlayerGames = await getPlayerGamesForLastSeason(id);
+      setPlayerGames(thisPlayerGames || []);
+      setLoading(false);
+    };
+    if (selectedPlayerId) {
+      fetchPlayerData(selectedPlayerId);
+    }
+  }, [selectedPlayerId]);
   const alphabeticalPlayers = [...players].sort((a, b) =>
     a.name.localeCompare(b.name)
   );
@@ -42,11 +43,12 @@ export const LastSeasonPage: FC = () => {
     <PageContainer loading={loading}>
       <Stack
         direction="column"
-        sx={{ width: "100%", height: "100%", p: 1 }}
+        sx={{ width: "100%", height: "100%", p: 1, overflowY: "auto" }}
         spacing={2}
       >
         <YourPosition />
         <RankingTable />
+        <TopLocation games={playerGames} />
         {/* <Select
           placeholder="Select a player"
           value={selectedPlayerId}

@@ -1,7 +1,18 @@
-import { Avatar, Badge, Card, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Badge,
+  Card,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { FC } from "react";
 import { useAppContext } from "../../../context/AppContext";
-import { getMedal, toOrdinal } from "../../statsWrapped/wrappedUtils";
+import {
+  getMedal,
+  handleShare,
+  toOrdinal,
+} from "../../statsWrapped/wrappedUtils";
 import styled from "@emotion/styled";
 import {
   getAbbreviation,
@@ -9,6 +20,7 @@ import {
   normalizeStat,
 } from "../../../utils/statsUtils";
 import { Player } from "../../../types";
+import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 
 export const YourPosition: FC<{ player: Player | undefined }> = ({
   player,
@@ -50,6 +62,18 @@ export const YourPosition: FC<{ player: Player | undefined }> = ({
             >
               <i>place</i>
             </Typography>
+            <IconButton
+              size="large"
+              aria-label="share"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={() =>
+                handleShare("Check out my Fantasy Pool stats from last season!")
+              }
+              sx={{ ml: "auto" }}
+            >
+              <IosShareOutlinedIcon />
+            </IconButton>
           </Stack>
           <Typography
             variant="overline"

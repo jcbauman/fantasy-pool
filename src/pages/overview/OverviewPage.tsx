@@ -103,7 +103,7 @@ export const OverviewComponent: FC = () => {
                 <ListItemIcon>
                   <LeaderboardOutlinedIcon />
                 </ListItemIcon>
-                <ListItemText primary="Players and Standings" />
+                <ListItemText primary="Players and standings" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />
@@ -134,7 +134,7 @@ export const OverviewComponent: FC = () => {
                 <ListItemIcon>
                   <AccountBoxOutlinedIcon />
                 </ListItemIcon>
-                <ListItemText primary="My Player Profile" />
+                <ListItemText primary="My player profile" />
               </ListItemButton>
             </ListItem>
             {showLastSeasonTab && <Divider component="li" />}
@@ -185,7 +185,7 @@ export const OverviewComponent: FC = () => {
                 <ListItemIcon>
                   <LiveHelpOutlinedIcon />
                 </ListItemIcon>
-                <ListItemText primary="FAQs and Rules" />
+                <ListItemText primary="FAQs and rules" />
               </ListItemButton>
             </ListItem>
             <Divider component="li" />

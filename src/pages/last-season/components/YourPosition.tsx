@@ -3,13 +3,17 @@ import { FC } from "react";
 import { useAppContext } from "../../../context/AppContext";
 import { getMedal, toOrdinal } from "../../statsWrapped/wrappedUtils";
 import styled from "@emotion/styled";
-import { normalizePercentage, normalizeStat } from "../../../utils/statsUtils";
+import {
+  getAbbreviation,
+  normalizePercentage,
+  normalizeStat,
+} from "../../../utils/statsUtils";
+import { Player } from "../../../types";
 
-export const YourPosition: FC = () => {
-  const {
-    records,
-    authState: { player },
-  } = useAppContext();
+export const YourPosition: FC<{ player: Player | undefined }> = ({
+  player,
+}) => {
+  const { records } = useAppContext();
   if (!player || !records) return <></>;
   const rank = records[player.id]?.rank;
   const medal = getMedal(rank);
@@ -29,7 +33,9 @@ export const YourPosition: FC = () => {
             src={player.profilePictureUrl}
             alt={player.name}
             sx={{ width: "100px", height: "100px" }}
-          />
+          >
+            <Typography variant="h3">{getAbbreviation(player.name)}</Typography>
+          </Avatar>
         </LargeBadge>
         <Stack direction="column" sx={{ width: "100%", ml: 2 }}>
           <Stack direction="row" sx={{ alignItems: "center" }}>

@@ -53,8 +53,8 @@ export const RankingTable: FC = () => {
       records[p.id]?.fantasyScore !== 0
   );
   return (
-    <Card sx={{ flexShrink: 0, p: 2 }}>
-      <Typography sx={{ mb: 1 }}>League Players</Typography>
+    <Card sx={{ flexShrink: 0, py: 2 }}>
+      <Typography sx={{ mb: 1, ml: 2 }}>League Players</Typography>
       <TableContainer style={{ overflowX: "auto" }}>
         <Table>
           <TableHead>
@@ -63,9 +63,7 @@ export const RankingTable: FC = () => {
                 <Typography variant="overline">Rank</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="overline" sx={{ maxWidth: 10 }}>
-                  Name
-                </Typography>
+                <Typography variant="overline">Name</Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="overline">Score</Typography>
@@ -82,7 +80,15 @@ export const RankingTable: FC = () => {
                   <TableCell sx={{ textAlign: "center" }}>
                     <Typography>{rank + 1}</Typography>
                   </TableCell>
-                  <TableCell>
+                  <TableCell
+                    sx={{
+                      maxWidth: 120,
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      display: "block",
+                    }}
+                  >
                     <Typography noWrap>
                       {getPlayerNameAbbreviation(player.name)}
                     </Typography>

@@ -51,7 +51,10 @@ function App() {
                     <Route path="/live-game" element={<LiveGameModePage />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/sign-in" element={<SignInPage />} />
-                    <Route path="/last-season" element={<LastSeasonPage />} />
+                    <Route
+                      path="/last-season/:id"
+                      element={<LastSeasonPage />}
+                    />
                     <Route
                       path="/game-complete"
                       element={<GameCompletePage />}

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Game } from "../../../types";
+import { Game, Player } from "../../../types";
 import {
   Card,
   Table,
@@ -14,12 +14,11 @@ import { useAppContext } from "../../../context/AppContext";
 import { getBestAndWorstLocation } from "../hooks/utils";
 import { normalizeStat } from "../../../utils/statsUtils";
 
-export const TopLocation: FC<{ games: Game[] }> = ({ games }) => {
-  const {
-    scoringMatrix,
-
-    authState: { player },
-  } = useAppContext();
+export const TopLocation: FC<{ games: Game[]; player: Player | undefined }> = ({
+  games,
+  player,
+}) => {
+  const { scoringMatrix } = useAppContext();
   const locationCalculations = getBestAndWorstLocation(
     games,
     player?.id,

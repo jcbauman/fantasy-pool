@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
@@ -9,38 +9,57 @@ import { YourPosition } from "./components/YourPosition";
 import { TopLocation } from "./components/TopLocation";
 
 import { PlayerSeasonStats } from "../playerDetail/components/PlayerSeasonStats";
+import { usePlayerParams } from "../../shared-components/hooks/usePlayerParam";
+import { canSeeLastSeason } from "../../utils/gameUtils";
+import { useConfetti } from "../../shared-components/hooks/useConfetti";
 
 export const LastSeasonPage: FC = () => {
-  const {
-    authState: { player },
-  } = useAppContext();
-
+  const { player, loading: loadingPlayer } = usePlayerParams(true);
+  const { records } = useAppContext();
   const [playerGames, setPlayerGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loadingGames, setLoadingGames] = useState(true);
+  const { confettiComponent, launchConfetti } = useConfetti();
   useEffect(() => {
     const fetchPlayerData = async (id: string) => {
-      setLoading(true);
+      setLoadingGames(true);
       const thisPlayerGames = await getPlayerGamesForLastSeason(id);
       setPlayerGames(thisPlayerGames || []);
-      setLoading(false);
+      setLoadingGames(false);
     };
     if (player?.id) {
       fetchPlayerData(player?.id);
     }
   }, [player]);
-
+  const showLastSeasonTab = canSeeLastSeason(records, player?.id);
+  const playerPlaced = player?.id && records && records?.[player?.id]?.rank < 4;
+  useEffect(() => {
+    if (playerPlaced) launchConfetti();
+  }, [launchConfetti, playerPlaced]);
   return (
-    <PageContainer loading={loading}>
-      <Stack
-        direction="column"
-        sx={{ width: "100%", height: "100%", p: 1, overflowY: "auto" }}
-        spacing={2}
-      >
-        <YourPosition />
-        {player && <PlayerSeasonStats games={playerGames} player={player} />}
-        <RankingTable />
-        <TopLocation games={playerGames} />
-      </Stack>
+    <PageContainer loading={loadingGames || loadingPlayer}>
+      {showLastSeasonTab ? (
+        <Stack
+          direction="column"
+          sx={{ width: "100%", height: "100%", p: 1, overflowY: "auto" }}
+          spacing={2}
+        >
+          {playerPlaced && confettiComponent()}
+          <YourPosition player={player} />
+          {player && <PlayerSeasonStats games={playerGames} player={player} />}
+          <RankingTable />
+          <TopLocation games={playerGames} player={player} />
+        </Stack>
+      ) : (
+        <Stack
+          sx={{
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography>You didn't play any games last season!</Typography>
+        </Stack>
+      )}
     </PageContainer>
   );
 };

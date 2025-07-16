@@ -141,7 +141,7 @@ export const OverviewComponent: FC = () => {
             {showLastSeasonTab && (
               <ListItem disablePadding>
                 <ListItemButton
-                  to="/last-season"
+                  to={`/last-season/${player?.id ?? ""}`}
                   component={RouterLink}
                   onClick={() =>
                     localStorage.setItem(LAST_SEASON_STORAGE_KEY, "true")

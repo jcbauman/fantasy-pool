@@ -16,7 +16,7 @@ interface UsePlayerParams {
   loading: boolean;
 }
 
-export const usePlayerParams = (): UsePlayerParams => {
+export const usePlayerParams = (ignoreGames?: boolean): UsePlayerParams => {
   const [player, setPlayer] = useState<Player | undefined>(undefined);
   const [playerGames, setPlayerGames] = useState<Game[]>([]);
 
@@ -27,15 +27,17 @@ export const usePlayerParams = (): UsePlayerParams => {
     const fetchPlayerData = async (id: string) => {
       setLoading(true);
       const thisPlayer = await fetchPlayerById(id);
-      const thisPlayerGames = await getGamesForPlayerAfterDate(id);
       setPlayer(thisPlayer);
-      setPlayerGames(thisPlayerGames || []);
+      if (!ignoreGames) {
+        const thisPlayerGames = await getGamesForPlayerAfterDate(id);
+        setPlayerGames(thisPlayerGames || []);
+      }
       setLoading(false);
     };
     if (id) {
       fetchPlayerData(id);
     }
-  }, [id]);
+  }, [id, ignoreGames]);
 
   return { player, playerGames, loading };
 };

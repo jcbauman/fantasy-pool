@@ -97,3 +97,10 @@ export interface AggregateStats {
     [statName: string]: number;
   };
 }
+
+export interface AlcoholLog {
+  id: string;
+  playerId: string;
+  timestamp: Timestamp;
+  drinks: Timestamp[];
+}

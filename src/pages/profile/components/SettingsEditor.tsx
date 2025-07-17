@@ -11,6 +11,7 @@ import { RootState } from "../../../redux/store";
 import {
   setGameStartSoundEffect,
   setHideInactivePlayers,
+  setTrackAlcohol,
 } from "../../../redux/settingsSlice";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 
@@ -50,6 +51,21 @@ export const SettingsEditor: FC = () => {
             />
           }
           label="Play sound effect on game start"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={settings.trackAlcohol}
+              onChange={(_e, checked) => {
+                dispatch(setTrackAlcohol(checked));
+                fireAnalyticsEvent("Settings_Toggled_Setting", {
+                  setting: "alcohol",
+                  on: checked,
+                });
+              }}
+            />
+          }
+          label="Enable alcohol tracking"
         />
       </Stack>
     </Card>

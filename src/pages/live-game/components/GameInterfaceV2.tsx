@@ -45,6 +45,7 @@ import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { sendIterationNotificationMessage } from "../hooks/utils";
 import { ScorableFieldItem } from "./ScorableFieldItem";
 import { MultiBallCollapse } from "./MultiBallCollapse";
+import { AlcoholTracking } from "./alcohol/AlcoholTracking";
 
 export const GameInterfaceV2: FC = () => {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ export const GameInterfaceV2: FC = () => {
   } = useAppContext();
   const gameIsIncomplete = useGameIsIncomplete();
   const game = useSelector((state: RootState) => state.game.currentGame);
+  const { trackAlcohol } = useSelector((state: RootState) => state.settings);
   const { iterateStat, iterateStatNonRedux } = useIterateStats();
   const [selectedTab, setSelectedTab] = useState(0);
   const [endGameDialogOpen, setEndGameDialogOpen] = useState(false);
@@ -543,6 +545,9 @@ export const GameInterfaceV2: FC = () => {
           );
         }}
       />
+      {trackAlcohol && gamePlayers[selectedTab]?.id === player?.id && (
+        <AlcoholTracking />
+      )}
     </Stack>
   );
 };

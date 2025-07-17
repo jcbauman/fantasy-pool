@@ -30,7 +30,7 @@ export const mockPlayers: Player[] = [
     id: player2Id,
     linkedUserId: userId,
     nickname: "Amungus",
-    name: "Amira Wheeler",
+    name: "Amimi Wewe",
     out: true,
     defaultLocation: "The Levee",
     profilePictureUrl:

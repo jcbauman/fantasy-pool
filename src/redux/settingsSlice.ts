@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface SettingsState {
   hideInactivePlayers: boolean;
   gameStartSoundEffect: boolean;
+  trackAlcohol: boolean;
 }
 
 const initialState: SettingsState = {
   hideInactivePlayers: false,
   gameStartSoundEffect: true,
+  trackAlcohol: false,
 };
 
 const settingsSlice = createSlice({
@@ -20,10 +22,16 @@ const settingsSlice = createSlice({
     setGameStartSoundEffect: (state, action: PayloadAction<boolean>) => {
       state.gameStartSoundEffect = action.payload;
     },
+    setTrackAlcohol: (state, action: PayloadAction<boolean>) => {
+      state.trackAlcohol = action.payload;
+    },
   },
 });
 
-export const { setHideInactivePlayers, setGameStartSoundEffect } =
-  settingsSlice.actions;
+export const {
+  setHideInactivePlayers,
+  setGameStartSoundEffect,
+  setTrackAlcohol,
+} = settingsSlice.actions;
 
 export default settingsSlice.reducer;

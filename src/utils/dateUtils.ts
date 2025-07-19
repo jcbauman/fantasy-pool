@@ -90,3 +90,8 @@ export const formatDateStringToMMDDYYY = (dateStr: string): string => {
   const yyyy = date.getFullYear();
   return `${mm}/${dd}/${yyyy}`;
 };
+
+export const areStringArraysEqual = (a: string[], b: string[]): boolean => {
+  if (a.length !== b.length) return false;
+  return a.every((val, index) => val === b[index]);
+};

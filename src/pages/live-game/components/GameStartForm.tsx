@@ -24,7 +24,12 @@ import { capitalizeLocation, sortGamesByDate } from "../../../utils/gameUtils";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../redux/store";
 import { Game, Player } from "../../../types";
-import { isMoreThanTwoHoursAgo } from "../../../utils/dateUtils";
+import {
+  areStringArraysEqual,
+  isMoreThanTwoHoursAgo,
+} from "../../../utils/dateUtils";
+import { Add } from "@mui/icons-material";
+import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 interface FormData {
   date: Date | null;
   location: string;
@@ -37,13 +42,17 @@ export const GameStartForm: FC<{
   const {
     games,
     authState: { player },
+    players: allPlayers,
   } = useAppContext();
 
   const dispatch = useDispatch();
-  const { players: allPlayers } = useAppContext();
+
   const [lastGameAddedLocation, setLastGameAddedLocation] = useState<
     string | undefined
   >(undefined);
+  const [lastGameAddedPlayers, setLastGameAddedPlayers] = useState<string[]>(
+    []
+  );
   const locations = useFetchLocations();
   const { gameStartSoundEffect } = useSelector(
     (state: RootState) => state.settings
@@ -56,6 +65,7 @@ export const GameStartForm: FC<{
     control,
     setValue,
     formState: { errors },
+    watch,
   } = useForm<FormData>({
     defaultValues: {
       date: new Date(),
@@ -63,6 +73,8 @@ export const GameStartForm: FC<{
       playerIds: player?.id ? [player?.id] : [],
     },
   });
+
+  const watchAll = watch();
 
   const repeatLastGameConfiguration = useCallback(
     (dateSortedGames: Game[], thePlayer: Player | null): boolean => {
@@ -77,6 +89,7 @@ export const GameStartForm: FC<{
         if (thisGame.playerIds.includes(thePlayer.id)) {
           if (thisGame.location) {
             setLastGameAddedLocation(thisGame.location);
+            setLastGameAddedPlayers(thisGame.playerIds);
             setValue("location", thisGame.location);
             return true;
           }
@@ -151,6 +164,14 @@ export const GameStartForm: FC<{
     }
   };
 
+  const findOtherPlayerName = (): string => {
+    const otherPlayerId = lastGameAddedPlayers.find(
+      (p) => p !== watchAll.playerIds?.[0]
+    );
+    const player = allPlayers.find((p) => p.id === otherPlayerId);
+    return player ? player.name : "";
+  };
+
   return (
     <Card sx={{ p: 2 }}>
       <Stack direction="row" sx={{ alignItems: "center", mb: 1 }}>
@@ -208,6 +229,28 @@ export const GameStartForm: FC<{
               />
             )}
           />
+          <Collapse
+            in={
+              lastGameAddedPlayers.length > 1 &&
+              !areStringArraysEqual(lastGameAddedPlayers, watchAll.playerIds)
+            }
+          >
+            <Stack direction="row" sx={{ alignItems: "center" }}>
+              <Typography variant="caption">Suggestion:</Typography>
+              <Chip
+                icon={<Add />}
+                sx={{ flexShrink: 1, ml: 1 }}
+                label={findOtherPlayerName()}
+                onClick={() => {
+                  setValue("playerIds", lastGameAddedPlayers);
+                  setLastGameAddedPlayers([]);
+                  fireAnalyticsEvent(
+                    "GameMode_Clicked_AddLastPlayerConfiguration"
+                  );
+                }}
+              />
+            </Stack>
+          </Collapse>
           <Controller
             name="location"
             control={control}
@@ -252,6 +295,9 @@ export const GameStartForm: FC<{
                 />
               </Stack>
             )}
+          <Button type="submit" fullWidth variant="contained" size="large">
+            Start balling
+          </Button>
           <FormControlLabel
             control={
               <Checkbox
@@ -274,9 +320,6 @@ export const GameStartForm: FC<{
               )}
             />
           </Collapse>
-          <Button type="submit" fullWidth variant="contained" size="large">
-            Start balling
-          </Button>
           <Typography variant="caption" sx={{ a: { color: "white" } }}>
             <Link to="/rules">FAQ's and Rules</Link>
           </Typography>

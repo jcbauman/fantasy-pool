@@ -36,7 +36,7 @@ export const LastSeasonPage: FC = () => {
     if (playerPlaced) launchConfetti();
   }, [launchConfetti, playerPlaced]);
   return (
-    <PageContainer loading={loadingGames || loadingPlayer}>
+    <PageContainer loading={loadingGames || loadingPlayer} authedRoute>
       {showLastSeasonTab ? (
         <Stack
           direction="column"
@@ -57,7 +57,7 @@ export const LastSeasonPage: FC = () => {
             justifyContent: "center",
           }}
         >
-          <Typography>You didn't play any games last season!</Typography>
+          <Typography>No games to show from last season</Typography>
         </Stack>
       )}
     </PageContainer>

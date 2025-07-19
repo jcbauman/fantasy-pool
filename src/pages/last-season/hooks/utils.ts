@@ -9,6 +9,7 @@ export const getBestAndWorstLocation = (
 ): {
   best: { totalPoints: number; name: string };
   worst: { totalPoints: number; name: string };
+  locationsCount: number;
 } => {
   const locationScores: Record<string, number> = {};
 
@@ -28,6 +29,7 @@ export const getBestAndWorstLocation = (
     return {
       best: { totalPoints: 0, name: "N/A" },
       worst: { totalPoints: 0, name: "N/A" },
+      locationsCount: 0,
     };
   }
 
@@ -39,6 +41,7 @@ export const getBestAndWorstLocation = (
       totalPoints: locations[locations.length - 1][1],
       name: locations[locations.length - 1][0],
     },
+    locationsCount: locations.length,
   };
 };
 

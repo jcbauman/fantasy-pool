@@ -8,7 +8,7 @@ export const getTheme = (isStandalone?: boolean) =>
         main: "#000000",
       },
       secondary: {
-        main: "#cc1301",
+        main: "#f48fb1",
         light: "#000000",
       },
       info: {

@@ -43,7 +43,7 @@ export const PlayerDetailHeader: FC<{
             </Typography>
             <CircleOutlinedIcon
               color={player.out ? "error" : "success"}
-              sx={{ width: 12, height: 12, ml: 0.5 }}
+              sx={{ width: 12, height: 12, ml: 0.5, mb: 0.1 }}
             />
           </Stack>
           {player.defaultLocation && (

@@ -11,6 +11,10 @@ export const getTheme = (isStandalone?: boolean) =>
         main: "#f48fb1",
         light: "#000000",
       },
+      info: {
+        main: "#ebb604",
+        light: "#000000",
+      },
       background: {
         default: "#303030",
         paper: "#424242",

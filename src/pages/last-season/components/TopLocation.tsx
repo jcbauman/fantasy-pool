@@ -71,6 +71,17 @@ export const TopLocation: FC<{ games: Game[]; player: Player | undefined }> = ({
                 </Typography>
               </TableCell>
             </TableRow>
+            <TableRow>
+              <TableCell>
+                <Typography variant="caption">Total</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography noWrap># of Locations</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography>{locationCalculations.locationsCount}</Typography>
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

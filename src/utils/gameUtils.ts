@@ -57,3 +57,40 @@ export const canSeeLastSeason = (
   if (!records || !playerId || !records[playerId]) return false;
   return true;
 };
+
+export const getPlayerGamesFromList = (
+  games: Game[],
+  playerId: string | null
+) => {
+  if (!playerId) return [];
+  return games.filter((game) => game.playerIds.includes(playerId ?? ""));
+};
+
+export const getMostPopularLocation = (
+  games: Game[],
+  playerId: string | undefined,
+  defaultLocation: string | undefined,
+  threshold: number
+) => {
+  if (!playerId || !defaultLocation) return "";
+  const playerGames = getPlayerGamesFromList(games, playerId);
+  const locationCounts: Record<string, number> = {};
+  playerGames.forEach((game) => {
+    if (game.location) {
+      locationCounts[game.location] = (locationCounts[game.location] || 0) + 1;
+    }
+  });
+  const sortedLocations = Object.entries(locationCounts).sort(
+    (a, b) => b[1] - a[1]
+  );
+
+  if (sortedLocations.length === 0) {
+    return defaultLocation;
+  }
+  //if difference between default and top location is more than threshold, return top location
+  const defaultLocationCount = locationCounts[defaultLocation] ?? 0;
+  console.log("bruh def", defaultLocationCount, locationCounts[0]);
+  return sortedLocations[0][1] > defaultLocationCount + threshold
+    ? sortedLocations[0][0]
+    : defaultLocation;
+};

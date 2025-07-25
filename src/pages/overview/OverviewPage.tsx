@@ -39,6 +39,7 @@ export const OverviewComponent: FC = () => {
   const seasonString = formatSeasonString();
   const NEW_SEASON_STORAGE_KEY = seasonString;
   const LAST_SEASON_STORAGE_KEY = `${seasonString}-last-season`;
+  const LATEST_RULE_STORAGE_KEY = "rule-july-25-25";
   const hasClickedWrapped = Boolean(localStorage.getItem(WRAPPED_STORAGE_KEY));
   const canAccessWrapped = joinedInTimeFor2024Wrapped(player?.joinDate);
   const wrappedEnabled = league?.release2024Wrapped && canAccessWrapped;
@@ -47,6 +48,9 @@ export const OverviewComponent: FC = () => {
   );
   const hasSeenLastSeasonDialog = Boolean(
     localStorage.getItem(LAST_SEASON_STORAGE_KEY)
+  );
+  const hasSeenLatestRuleUpdate = Boolean(
+    localStorage.getItem(LATEST_RULE_STORAGE_KEY)
   );
   const [showNewSeasonDialog, setShowNewSeasonDialog] = useState(
     !hasSeenNewSeasonDialog
@@ -181,9 +185,21 @@ export const OverviewComponent: FC = () => {
             </ListItem>
             <Divider component="li" />
             <ListItem disablePadding>
-              <ListItemButton to="/rules" component={RouterLink}>
+              <ListItemButton
+                to="/rules"
+                component={RouterLink}
+                onClick={() =>
+                  localStorage.setItem(LATEST_RULE_STORAGE_KEY, "true")
+                }
+              >
                 <ListItemIcon>
-                  <LiveHelpOutlinedIcon />
+                  <Badge
+                    variant="dot"
+                    invisible={hasSeenLatestRuleUpdate}
+                    color="info"
+                  >
+                    <LiveHelpOutlinedIcon />
+                  </Badge>
                 </ListItemIcon>
                 <ListItemText primary="FAQs and rules" />
               </ListItemButton>

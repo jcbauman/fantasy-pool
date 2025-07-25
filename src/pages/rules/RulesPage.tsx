@@ -2,16 +2,19 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Badge,
   Stack,
   Typography,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { FAQS_COPY } from "./constants";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { fireAnalyticsEvent } from "../../shared-components/hooks/analytics";
 
 export const RulesPage: FC = () => {
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
   return (
     <PageContainer>
       <Stack
@@ -24,17 +27,37 @@ export const RulesPage: FC = () => {
           in the Fantasy Pool app.
         </Typography>
         {FAQS_COPY.map((faq, idx) => {
+          const STORAGE_KEY = `rule-${idx}-update-${faq.lastUpdated}`;
+          const hasSeenLatestRuleUpdate = Boolean(
+            faq.lastUpdated ? localStorage.getItem(STORAGE_KEY) : "true"
+          );
+          const isExpanded = expandedIndex === idx;
+          console.log("bruh is expand", isExpanded);
+
           return (
-            <Accordion key={`rule-${idx}`}>
-              <AccordionSummary
-                onClick={() =>
-                  fireAnalyticsEvent("Rules_Opened_Rule", {
-                    rule: faq.title,
-                  })
+            <Accordion
+              key={`rule-${idx}`}
+              expanded={isExpanded}
+              onChange={(_, newExpanded) => {
+                setExpandedIndex(newExpanded ? idx : null);
+                if (!hasSeenLatestRuleUpdate && newExpanded) {
+                  localStorage.setItem(STORAGE_KEY, "true");
                 }
-                expandIcon={<ArrowDropDownIcon />}
-                aria-controls="panel1-content"
-                id="panel1-header"
+                if (newExpanded) {
+                  fireAnalyticsEvent("Rules_Opened_Rule", { rule: faq.title });
+                }
+              }}
+            >
+              <AccordionSummary
+                expandIcon={
+                  <Badge
+                    variant="dot"
+                    color="info"
+                    invisible={hasSeenLatestRuleUpdate || isExpanded}
+                  >
+                    <ArrowDropDownIcon />
+                  </Badge>
+                }
               >
                 <Typography>{faq.title}</Typography>
               </AccordionSummary>

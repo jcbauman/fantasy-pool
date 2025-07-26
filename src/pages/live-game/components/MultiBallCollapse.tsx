@@ -21,11 +21,12 @@ export const MultiBallCollapse: FC<MultiBallDialogProps> = ({
         direction="row"
         sx={{ width: "100%", justifyContent: "space-between", my: 2 }}
       >
-        <ButtonGroup>
+        <ButtonGroup sx={{ width: "100%" }} size="large" fullWidth>
           {buttons.map((b) => {
             return (
               <Button
                 size="large"
+                sx={{ flex: 1 }}
                 variant="contained"
                 onClick={() => {
                   onConfirm(b);
@@ -42,7 +43,7 @@ export const MultiBallCollapse: FC<MultiBallDialogProps> = ({
             onClick={onClose}
             size="large"
             aria-label="Cancel"
-            sx={{ px: 2 }}
+            sx={{ flex: 1 }}
           >
             <Close />
           </Button>

@@ -11,10 +11,12 @@ import { PageContainer } from "../../shared-components/PageContainer";
 import { FAQS_COPY } from "./constants";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { fireAnalyticsEvent } from "../../shared-components/hooks/analytics";
+import { useDismissedExperiences } from "../../utils/useDismissedExperiences";
 
 export const RulesPage: FC = () => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-
+  const { experienceWasDismissed, addDismissedExperience } =
+    useDismissedExperiences();
   return (
     <PageContainer>
       <Stack
@@ -28,9 +30,9 @@ export const RulesPage: FC = () => {
         </Typography>
         {FAQS_COPY.map((faq, idx) => {
           const STORAGE_KEY = `rule-${idx}-update-${faq.lastUpdated}`;
-          const hasSeenLatestRuleUpdate = Boolean(
-            faq.lastUpdated ? localStorage.getItem(STORAGE_KEY) : "true"
-          );
+          const hasSeenLatestRuleUpdate = faq.lastUpdated
+            ? experienceWasDismissed(STORAGE_KEY)
+            : true;
           const isExpanded = expandedIndex === idx;
 
           return (
@@ -40,7 +42,7 @@ export const RulesPage: FC = () => {
               onChange={(_, newExpanded) => {
                 setExpandedIndex(newExpanded ? idx : null);
                 if (!hasSeenLatestRuleUpdate && newExpanded) {
-                  localStorage.setItem(STORAGE_KEY, "true");
+                  addDismissedExperience(STORAGE_KEY);
                 }
                 if (newExpanded) {
                   fireAnalyticsEvent("Rules_Opened_Rule", { rule: faq.title });

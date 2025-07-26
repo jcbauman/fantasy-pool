@@ -89,7 +89,6 @@ export const getMostPopularLocation = (
   }
   //if difference between default and top location is more than threshold, return top location
   const defaultLocationCount = locationCounts[defaultLocation] ?? 0;
-  console.log("bruh def", defaultLocationCount, locationCounts[0]);
   return sortedLocations[0][1] > defaultLocationCount + threshold
     ? sortedLocations[0][0]
     : defaultLocation;

@@ -32,7 +32,6 @@ export const RulesPage: FC = () => {
             faq.lastUpdated ? localStorage.getItem(STORAGE_KEY) : "true"
           );
           const isExpanded = expandedIndex === idx;
-          console.log("bruh is expand", isExpanded);
 
           return (
             <Accordion

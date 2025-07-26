@@ -37,7 +37,7 @@ export const FAQS_COPY = [
           <li>
             An exception to this rule is if a{" "}
             <strong>miscommunication over table rules</strong> between you and
-            your opponent contributes to your loss. You need not track losses
+            your opponent(s) contributes to your loss. You need not track losses
             based on technicalities.
           </li>
           <li>

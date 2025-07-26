@@ -27,12 +27,19 @@ export const FAQS_COPY = [
   },
   {
     title: "Do you have to track every time you play pool?",
+    lastUpdated: "2025-7-25",
     content: (
       <ContentWrapper>
         No, but Fantasy Pool players should decide{" "}
         <strong>before starting a game</strong> whether they want to exclude the
         game from tracking.
         <ul>
+          <li>
+            An exception to this rule is if a{" "}
+            <strong>miscommunication over table rules</strong> between you and
+            your opponent(s) contributes to your loss. You need not track losses
+            based on technicalities.
+          </li>
           <li>
             If multiple Fantasy Pool players are playing in a game, everyone
             should agree whether the game will count or not. No partial tracking

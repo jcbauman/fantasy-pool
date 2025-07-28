@@ -19,6 +19,7 @@ import {
 } from "../../../shared-components/toasts/notificationToasts";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { useDismissedExperiences } from "../../../utils/useDismissedExperiences";
+import { getSeasonStart } from "../../../utils/dateUtils";
 
 const PERMANENT_HIDE_MODAL_KEY = "location_update_suggestion_drawer";
 const SPECIFIC_HIDE_MODAL_KEY = "suggest-updating-location-to-";
@@ -42,7 +43,7 @@ export const LocationUpdateSuggestion: FC = () => {
   );
   const isPermanentlyHidden = experienceWasDismissed(PERMANENT_HIDE_MODAL_KEY);
   const isCurrentLocationSuggestionDismissed = experienceWasDismissed(
-    `${SPECIFIC_HIDE_MODAL_KEY}${topLocation}`
+    `${SPECIFIC_HIDE_MODAL_KEY}${topLocation}${getSeasonStart()}`
   );
 
   useEffect(() => {

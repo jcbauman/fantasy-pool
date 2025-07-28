@@ -24,6 +24,7 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import { formatSeasonString } from "../../utils/dateUtils";
 import { CalendarMonthOutlined } from "@mui/icons-material";
 import { canSeeLastSeason } from "../../utils/gameUtils";
+import { LocationUpdateSuggestion } from "../profile/components/LocationUpdateSuggestion";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 
@@ -246,6 +247,7 @@ export const OverviewComponent: FC = () => {
           }}
           open={showNewSeasonDialog}
         />
+        {Boolean(player) && <LocationUpdateSuggestion />}
       </Stack>
     </PageContainer>
   );

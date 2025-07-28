@@ -20,7 +20,6 @@ import { Player } from "../../../types";
 import { useLocation } from "react-router-dom";
 import { useFetchLocations } from "../../../backend/getters";
 import { capitalizeLocation } from "../../../utils/gameUtils";
-import { LocationUpdateSuggestion } from "./LocationUpdateSuggestion";
 
 export interface ProfileFormValues {
   email: string;
@@ -214,7 +213,6 @@ export const ProfileEditor: FC<{
           )}
         </Stack>
       </Card>
-      {Boolean(player) && <LocationUpdateSuggestion />}
     </Stack>
   );
 };

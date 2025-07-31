@@ -9,8 +9,10 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Link,
+  IconButton,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { GameStatKeys, GameStat, Game, Player } from "../../../types";
 import {
   getFantasyMultiplierForStat,
@@ -28,6 +30,8 @@ import {
   getOtherGamePlayer,
 } from "../../../utils/gameUtils";
 import { useAppContext } from "../../../context/AppContext";
+import { NavigateNext } from "@mui/icons-material";
+import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 
 export const GameFantasyDetail: FC<{
   game: Game | undefined;
@@ -36,8 +40,11 @@ export const GameFantasyDetail: FC<{
   includeElapsedTime?: boolean;
 }> = ({ game, player, scoringMatrix, includeElapsedTime }) => {
   const { players } = useAppContext();
-  if (!game || !player) return <></>;
-  const playerStats = game.statsByPlayer.find((s) => s.playerId === player.id);
+  const [playerToView, setPlayerToView] = useState(player);
+  if (!game || !playerToView) return <></>;
+  const playerStats = game.statsByPlayer.find(
+    (s) => s.playerId === playerToView.id
+  );
   if (!playerStats) return <></>;
   const timeOfDay = formatDateToTimeOfDay(new Date(game.timestamp));
   const caption = `${formatDateToMMDD(new Date(game.timestamp))} at ${
@@ -52,7 +59,7 @@ export const GameFantasyDetail: FC<{
         )}`
     : undefined;
   const isGamePartnership = getIsGamePartnership(game);
-  const otherGamePlayer = getOtherGamePlayer(game, player?.id, players);
+  const otherGamePlayer = getOtherGamePlayer(game, playerToView?.id, players);
   const partnershipCaption =
     isGamePartnership !== undefined
       ? `${isGamePartnership ? "w/" : "vs."} ${otherGamePlayer?.name}`
@@ -64,16 +71,35 @@ export const GameFantasyDetail: FC<{
         sx={{ alignItems: "center", py: 2 }}
         spacing={1}
       >
-        <Avatar src={player.profilePictureUrl} alt={player.name} />
-        <Typography>{player.name}</Typography>
+        <Avatar src={playerToView.profilePictureUrl} alt={playerToView.name} />
+        <Typography>{playerToView.name}</Typography>
         <Typography variant="caption">{caption}</Typography>
         {partnershipCaption && (
-          <Typography
-            variant="caption"
-            sx={{ fontStyle: "italic", textDecoration: "underline" }}
+          <Link
+            sx={{
+              color: "white",
+              ml: 1,
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            onClick={() => {
+              setPlayerToView(otherGamePlayer);
+              fireAnalyticsEvent("FantasyDetail_Clicked_SwitchPlayer");
+            }}
           >
-            {partnershipCaption}
-          </Typography>
+            <Stack direction="row" sx={{ alignItems: "center" }}>
+              <Typography
+                variant="caption"
+                sx={{ fontStyle: "italic", textDecoration: "underline" }}
+              >
+                {partnershipCaption}
+              </Typography>
+              <IconButton aria-label="switch players" size="small">
+                <NavigateNext />
+              </IconButton>
+            </Stack>
+          </Link>
         )}
         {elapsedTime && includeElapsedTime && (
           <Typography variant="caption" sx={{ fontStyle: "italic" }}>
@@ -158,7 +184,7 @@ export const GameFantasyDetail: FC<{
                 {normalizeStat(
                   getFantasyScoreForPlayerSeason(
                     [game],
-                    player.id,
+                    playerToView.id,
                     scoringMatrix
                   )
                 )}

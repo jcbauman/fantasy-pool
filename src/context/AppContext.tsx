@@ -61,10 +61,12 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const notificationBadgesState = useNotificationBadges(games, league);
 
   useEffect(() => {
-    players.forEach((player) => {
-      checkPlayerInactivity(player, games);
-    });
-  }, [players, games]);
+    if (authState?.user?.isAppAdmin) {
+      players.forEach((player) => {
+        checkPlayerInactivity(player, games);
+      });
+    }
+  }, [players, games, authState?.user?.isAppAdmin]);
 
   useEffect(() => {
     const getLeague = async (): Promise<void> => {

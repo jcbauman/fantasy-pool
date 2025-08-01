@@ -28,11 +28,11 @@ export const PlayerDetailHeader: FC<{
         <Avatar
           src={player.profilePictureUrl}
           sx={{ width: 100, height: 100 }}
-          alt={player.name}
+          alt={player.firstName}
         />
         <Stack direction="column" sx={{ p: 1 }}>
           <Typography variant="overline" fontWeight={500} fontSize={16}>
-            {player.name}
+            {player.firstName + " " + player.lastName}
           </Typography>
           <Typography variant="overline">
             Nickname: "{player.nickname ?? "None"}"

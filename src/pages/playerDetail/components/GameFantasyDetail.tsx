@@ -32,6 +32,7 @@ import {
 import { useAppContext } from "../../../context/AppContext";
 import { NavigateNext } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
+import { getPlayerFullName } from "../../playersList/utils/playerUtils";
 
 export const GameFantasyDetail: FC<{
   game: Game | undefined;
@@ -62,7 +63,7 @@ export const GameFantasyDetail: FC<{
   const otherGamePlayer = getOtherGamePlayer(game, playerToView?.id, players);
   const partnershipCaption =
     isGamePartnership !== undefined
-      ? `${isGamePartnership ? "w/" : "vs."} ${otherGamePlayer?.name}`
+      ? `${isGamePartnership ? "w/" : "vs."} ${otherGamePlayer?.firstName} ${otherGamePlayer?.lastName}`
       : undefined;
   return (
     <Stack direction="column" sx={{ alignItems: "center" }}>
@@ -71,8 +72,11 @@ export const GameFantasyDetail: FC<{
         sx={{ alignItems: "center", py: 2 }}
         spacing={1}
       >
-        <Avatar src={playerToView.profilePictureUrl} alt={playerToView.name} />
-        <Typography>{playerToView.name}</Typography>
+        <Avatar
+          src={playerToView.profilePictureUrl}
+          alt={playerToView.firstName}
+        />
+        <Typography>{getPlayerFullName(playerToView)}</Typography>
         <Typography variant="caption">{caption}</Typography>
         {partnershipCaption && (
           <Link

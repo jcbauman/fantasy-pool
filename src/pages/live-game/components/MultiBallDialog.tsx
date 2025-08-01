@@ -90,7 +90,7 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
             onClose();
           }}
         >
-          Confirm for {getPlayerNameAbbreviation(selectedPlayerName)}
+          Confirm for {selectedPlayerName}
         </Button>
       </DialogActions>
     </Drawer>

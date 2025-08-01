@@ -90,7 +90,7 @@ export const RankingTable: FC = () => {
                     }}
                   >
                     <Typography noWrap>
-                      {getPlayerNameAbbreviation(player.name)}
+                      {getPlayerNameAbbreviation(player)}
                     </Typography>
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>

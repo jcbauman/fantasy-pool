@@ -16,7 +16,10 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { getStatsForGame } from "../../playersList/utils/playerUtils";
+import {
+  getPlayerNameAbbreviation,
+  getStatsForGame,
+} from "../../playersList/utils/playerUtils";
 import {
   getAbbreviation,
   getFantasyScoreForPlayerSeason,
@@ -83,7 +86,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
               <Avatar
                 sx={{ width: 20, height: 20, ml: 1 }}
                 src={authorPlayer?.profilePictureUrl}
-                alt={authorPlayer?.name}
+                alt={authorPlayer?.firstName}
                 onClick={(e) => {
                   e.preventDefault();
                   if (user?.isAppAdmin) {
@@ -92,7 +95,7 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                 }}
               >
                 <Typography variant="caption">
-                  {getAbbreviation(authorPlayer?.name)}
+                  {getPlayerNameAbbreviation(authorPlayer)}
                 </Typography>
               </Avatar>
               <Menu

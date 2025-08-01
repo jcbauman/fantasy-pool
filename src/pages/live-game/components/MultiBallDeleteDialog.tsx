@@ -106,7 +106,7 @@ export const MultiBallDeleteDialog: FC<MultiBallDialogProps> = ({
             onClose();
           }}
         >
-          Delete for {getPlayerNameAbbreviation(selectedPlayerName)}
+          Delete for {selectedPlayerName}
         </Button>
       </DialogActions>
     </Drawer>

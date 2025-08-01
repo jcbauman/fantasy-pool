@@ -15,7 +15,7 @@ export const WrappedPage: FC = () => {
   const [page, setPage] = useState(0);
   const [buttonHidden, setButtonHidden] = useState(false);
   const { player, loading, playerGames } = usePlayerParams();
-  const playerName = player?.name.split(" ")[0] ?? "";
+  const playerName = player?.firstName ?? "";
 
   const handleNextClick = () => {
     setButtonHidden(true);

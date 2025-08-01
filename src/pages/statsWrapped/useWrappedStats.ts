@@ -33,7 +33,7 @@ export const useWrappedStats = (
   playerGames: Game[]
 ): UseWrappedStats => {
   const { rankings, allStatsByPlayers, scoringMatrix } = useAppContext();
-  const playerName = player?.name.split(" ")[0] ?? "";
+  const playerName = player?.firstName ?? "";
   const statLeaderString = determineLeadersOfWeirdStats(
     rankings,
     player?.id,

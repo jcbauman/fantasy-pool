@@ -11,7 +11,7 @@ export const PlayerCell: FC<{
   linkToPlayer?: boolean;
   hideOut?: boolean;
 }> = ({ player, linkToPlayer, hideOut }) => {
-  const displayName = getPlayerNameAbbreviation(player.name);
+  const displayName = getPlayerNameAbbreviation(player);
   const navigate = useNavigate();
 
   return (
@@ -34,10 +34,10 @@ export const PlayerCell: FC<{
           width: 25,
           height: 25,
         }}
-        alt={player.name}
+        alt={player.firstName}
       >
         <Typography variant="caption">
-          {getAbbreviation(player?.name)}
+          {getPlayerNameAbbreviation(player)}
         </Typography>
       </Avatar>
       <Stack direction="row" sx={{ alignItems: "center" }}>

@@ -17,6 +17,7 @@ import { clearGame, setLastGameId } from "../../../redux/gameSlice";
 import { RootState } from "../../../redux/store";
 import SportsMmaOutlinedIcon from "@mui/icons-material/SportsMmaOutlined";
 import {
+  getPlayerFullName,
   getPlayerNameAbbreviation,
   getStatsForGame,
 } from "../../playersList/utils/playerUtils";
@@ -117,7 +118,7 @@ export const GameInterfaceV2: FC = () => {
     },
   ];
   const otherPlayer = showTabs
-    ? gamePlayers[selectedTab * -1 + 1].name.split(" ")[0]
+    ? gamePlayers[selectedTab * -1 + 1].firstName
     : "";
   const doublesScoringOutcomeWording = wonGame
     ? "Both players will share this win!"
@@ -260,9 +261,7 @@ export const GameInterfaceV2: FC = () => {
               onChange={(_e, value) => setSelectedTab(value)}
             >
               {gamePlayers.map((p) => {
-                return (
-                  <Tab key={p.id} label={getPlayerNameAbbreviation(p.name)} />
-                );
+                return <Tab key={p.id} label={getPlayerNameAbbreviation(p)} />;
               })}
             </Tabs>
           )}
@@ -273,7 +272,7 @@ export const GameInterfaceV2: FC = () => {
             <Stack direction="column">
               <Typography variant="overline">Entering for:</Typography>
               <Typography variant="h5">
-                <strong>{gamePlayers[selectedTab].name}</strong>
+                <strong>{getPlayerFullName(gamePlayers[selectedTab])}</strong>
               </Typography>
             </Stack>
             <Stack direction="column" sx={{ alignItems: "flex-end" }}>
@@ -317,7 +316,7 @@ export const GameInterfaceV2: FC = () => {
               handleButtonAnimation(1);
               if (gamePlayers.length > 1)
                 sendIterationNotificationMessage(
-                  gamePlayers[selectedTab].name,
+                  gamePlayers[selectedTab].firstName,
                   getStatKeyFromNumBalls(numBalls),
                   1
                 );
@@ -397,14 +396,14 @@ export const GameInterfaceV2: FC = () => {
                         onClick={() => setSelectedTab(0)}
                         variant={selectedTab === 0 ? "contained" : "outlined"}
                       >
-                        {gamePlayers[0].name.split(" ")[0]}
+                        {gamePlayers[0].firstName}
                       </Button>
                       <Button
                         size="large"
                         onClick={() => setSelectedTab(1)}
                         variant={selectedTab === 1 ? "contained" : "outlined"}
                       >
-                        {gamePlayers[1].name.split(" ")[0]}
+                        {gamePlayers[1].firstName}
                       </Button>
                     </ButtonGroup>
                     <Typography variant="caption" sx={{ mt: 1 }}>
@@ -525,7 +524,7 @@ export const GameInterfaceV2: FC = () => {
         selectedPlayerName={
           gamePlayers[selectedTab].id === player?.id
             ? "you"
-            : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
+            : getPlayerNameAbbreviation(gamePlayers[selectedTab])
         }
         selectedPlayerId={gamePlayers[selectedTab].id}
         onConfirmDelete={(numBalls: number) => {
@@ -537,7 +536,7 @@ export const GameInterfaceV2: FC = () => {
           handleButtonAnimation(1);
           if (gamePlayers.length > 1) handleButtonAnimation(1);
           sendIterationNotificationMessage(
-            gamePlayers[selectedTab].name,
+            gamePlayers[selectedTab].firstName,
             getStatKeyFromNumBalls(numBalls),
             -1
           );

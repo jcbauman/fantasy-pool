@@ -21,6 +21,7 @@ import {
 } from "../../../utils/statsUtils";
 import { Player } from "../../../types";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
+import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 
 export const YourPosition: FC<{ player: Player | undefined }> = ({
   player,
@@ -43,10 +44,12 @@ export const YourPosition: FC<{ player: Player | undefined }> = ({
         >
           <Avatar
             src={player.profilePictureUrl}
-            alt={player.name}
+            alt={player.lastName}
             sx={{ width: "100px", height: "100px" }}
           >
-            <Typography variant="h3">{getAbbreviation(player.name)}</Typography>
+            <Typography variant="h3">
+              {getPlayerNameAbbreviation(player)}
+            </Typography>
           </Avatar>
         </LargeBadge>
         <Stack direction="column" sx={{ width: "100%", ml: 2 }}>

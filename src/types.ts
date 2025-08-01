@@ -12,7 +12,8 @@ export interface User {
 export interface Player {
   id: string;
   linkedUserId: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   nickname?: string;
   out?: boolean;
   profilePictureUrl?: string;

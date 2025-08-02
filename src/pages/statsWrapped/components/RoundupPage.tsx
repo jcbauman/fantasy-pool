@@ -18,6 +18,7 @@ import { getLocationLeader, getMedal, toOrdinal } from "../wrappedUtils";
 import { PlayerCell } from "../../playersList/components/PlayerCell";
 import { normalizeStat } from "../../../utils/statsUtils";
 import styled from "@emotion/styled";
+import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 
 export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
   player,
@@ -48,9 +49,8 @@ export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
             overlap="circular"
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
           >
-            <Avatar
-              src={player.profilePictureUrl}
-              alt={player.firstName}
+            <PlayerAvatar
+              player={player}
               sx={{ width: "100px", height: "100px" }}
             />
           </LargeBadge>

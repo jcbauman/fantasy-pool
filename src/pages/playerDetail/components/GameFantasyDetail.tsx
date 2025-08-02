@@ -19,6 +19,7 @@ import {
   getStringFromStatKey,
   normalizeStat,
   getFantasyScoreForPlayerSeason,
+  getAbbreviation,
 } from "../../../utils/statsUtils";
 import {
   formatDateToMMDD,
@@ -32,7 +33,11 @@ import {
 import { useAppContext } from "../../../context/AppContext";
 import { NavigateNext } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
-import { getPlayerFullName } from "../../playersList/utils/playerUtils";
+import {
+  getPlayerFullName,
+  getPlayerNameAbbreviation,
+} from "../../playersList/utils/playerUtils";
+import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 
 export const GameFantasyDetail: FC<{
   game: Game | undefined;
@@ -72,11 +77,7 @@ export const GameFantasyDetail: FC<{
         sx={{ alignItems: "center", py: 2 }}
         spacing={1}
       >
-        <Avatar
-          src={playerToView.profilePictureUrl}
-          alt={playerToView.firstName}
-        />
-        <Typography>{getPlayerFullName(playerToView)}</Typography>
+        <PlayerAvatar player={playerToView} />
         <Typography variant="caption">{caption}</Typography>
         {partnershipCaption && (
           <Link

@@ -4,6 +4,7 @@ import { Avatar, Stack, Typography } from "@mui/material";
 import { getPlayerNameAbbreviation } from "../utils/playerUtils";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { useNavigate } from "react-router-dom";
+import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 
 export const PlayerCell: FC<{
   player: Player;
@@ -27,18 +28,13 @@ export const PlayerCell: FC<{
         if (linkToPlayer) navigate(`/players/${player.id}`);
       }}
     >
-      <Avatar
-        src={player.profilePictureUrl}
+      <PlayerAvatar
         sx={{
           width: 25,
           height: 25,
         }}
-        alt={player.firstName}
-      >
-        <Typography variant="caption">
-          {getPlayerNameAbbreviation(player)}
-        </Typography>
-      </Avatar>
+        player={player}
+      />
       <Stack direction="row" sx={{ alignItems: "center" }}>
         <Typography variant="body2" fontWeight={500} noWrap>
           {displayName}

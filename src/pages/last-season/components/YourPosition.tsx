@@ -14,10 +14,15 @@ import {
   toOrdinal,
 } from "../../statsWrapped/wrappedUtils";
 import styled from "@emotion/styled";
-import { normalizePercentage, normalizeStat } from "../../../utils/statsUtils";
+import {
+  getAbbreviation,
+  normalizePercentage,
+  normalizeStat,
+} from "../../../utils/statsUtils";
 import { Player } from "../../../types";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
+import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 
 export const YourPosition: FC<{ player: Player | undefined }> = ({
   player,
@@ -38,15 +43,11 @@ export const YourPosition: FC<{ player: Player | undefined }> = ({
           overlap="circular"
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
         >
-          <Avatar
-            src={player.profilePictureUrl}
-            alt={player.lastName}
+          <PlayerAvatar
+            player={player}
+            typographyProps={{ variant: "h4" }}
             sx={{ width: "100px", height: "100px" }}
-          >
-            <Typography variant="h3">
-              {getPlayerNameAbbreviation(player)}
-            </Typography>
-          </Avatar>
+          />
         </LargeBadge>
         <Stack direction="column" sx={{ width: "100%", ml: 2 }}>
           <Stack direction="row" sx={{ alignItems: "center" }}>

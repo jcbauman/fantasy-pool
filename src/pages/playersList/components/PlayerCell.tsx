@@ -3,7 +3,6 @@ import { Player } from "../../../types";
 import { Avatar, Stack, Typography } from "@mui/material";
 import { getPlayerNameAbbreviation } from "../utils/playerUtils";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
-import { getAbbreviation } from "../../../utils/statsUtils";
 import { useNavigate } from "react-router-dom";
 
 export const PlayerCell: FC<{

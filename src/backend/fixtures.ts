@@ -20,7 +20,8 @@ export const mockPlayers: Player[] = [
     id: playerId,
     linkedUserId: userId,
     nickname: "Rocking",
-    name: "Rocko Bauman",
+    firstName: "Rocking",
+    lastName: "Balboa",
     out: false,
     defaultLocation: "Bushwick Ice House",
     profilePictureUrl:
@@ -30,7 +31,8 @@ export const mockPlayers: Player[] = [
     id: player2Id,
     linkedUserId: userId,
     nickname: "Amungus",
-    name: "Amira Wheeler",
+    firstName: "Amimi",
+    lastName: "Wewe",
     out: true,
     defaultLocation: "The Levee",
     profilePictureUrl:

@@ -14,11 +14,7 @@ import {
   toOrdinal,
 } from "../../statsWrapped/wrappedUtils";
 import styled from "@emotion/styled";
-import {
-  getAbbreviation,
-  normalizePercentage,
-  normalizeStat,
-} from "../../../utils/statsUtils";
+import { normalizePercentage, normalizeStat } from "../../../utils/statsUtils";
 import { Player } from "../../../types";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";

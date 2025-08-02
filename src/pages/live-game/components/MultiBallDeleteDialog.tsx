@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { FC, useEffect, useState } from "react";
-import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 import { Game, GameStatKeys } from "../../../types";
 
 interface MultiBallDialogProps {

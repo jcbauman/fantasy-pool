@@ -21,7 +21,6 @@ import {
   getStatsForGame,
 } from "../../playersList/utils/playerUtils";
 import {
-  getAbbreviation,
   getFantasyScoreForPlayerSeason,
   normalizeStat,
 } from "../../../utils/statsUtils";

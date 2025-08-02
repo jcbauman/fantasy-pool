@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import { FC, useState } from "react";
-import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 
 interface MultiBallDialogProps {
   open: boolean;

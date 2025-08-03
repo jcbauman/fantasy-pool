@@ -5,6 +5,7 @@ import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { StatOverview } from "../../playersList/components/StatOverview";
 import { getMedal, toOrdinal } from "../../statsWrapped/wrappedUtils";
 import { useAppContext } from "../../../context/AppContext";
+import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 
 export const PlayerDetailHeader: FC<{
   player: Player;
@@ -25,14 +26,10 @@ export const PlayerDetailHeader: FC<{
         spacing={2}
         sx={{ width: "100%", p: 1, alignItems: "center" }}
       >
-        <Avatar
-          src={player.profilePictureUrl}
-          sx={{ width: 100, height: 100 }}
-          alt={player.name}
-        />
+        <PlayerAvatar player={player} sx={{ width: 100, height: 100 }} />
         <Stack direction="column" sx={{ p: 1 }}>
           <Typography variant="overline" fontWeight={500} fontSize={16}>
-            {player.name}
+            {player.firstName + " " + player.lastName}
           </Typography>
           <Typography variant="overline">
             Nickname: "{player.nickname ?? "None"}"

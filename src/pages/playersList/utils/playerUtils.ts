@@ -1,13 +1,17 @@
 import { getAllGamesForLastSeason } from "../../../backend/getters";
-import { Game, GameStat, GameStatKeys } from "../../../types";
+import { Game, GameStat, GameStatKeys, Player } from "../../../types";
 import { defaultGameStat } from "../../../utils/constants";
 import { didPlayerWinGame } from "../../../utils/gameUtils";
 import { getFantasyScoreForPlayerSeason } from "../../../utils/statsUtils";
 
-export const getPlayerNameAbbreviation = (name: string): string => {
-  const returnName = name.trim().split(" ");
-  if (returnName.length === 1) return name;
-  return returnName[0].slice(0, 1) + ". " + returnName[returnName.length - 1];
+export const getPlayerNameAbbreviation = (player?: Player): string => {
+  if (!player?.firstName || !player?.lastName) return "";
+  return player?.firstName.trim().slice(0, 1) + ". " + player?.lastName;
+};
+
+export const getPlayerFullName = (player?: Player): string => {
+  if (!player?.firstName || !player?.lastName) return "";
+  return player?.firstName + " " + player?.lastName;
 };
 
 export const getStatsForGame = (

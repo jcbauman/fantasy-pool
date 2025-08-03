@@ -226,8 +226,10 @@ export const useFetchUsers = (): User[] => {
 export const useFetchPlayers = (): Player[] => {
   const [players, setPlayers] = useState<Player[]>([]);
   useEffect(() => {
+    const q = query(PLAYERS_COLLECTION, where("firstName", "!=", null));
+
     const unsubscribe = onSnapshot(
-      PLAYERS_COLLECTION,
+      q,
       (snapshot: QuerySnapshot<DocumentData>) => {
         setPlayers(
           snapshot.docs.map((doc) => {
@@ -379,7 +381,7 @@ export const paginatedFetchGames = async (
       ({
         id: doc.id,
         ...doc.data(),
-      } as Game)
+      }) as Game
   );
 
   const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;

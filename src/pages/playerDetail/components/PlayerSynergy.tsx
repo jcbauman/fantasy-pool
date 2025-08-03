@@ -33,7 +33,8 @@ export const PlayerSynergy: FC<{ player: Player; games: Game[] }> = ({
         >
           {synergy.totalGames === 0 ? (
             <Typography align="center" variant="caption">
-              Log more 2-player games with {player.name} to see your synergy.
+              Log more 2-player games with {player.firstName} to see your
+              synergy.
             </Typography>
           ) : (
             <Stack

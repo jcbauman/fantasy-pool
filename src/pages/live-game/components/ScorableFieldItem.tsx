@@ -70,7 +70,7 @@ export const ScorableFieldItem: FC<ScorableFieldItemProps> = ({
                   });
                   if (gamePlayers.length > 1)
                     sendIterationNotificationMessage(
-                      gamePlayers[selectedTab].name,
+                      gamePlayers[selectedTab].firstName,
                       stat,
                       -1
                     );
@@ -88,7 +88,7 @@ export const ScorableFieldItem: FC<ScorableFieldItemProps> = ({
                   });
                   if (gamePlayers.length > 1)
                     sendIterationNotificationMessage(
-                      gamePlayers[selectedTab].name,
+                      gamePlayers[selectedTab].firstName,
                       field.stat,
                       -1
                     );
@@ -127,7 +127,7 @@ export const ScorableFieldItem: FC<ScorableFieldItemProps> = ({
                 handleButtonAnimation(idx);
                 if (gamePlayers.length > 1)
                   sendIterationNotificationMessage(
-                    gamePlayers[selectedTab].name,
+                    gamePlayers[selectedTab].firstName,
                     field.stat,
                     1
                   );

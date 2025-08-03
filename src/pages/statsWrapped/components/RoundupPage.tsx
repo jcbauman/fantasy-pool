@@ -18,6 +18,7 @@ import { getLocationLeader, getMedal, toOrdinal } from "../wrappedUtils";
 import { PlayerCell } from "../../playersList/components/PlayerCell";
 import { normalizeStat } from "../../../utils/statsUtils";
 import styled from "@emotion/styled";
+import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 
 export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
   player,
@@ -27,7 +28,7 @@ export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
     useAppContext();
   const mainRank = rankings["fantasyScore"].indexOf(player.id);
   const medal = getMedal(mainRank);
-  const playerName = player.name.split(" ")[0];
+  const playerName = player.firstName;
   const leaderboard = [
     players.find((p) => p.id === rankings["fantasyScore"][0]) ?? player,
     players.find((p) => p.id === rankings["fantasyScore"][1]) ?? player,
@@ -48,9 +49,8 @@ export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
             overlap="circular"
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
           >
-            <Avatar
-              src={player.profilePictureUrl}
-              alt={player.name}
+            <PlayerAvatar
+              player={player}
               sx={{ width: "100px", height: "100px" }}
             />
           </LargeBadge>
@@ -72,7 +72,7 @@ export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
               variant="overline"
               sx={{ fontWeight: "bold", fontSize: "1.2rem" }}
             >
-              {player.name}
+              {player.firstName + " " + player.lastName}
             </Typography>
           </Stack>
           <div />

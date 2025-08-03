@@ -16,7 +16,10 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { getStatsForGame } from "../../playersList/utils/playerUtils";
+import {
+  getPlayerNameAbbreviation,
+  getStatsForGame,
+} from "../../playersList/utils/playerUtils";
 import {
   getAbbreviation,
   getFantasyScoreForPlayerSeason,
@@ -29,6 +32,7 @@ import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { useNavigate } from "react-router-dom";
 import { canEditGame } from "../../edit-game/utils";
 import { EditOutlined } from "@mui/icons-material";
+import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 
 export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const {
@@ -80,21 +84,16 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
           ) : (
             <Stack direction="row">
               <Typography variant="caption">By</Typography>
-              <Avatar
+              <PlayerAvatar
                 sx={{ width: 20, height: 20, ml: 1 }}
-                src={authorPlayer?.profilePictureUrl}
-                alt={authorPlayer?.name}
+                player={authorPlayer}
                 onClick={(e) => {
                   e.preventDefault();
                   if (user?.isAppAdmin) {
                     setShowEditingDropdownAnchor(e.currentTarget);
                   }
                 }}
-              >
-                <Typography variant="caption">
-                  {getAbbreviation(authorPlayer?.name)}
-                </Typography>
-              </Avatar>
+              />
               <Menu
                 sx={{
                   ".MuiList-root": { backgroundColor: "black", py: 0 },

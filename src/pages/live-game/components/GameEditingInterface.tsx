@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { setLastGameId } from "../../../redux/gameSlice";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import {
+  getPlayerFullName,
   getPlayerNameAbbreviation,
   getStatsForGame,
 } from "../../playersList/utils/playerUtils";
@@ -184,9 +185,7 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
             onChange={(_e, value) => setSelectedTab(value)}
           >
             {gamePlayers.map((p) => {
-              return (
-                <Tab key={p.id} label={getPlayerNameAbbreviation(p.name)} />
-              );
+              return <Tab key={p.id} label={getPlayerNameAbbreviation(p)} />;
             })}
           </Tabs>
         )}
@@ -197,7 +196,7 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
           <Stack direction="column">
             <Typography variant="overline">Entering for:</Typography>
             <Typography variant="h5">
-              <strong>{gamePlayers[selectedTab].name}</strong>
+              <strong>{getPlayerFullName(gamePlayers[selectedTab])}</strong>
             </Typography>
           </Stack>
           <Stack direction="column" sx={{ alignItems: "flex-end" }}>
@@ -341,7 +340,7 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
         selectedPlayerName={
           gamePlayers[selectedTab].id === player?.id
             ? "you"
-            : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
+            : getPlayerNameAbbreviation(gamePlayers[selectedTab])
         }
         onConfirm={(numBalls: number) => {
           const resolvedStats = iterateStatNonRedux({
@@ -365,7 +364,7 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
         selectedPlayerName={
           gamePlayers[selectedTab].id === player?.id
             ? "you"
-            : getPlayerNameAbbreviation(gamePlayers[selectedTab].name)
+            : getPlayerNameAbbreviation(gamePlayers[selectedTab])
         }
         selectedPlayerId={gamePlayers[selectedTab].id}
         onConfirmDelete={(numBalls: number) => {

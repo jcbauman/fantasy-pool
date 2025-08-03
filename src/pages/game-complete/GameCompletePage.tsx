@@ -40,7 +40,7 @@ export const GameCompletePage: FC = () => {
         const player = players.find((p) => p.id === playerId);
         if (player) {
           // Split the full name and return the first name
-          return player.name.split(" ")?.[0] ?? "";
+          return player.firstName;
         }
         return null;
       })

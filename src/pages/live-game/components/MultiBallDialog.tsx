@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import { FC, useState } from "react";
-import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 
 interface MultiBallDialogProps {
   open: boolean;
@@ -90,7 +89,7 @@ export const MultiBallDialog: FC<MultiBallDialogProps> = ({
             onClose();
           }}
         >
-          Confirm for {getPlayerNameAbbreviation(selectedPlayerName)}
+          Confirm for {selectedPlayerName}
         </Button>
       </DialogActions>
     </Drawer>

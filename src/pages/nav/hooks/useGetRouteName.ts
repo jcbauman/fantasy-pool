@@ -18,7 +18,12 @@ export const useTopNav = (): UseTopNav => {
   const player = players.find((p) => p.id === params?.id);
   if (location.pathname.startsWith("/players")) {
     if (params?.id) {
-      return { title: player?.name ?? "Player Detail", showBackButton: true };
+      return {
+        title: player
+          ? player.firstName + " " + player.lastName
+          : "Player Detail",
+        showBackButton: true,
+      };
     } else {
       return { title: "Players", showBackButton: true };
     }

@@ -12,6 +12,7 @@ import { FC, useMemo } from "react";
 import { Player } from "../../types";
 import { PlayerCell } from "./components/PlayerCell";
 import {
+  getPlayerFullName,
   getStatsForPlayerGames,
   StatsForPlayerGames,
 } from "./utils/playerUtils";
@@ -49,7 +50,10 @@ export const PlayersPage: FC = () => {
   const dispatch = useDispatch();
 
   const alphabeticalPlayers = useMemo(
-    () => players.sort((a, b) => a.name.localeCompare(b.name)),
+    () =>
+      players.sort((a, b) =>
+        getPlayerFullName(a).localeCompare(getPlayerFullName(b))
+      ),
     [players]
   );
 

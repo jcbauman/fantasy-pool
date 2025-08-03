@@ -30,6 +30,7 @@ import {
 } from "../../../utils/dateUtils";
 import { Add } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
+import { getPlayerFullName } from "../../playersList/utils/playerUtils";
 interface FormData {
   date: Date | null;
   location: string;
@@ -137,9 +138,9 @@ export const GameStartForm: FC<{
 
   const [checked, setChecked] = useState(true);
   const playerOptionIds = allPlayers
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .sort((a, b) => a.firstName.localeCompare(b.firstName))
     .map((p) => p.id);
-  const onSubmit = (data: FormData): void => {
+  const onSubmit = async (data: FormData): Promise<void> => {
     const resolvedData = {
       ...data,
       timestamp: data.date ? data.date.toString() : new Date().toString(),
@@ -157,7 +158,7 @@ export const GameStartForm: FC<{
     if (gameStartSoundEffect) {
       try {
         const audio = new Audio("/ball-release-sound.mp3");
-        audio.play();
+        await audio.play();
       } catch (e) {
         console.error(e);
       }
@@ -169,7 +170,7 @@ export const GameStartForm: FC<{
       (p) => p !== watchAll.playerIds?.[0]
     );
     const player = allPlayers.find((p) => p.id === otherPlayerId);
-    return player ? player.name : "";
+    return player ? player.firstName + " " + player.lastName : "";
   };
 
   return (
@@ -211,7 +212,7 @@ export const GameStartForm: FC<{
                 id="tags-outlined"
                 options={playerOptionIds}
                 getOptionLabel={(option) =>
-                  allPlayers.find((p) => p.id === option)?.name ?? ""
+                  getPlayerFullName(allPlayers.find((p) => p.id === option))
                 }
                 filterSelectedOptions
                 onChange={(_event, newValue) => {

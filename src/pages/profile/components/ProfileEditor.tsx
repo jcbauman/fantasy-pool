@@ -23,7 +23,8 @@ import { capitalizeLocation } from "../../../utils/gameUtils";
 
 export interface ProfileFormValues {
   email: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   nickname: string;
   out: boolean;
   profilePictureUrl: string;
@@ -43,7 +44,8 @@ export const ProfileEditor: FC<{
   const defaultValues = useMemo(() => {
     return {
       email: user?.email,
-      name: player?.name,
+      firstName: player?.firstName,
+      lastName: player?.lastName,
       nickname: player?.nickname,
       out: player?.out ?? false,
       profilePictureUrl: player?.profilePictureUrl,
@@ -79,14 +81,35 @@ export const ProfileEditor: FC<{
               <TextField
                 variant="outlined"
                 type="text"
-                label="Full name"
+                label="First name"
                 size="small"
-                defaultValue={watchAll.name}
-                {...register("name", { required: "Name is required" })}
+                defaultValue={watchAll.firstName}
+                {...register("firstName", {
+                  required: "First name is required",
+                  validate: (value) =>
+                    value.trim() !== "" || "First name is required",
+                })}
               />
-              {errors.name && (
+              {errors.firstName && (
                 <Typography color="error" variant="caption">
-                  {errors.name.message}
+                  {errors.firstName.message}
+                </Typography>
+              )}
+              <TextField
+                variant="outlined"
+                type="text"
+                label="Last name"
+                size="small"
+                defaultValue={watchAll.lastName}
+                {...register("lastName", {
+                  required: "Last name is required",
+                  validate: (value) =>
+                    value.trim() !== "" || "Last name is required",
+                })}
+              />
+              {errors.lastName && (
+                <Typography color="error" variant="caption">
+                  {errors.lastName.message}
                 </Typography>
               )}
               <TextField
@@ -95,7 +118,11 @@ export const ProfileEditor: FC<{
                 label="Nickname"
                 size="small"
                 defaultValue={watchAll.nickname}
-                {...register("nickname", { required: "Nickname is required" })}
+                {...register("nickname", {
+                  required: "Nickname is required",
+                  validate: (value) =>
+                    value.trim() !== "" || "Nickname is required",
+                })}
               />
               <TextField
                 variant="outlined"

@@ -1,7 +1,6 @@
 import { FC, useState } from "react";
 import { Game, GameStatKeys, GameStatKeysAbbrev, Player } from "../../../types";
 import {
-  Avatar,
   Card,
   IconButton,
   Menu,
@@ -17,11 +16,9 @@ import {
   Typography,
 } from "@mui/material";
 import {
-  getPlayerNameAbbreviation,
   getStatsForGame,
 } from "../../playersList/utils/playerUtils";
 import {
-  getAbbreviation,
   getFantasyScoreForPlayerSeason,
   normalizeStat,
 } from "../../../utils/statsUtils";

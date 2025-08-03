@@ -1,10 +1,10 @@
 import { Stack } from "@mui/material";
 import { FC } from "react";
-import { ProfileEditor, ProfileFormValues } from "./components/ProfileEditor";
+import { ProfileEditor } from "./components/ProfileEditor";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
-import { Player } from "../../types";
+import { Player, ProfileFormValues } from "../../types";
 import { createNewPlayer } from "../../backend/setters";
 import { sendErrorNotification } from "../../shared-components/toasts/notificationToasts";
 

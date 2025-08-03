@@ -20,7 +20,7 @@ import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useFetchLocations } from "../../../backend/getters";
 import { addNewLocation } from "../../../backend/setters";
-import { capitalizeLocation, sortGamesByDate } from "../../../utils/gameUtils";
+import { sortGamesByDate } from "../../../utils/gameUtils";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../redux/store";
 import { Game, Player } from "../../../types";
@@ -31,6 +31,7 @@ import {
 import { Add } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { getPlayerFullName } from "../../playersList/utils/playerUtils";
+import { LocationAutocomplete } from "../../../shared-components/LocationAutocomplete";
 interface FormData {
   date: Date | null;
   location: string;
@@ -259,25 +260,12 @@ export const GameStartForm: FC<{
               required: "Please enter the location of where you are playing",
             }}
             render={({ field }) => (
-              <Autocomplete
+              <LocationAutocomplete
                 {...field}
-                freeSolo
-                onChange={(_e, newValue) => {
-                  setValue("location", capitalizeLocation(newValue));
-                }}
-                onInputChange={(_e, newInputValue) =>
-                  setValue("location", capitalizeLocation(newInputValue))
-                }
-                options={locations}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    error={!!errors.location}
-                    label="Location"
-                    placeholder="Select location or enter a new one"
-                    helperText={errors.location?.message}
-                  />
-                )}
+                setValue={(newValue: string) => setValue("location", newValue)}
+                label="Location"
+                hasError={Boolean(!!errors.location)}
+                errorMessage={errors.location?.message}
               />
             )}
           />

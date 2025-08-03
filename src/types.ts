@@ -98,3 +98,13 @@ export interface AggregateStats {
     [statName: string]: number;
   };
 }
+
+export interface ProfileFormValues {
+  email: string;
+  firstName: string;
+  lastName: string;
+  nickname: string;
+  out: boolean;
+  profilePictureUrl: string;
+  defaultLocation: string;
+}

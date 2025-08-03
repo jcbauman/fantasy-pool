@@ -1,5 +1,4 @@
 import {
-  Autocomplete,
   Button,
   ButtonGroup,
   Card,
@@ -11,7 +10,6 @@ import {
   Stack,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 import { FC, useMemo, useState } from "react";
@@ -39,13 +37,13 @@ import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
 import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlined";
 import { MultiBallDeleteDialog } from "./MultiBallDeleteDialog";
-import { useFetchLocations } from "../../../backend/getters";
 import { DeleteOutlined } from "@mui/icons-material";
 import DatePicker from "../../../shared-components/DatePicker";
 import { Timestamp } from "firebase/firestore";
 import { formatDateStringToMMDDYYY } from "../../../utils/dateUtils";
 import { sendSuccessNotification } from "../../../shared-components/toasts/notificationToasts";
 import { capitalizeLocation } from "../../../utils/gameUtils";
+import { LocationAutocomplete } from "../../../shared-components/LocationAutocomplete";
 
 export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
   gameToEdit,
@@ -57,7 +55,6 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
     players,
     authState: { player },
   } = useAppContext();
-  const locations = useFetchLocations();
   const { iterateStatNonRedux } = useIterateStats();
   const [selectedTab, setSelectedTab] = useState(0);
   const [endGameDialogOpen, setEndGameDialogOpen] = useState(false);
@@ -138,31 +135,16 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
       <Card sx={{ p: 2 }}>
         <Typography variant="overline">Details</Typography>
         <Stack direction="column" gap={2}>
-          <Autocomplete
+          <LocationAutocomplete
             sx={{ mt: 1 }}
             value={currGame.location}
-            freeSolo
-            onChange={(_e, newValue) => {
+            setValue={(newValue: string) =>
               setCurrGame({
                 ...currGame,
                 location: capitalizeLocation(newValue),
-              });
-            }}
-            onInputChange={(_e, newInputValue) =>
-              setCurrGame({
-                ...currGame,
-                location: capitalizeLocation(newInputValue),
               })
             }
-            options={locations}
-            renderInput={(params) => (
-              <TextField
-                value={currGame.location}
-                {...params}
-                label="Location"
-                placeholder="Select location or enter a new one"
-              />
-            )}
+            label="Location"
           />
           <DatePicker
             label="Original game date"

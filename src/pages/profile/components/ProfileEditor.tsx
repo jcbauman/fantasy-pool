@@ -1,5 +1,4 @@
 import {
-  Autocomplete,
   Avatar,
   Button,
   Card,
@@ -16,20 +15,9 @@ import { FC, useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useAppContext } from "../../../context/AppContext";
-import { Player } from "../../../types";
+import { Player, ProfileFormValues } from "../../../types";
 import { useLocation } from "react-router-dom";
-import { useFetchLocations } from "../../../backend/getters";
-import { capitalizeLocation } from "../../../utils/gameUtils";
-
-export interface ProfileFormValues {
-  email: string;
-  firstName: string;
-  lastName: string;
-  nickname: string;
-  out: boolean;
-  profilePictureUrl: string;
-  defaultLocation: string;
-}
+import { LocationAutocomplete } from "../../../shared-components/LocationAutocomplete";
 
 export const ProfileEditor: FC<{
   player: Player | null;
@@ -39,7 +27,6 @@ export const ProfileEditor: FC<{
     authState: { user, signOut },
     league,
   } = useAppContext();
-  const locations = useFetchLocations();
   const location = useLocation();
   const defaultValues = useMemo(() => {
     return {
@@ -146,29 +133,12 @@ export const ProfileEditor: FC<{
               )}
               <Stack direction="row" gap={1} sx={{ alignItems: "center" }}>
                 <LocationOnOutlinedIcon />
-                <Autocomplete
+                <LocationAutocomplete
                   size="small"
-                  fullWidth
                   value={watchAll.defaultLocation}
-                  {...register("defaultLocation")}
-                  freeSolo
-                  onChange={(_e, newValue) => {
-                    setValue("defaultLocation", capitalizeLocation(newValue));
-                  }}
-                  onInputChange={(_e, newInputValue) =>
-                    setValue(
-                      "defaultLocation",
-                      capitalizeLocation(newInputValue)
-                    )
-                  }
-                  options={locations}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Default pool hall"
-                      placeholder="Select location or enter a new one"
-                    />
-                  )}
+                  register={register("defaultLocation")}
+                  setValue={(value) => setValue("defaultLocation", value)}
+                  label="Default pool hall"
                 />
               </Stack>
               <FormControl>

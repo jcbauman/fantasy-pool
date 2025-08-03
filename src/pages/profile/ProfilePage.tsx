@@ -1,10 +1,10 @@
 import { Button, Card, Stack, Typography } from "@mui/material";
 import { FC } from "react";
-import { ProfileEditor, ProfileFormValues } from "./components/ProfileEditor";
+import { ProfileEditor } from "./components/ProfileEditor";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
-import { Player } from "../../types";
+import { Player, ProfileFormValues } from "../../types";
 import { updateCurrentPlayer } from "../../backend/setters";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { SettingsEditor } from "./components/SettingsEditor";

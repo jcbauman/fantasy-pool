@@ -86,6 +86,8 @@ export const ProfileEditor: FC<{
                 defaultValue={watchAll.firstName}
                 {...register("firstName", {
                   required: "First name is required",
+                  validate: (value) =>
+                    value.trim() !== "" || "First name is required",
                 })}
               />
               {errors.firstName && (
@@ -99,7 +101,11 @@ export const ProfileEditor: FC<{
                 label="Last name"
                 size="small"
                 defaultValue={watchAll.lastName}
-                {...register("lastName", { required: "Last name is required" })}
+                {...register("lastName", {
+                  required: "Last name is required",
+                  validate: (value) =>
+                    value.trim() !== "" || "Last name is required",
+                })}
               />
               {errors.lastName && (
                 <Typography color="error" variant="caption">
@@ -112,7 +118,11 @@ export const ProfileEditor: FC<{
                 label="Nickname"
                 size="small"
                 defaultValue={watchAll.nickname}
-                {...register("nickname", { required: "Nickname is required" })}
+                {...register("nickname", {
+                  required: "Nickname is required",
+                  validate: (value) =>
+                    value.trim() !== "" || "Nickname is required",
+                })}
               />
               <TextField
                 variant="outlined"

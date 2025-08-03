@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Badge,
   Card,
   Divider,

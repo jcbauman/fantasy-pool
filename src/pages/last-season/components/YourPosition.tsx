@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Badge,
   Card,
   IconButton,
@@ -15,13 +14,11 @@ import {
 } from "../../statsWrapped/wrappedUtils";
 import styled from "@emotion/styled";
 import {
-  getAbbreviation,
   normalizePercentage,
   normalizeStat,
 } from "../../../utils/statsUtils";
 import { Player } from "../../../types";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
-import { getPlayerNameAbbreviation } from "../../playersList/utils/playerUtils";
 import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 
 export const YourPosition: FC<{ player: Player | undefined }> = ({

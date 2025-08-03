@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Player } from "../../../types";
-import { Avatar, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { getPlayerNameAbbreviation } from "../utils/playerUtils";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { useNavigate } from "react-router-dom";

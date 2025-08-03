@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Game, Player } from "../../../types";
-import { Avatar, Card, Stack, Typography } from "@mui/material";
+import { Card, Stack, Typography } from "@mui/material";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { StatOverview } from "../../playersList/components/StatOverview";
 import { getMedal, toOrdinal } from "../../statsWrapped/wrappedUtils";

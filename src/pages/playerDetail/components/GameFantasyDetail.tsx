@@ -1,6 +1,5 @@
 import {
   Stack,
-  Avatar,
   Typography,
   TableContainer,
   Paper,
@@ -19,7 +18,6 @@ import {
   getStringFromStatKey,
   normalizeStat,
   getFantasyScoreForPlayerSeason,
-  getAbbreviation,
 } from "../../../utils/statsUtils";
 import {
   formatDateToMMDD,
@@ -33,10 +31,6 @@ import {
 import { useAppContext } from "../../../context/AppContext";
 import { NavigateNext } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
-import {
-  getPlayerFullName,
-  getPlayerNameAbbreviation,
-} from "../../playersList/utils/playerUtils";
 import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 
 export const GameFantasyDetail: FC<{

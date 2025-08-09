@@ -11,7 +11,7 @@ import {
   Link,
   IconButton,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { GameStatKeys, GameStat, Game, Player } from "../../../types";
 import {
   getFantasyMultiplierForStat,
@@ -32,6 +32,7 @@ import { useAppContext } from "../../../context/AppContext";
 import { NavigateNext } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
+import { getPlayerFullName } from "../../playersList/utils/playerUtils";
 
 export const GameFantasyDetail: FC<{
   game: Game | undefined;
@@ -41,10 +42,14 @@ export const GameFantasyDetail: FC<{
 }> = ({ game, player, scoringMatrix, includeElapsedTime }) => {
   const { players } = useAppContext();
   const [playerToView, setPlayerToView] = useState(player);
+  useEffect(() => {
+    setPlayerToView(player);
+  }, [player]);
   if (!game || !playerToView) return <></>;
   const playerStats = game.statsByPlayer.find(
     (s) => s.playerId === playerToView.id
   );
+
   if (!playerStats) return <></>;
   const timeOfDay = formatDateToTimeOfDay(new Date(game.timestamp));
   const caption = `${formatDateToMMDD(new Date(game.timestamp))} at ${
@@ -62,7 +67,9 @@ export const GameFantasyDetail: FC<{
   const otherGamePlayer = getOtherGamePlayer(game, playerToView?.id, players);
   const partnershipCaption =
     isGamePartnership !== undefined
-      ? `${isGamePartnership ? "w/" : "vs."} ${otherGamePlayer?.firstName} ${otherGamePlayer?.lastName}`
+      ? `${isGamePartnership ? "w/" : "vs."} ${otherGamePlayer?.firstName} ${
+          otherGamePlayer?.lastName
+        }`
       : undefined;
   return (
     <Stack direction="column" sx={{ alignItems: "center" }}>
@@ -72,6 +79,7 @@ export const GameFantasyDetail: FC<{
         spacing={1}
       >
         <PlayerAvatar player={playerToView} />
+        <Typography>{getPlayerFullName(playerToView)}</Typography>
         <Typography variant="caption">{caption}</Typography>
         {partnershipCaption && (
           <Link

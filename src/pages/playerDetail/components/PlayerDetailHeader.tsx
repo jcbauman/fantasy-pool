@@ -26,7 +26,11 @@ export const PlayerDetailHeader: FC<{
         spacing={2}
         sx={{ width: "100%", p: 1, alignItems: "center" }}
       >
-        <PlayerAvatar player={player} sx={{ width: 100, height: 100 }} />
+        <PlayerAvatar
+          player={player}
+          sx={{ width: 100, height: 100 }}
+          typographyProps={{ variant: "h4" }}
+        />
         <Stack direction="column" sx={{ p: 1 }}>
           <Typography variant="overline" fontWeight={500} fontSize={16}>
             {player.firstName + " " + player.lastName}

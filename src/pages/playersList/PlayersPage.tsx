@@ -144,7 +144,7 @@ export const PlayersPage: FC = () => {
 
         <Stack
           direction="row"
-          sx={{ pt: 1, pl: 2, mb: 2, alignItems: "center" }}
+          sx={{ pt: 1, pl: 2, mb: 6, alignItems: "center" }}
         >
           <Typography variant="caption">
             {hideInactivePlayers

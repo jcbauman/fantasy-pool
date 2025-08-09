@@ -4,7 +4,6 @@ import { Game, Player } from "../../../types";
 import { GameFantasyDetail } from "./GameFantasyDetail";
 import { TransitionProps } from "@mui/material/transitions";
 
-// Slide transition that slides up
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children: ReactElement<any, any> },
   ref: Ref<unknown>

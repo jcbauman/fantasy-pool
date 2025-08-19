@@ -22,6 +22,7 @@ import {
 } from "../shared-components/hooks/useNotificationBadges";
 import { checkPlayerInactivity } from "../pages/playersList/utils/inactivityUtils";
 import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
+import { sendErrorNotification } from "../shared-components/toasts/notificationToasts";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -93,6 +94,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
           setRecords(res);
         } else {
           setRecords(undefined);
+          sendErrorNotification("Could not fetch records");
         }
       }
       setLoadingRecords(false);

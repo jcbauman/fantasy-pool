@@ -46,6 +46,9 @@ export const useAuthState = (): UseAuthState => {
       if (thisUser && thisUser.id) dispatch(setUser(thisUser));
       else {
         dispatch(setUser(null));
+        if (fbUser?.uid) {
+          sendErrorNotification("Could not fetch user");
+        }
       }
       setShouldRefetchPlayer(true);
     };
@@ -59,6 +62,9 @@ export const useAuthState = (): UseAuthState => {
         dispatch(setPlayer(thisPlayer));
       } else {
         dispatch(setPlayer(null));
+        if (user?.id) {
+          sendErrorNotification("Could not fetch player");
+        }
       }
       setShouldRefetchPlayer(false);
     };

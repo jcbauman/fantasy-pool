@@ -25,6 +25,7 @@ export const MultiBallCollapse: FC<MultiBallDialogProps> = ({
           {buttons.map((b) => {
             return (
               <Button
+                key={b}
                 size="large"
                 sx={{ flex: 1 }}
                 variant="contained"

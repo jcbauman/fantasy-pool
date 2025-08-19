@@ -75,6 +75,7 @@ export const SignIn: FC = () => {
             type="email"
             variant="outlined"
             label="Email"
+            autoComplete="email"
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -92,6 +93,9 @@ export const SignIn: FC = () => {
             variant="outlined"
             type="password"
             label="Password"
+            autoComplete={
+              signUpMode === 0 ? "current-password" : "new-password"
+            }
             {...register("password", {
               required: "Password is required",
               minLength: {

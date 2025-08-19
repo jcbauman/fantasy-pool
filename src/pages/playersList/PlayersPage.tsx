@@ -200,6 +200,7 @@ const PlayerRow: FC<{
         if (f.value === "name")
           return (
             <TableCell
+              key={f.value}
               style={{
                 position: "sticky",
                 left: 0,
@@ -212,17 +213,19 @@ const PlayerRow: FC<{
           );
         else if (f.value === "winPercentage")
           return (
-            <TableCell sx={{ textAlign: "center" }}>{winPercentage}</TableCell>
+            <TableCell key={f.value} sx={{ textAlign: "center" }}>
+              {winPercentage}
+            </TableCell>
           );
         else if (f.value === "fantasyGameAvg")
           return (
-            <TableCell sx={{ textAlign: "center" }}>
+            <TableCell sx={{ textAlign: "center" }} key={f.value}>
               {normalizeStat(stats.fantasyGameAvg)}
             </TableCell>
           );
         else
           return (
-            <TableCell sx={{ textAlign: "center" }}>
+            <TableCell sx={{ textAlign: "center" }} key={f.value}>
               {isKeyOfStats(f.value, stats) ? stats[f.value] : "yee"}
             </TableCell>
           );

@@ -1,4 +1,4 @@
-import { Badge, Divider, Stack, Typography } from "@mui/material";
+import { Badge, Divider, Skeleton, Stack, Typography } from "@mui/material";
 import { FC, useState } from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -81,9 +81,13 @@ export const OverviewComponent: FC = () => {
           <Typography variant="overline" lineHeight={0.5}>
             <strong>League</strong>
           </Typography>
-          <Typography variant="overline" fontSize={16}>
-            {league?.name}
-          </Typography>
+          {league?.name ? (
+            <Typography variant="overline" fontSize={16}>
+              {league?.name}
+            </Typography>
+          ) : (
+            <Skeleton variant="text" width={150} height={20} />
+          )}
           <Typography variant="caption" sx={{ fontStyle: "italic" }}>
             {seasonString}
           </Typography>

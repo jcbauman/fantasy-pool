@@ -63,7 +63,7 @@ export const useAuthState = (): UseAuthState => {
       } else {
         dispatch(setPlayer(null));
         if (user?.id) {
-          sendErrorNotification("Could not fetch player");
+          console.error("Could not fetch player", user.id);
         }
       }
       setShouldRefetchPlayer(false);

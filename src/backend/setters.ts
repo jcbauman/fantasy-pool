@@ -33,7 +33,11 @@ export const setupNewUser = async (
       password
     );
     try {
-      const newUser: Omit<User, "id"> = { email, fbID: user.uid ?? "" };
+      const newUser: Omit<User, "id"> = {
+        email,
+        fbID: user.uid ?? "",
+        leagueId: process.env.REACT_APP_DEFAULT_LEAGUE_ID,
+      };
       const docRef = await addDoc(USERS_COLLECTION, newUser);
       return docRef.id;
     } catch (e) {

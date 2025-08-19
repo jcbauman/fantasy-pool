@@ -33,6 +33,7 @@ import { NavigateNext } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 import { getPlayerFullName } from "../../playersList/utils/playerUtils";
+import React from "react";
 
 export const GameFantasyDetail: FC<{
   game: Game | undefined;
@@ -180,7 +181,9 @@ export const GameFantasyDetail: FC<{
                   </TableRow>
                 );
               } else {
-                return <></>;
+                return (
+                  <React.Fragment key={`${key}-empty-${idx}`}></React.Fragment>
+                );
               }
             })}
             <TableRow>

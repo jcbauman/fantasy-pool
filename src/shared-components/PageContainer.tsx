@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import { DesktopWarningDialog } from "./DesktopWarningDialog";
 import { Loader } from "./Loader";
+import { useLoadingWarning } from "./hooks/useLoadingWarning";
 
 export const NAV_BAR_HEIGHT = 56;
 
@@ -12,13 +13,22 @@ export const PageContainer: FC<{
   children: JSX.Element;
   authedRoute?: boolean;
   isUnauthedRoute?: boolean; //kick off page if authed
-}> = ({ loading, children, authedRoute, isUnauthedRoute }) => {
+  onLoadingWarning?: () => void;
+}> = ({
+  loading,
+  children,
+  authedRoute,
+  isUnauthedRoute,
+  onLoadingWarning,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const {
     authState: { isAuthed, authLoading },
   } = useAppContext();
+
+  useLoadingWarning(loading, onLoadingWarning);
 
   useEffect(() => {
     if (!isAuthed && authedRoute && !authLoading) {

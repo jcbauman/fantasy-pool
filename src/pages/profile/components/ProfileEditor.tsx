@@ -119,11 +119,16 @@ export const ProfileEditor: FC<{
                 size="small"
                 defaultValue={watchAll.nickname}
                 {...register("nickname", {
-                  required: "Nickname is required",
+                  required: "Please come up with a cool nickname",
                   validate: (value) =>
                     value.trim() !== "" || "Nickname is required",
                 })}
               />
+              {errors.nickname && (
+                <Typography color="error" variant="caption">
+                  {errors.nickname.message}
+                </Typography>
+              )}
               <TextField
                 variant="outlined"
                 type="email"

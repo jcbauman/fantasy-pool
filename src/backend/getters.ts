@@ -27,6 +27,7 @@ import { sortGamesByDate } from "../utils/gameUtils";
 import { getSeasonStart, getThreeMonthsAgo } from "../utils/dateUtils";
 import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
 import { FullSeasonRecordObject } from "./setters";
+import { sendErrorNotification } from "../shared-components/toasts/notificationToasts";
 
 // games
 
@@ -99,7 +100,7 @@ export const getGamesForPlayer = async (
     }));
     return documents as Game[];
   } catch (error) {
-    console.error("Error querying games: ", error);
+    sendErrorNotification(`Error querying games: ${error}`);
     return [];
   }
 };
@@ -138,7 +139,7 @@ export const getGamesForPlayerAfterDate = async (
     }));
     return documents as Game[];
   } catch (error) {
-    console.error("Error querying games: ", error);
+    sendErrorNotification(`Error querying games: ${error}`);
     return [];
   }
 };
@@ -165,7 +166,7 @@ export const getAllGamesForLastSeason = async (): Promise<
     }));
     return documents as Game[];
   } catch (error) {
-    console.error("Error querying games: ", error);
+    sendErrorNotification(`Error querying games: ${error}`);
     return [];
   }
 };
@@ -193,7 +194,7 @@ export const getPlayerGamesForLastSeason = async (
     }));
     return documents as Game[];
   } catch (error) {
-    console.error("Error querying games: ", error);
+    sendErrorNotification(`Error querying games: ${error}`);
     return [];
   }
 };
@@ -262,7 +263,7 @@ export const useFetchLocations = (): string[] => {
         });
         setLocations(docsData);
       } catch (error) {
-        console.error("Error fetching documents: ", error);
+        sendErrorNotification(`Error fetching locations: ${error}`);
       }
     };
 
@@ -302,7 +303,7 @@ export const getPlayerByUserID = async (
     }));
     return documents[0] as Player;
   } catch (error) {
-    console.error("Error querying players: ", error);
+    sendErrorNotification(`Error querying players: ${error}`);
     return undefined;
   }
 };
@@ -316,7 +317,7 @@ export const fetchLeague = async (id: string): Promise<League | undefined> => {
       ...data,
     };
   } else {
-    console.error("No league record found for ", id);
+    sendErrorNotification(`No league record found for id: ${id} `);
   }
 };
 
@@ -333,7 +334,7 @@ export const getAppUserByUID = async (
     }));
     return documents[0] as User;
   } catch (error) {
-    console.error("Error getting user ", error);
+    sendErrorNotification(`Error fetching user: ${error}`);
     return undefined;
   }
 };
@@ -381,7 +382,7 @@ export const paginatedFetchGames = async (
       ({
         id: doc.id,
         ...doc.data(),
-      }) as Game
+      } as Game)
   );
 
   const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1] || null;
@@ -412,7 +413,7 @@ export const getPastSeasonHistoricalRecord = async (
     const fullRec = documents[0] as FullSeasonRecordObject;
     return fullRec?.records;
   } catch (error) {
-    console.error("Error querying historical record: ", error);
+    sendErrorNotification(`Error querying historical record: ${error} `);
     return undefined;
   }
 };

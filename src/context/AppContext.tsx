@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import { AggregateStats, Game, League, Player, User } from "../types";
-import { mockLeague, mockScoringMatrix } from "../backend/fixtures";
+import { mockScoringMatrix } from "../backend/fixtures";
 import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 import {
   fetchLeague,
@@ -22,6 +22,7 @@ import {
 } from "../shared-components/hooks/useNotificationBadges";
 import { checkPlayerInactivity } from "../pages/playersList/utils/inactivityUtils";
 import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
+import { sendErrorNotification } from "../shared-components/toasts/notificationToasts";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -50,7 +51,7 @@ export const useAppContext = () => {
 export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [league, setLeague] = useState<League | undefined>(mockLeague);
+  const [league, setLeague] = useState<League | undefined>(undefined);
   const [records, setRecords] = useState<SeasonRecords | undefined>(undefined);
   const [loadingLeague, setLoadingLeague] = useState(true);
   const [loadingRecords, setLoadingRecords] = useState(true);
@@ -79,6 +80,8 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
           setLeague(undefined);
         }
         setLoadingLeague(false);
+      } else {
+        setLoadingLeague(false);
       }
     };
     getLeague();
@@ -93,6 +96,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
           setRecords(res);
         } else {
           setRecords(undefined);
+          sendErrorNotification("Could not fetch records");
         }
       }
       setLoadingRecords(false);
@@ -120,7 +124,7 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
         authState,
         notificationBadgesState,
         records,
-        initialLoading: loadingLeague || loadingRecords,
+        initialLoading: loadingLeague || loadingRecords || !league,
       }}
     >
       {children}

@@ -15,9 +15,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import {
-  getStatsForGame,
-} from "../../playersList/utils/playerUtils";
+import { getStatsForGame } from "../../playersList/utils/playerUtils";
 import {
   getFantasyScoreForPlayerSeason,
   normalizeStat,
@@ -30,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { canEditGame } from "../../edit-game/utils";
 import { EditOutlined } from "@mui/icons-material";
 import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
+import React from "react";
 
 export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const {
@@ -202,7 +201,10 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
                   scoringMatrix
                 );
                 const thisPlayer = players.find((p) => p.id === pId);
-                if (!thisPlayer) return <></>;
+                if (!thisPlayer)
+                  return (
+                    <React.Fragment key={`${pId}-not-found`}></React.Fragment>
+                  );
                 return (
                   <TableRow
                     key={pId}

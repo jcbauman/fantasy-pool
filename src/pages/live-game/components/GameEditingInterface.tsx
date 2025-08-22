@@ -1,7 +1,6 @@
 import {
   Autocomplete,
   Button,
-  ButtonGroup,
   Card,
   Divider,
   List,
@@ -46,6 +45,7 @@ import { Timestamp } from "firebase/firestore";
 import { formatDateStringToMMDDYYY } from "../../../utils/dateUtils";
 import { sendSuccessNotification } from "../../../shared-components/toasts/notificationToasts";
 import { capitalizeLocation } from "../../../utils/gameUtils";
+import { ScoringButtonGroup } from "./ScoringButtonGroup";
 
 export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
   gameToEdit,
@@ -213,49 +213,19 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
                 key={field.primary}
                 disablePadding
                 secondaryAction={
-                  <ButtonGroup
-                    variant="contained"
-                    aria-label="Basic button group"
-                  >
-                    <Button
-                      onClick={() => {
-                        if (field.multiBall) {
-                          setMultiBallDeleteDialogOpen(true);
-                        } else {
-                          if (statValue !== 0) {
-                            const resolvedStats = iterateStatNonRedux({
-                              playerId: gamePlayers[selectedTab].id,
-                              statKey: field.stat,
-                              delta: -1,
-                              currGame,
-                            });
-
-                            setCurrGame({
-                              ...currGame,
-                              statsByPlayer: resolvedStats
-                                ? resolvedStats
-                                : currGame.statsByPlayer,
-                            });
-                          }
-                        }
-                      }}
-                    >
-                      -
-                    </Button>
-                    <Button sx={{ pointerEvents: "none" }}>
-                      {field.multiBall ? totalRuns : statValue}
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        if (field.multiBall) {
-                          setMultiBallDialogOpen(true);
-                        } else {
+                  <ScoringButtonGroup
+                    onDecrement={() => {
+                      if (field.multiBall) {
+                        setMultiBallDeleteDialogOpen(true);
+                      } else {
+                        if (statValue !== 0) {
                           const resolvedStats = iterateStatNonRedux({
                             playerId: gamePlayers[selectedTab].id,
                             statKey: field.stat,
-                            delta: 1,
+                            delta: -1,
                             currGame,
                           });
+
                           setCurrGame({
                             ...currGame,
                             statsByPlayer: resolvedStats
@@ -263,11 +233,29 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
                               : currGame.statsByPlayer,
                           });
                         }
-                      }}
-                    >
-                      +
-                    </Button>
-                  </ButtonGroup>
+                      }
+                    }}
+                    onIncrement={() => {
+                      if (field.multiBall) {
+                        setMultiBallDialogOpen(true);
+                      } else {
+                        const resolvedStats = iterateStatNonRedux({
+                          playerId: gamePlayers[selectedTab].id,
+                          statKey: field.stat,
+                          delta: 1,
+                          currGame,
+                        });
+                        setCurrGame({
+                          ...currGame,
+                          statsByPlayer: resolvedStats
+                            ? resolvedStats
+                            : currGame.statsByPlayer,
+                        });
+                      }
+                    }}
+                    value={field.multiBall ? totalRuns : statValue}
+                    highlight={false}
+                  />
                 }
               >
                 <ListItemIcon sx={{ minWidth: "30px" }}>

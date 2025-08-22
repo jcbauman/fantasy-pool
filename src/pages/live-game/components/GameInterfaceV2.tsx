@@ -72,6 +72,7 @@ export const GameInterfaceV2: FC = () => {
   const [wonGame, setWonGame] = useState<boolean | null>(null);
   const [by8Ball, setBy8Ball] = useState<boolean | null>(null);
   const [doubles, setDoubles] = useState<boolean | null>(null);
+  const [winnerIndex, setWinnerIndex] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const startTime = game?.timestamp ? new Date(game?.timestamp) : new Date();
@@ -90,7 +91,7 @@ export const GameInterfaceV2: FC = () => {
     showTabs &&
     by8Ball !== null &&
     doubles !== null &&
-    (doubles === false || wonGame !== null);
+    ((doubles === false && winnerIndex !== null) || wonGame !== null);
   const enableSaveGame = showTabs
     ? enableSubmitForDoubles
     : enableSubmitForSingles;
@@ -117,9 +118,10 @@ export const GameInterfaceV2: FC = () => {
       icon: <StrikethroughSOutlinedIcon />,
     },
   ];
-  const otherPlayer = showTabs
-    ? gamePlayers[selectedTab * -1 + 1].firstName
-    : "";
+  const otherPlayer =
+    showTabs && winnerIndex !== null
+      ? gamePlayers[winnerIndex * -1 + 1].firstName
+      : "The other player";
   const doublesScoringOutcomeWording = wonGame
     ? "Both players will share this win!"
     : "Both players will share this loss";
@@ -190,11 +192,11 @@ export const GameInterfaceV2: FC = () => {
         //opponents
         resolvedGame = {
           ...resolvedGame,
-          statsByPlayer: logWin(selectedTab, game),
+          statsByPlayer: logWin(winnerIndex ?? 0, game),
         };
         resolvedGame = {
           ...resolvedGame,
-          statsByPlayer: logLoss(selectedTab * -1 + 1, resolvedGame),
+          statsByPlayer: logLoss((winnerIndex ?? 0) * -1 + 1, resolvedGame),
         };
       }
     } else {
@@ -202,12 +204,12 @@ export const GameInterfaceV2: FC = () => {
       if (wonGame) {
         resolvedGame = {
           ...resolvedGame,
-          statsByPlayer: logWin(selectedTab, game),
+          statsByPlayer: logWin(winnerIndex ?? 0, game),
         };
       } else {
         resolvedGame = {
           ...resolvedGame,
-          statsByPlayer: logLoss(selectedTab, game),
+          statsByPlayer: logLoss(winnerIndex ?? 0, game),
         };
       }
     }
@@ -393,15 +395,15 @@ export const GameInterfaceV2: FC = () => {
                     <ButtonGroup fullWidth>
                       <Button
                         size="large"
-                        onClick={() => setSelectedTab(0)}
-                        variant={selectedTab === 0 ? "contained" : "outlined"}
+                        onClick={() => setWinnerIndex(0)}
+                        variant={winnerIndex === 0 ? "contained" : "outlined"}
                       >
                         {gamePlayers[0].firstName}
                       </Button>
                       <Button
                         size="large"
-                        onClick={() => setSelectedTab(1)}
-                        variant={selectedTab === 1 ? "contained" : "outlined"}
+                        onClick={() => setWinnerIndex(1)}
+                        variant={winnerIndex === 1 ? "contained" : "outlined"}
                       >
                         {gamePlayers[1].firstName}
                       </Button>

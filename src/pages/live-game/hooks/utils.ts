@@ -1,5 +1,5 @@
 import { sendSuccessNotification } from "../../../shared-components/toasts/notificationToasts";
-import { GameStatKeys } from "../../../types";
+import { GameStat, GameStatKeys } from "../../../types";
 import { getSingularStringFromScratchKey } from "../../../utils/statsUtils";
 
 export const sendIterationNotificationMessage = (
@@ -15,4 +15,22 @@ export const sendIterationNotificationMessage = (
         } a ${statString}!`
       : `Removed a ${statString} from ${playerName}`;
   sendSuccessNotification(message);
+};
+
+export const findMultiBallStat = (
+  currentPlayerGameStats: GameStat
+): GameStatKeys | undefined => {
+  const multiballStats = [
+    GameStatKeys.threeBallsPocketedInRow,
+    GameStatKeys.fourBallsPocketedInRow,
+    GameStatKeys.fiveBallsPocketedInRow,
+    GameStatKeys.sixBallsPocketedInRow,
+    GameStatKeys.sevenBallsPocketedInRow,
+    GameStatKeys.runTheTable,
+  ];
+  return multiballStats.find(
+    (stat) =>
+      Boolean(currentPlayerGameStats?.[stat]) &&
+      (currentPlayerGameStats?.[stat] ?? 0) > 0
+  );
 };

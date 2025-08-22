@@ -46,6 +46,7 @@ import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { sendIterationNotificationMessage } from "../hooks/utils";
 import { ScorableFieldItem } from "./ScorableFieldItem";
 import { MultiBallCollapse } from "./MultiBallCollapse";
+import { MultiBallCollapseV2 } from "./MultiBallCollapseV2";
 
 export const GameInterfaceV2: FC = () => {
   const dispatch = useDispatch();
@@ -55,6 +56,9 @@ export const GameInterfaceV2: FC = () => {
     authState: { player },
   } = useAppContext();
   const gameIsIncomplete = useGameIsIncomplete();
+  const { useMultiBallEntryV1 } = useSelector(
+    (state: RootState) => state.settings
+  );
   const game = useSelector((state: RootState) => state.game.currentGame);
   const { iterateStat, iterateStatNonRedux } = useIterateStats();
   const [selectedTab, setSelectedTab] = useState(0);
@@ -72,6 +76,7 @@ export const GameInterfaceV2: FC = () => {
   const [wonGame, setWonGame] = useState<boolean | null>(null);
   const [by8Ball, setBy8Ball] = useState<boolean | null>(null);
   const [doubles, setDoubles] = useState<boolean | null>(null);
+  const [winnerIndex, setWinnerIndex] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const startTime = game?.timestamp ? new Date(game?.timestamp) : new Date();
@@ -90,7 +95,7 @@ export const GameInterfaceV2: FC = () => {
     showTabs &&
     by8Ball !== null &&
     doubles !== null &&
-    (doubles === false || wonGame !== null);
+    ((doubles === false && winnerIndex !== null) || wonGame !== null);
   const enableSaveGame = showTabs
     ? enableSubmitForDoubles
     : enableSubmitForSingles;
@@ -117,9 +122,10 @@ export const GameInterfaceV2: FC = () => {
       icon: <StrikethroughSOutlinedIcon />,
     },
   ];
-  const otherPlayer = showTabs
-    ? gamePlayers[selectedTab * -1 + 1].firstName
-    : "";
+  const otherPlayer =
+    showTabs && winnerIndex !== null
+      ? gamePlayers[winnerIndex * -1 + 1].firstName
+      : "The other player";
   const doublesScoringOutcomeWording = wonGame
     ? "Both players will share this win!"
     : "Both players will share this loss";
@@ -190,11 +196,11 @@ export const GameInterfaceV2: FC = () => {
         //opponents
         resolvedGame = {
           ...resolvedGame,
-          statsByPlayer: logWin(selectedTab, game),
+          statsByPlayer: logWin(winnerIndex ?? 0, game),
         };
         resolvedGame = {
           ...resolvedGame,
-          statsByPlayer: logLoss(selectedTab * -1 + 1, resolvedGame),
+          statsByPlayer: logLoss((winnerIndex ?? 0) * -1 + 1, resolvedGame),
         };
       }
     } else {
@@ -202,12 +208,12 @@ export const GameInterfaceV2: FC = () => {
       if (wonGame) {
         resolvedGame = {
           ...resolvedGame,
-          statsByPlayer: logWin(selectedTab, game),
+          statsByPlayer: logWin(winnerIndex ?? 0, game),
         };
       } else {
         resolvedGame = {
           ...resolvedGame,
-          statsByPlayer: logLoss(selectedTab, game),
+          statsByPlayer: logLoss(winnerIndex ?? 0, game),
         };
       }
     }
@@ -304,24 +310,45 @@ export const GameInterfaceV2: FC = () => {
               );
             })}
           </List>
-          <MultiBallCollapse
-            open={multiBallDialogOpen}
-            onClose={() => setMultiBallDialogOpen(false)}
-            onConfirm={(numBalls: number) => {
-              iterateStat({
-                playerId: gamePlayers[selectedTab].id,
-                statKey: getStatKeyFromNumBalls(numBalls),
-                delta: 1,
-              });
-              handleButtonAnimation(1);
-              if (gamePlayers.length > 1)
-                sendIterationNotificationMessage(
-                  gamePlayers[selectedTab].firstName,
-                  getStatKeyFromNumBalls(numBalls),
-                  1
-                );
-            }}
-          />
+          {useMultiBallEntryV1 ? (
+            <MultiBallCollapse
+              open={multiBallDialogOpen}
+              onClose={() => setMultiBallDialogOpen(false)}
+              onConfirm={(numBalls: number) => {
+                iterateStat({
+                  playerId: gamePlayers[selectedTab].id,
+                  statKey: getStatKeyFromNumBalls(numBalls),
+                  delta: 1,
+                });
+                handleButtonAnimation(1);
+                if (gamePlayers.length > 1)
+                  sendIterationNotificationMessage(
+                    gamePlayers[selectedTab].firstName,
+                    getStatKeyFromNumBalls(numBalls),
+                    1
+                  );
+              }}
+            />
+          ) : (
+            <MultiBallCollapseV2
+              open={multiBallDialogOpen}
+              onClose={() => setMultiBallDialogOpen(false)}
+              onConfirm={(numBalls: number) => {
+                iterateStat({
+                  playerId: gamePlayers[selectedTab].id,
+                  statKey: getStatKeyFromNumBalls(numBalls),
+                  delta: 1,
+                });
+                handleButtonAnimation(1);
+                if (gamePlayers.length > 1)
+                  sendIterationNotificationMessage(
+                    gamePlayers[selectedTab].firstName,
+                    getStatKeyFromNumBalls(numBalls),
+                    1
+                  );
+              }}
+            />
+          )}
           <List disablePadding>
             {negativeFields.map((field, idx) => {
               const statValue = currentPlayerGameStats[field.stat] ?? 0;
@@ -393,15 +420,15 @@ export const GameInterfaceV2: FC = () => {
                     <ButtonGroup fullWidth>
                       <Button
                         size="large"
-                        onClick={() => setSelectedTab(0)}
-                        variant={selectedTab === 0 ? "contained" : "outlined"}
+                        onClick={() => setWinnerIndex(0)}
+                        variant={winnerIndex === 0 ? "contained" : "outlined"}
                       >
                         {gamePlayers[0].firstName}
                       </Button>
                       <Button
                         size="large"
-                        onClick={() => setSelectedTab(1)}
-                        variant={selectedTab === 1 ? "contained" : "outlined"}
+                        onClick={() => setWinnerIndex(1)}
+                        variant={winnerIndex === 1 ? "contained" : "outlined"}
                       >
                         {gamePlayers[1].firstName}
                       </Button>

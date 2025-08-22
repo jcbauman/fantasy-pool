@@ -11,6 +11,7 @@ import { RootState } from "../../../redux/store";
 import {
   setGameStartSoundEffect,
   setHideInactivePlayers,
+  setUseMultiBallEntryV1,
 } from "../../../redux/settingsSlice";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 
@@ -35,6 +36,21 @@ export const SettingsEditor: FC = () => {
             />
           }
           label="Hide inactive players from standings"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={settings.useMultiBallEntryV1}
+              onChange={(_e, checked) => {
+                dispatch(setUseMultiBallEntryV1(checked));
+                fireAnalyticsEvent("Settings_Toggled_Setting", {
+                  setting: "multi ball entry v1",
+                  on: checked,
+                });
+              }}
+            />
+          }
+          label="Use single-tap multi-ball entry"
         />
         <FormControlLabel
           control={

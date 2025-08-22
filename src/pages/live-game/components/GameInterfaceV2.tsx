@@ -46,6 +46,7 @@ import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { sendIterationNotificationMessage } from "../hooks/utils";
 import { ScorableFieldItem } from "./ScorableFieldItem";
 import { MultiBallCollapse } from "./MultiBallCollapse";
+import { MultiBallCollapseV2 } from "./MultiBallCollapseV2";
 
 export const GameInterfaceV2: FC = () => {
   const dispatch = useDispatch();
@@ -55,6 +56,9 @@ export const GameInterfaceV2: FC = () => {
     authState: { player },
   } = useAppContext();
   const gameIsIncomplete = useGameIsIncomplete();
+  const { useMultiBallEntryV1 } = useSelector(
+    (state: RootState) => state.settings
+  );
   const game = useSelector((state: RootState) => state.game.currentGame);
   const { iterateStat, iterateStatNonRedux } = useIterateStats();
   const [selectedTab, setSelectedTab] = useState(0);
@@ -306,24 +310,45 @@ export const GameInterfaceV2: FC = () => {
               );
             })}
           </List>
-          <MultiBallCollapse
-            open={multiBallDialogOpen}
-            onClose={() => setMultiBallDialogOpen(false)}
-            onConfirm={(numBalls: number) => {
-              iterateStat({
-                playerId: gamePlayers[selectedTab].id,
-                statKey: getStatKeyFromNumBalls(numBalls),
-                delta: 1,
-              });
-              handleButtonAnimation(1);
-              if (gamePlayers.length > 1)
-                sendIterationNotificationMessage(
-                  gamePlayers[selectedTab].firstName,
-                  getStatKeyFromNumBalls(numBalls),
-                  1
-                );
-            }}
-          />
+          {useMultiBallEntryV1 ? (
+            <MultiBallCollapse
+              open={multiBallDialogOpen}
+              onClose={() => setMultiBallDialogOpen(false)}
+              onConfirm={(numBalls: number) => {
+                iterateStat({
+                  playerId: gamePlayers[selectedTab].id,
+                  statKey: getStatKeyFromNumBalls(numBalls),
+                  delta: 1,
+                });
+                handleButtonAnimation(1);
+                if (gamePlayers.length > 1)
+                  sendIterationNotificationMessage(
+                    gamePlayers[selectedTab].firstName,
+                    getStatKeyFromNumBalls(numBalls),
+                    1
+                  );
+              }}
+            />
+          ) : (
+            <MultiBallCollapseV2
+              open={multiBallDialogOpen}
+              onClose={() => setMultiBallDialogOpen(false)}
+              onConfirm={(numBalls: number) => {
+                iterateStat({
+                  playerId: gamePlayers[selectedTab].id,
+                  statKey: getStatKeyFromNumBalls(numBalls),
+                  delta: 1,
+                });
+                handleButtonAnimation(1);
+                if (gamePlayers.length > 1)
+                  sendIterationNotificationMessage(
+                    gamePlayers[selectedTab].firstName,
+                    getStatKeyFromNumBalls(numBalls),
+                    1
+                  );
+              }}
+            />
+          )}
           <List disablePadding>
             {negativeFields.map((field, idx) => {
               const statValue = currentPlayerGameStats[field.stat] ?? 0;

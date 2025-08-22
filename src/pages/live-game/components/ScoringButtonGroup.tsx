@@ -4,7 +4,7 @@ import { FC } from "react";
 interface ScoringButtonGroupProps {
   onDecrement: () => void;
   onIncrement: () => void;
-  value: number;
+  value: number | string;
   highlight: boolean;
 }
 export const ScoringButtonGroup: FC<ScoringButtonGroupProps> = ({
@@ -14,7 +14,11 @@ export const ScoringButtonGroup: FC<ScoringButtonGroupProps> = ({
   highlight,
 }) => {
   return (
-    <ButtonGroup variant="contained" aria-label="Run selection">
+    <ButtonGroup
+      variant="contained"
+      aria-label="Run selection"
+      sx={{ flexShrink: 0 }}
+    >
       <Button size="large" onClick={onDecrement}>
         -
       </Button>

@@ -54,6 +54,7 @@ export const ConfirmationDrawerV2: FC<ConfirmationDrawerProps> = ({
             <Button
               disabled={loading}
               variant="contained"
+              sx={{ minWidth: 100 }}
               onClick={() => {
                 onConfirm();
               }}

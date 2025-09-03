@@ -23,6 +23,7 @@ export const TopNav: FC = () => {
   usePageTitle(title);
   const location = useLocation();
   const {
+    initialLoading,
     authState: { isAuthed, player },
   } = useAppContext();
   const navigate = useNavigate();
@@ -87,26 +88,28 @@ export const TopNav: FC = () => {
             <LiveHelp />
           </IconButton>
         )}
-        <IconButton
-          size="small"
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          color="inherit"
-          component={RouterLink}
-          to="/profile"
-          sx={{ padding: "4px" }}
-        >
-          {player ? (
-            <PlayerAvatar
-              sx={{ width: 28, height: 28 }}
-              player={player}
-              {...{ component: RouterLink, to: "/profile" }}
-            />
-          ) : (
-            <AccountCircle sx={{ fontSize: 20 }} />
-          )}
-        </IconButton>
+        {!hideButtons && !initialLoading && (
+          <IconButton
+            size="small"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+            component={RouterLink}
+            to="/profile"
+            sx={{ padding: "4px" }}
+          >
+            {player ? (
+              <PlayerAvatar
+                sx={{ width: 28, height: 28 }}
+                player={player}
+                {...{ component: RouterLink, to: "/profile" }}
+              />
+            ) : (
+              <AccountCircle sx={{ fontSize: 20 }} />
+            )}
+          </IconButton>
+        )}
       </Toolbar>
     </AppBar>
   );

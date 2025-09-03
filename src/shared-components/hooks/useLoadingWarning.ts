@@ -16,7 +16,7 @@ export const useLoadingWarning = (
         startTimeRef.current = Date.now();
         timeoutRef.current = setTimeout(() => {
           sendSuccessNotification(
-            "Sorry for the wait. Check your wifi or data connection, or contact your league manager if this issue persists."
+            "Still working. Check your internet connection, or contact your league manager if this issue persists."
           );
           onWarn?.();
         }, 8000);

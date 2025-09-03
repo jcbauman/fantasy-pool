@@ -47,6 +47,7 @@ import { sendIterationNotificationMessage } from "../hooks/utils";
 import { ScorableFieldItem } from "./ScorableFieldItem";
 import { MultiBallCollapse } from "./MultiBallCollapse";
 import { MultiBallCollapseV2 } from "./MultiBallCollapseV2";
+import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 
 export const GameInterfaceV2: FC = () => {
   const dispatch = useDispatch();
@@ -423,6 +424,10 @@ export const GameInterfaceV2: FC = () => {
                         onClick={() => setWinnerIndex(0)}
                         variant={winnerIndex === 0 ? "contained" : "outlined"}
                       >
+                        <PlayerAvatar
+                          player={gamePlayers[0]}
+                          sx={{ width: 24, height: 24, mr: 1 }}
+                        />
                         {gamePlayers[0].firstName}
                       </Button>
                       <Button
@@ -430,6 +435,10 @@ export const GameInterfaceV2: FC = () => {
                         onClick={() => setWinnerIndex(1)}
                         variant={winnerIndex === 1 ? "contained" : "outlined"}
                       >
+                        <PlayerAvatar
+                          player={gamePlayers[1]}
+                          sx={{ width: 24, height: 24, mr: 1 }}
+                        />
                         {gamePlayers[1].firstName}
                       </Button>
                     </ButtonGroup>

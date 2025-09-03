@@ -16,13 +16,15 @@ import EightBallIcon from "../../shared-components/icons/EightBallIcon";
 import { usePageTitle } from "../../shared-components/hooks/usePageTitle";
 import { LiveHelp } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../shared-components/hooks/analytics";
+import { PlayerAvatar } from "../../shared-components/PlayerAvatar";
 
 export const TopNav: FC = () => {
   const { title, showBackButton, hideButtons } = useTopNav();
   usePageTitle(title);
   const location = useLocation();
   const {
-    authState: { isAuthed },
+    initialLoading,
+    authState: { isAuthed, player },
   } = useAppContext();
   const navigate = useNavigate();
   const { gameIsInProgress } = useSelector((state: RootState) => state.game);
@@ -36,7 +38,6 @@ export const TopNav: FC = () => {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
             onClick={() => {
               if (showBackButton && window.history.length > 2) {
                 window.history.back();
@@ -87,17 +88,28 @@ export const TopNav: FC = () => {
             <LiveHelp />
           </IconButton>
         )}
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          color="inherit"
-          component={RouterLink}
-          to="/profile"
-        >
-          {!hideButtons && <AccountCircle />}
-        </IconButton>
+        {!hideButtons && !initialLoading && (
+          <IconButton
+            size="small"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+            component={RouterLink}
+            to="/profile"
+            sx={{ padding: "4px" }}
+          >
+            {player ? (
+              <PlayerAvatar
+                sx={{ width: 28, height: 28 }}
+                player={player}
+                {...{ component: RouterLink, to: "/profile" }}
+              />
+            ) : (
+              <AccountCircle sx={{ fontSize: 20 }} />
+            )}
+          </IconButton>
+        )}
       </Toolbar>
     </AppBar>
   );

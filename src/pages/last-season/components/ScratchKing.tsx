@@ -180,7 +180,7 @@ export const ScratchKing: React.FC = () => {
                   textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)",
                 }}
               >
-                in {records?.[scratcher?.id ?? ""]?.totalGames} games
+                in {records?.[scratcher?.id ?? ""]?.totalGames ?? "all"} games
               </Typography>
             </Stack>
           </Slide>

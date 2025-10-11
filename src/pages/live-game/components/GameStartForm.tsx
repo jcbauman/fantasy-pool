@@ -18,8 +18,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { initializeGame } from "../../../redux/gameSlice";
 import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { useFetchLocations } from "../../../backend/getters";
-import { addNewLocation } from "../../../backend/setters";
+import {
+  useFetchLocations,
+  addNewLocation,
+} from "../../../backend/endpoints/locations";
 import { capitalizeLocation, sortGamesByDate } from "../../../utils/gameUtils";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../redux/store";

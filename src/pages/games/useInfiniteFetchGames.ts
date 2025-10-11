@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { paginatedFetchGames } from "../../backend/getters";
+import { paginatedFetchGames } from "../../backend/endpoints/games";
 import { Game } from "../../types";
 import { sendErrorNotification } from "../../shared-components/toasts/notificationToasts";
 

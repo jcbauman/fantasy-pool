@@ -33,12 +33,15 @@ import { useNavigate } from "react-router-dom";
 import { Game, GameStatKeys } from "../../../types";
 import { useIterateStats } from "../hooks/useIterateStats";
 import { MultiBallDialog } from "./MultiBallDialog";
-import { deleteGame, updateExistingGame } from "../../../backend/setters";
+import {
+  deleteGame,
+  updateExistingGame,
+} from "../../../backend/endpoints/games";
 import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
 import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlined";
 import { MultiBallDeleteDialog } from "./MultiBallDeleteDialog";
-import { useFetchLocations } from "../../../backend/getters";
+import { useFetchLocations } from "../../../backend/endpoints/locations";
 import { DeleteOutlined } from "@mui/icons-material";
 import DatePicker from "../../../shared-components/DatePicker";
 import { Timestamp } from "firebase/firestore";

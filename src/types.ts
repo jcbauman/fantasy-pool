@@ -98,3 +98,22 @@ export interface AggregateStats {
     [statName: string]: number;
   };
 }
+
+export interface FullSeasonRecordObject {
+  seasonEndDate: string;
+  records: SeasonRecords;
+  leagueId: string;
+}
+
+export interface SeasonRecords {
+  [playerId: string]: StatsForPlayerGames & { rank: number };
+}
+
+export type StatsForPlayerGames = GameStat & {
+  totalGames: number;
+  totalWins: number;
+  totalSessions: number;
+  winPercentage: number;
+  fantasyScore: number;
+  fantasyGameAvg: number;
+};

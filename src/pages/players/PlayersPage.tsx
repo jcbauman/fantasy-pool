@@ -9,13 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import { FC, useMemo } from "react";
-import { Player } from "../../types";
+import { Player, StatsForPlayerGames } from "../../types";
 import { PlayerCell } from "./components/PlayerCell";
-import {
-  getPlayerFullName,
-  getStatsForPlayerGames,
-  StatsForPlayerGames,
-} from "./utils/playerUtils";
+import { getPlayerFullName, getStatsForPlayerGames } from "./utils/playerUtils";
 import { normalizePercentage, normalizeStat } from "../../utils/statsUtils";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";

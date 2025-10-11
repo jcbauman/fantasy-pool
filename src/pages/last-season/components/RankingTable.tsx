@@ -12,12 +12,10 @@ import {
 import { FC, useEffect, useState } from "react";
 import { useAppContext } from "../../../context/AppContext";
 import { normalizeStat } from "../../../utils/statsUtils";
-import {
-  getPlayerNameAbbreviation,
-  SeasonRecords,
-} from "../../players/utils/playerUtils";
-import { getPastSeasonHistoricalRecord } from "../../../backend/getters";
+import { getPlayerNameAbbreviation } from "../../players/utils/playerUtils";
+import { getPastSeasonHistoricalRecord } from "../../../backend/endpoints/records";
 import { getSeasonStart, getThreeMonthsAgo } from "../../../utils/dateUtils";
+import { SeasonRecords } from "../../../types";
 
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";

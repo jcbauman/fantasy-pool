@@ -12,7 +12,7 @@ import {
 import { FC, useEffect, useState } from "react";
 import { useAppContext } from "../../../context/AppContext";
 import { getMostPopularLocation } from "../../../utils/gameUtils";
-import { updateCurrentPlayer } from "../../../backend/setters";
+import { updateCurrentPlayer } from "../../../backend/endpoints/players";
 import {
   sendErrorNotification,
   sendSuccessNotification,

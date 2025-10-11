@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
-import { getPlayerGamesForLastSeason } from "../../backend/getters";
+import { getPlayerGamesForLastSeason } from "../../backend/endpoints/games";
 import { Game } from "../../types";
 import { RankingTable } from "./components/RankingTable";
 import { YourPosition } from "./components/YourPosition";

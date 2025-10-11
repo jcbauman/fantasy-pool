@@ -14,7 +14,7 @@ import {
   getThreeMonthsAgo,
 } from "../../utils/dateUtils";
 import { createRecordsForPlayers } from "../players/utils/playerUtils";
-import { addNewSeasonRecords } from "../../backend/setters";
+import { addNewSeasonRecords } from "../../backend/endpoints/records";
 import {
   sendErrorNotification,
   sendSuccessNotification,

@@ -1,4 +1,6 @@
 import {
+  addDoc,
+  deleteDoc,
   doc,
   DocumentData,
   getDoc,
@@ -11,25 +13,16 @@ import {
   QuerySnapshot,
   startAfter,
   Timestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
 import { useEffect, useState } from "react";
-import { Game, League, Player, PoolHallLocation, User } from "../types";
-import {
-  firestore,
-  GAMES_COLLECTION,
-  LOCATIONS_COLLECTION,
-  PLAYERS_COLLECTION,
-  RECORDS_COLLECTION,
-  USERS_COLLECTION,
-} from "./firebase/controller";
-import { sortGamesByDate } from "../utils/gameUtils";
-import { getSeasonStart, getThreeMonthsAgo } from "../utils/dateUtils";
-import { SeasonRecords } from "../pages/players/utils/playerUtils";
-import { FullSeasonRecordObject } from "./setters";
-import { sendErrorNotification } from "../shared-components/toasts/notificationToasts";
-
-// games
+import { Game } from "../../types";
+import { firestore, GAMES_COLLECTION } from "../firebase/controller";
+import { sortGamesByDate } from "../../utils/gameUtils";
+import { getSeasonStart, getThreeMonthsAgo } from "../../utils/dateUtils";
+import { sendErrorNotification } from "../../shared-components/toasts/notificationToasts";
 
 export const useFetchGames = (): Game[] => {
   const [games, setGames] = useState<Game[]>([]);
@@ -199,146 +192,6 @@ export const getPlayerGamesForLastSeason = async (
   }
 };
 
-export const useFetchUsers = (): User[] => {
-  const [users, setUsers] = useState<User[]>([]);
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      USERS_COLLECTION,
-      (snapshot: QuerySnapshot<DocumentData>) =>
-        setUsers(
-          snapshot.docs.map((doc) => {
-            const data = doc.data();
-            return {
-              id: doc.id,
-              fbID: data.fbID,
-              email: data.email,
-              name: data.name,
-              leagueId: data.leagueId,
-              isAppAdmin: data.isAppAdmin,
-            };
-          })
-        )
-    );
-    return () => unsubscribe();
-  }, []);
-  return users;
-};
-
-export const useFetchPlayers = (): Player[] => {
-  const [players, setPlayers] = useState<Player[]>([]);
-  useEffect(() => {
-    const q = query(PLAYERS_COLLECTION, where("firstName", "!=", null));
-
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot: QuerySnapshot<DocumentData>) => {
-        setPlayers(
-          snapshot.docs.map((doc) => {
-            const data = doc.data() as Omit<Player, "id">;
-            return {
-              id: doc.id,
-              ...data,
-            };
-          })
-        );
-      }
-    );
-    return () => unsubscribe();
-  }, []);
-  return players;
-};
-
-export const useFetchLocations = (): string[] => {
-  const [locations, setLocations] = useState<PoolHallLocation[]>([]);
-  useEffect(() => {
-    const fetchDocuments = async () => {
-      try {
-        const querySnapshot = await getDocs(LOCATIONS_COLLECTION);
-        const docsData: PoolHallLocation[] = querySnapshot.docs.map((doc) => {
-          const data = doc.data() as Omit<PoolHallLocation, "id">;
-          return {
-            id: doc.id,
-            ...data,
-          };
-        });
-        setLocations(docsData);
-      } catch (error) {
-        sendErrorNotification(`Error fetching locations: ${error}`);
-      }
-    };
-
-    fetchDocuments();
-  }, []);
-
-  const reducedLocations = locations.map((l) => l.name);
-  return [...new Set(reducedLocations)].sort();
-};
-
-export const fetchPlayerById = async (
-  id: string
-): Promise<Player | undefined> => {
-  const docSnap = await getDoc(doc(firestore, `players/${id}`));
-  if (docSnap.exists()) {
-    const data = docSnap.data() as Omit<Player, "id">;
-    return {
-      id: docSnap.id,
-      ...data,
-    };
-  } else {
-    console.error("No player record found found for ", id);
-  }
-};
-
-export const getPlayerByUserID = async (
-  id?: string
-): Promise<Player | undefined> => {
-  if (!id) return;
-  try {
-    if (!id) throw new Error("No ID");
-    const q = query(PLAYERS_COLLECTION, where("linkedUserId", "==", id));
-    const querySnapshot = await getDocs(q);
-    const documents = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    return documents[0] as Player;
-  } catch (error) {
-    sendErrorNotification(`Error querying players: ${error}`);
-    return undefined;
-  }
-};
-
-export const fetchLeague = async (id: string): Promise<League | undefined> => {
-  const docSnap = await getDoc(doc(firestore, `leagues/${id}`));
-  if (docSnap.exists()) {
-    const data = docSnap.data() as Omit<League, "id">;
-    return {
-      id: docSnap.id,
-      ...data,
-    };
-  } else {
-    sendErrorNotification(`No league record found for id: ${id} `);
-  }
-};
-
-export const getAppUserByUID = async (
-  uID?: string
-): Promise<User | undefined> => {
-  try {
-    if (!uID) return;
-    const q = query(USERS_COLLECTION, where("fbID", "==", uID));
-    const querySnapshot = await getDocs(q);
-    const documents = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    return documents[0] as User;
-  } catch (error) {
-    sendErrorNotification(`Error fetching user: ${error}`);
-    return undefined;
-  }
-};
-
 export const fetchGamesByTimestamp = async (
   startDate: Date
 ): Promise<Game[]> => {
@@ -390,30 +243,48 @@ export const paginatedFetchGames = async (
   return { games, lastVisible };
 };
 
-export const getXWeeksAgo = (weeks: number): Date => {
-  const today = new Date();
-  const xWeeksAgo = new Date(today.getTime() - weeks * 7 * 24 * 60 * 60 * 1000);
-  return xWeeksAgo;
+export const addNewGame = async (
+  game: Omit<Game, "id">
+): Promise<string | undefined> => {
+  try {
+    const docRef = await addDoc(GAMES_COLLECTION, { ...game });
+    return docRef.id;
+  } catch (e) {
+    console.error("Unable to add game, missing permissions");
+  }
 };
 
-export const getPastSeasonHistoricalRecord = async (
-  seasonStart?: string
-): Promise<SeasonRecords | undefined> => {
-  const lastSeasonEnd = seasonStart ?? getSeasonStart();
+export const updateExistingGame = async (
+  resolvedGame: Omit<Game, "id">,
+  gameId: string,
+  onSuccess?: () => void,
+  onError?: () => void
+): Promise<void> => {
   try {
-    if (!lastSeasonEnd) throw new Error("No date");
-    const q = query(
-      RECORDS_COLLECTION,
-      where("seasonEndDate", "==", lastSeasonEnd)
-    );
-    const querySnapshot = await getDocs(q);
-    const documents = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-    }));
-    const fullRec = documents[0] as FullSeasonRecordObject;
-    return fullRec?.records;
+    const docRef = doc(db, "games", gameId);
+    await updateDoc(docRef, resolvedGame);
+    onSuccess?.();
+  } catch (e) {
+    console.error("Unable to update game, missing permissions");
+    onError?.();
+  }
+};
+
+export const deleteGame = async (
+  gameId: string,
+  onSuccess?: (msg: string) => void,
+  onError?: (msg: string) => void
+) => {
+  try {
+    // Reference to the document
+    const docRef = doc(db, "games", gameId);
+
+    // Delete the document
+    if (docRef) {
+      await deleteDoc(docRef);
+      onSuccess?.(`Successfully deleted game ${gameId}`);
+    }
   } catch (error) {
-    sendErrorNotification(`Error querying historical record: ${error} `);
-    return undefined;
+    onError?.(`Error deleting game, ${error}`);
   }
 };

@@ -95,9 +95,3 @@ export const areStringArraysEqual = (a: string[], b: string[]): boolean => {
   if (a.length !== b.length) return false;
   return a.every((val, index) => val === b[index]);
 };
-
-export const getXWeeksAgo = (weeks: number): Date => {
-  const today = new Date();
-  const xWeeksAgo = new Date(today.getTime() - weeks * 7 * 24 * 60 * 60 * 1000);
-  return xWeeksAgo;
-};

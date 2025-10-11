@@ -161,7 +161,7 @@ export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
   );
 };
 
-const LargeBadge = styled(Badge)(({ theme }) => ({
+const LargeBadge = styled(Badge)(() => ({
   "& .MuiBadge-badge": {
     width: 60,
     height: 60,

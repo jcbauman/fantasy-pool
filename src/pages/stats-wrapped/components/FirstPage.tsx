@@ -1,7 +1,7 @@
 import { Stack } from "@mui/material";
 import { FC } from "react";
 import SlideInTypography from "./SlideInTypography";
-import { Game, Player } from "../../../types";
+import { Player } from "../../../types";
 import { getMainAffirmation, toOrdinal } from "../wrappedUtils";
 import { useAppContext } from "../../../context/AppContext";
 import { normalizeStat } from "../../../utils/statsUtils";
@@ -12,10 +12,9 @@ const BG_COLORS = ["#ebb604", "#cc1301", "#0c1a7d", "#02694b", "#770504"];
 export const FirstPage: FC<{
   player: Player;
   page: number;
-  playerGames: Game[];
   wrappedStats: UseWrappedStats;
   revealButton: () => void;
-}> = ({ player, page, playerGames, revealButton, wrappedStats }) => {
+}> = ({ player, page, revealButton, wrappedStats }) => {
   const {
     statLeaderString,
     locationsInfo,

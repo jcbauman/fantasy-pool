@@ -108,7 +108,7 @@ export const YourPosition: FC<{ player: Player | undefined }> = ({
   );
 };
 
-const LargeBadge = styled(Badge)(({ theme }) => ({
+const LargeBadge = styled(Badge)(() => ({
   "& .MuiBadge-badge": {
     width: 60,
     height: 60,

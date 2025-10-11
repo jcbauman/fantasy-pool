@@ -1,6 +1,6 @@
 import { Game, GameStatKeys, Player } from "../../../types";
 import { getFantasyScoreForPlayerSeason } from "../../../utils/statsUtils";
-import { SeasonRecords } from "../../playersList/utils/playerUtils";
+import { SeasonRecords } from "../../players/utils/playerUtils";
 
 export const getBestAndWorstLocation = (
   games: Game[],

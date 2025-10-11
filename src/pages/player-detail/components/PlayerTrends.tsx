@@ -7,7 +7,7 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { getPlayerTrends } from "../../playersList/utils/playerUtils";
+import { getPlayerTrends } from "../../players/utils/playerUtils";
 import { useAppContext } from "../../../context/AppContext";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import {

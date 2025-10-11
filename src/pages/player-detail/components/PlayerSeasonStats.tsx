@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { normalizePercentage } from "../../../utils/statsUtils";
-import { getStatsForPlayerGames } from "../../playersList/utils/playerUtils";
+import { getStatsForPlayerGames } from "../../players/utils/playerUtils";
 import { useAppContext } from "../../../context/AppContext";
 
 export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({

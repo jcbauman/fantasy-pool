@@ -1,4 +1,4 @@
-import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
+import { SeasonRecords } from "../pages/players/utils/playerUtils";
 import { Game, GameStatKeys, Player } from "../types";
 
 export const sortGamesByDate = (games: Game[]): Game[] => {

@@ -25,7 +25,7 @@ import {
 } from "./firebase/controller";
 import { sortGamesByDate } from "../utils/gameUtils";
 import { getSeasonStart, getThreeMonthsAgo } from "../utils/dateUtils";
-import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
+import { SeasonRecords } from "../pages/players/utils/playerUtils";
 import { FullSeasonRecordObject } from "./setters";
 import { sendErrorNotification } from "../shared-components/toasts/notificationToasts";
 

@@ -93,7 +93,7 @@ export const ScratchKing: React.FC = () => {
   if (scratcher?.profilePictureUrl) {
     return (
       <Card sx={{ p: 2, h: "auto", flexShrink: 0 }}>
-        <Typography sx={{ mb: 1 }}>Scratch Leader</Typography>
+        <Typography sx={{ mb: 1 }}>Scratch leader</Typography>
         <div
           ref={containerRef}
           style={{

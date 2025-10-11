@@ -7,7 +7,7 @@ import { Game } from "../../types";
 import { RankingTable } from "./components/RankingTable";
 import { YourPosition } from "./components/YourPosition";
 import { TopLocation } from "./components/TopLocation";
-import { PlayerSeasonStats } from "../playerDetail/components/PlayerSeasonStats";
+import { PlayerSeasonStats } from "../player-detail/components/PlayerSeasonStats";
 import { usePlayerParams } from "../../shared-components/hooks/usePlayerParam";
 import { canSeeLastSeason } from "../../utils/gameUtils";
 import { useConfetti } from "../../shared-components/hooks/useConfetti";

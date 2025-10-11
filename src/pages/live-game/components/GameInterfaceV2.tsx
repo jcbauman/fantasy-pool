@@ -20,7 +20,7 @@ import {
   getPlayerFullName,
   getPlayerNameAbbreviation,
   getStatsForGame,
-} from "../../playersList/utils/playerUtils";
+} from "../../players/utils/playerUtils";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";
 import DirectionsRunOutlinedIcon from "@mui/icons-material/DirectionsRunOutlined";

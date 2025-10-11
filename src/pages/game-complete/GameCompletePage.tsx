@@ -4,9 +4,9 @@ import { Button, Card, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Link as RouterLink } from "react-router-dom";
-import { GameFantasyDetail } from "../playerDetail/components/GameFantasyDetail";
+import { GameFantasyDetail } from "../player-detail/components/GameFantasyDetail";
 import { useAppContext } from "../../context/AppContext";
-import { makePlayerActive } from "../playersList/utils/inactivityUtils";
+import { makePlayerActive } from "../players/utils/inactivityUtils";
 import { useConfetti } from "../../shared-components/hooks/useConfetti";
 
 export const GameCompletePage: FC = () => {

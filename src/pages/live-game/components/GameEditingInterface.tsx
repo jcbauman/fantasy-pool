@@ -21,7 +21,7 @@ import {
   getPlayerFullName,
   getPlayerNameAbbreviation,
   getStatsForGame,
-} from "../../playersList/utils/playerUtils";
+} from "../../players/utils/playerUtils";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";

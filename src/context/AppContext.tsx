@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { AggregateStats, Game, League, Player, User } from "../types";
 import { mockScoringMatrix } from "../backend/fixtures";
-import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
+import { useGetRankingByField } from "../pages/players/hooks/useGetRankingByField";
 import {
   fetchLeague,
   getPastSeasonHistoricalRecord,
@@ -20,8 +20,8 @@ import {
   NotificationBadgesState,
   useNotificationBadges,
 } from "../shared-components/hooks/useNotificationBadges";
-import { checkPlayerInactivity } from "../pages/playersList/utils/inactivityUtils";
-import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
+import { checkPlayerInactivity } from "../pages/players/utils/inactivityUtils";
+import { SeasonRecords } from "../pages/players/utils/playerUtils";
 import { sendErrorNotification } from "../shared-components/toasts/notificationToasts";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);

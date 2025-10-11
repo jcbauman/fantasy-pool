@@ -1,22 +1,13 @@
-import {
-  Badge,
-  Card,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Badge, Card, IconButton, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import { useAppContext } from "../../../context/AppContext";
 import {
   getMedal,
   handleShare,
   toOrdinal,
-} from "../../statsWrapped/wrappedUtils";
+} from "../../stats-wrapped/wrappedUtils";
 import styled from "@emotion/styled";
-import {
-  normalizePercentage,
-  normalizeStat,
-} from "../../../utils/statsUtils";
+import { normalizePercentage, normalizeStat } from "../../../utils/statsUtils";
 import { Player } from "../../../types";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";

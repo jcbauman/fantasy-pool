@@ -32,7 +32,7 @@ import { useAppContext } from "../../../context/AppContext";
 import { NavigateNext } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
-import { getPlayerFullName } from "../../playersList/utils/playerUtils";
+import { getPlayerFullName } from "../../players/utils/playerUtils";
 import React from "react";
 
 export const GameFantasyDetail: FC<{

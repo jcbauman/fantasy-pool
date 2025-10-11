@@ -14,7 +14,7 @@ import { FC } from "react";
 import { Game, Player } from "../../../types";
 import { useAppContext } from "../../../context/AppContext";
 import { getLocationLeader, getMedal, toOrdinal } from "../wrappedUtils";
-import { PlayerCell } from "../../playersList/components/PlayerCell";
+import { PlayerCell } from "../../players/components/PlayerCell";
 import { normalizeStat } from "../../../utils/statsUtils";
 import styled from "@emotion/styled";
 import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";

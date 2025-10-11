@@ -12,7 +12,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { getStatsForGame } from "../../playersList/utils/playerUtils";
+import { getStatsForGame } from "../../players/utils/playerUtils";
 import {
   getAbbreviation,
   getFantasyScoreForPlayerSeason,

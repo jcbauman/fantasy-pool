@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Game, Player } from "../../../types";
 import { Card, Stack, Typography } from "@mui/material";
 import { normalizePercentage } from "../../../utils/statsUtils";
-import { getPlayerSynergyStats } from "../../playersList/utils/playerUtils";
+import { getPlayerSynergyStats } from "../../players/utils/playerUtils";
 import { useAppContext } from "../../../context/AppContext";
 import ConnectWithoutContactOutlinedIcon from "@mui/icons-material/ConnectWithoutContactOutlined";
 

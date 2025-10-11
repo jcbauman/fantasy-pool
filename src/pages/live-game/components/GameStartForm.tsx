@@ -30,7 +30,7 @@ import {
 } from "../../../utils/dateUtils";
 import { Add } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
-import { getPlayerFullName } from "../../playersList/utils/playerUtils";
+import { getPlayerFullName } from "../../players/utils/playerUtils";
 interface FormData {
   date: Date | null;
   location: string;

@@ -9,10 +9,10 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { auth } from "../backend/firebase/firebaseConfig";
-import { setupNewUser } from "../backend/setters";
-import { getAppUserByUID, getPlayerByUserID } from "../backend/getters";
+import { getAppUserByUID, setupNewUser } from "../backend/endpoints/users";
 import { clearGame } from "../redux/gameSlice";
 import { sendErrorNotification } from "../shared-components/toasts/notificationToasts";
+import { getPlayerByUserID } from "../backend/endpoints/players";
 
 export interface UseAuthState {
   userId: string | null;

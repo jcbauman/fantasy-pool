@@ -1,4 +1,4 @@
-import { updateCurrentPlayer } from "../../../backend/setters";
+import { updateCurrentPlayer } from "../../../backend/endpoints/players";
 import { Game, Player } from "../../../types";
 import { getSeasonStart } from "../../../utils/dateUtils";
 import { filterPlayedGamesForPlayer } from "./playerUtils";

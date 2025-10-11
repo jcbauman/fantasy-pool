@@ -16,9 +16,10 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { Controller, useForm } from "react-hook-form";
 import { League } from "../../types";
-import { deleteGame, updateLeague } from "../../backend/setters";
+import { deleteGame } from "../../backend/endpoints/games";
 import { ScoringRubrikForm } from "./components/ScoringRubrikForm";
 import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
+import { updateLeague } from "../../backend/endpoints/league";
 
 type FormData = {
   leagueName: string;

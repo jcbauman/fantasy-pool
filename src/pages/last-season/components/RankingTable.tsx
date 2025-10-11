@@ -1,5 +1,6 @@
 import {
   Card,
+  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -11,12 +12,10 @@ import {
 import { FC, useEffect, useState } from "react";
 import { useAppContext } from "../../../context/AppContext";
 import { normalizeStat } from "../../../utils/statsUtils";
-import {
-  getPlayerNameAbbreviation,
-  SeasonRecords,
-} from "../../playersList/utils/playerUtils";
-import { getPastSeasonHistoricalRecord } from "../../../backend/getters";
+import { getPlayerNameAbbreviation } from "../../players/utils/playerUtils";
+import { getPastSeasonHistoricalRecord } from "../../../backend/endpoints/records";
 import { getSeasonStart, getThreeMonthsAgo } from "../../../utils/dateUtils";
+import { SeasonRecords } from "../../../types";
 
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import ArrowDownwardOutlinedIcon from "@mui/icons-material/ArrowDownwardOutlined";
@@ -26,9 +25,12 @@ export const RankingTable: FC = () => {
   const [twoSeasonsAgoRecords, setRecords] = useState<
     SeasonRecords | undefined
   >(undefined);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const getLastSeasonRecords = async (): Promise<void> => {
       if (authState.user?.leagueId) {
+        setLoading(true);
         const res = await getPastSeasonHistoricalRecord(
           getSeasonStart(getThreeMonthsAgo())
         );
@@ -38,9 +40,11 @@ export const RankingTable: FC = () => {
           setRecords(undefined);
         }
       }
+      setLoading(false);
     };
     getLastSeasonRecords();
   }, [authState.user?.leagueId]);
+
   if (!records || !players) return <></>;
   const sortedPlayers = [...players].sort((a, b) => {
     const aRecord = records[a.id];
@@ -99,9 +103,13 @@ export const RankingTable: FC = () => {
                     </Typography>
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {getDeltaIcon(
-                      rank + 1,
-                      twoSeasonsAgoRecords?.[player.id]?.rank
+                    {loading ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      getDeltaIcon(
+                        rank + 1,
+                        twoSeasonsAgoRecords?.[player.id]?.rank
+                      )
                     )}
                   </TableCell>
                 </TableRow>

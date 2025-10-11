@@ -5,7 +5,7 @@ import { getAbbreviation } from "../utils/statsUtils";
 import {
   getPlayerFullName,
   getPlayerNameAbbreviation,
-} from "../pages/playersList/utils/playerUtils";
+} from "../pages/players/utils/playerUtils";
 
 export const PlayerAvatar: FC<{
   player?: Player;

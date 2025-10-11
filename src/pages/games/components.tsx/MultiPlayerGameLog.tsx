@@ -15,14 +15,14 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { getStatsForGame } from "../../playersList/utils/playerUtils";
+import { getStatsForGame } from "../../players/utils/playerUtils";
 import {
   getFantasyScoreForPlayerSeason,
   normalizeStat,
 } from "../../../utils/statsUtils";
 import { useAppContext } from "../../../context/AppContext";
-import { PlayerCell } from "../../playersList/components/PlayerCell";
-import { GameFantasyDetailDialog } from "../../playerDetail/components/GameFantasyDetailDialog";
+import { PlayerCell } from "../../players/components/PlayerCell";
+import { GameFantasyDetailDialog } from "../../player-detail/components/GameFantasyDetailDialog";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { useNavigate } from "react-router-dom";
 import { canEditGame } from "../../edit-game/utils";

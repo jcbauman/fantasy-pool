@@ -20,7 +20,7 @@ import {
   getPlayerFullName,
   getPlayerNameAbbreviation,
   getStatsForGame,
-} from "../../playersList/utils/playerUtils";
+} from "../../players/utils/playerUtils";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";
 import DirectionsRunOutlinedIcon from "@mui/icons-material/DirectionsRunOutlined";
@@ -31,7 +31,7 @@ import { useAppContext } from "../../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { Game, GameStat, GameStatKeys } from "../../../types";
 import { useIterateStats } from "../hooks/useIterateStats";
-import { addNewGame } from "../../../backend/setters";
+import { addNewGame } from "../../../backend/endpoints/games";
 import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
 import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlined";

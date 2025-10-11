@@ -1,5 +1,12 @@
-import { getAllGamesForLastSeason } from "../../../backend/getters";
-import { Game, GameStat, GameStatKeys, Player } from "../../../types";
+import { getAllGamesForLastSeason } from "../../../backend/endpoints/games";
+import {
+  Game,
+  GameStat,
+  GameStatKeys,
+  Player,
+  SeasonRecords,
+  StatsForPlayerGames,
+} from "../../../types";
 import { defaultGameStat } from "../../../utils/constants";
 import { didPlayerWinGame } from "../../../utils/gameUtils";
 import { getFantasyScoreForPlayerSeason } from "../../../utils/statsUtils";
@@ -29,15 +36,6 @@ export const filterPlayedGamesForPlayer = (
   games: Game[]
 ): Game[] => {
   return games.filter((game) => game.playerIds.includes(playerId));
-};
-
-export type StatsForPlayerGames = GameStat & {
-  totalGames: number;
-  totalWins: number;
-  totalSessions: number;
-  winPercentage: number;
-  fantasyScore: number;
-  fantasyGameAvg: number;
 };
 
 export const getStatsForPlayerGames = (
@@ -261,10 +259,6 @@ export const getPlayerTrends = (
     },
   ];
 };
-
-export interface SeasonRecords {
-  [playerId: string]: StatsForPlayerGames & { rank: number };
-}
 
 export const createRecordsForPlayers = async (
   playerIds: string[],

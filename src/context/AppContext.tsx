@@ -5,24 +5,28 @@ import React, {
   useContext,
   useEffect,
 } from "react";
-import { AggregateStats, Game, League, Player, User } from "../types";
-import { mockScoringMatrix } from "../backend/fixtures";
-import { useGetRankingByField } from "../pages/playersList/hooks/useGetRankingByField";
 import {
-  fetchLeague,
-  getPastSeasonHistoricalRecord,
-  useFetchGamesAfterDate,
-  useFetchPlayers,
-  useFetchUsers,
-} from "../backend/getters";
+  AggregateStats,
+  Game,
+  League,
+  Player,
+  SeasonRecords,
+  User,
+} from "../types";
+import { mockScoringMatrix } from "../backend/fixtures";
+import { useGetRankingByField } from "../pages/players/hooks/useGetRankingByField";
 import { UseAuthState, useAuthState } from "../auth/useAuthState";
 import {
   NotificationBadgesState,
   useNotificationBadges,
 } from "../shared-components/hooks/useNotificationBadges";
-import { checkPlayerInactivity } from "../pages/playersList/utils/inactivityUtils";
-import { SeasonRecords } from "../pages/playersList/utils/playerUtils";
+import { checkPlayerInactivity } from "../pages/players/utils/inactivityUtils";
 import { sendErrorNotification } from "../shared-components/toasts/notificationToasts";
+import { useFetchUsers } from "../backend/endpoints/users";
+import { useFetchPlayers } from "../backend/endpoints/players";
+import { useFetchGamesAfterDate } from "../backend/endpoints/games";
+import { fetchLeague } from "../backend/endpoints/league";
+import { getPastSeasonHistoricalRecord } from "../backend/endpoints/records";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 

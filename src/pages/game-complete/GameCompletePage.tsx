@@ -1,6 +1,7 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { Button, Card, Stack, Typography } from "@mui/material";
+import { keyframes } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -12,6 +13,15 @@ import { Game } from "../../types";
 import { Timestamp } from "firebase/firestore";
 import { initializeGame } from "../../redux/gameSlice";
 import { Replay } from "@mui/icons-material";
+
+const rotateCounterclockwise = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+`;
 
 export const GameCompletePage: FC = () => {
   const {
@@ -25,6 +35,7 @@ export const GameCompletePage: FC = () => {
   const targetGame = games.find((game) => game.id === lastGameId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isRotating, setIsRotating] = useState(false);
 
   //make involved players active they were out
   useEffect(() => {
@@ -41,16 +52,19 @@ export const GameCompletePage: FC = () => {
   }, [launchConfetti]);
 
   const restartGame = (): void => {
-    const resolvedGame: Omit<Game, "id"> = {
-      location: targetGame?.location,
-      playerIds: targetGame?.playerIds ?? [],
-      statsByPlayer: [],
-      authorPlayerId: targetGame?.authorPlayerId,
-      createdAt: Timestamp.fromDate(new Date()),
-      timestamp: new Date().toString(),
-    };
-    dispatch(initializeGame({ ...resolvedGame }));
-    navigate("/live-game");
+    setIsRotating(true);
+    setTimeout(() => {
+      const resolvedGame: Omit<Game, "id"> = {
+        location: targetGame?.location,
+        playerIds: targetGame?.playerIds ?? [],
+        statsByPlayer: [],
+        authorPlayerId: targetGame?.authorPlayerId,
+        createdAt: Timestamp.fromDate(new Date()),
+        timestamp: new Date().toString(),
+      };
+      dispatch(initializeGame({ ...resolvedGame }));
+      navigate("/live-game");
+    }, 500);
   };
 
   const getOtherPlayerNames = () => {
@@ -104,7 +118,15 @@ export const GameCompletePage: FC = () => {
                 <i>or</i>
               </Typography>
               <Button
-                startIcon={<Replay />}
+                startIcon={
+                  <Replay
+                    sx={{
+                      animation: isRotating
+                        ? `${rotateCounterclockwise} 0.5s ease-in-out`
+                        : "none",
+                    }}
+                  />
+                }
                 fullWidth
                 size="large"
                 variant="outlined"

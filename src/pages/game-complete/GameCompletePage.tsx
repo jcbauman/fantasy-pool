@@ -132,7 +132,7 @@ export const GameCompletePage: FC = () => {
                 variant="outlined"
                 onClick={restartGame}
               >
-                Run it back
+                Run it back?
               </Button>
             </Stack>
           </Stack>

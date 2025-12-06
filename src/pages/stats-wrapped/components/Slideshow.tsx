@@ -27,6 +27,7 @@ const Slideshow: React.FC<{ name: string }> = ({ name }) => {
             src={image}
             alt={`Slide ${index}`}
             className="image"
+            loading="lazy"
           />
         ))}
       </div>
@@ -56,7 +57,7 @@ const Slideshow: React.FC<{ name: string }> = ({ name }) => {
       >
         {name}'s
         <br />
-        2024
+        2025
         <br />
         FANTASY POOL
         <br />

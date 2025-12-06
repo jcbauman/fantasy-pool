@@ -283,7 +283,7 @@ export const getPercentageBanter = (
   allStatsByPlayers: AggregateStats,
   playerId: string
 ): string[] => {
-  if (!playerId.length) return [""];
+  if (!playerId.length || !allStatsByPlayers[playerId]) return [""];
   const percentage =
     allStatsByPlayers[playerId]["totalWins"] /
     allStatsByPlayers[playerId]["totalGames"];

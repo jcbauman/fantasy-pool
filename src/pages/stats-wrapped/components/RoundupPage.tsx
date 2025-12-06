@@ -62,7 +62,7 @@ export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
           direction="column"
           sx={{ alignItems: "flex-end", justifyContent: "space-between" }}
         >
-          <Typography variant="overline">2024 Fantasy Pool Season</Typography>
+          <Typography variant="overline">2025 Fantasy Pool Year</Typography>
           <Stack direction="column" sx={{ alignItems: "flex-end" }}>
             <Typography variant="h3" noWrap>
               {player.nickname ?? playerName}

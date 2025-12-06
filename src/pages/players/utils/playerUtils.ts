@@ -129,12 +129,12 @@ export const isKeyOfRankings = (
   return key in obj;
 };
 
-export const joinedInTimeFor2024Wrapped = (
+export const joinedInTimeFor2025Wrapped = (
   dateString: string | undefined
 ): boolean => {
   if (!dateString) return true;
   const inputDate = new Date(dateString);
-  const comparisonDate = new Date("2024-12-13"); // December 13, 2024
+  const comparisonDate = new Date("2025-12-13");
 
   // Ensure the date is valid
   if (isNaN(inputDate.getTime())) {

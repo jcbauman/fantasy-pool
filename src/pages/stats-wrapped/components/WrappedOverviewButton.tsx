@@ -49,7 +49,7 @@ export const WrappedOverviewButton: FC<{
           <Typography variant="h4" sx={{ mr: 3 }}>
             🎁
           </Typography>
-          <Typography>Your 2024 Wrapped is here</Typography>
+          <Typography>Your 2025 Wrapped is here</Typography>
         </Stack>
       </Button>
     </Stack>

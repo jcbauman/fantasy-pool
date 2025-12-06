@@ -9,7 +9,6 @@ import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import { handleShare } from "./wrappedUtils";
 import { RoundupPage } from "./components/RoundupPage";
 import { useWrappedStats } from "./useWrappedStats";
-import { getSeasonStart } from "../../utils/dateUtils";
 
 export const WrappedPage: FC = () => {
   const [page, setPage] = useState(0);
@@ -33,17 +32,6 @@ export const WrappedPage: FC = () => {
     revealButton,
     wrappedStats,
   };
-
-  if (new Date() > new Date(getSeasonStart())) {
-    return (
-      <PageContainer loading={loading}>
-        <Stack sx={{ p: 2 }}>
-          <Typography variant="h5">The future is now old man</Typography>
-          <Typography>Sorry, 2024 Wrapped is no longer available.</Typography>
-        </Stack>
-      </PageContainer>
-    );
-  }
 
   return (
     <PageContainer loading={loading}>
@@ -90,7 +78,7 @@ export const WrappedPage: FC = () => {
               color="primary"
               size="large"
               onClick={() =>
-                handleShare("Check out my Fantasy Pool 2024 Wrapped")
+                handleShare("Check out my Fantasy Pool 2025 Wrapped")
               }
               sx={{
                 position: "fixed",
@@ -108,7 +96,7 @@ export const WrappedPage: FC = () => {
       ) : (
         <Stack sx={{ p: 2 }}>
           <Typography>
-            Sorry, this player is not eligible for 2024 Wrapped.
+            Sorry, this player is not eligible for 2025 Wrapped.
           </Typography>
         </Stack>
       )}

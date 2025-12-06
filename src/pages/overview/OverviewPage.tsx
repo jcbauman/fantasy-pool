@@ -17,7 +17,7 @@ import EightBallIcon from "../../shared-components/icons/EightBallIcon";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 import { WrappedOverviewButton } from "../stats-wrapped/components/WrappedOverviewButton";
 import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
-import { joinedInTimeFor2024Wrapped } from "../players/utils/playerUtils";
+import { joinedInTimeFor2025Wrapped } from "../players/utils/playerUtils";
 import { NewSeasonDialog } from "./components/NewSeasonDialog";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
@@ -26,7 +26,7 @@ import { CalendarMonthOutlined } from "@mui/icons-material";
 import { canSeeLastSeason } from "../../utils/gameUtils";
 import { LocationUpdateSuggestion } from "../profile/components/LocationUpdateSuggestion";
 
-const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
+const WRAPPED_STORAGE_KEY = "2025_wrapped_storage_key";
 
 export const OverviewComponent: FC = () => {
   const {
@@ -42,8 +42,8 @@ export const OverviewComponent: FC = () => {
   const LAST_SEASON_STORAGE_KEY = `${seasonString}-last-season`;
   const LATEST_RULE_STORAGE_KEY = "rule-july-25-25";
   const hasClickedWrapped = Boolean(localStorage.getItem(WRAPPED_STORAGE_KEY));
-  const canAccessWrapped = joinedInTimeFor2024Wrapped(player?.joinDate);
-  const wrappedEnabled = league?.release2024Wrapped && canAccessWrapped;
+  const canAccessWrapped = joinedInTimeFor2025Wrapped(player?.joinDate);
+  const wrappedEnabled = league?.release2025Wrapped && canAccessWrapped;
   const hasSeenNewSeasonDialog = Boolean(
     localStorage.getItem(NEW_SEASON_STORAGE_KEY)
   );
@@ -63,7 +63,7 @@ export const OverviewComponent: FC = () => {
       <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
         {wrappedEnabled && !hasClickedWrapped && (
           <WrappedOverviewButton
-            href={`/wrapped-2024/${player?.id ?? "9"}`}
+            href={`/wrapped-2025/${player?.id ?? "9"}`}
             onClick={() => {
               localStorage.setItem(WRAPPED_STORAGE_KEY, "true");
             }}
@@ -232,13 +232,13 @@ export const OverviewComponent: FC = () => {
             {wrappedEnabled && hasClickedWrapped && (
               <ListItem disablePadding>
                 <ListItemButton
-                  to={`/wrapped-2024/${player?.id ?? ""}`}
+                  to={`/wrapped-2025/${player?.id ?? ""}`}
                   component={RouterLink}
                 >
                   <ListItemIcon>
                     <CardGiftcardOutlinedIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Review 2024 Wrapped" />
+                  <ListItemText primary="Review 2025 Wrapped" />
                 </ListItemButton>
               </ListItem>
             )}

@@ -71,7 +71,7 @@ function App() {
                       path="/forgot-password"
                       element={<ForgotPasswordPage />}
                     />
-                    <Route path="/wrapped-2024/:id" element={<WrappedPage />} />
+                    <Route path="/wrapped-2025/:id" element={<WrappedPage />} />
                     <Route path="*" element={<OverviewComponent />} />
                   </Routes>
                 </NotificationProvider>

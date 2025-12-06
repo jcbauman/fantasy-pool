@@ -48,7 +48,7 @@ export const LeagueAdminPage: FC = () => {
     defaultValues: {
       leagueName: league?.name ?? "",
       leagueManagerMessage: league?.leagueManagerMessage ?? "",
-      releaseWrapped: league?.release2024Wrapped ?? false,
+      releaseWrapped: league?.release2025Wrapped ?? false,
     },
   });
 
@@ -58,7 +58,7 @@ export const LeagueAdminPage: FC = () => {
         ...league,
         name: data.leagueName,
         leagueManagerMessage: data.leagueManagerMessage,
-        release2024Wrapped: data.releaseWrapped,
+        release2025Wrapped: data.releaseWrapped,
       };
       const { id, ...leagueNoId } = resolvedLeague;
       await updateLeague(leagueNoId, league.id, () =>
@@ -103,7 +103,7 @@ export const LeagueAdminPage: FC = () => {
                 {...register("leagueManagerMessage")}
               />
               <FormControl>
-                <FormLabel>Release 2024 wrapped?</FormLabel>
+                <FormLabel>Release 2025 wrapped?</FormLabel>
                 <Controller
                   name="releaseWrapped"
                   control={control}

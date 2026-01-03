@@ -19,6 +19,9 @@ import {
   sendErrorNotification,
   sendSuccessNotification,
 } from "../../shared-components/toasts/notificationToasts";
+import { clearGame } from "../../redux/gameSlice";
+import { Clear } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
 
 export const AppAdminPage: FC = () => {
   const {
@@ -28,6 +31,7 @@ export const AppAdminPage: FC = () => {
     league,
     authState: { user },
   } = useAppContext();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   if (!user || !user.isAppAdmin) {
     navigate("/profile");
@@ -96,6 +100,18 @@ export const AppAdminPage: FC = () => {
             }}
           >
             Calculate and infill {getSeasonString(getThreeMonthsAgo())} season
+          </Button>
+        </Card>
+        <Card sx={{ p: 2 }}>
+          <Button
+            startIcon={<Clear />}
+            fullWidth
+            variant="outlined"
+            onClick={() => {
+              dispatch(clearGame());
+            }}
+          >
+            Clear current game
           </Button>
         </Card>
       </Stack>

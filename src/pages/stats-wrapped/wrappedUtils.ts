@@ -295,7 +295,7 @@ export const getPercentageBanter = (
     stringPercent,
     "This isn't just any number. It's your win percentage.",
     "Not too shabby.",
-    `That puts you ${toOrdinal(rank)} in the league.`,
+    `That puts you ${toOrdinal(rank + 1)} in the league.`,
     banter,
   ];
 };

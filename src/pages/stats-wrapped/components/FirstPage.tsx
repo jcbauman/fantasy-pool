@@ -41,7 +41,7 @@ export const FirstPage: FC<{
           "You've played a total of:",
           `${allStatsByPlayers[player.id]["totalGames"]} games.`,
           `(${toOrdinal(
-            rankings["totalWins"].indexOf(player.id)
+            rankings["totalWins"].indexOf(player.id) + 1
           )} in the league)`,
           "That's a lot of chalk dust! 🎱",
         ];

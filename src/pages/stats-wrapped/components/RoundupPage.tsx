@@ -54,7 +54,7 @@ export const RoundupPage: FC<{ player: Player; playerGames: Game[] }> = ({
             />
           </LargeBadge>
           <Typography variant="h2" fontWeight="bold">
-            {toOrdinal(mainRank)}
+            {toOrdinal(mainRank + 1)}
           </Typography>
           <Typography variant="overline">Place champion</Typography>
         </Stack>

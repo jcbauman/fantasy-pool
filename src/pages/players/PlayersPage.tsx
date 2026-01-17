@@ -8,7 +8,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { Player, StatsForPlayerGames } from "../../types";
 import { PlayerCell } from "./components/PlayerCell";
 import { getPlayerFullName, getStatsForPlayerGames } from "./utils/playerUtils";
@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { setPlayerSortBy } from "../../redux/navSlice";
 import { setHideInactivePlayers } from "../../redux/settingsSlice";
+import { checkPlayerInactivity } from "./utils/inactivityUtils";
 
 const SortableStatsOrder = [
   { label: "Name", value: "name" },
@@ -38,7 +39,7 @@ const SortableStatsOrder = [
 ];
 
 export const PlayersPage: FC = () => {
-  const { players, rankings } = useAppContext();
+  const { players, rankings,authState,games } = useAppContext();
   const { sortBy } = useSelector((state: RootState) => state.nav);
   const { hideInactivePlayers } = useSelector(
     (state: RootState) => state.settings
@@ -52,6 +53,14 @@ export const PlayersPage: FC = () => {
       ),
     [players]
   );
+
+  useEffect(() => {
+    if (authState?.user?.isAppAdmin) {
+      players.forEach((player) => {
+        checkPlayerInactivity(player, games);
+      });
+    }
+  }, [players, games, authState?.user?.isAppAdmin]);
 
   const isKeyOfRankings = (
     key: string,

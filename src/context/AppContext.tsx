@@ -20,7 +20,6 @@ import {
   NotificationBadgesState,
   useNotificationBadges,
 } from "../shared-components/hooks/useNotificationBadges";
-import { checkPlayerInactivity } from "../pages/players/utils/inactivityUtils";
 import { sendErrorNotification } from "../shared-components/toasts/notificationToasts";
 import { useFetchUsers } from "../backend/endpoints/users";
 import { useFetchPlayers } from "../backend/endpoints/players";
@@ -64,14 +63,6 @@ export const AppContextProvider: React.FC<{ children: ReactNode }> = ({
   const authState = useAuthState();
   const games = useFetchGamesAfterDate();
   const notificationBadgesState = useNotificationBadges(games, league);
-
-  useEffect(() => {
-    if (authState?.user?.isAppAdmin) {
-      players.forEach((player) => {
-        checkPlayerInactivity(player, games);
-      });
-    }
-  }, [players, games, authState?.user?.isAppAdmin]);
 
   useEffect(() => {
     const getLeague = async (): Promise<void> => {

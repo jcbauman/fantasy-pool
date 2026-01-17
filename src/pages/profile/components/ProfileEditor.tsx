@@ -3,17 +3,12 @@ import {
   Avatar,
   Button,
   Card,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import { FC, useEffect, useMemo } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useAppContext } from "../../../context/AppContext";
 import { Player } from "../../../types";
@@ -57,7 +52,6 @@ export const ProfileEditor: FC<{
     watch,
     reset,
     setValue,
-    control,
     handleSubmit,
     formState: { errors },
   } = useForm<ProfileFormValues>({
@@ -176,40 +170,6 @@ export const ProfileEditor: FC<{
                   )}
                 />
               </Stack>
-              <FormControl>
-                <FormLabel>
-                  <Typography variant="overline">Status</Typography>
-                </FormLabel>
-                <FormControl component="fieldset">
-                  <Controller
-                    name="out"
-                    control={control}
-                    render={({ field }) => (
-                      <RadioGroup
-                        row
-                        {...field}
-                        onChange={(e) => {
-                          const value = e.target.value === "true";
-                          setValue("out", value);
-                        }}
-                      >
-                        <FormControlLabel
-                          value="false"
-                          control={<Radio />}
-                          label="Healthy"
-                          checked={watchAll.out === false}
-                        />
-                        <FormControlLabel
-                          value="true"
-                          control={<Radio />}
-                          label="Out"
-                          checked={watchAll.out === true}
-                        />
-                      </RadioGroup>
-                    )}
-                  />
-                </FormControl>
-              </FormControl>
               <Stack direction="row" gap={1} sx={{ alignItems: "center" }}>
                 <Avatar src={watchAll.profilePictureUrl} />
                 <TextField

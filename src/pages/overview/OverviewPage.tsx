@@ -35,6 +35,7 @@ export const OverviewComponent: FC = () => {
     authState: { player, user },
     notificationBadgesState,
     initialLoading,
+    
   } = useAppContext();
   const isLeagueAdmin = league?.leagueManagerId === user?.id;
   const seasonString = formatSeasonString();

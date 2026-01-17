@@ -20,6 +20,9 @@ import {
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { useDismissedExperiences } from "../../../utils/useDismissedExperiences";
 import { getSeasonStart } from "../../../utils/dateUtils";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { setLastDismissedLocationSuggestion } from "../../../redux/navSlice";
 
 const PERMANENT_HIDE_MODAL_KEY = "location_update_suggestion_drawer";
 const SPECIFIC_HIDE_MODAL_KEY = "suggest-updating-location-to-";
@@ -28,6 +31,8 @@ export const LocationUpdateSuggestion: FC = () => {
     games,
     authState: { player, refetchPlayer },
   } = useAppContext();
+  const dispatch = useDispatch();
+  const lastDismissedLocationSuggestion = useSelector((state: RootState) => state.nav.lastDismissedLocationSuggestion);
   const [open, setOpen] = useState(false);
   const [neverShowAgainChecked, setNeverShowAgainChecked] = useState(false);
   const { addDismissedExperience, experienceWasDismissed } =
@@ -45,12 +50,12 @@ export const LocationUpdateSuggestion: FC = () => {
   const isCurrentLocationSuggestionDismissed = experienceWasDismissed(
     `${SPECIFIC_HIDE_MODAL_KEY}${topLocation}${getSeasonStart()}`
   );
-
+  const alreadyShowedModalToday = Boolean(lastDismissedLocationSuggestion) && new Date(lastDismissedLocationSuggestion as string).toDateString() === new Date().toDateString();
   useEffect(() => {
     if (
       topLocation !== player?.defaultLocation &&
       !isPermanentlyHidden &&
-      !isCurrentLocationSuggestionDismissed
+      !isCurrentLocationSuggestionDismissed  && !alreadyShowedModalToday
     ) {
       setOpen(true);
     }
@@ -59,6 +64,7 @@ export const LocationUpdateSuggestion: FC = () => {
     topLocation,
     isPermanentlyHidden,
     isCurrentLocationSuggestionDismissed,
+    alreadyShowedModalToday
   ]);
 
   const onUpdate = async (newLocation: string): Promise<void> => {
@@ -108,6 +114,7 @@ export const LocationUpdateSuggestion: FC = () => {
         <Button
           variant="outlined"
           onClick={() => {
+            dispatch(setLastDismissedLocationSuggestion(new Date().toString()));
             addDismissedExperience(`${SPECIFIC_HIDE_MODAL_KEY}${topLocation}`);
             onClose();
           }}

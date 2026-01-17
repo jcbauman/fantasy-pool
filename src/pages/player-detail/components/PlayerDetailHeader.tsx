@@ -40,7 +40,7 @@ export const PlayerDetailHeader: FC<{
           </Typography>
           <Stack direction="row" sx={{ alignItems: "center" }}>
             <Typography variant="overline">
-              Status: {player.out ? "Out" : "Healthy"}
+              Status: {player.out ? "Out" : "Active"}
             </Typography>
             <CircleOutlinedIcon
               color={player.out ? "error" : "success"}

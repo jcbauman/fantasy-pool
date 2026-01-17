@@ -125,9 +125,11 @@ export const OverviewComponent: FC = () => {
               >
                 <ListItemIcon>
                   <Badge
-                    variant="dot"
-                    invisible={!notificationBadgesState.newGame}
+                    variant={notificationBadgesState.numNewGames === 0 ? "dot" : "standard"}
+                    badgeContent={notificationBadgesState.numNewGames}
+                    invisible={!notificationBadgesState.thereIsNewGame}
                     color="info"
+                 max={9}
                   >
                     <ScoreboardOutlinedIcon />
                   </Badge>

@@ -3,8 +3,9 @@ import { Game, League } from "../../types";
 import { sortGamesByDate } from "../../utils/gameUtils";
 
 export interface NotificationBadgesState {
-  newGame: boolean;
+  thereIsNewGame: boolean;
   newInfo: boolean;
+  numNewGames: number;
   recheckNotifications: () => void;
   viewGamesPage: () => void;
   viewInfoPage: () => void;
@@ -17,7 +18,8 @@ export const useNotificationBadges = (
   games: Game[],
   league: League | undefined
 ): NotificationBadgesState => {
-  const [newGame, setNewGame] = useState(false);
+  const [thereIsNewGame, setThereIsNewGame] = useState(false);
+  const [numNewGames,setNumNewGames] = useState(0);
   const [newInfo, setNewInfo] = useState(false);
   const [shouldRecheckNotifications, setShouldRecheckNotifications] =
     useState(true);
@@ -48,9 +50,12 @@ export const useNotificationBadges = (
           : undefined;
       if (lastGameDate) {
         if (!lastGameCheckedTime) {
-          setNewGame(true);
+          setThereIsNewGame(true);
+          setNumNewGames(0)
         } else {
-          setNewGame(lastGameDate > lastGameCheckedTime);
+          setThereIsNewGame(lastGameDate > lastGameCheckedTime);
+          const newGames = dateSortedGames.filter((game) => new Date(game.timestamp) > lastGameCheckedTime);
+          setNumNewGames(newGames.length);
         }
       }
       setShouldRecheckNotifications(false);
@@ -75,7 +80,8 @@ export const useNotificationBadges = (
   };
 
   return {
-    newGame,
+    thereIsNewGame,
+    numNewGames,
     newInfo,
     recheckNotifications: () => setShouldRecheckNotifications(true),
     viewGamesPage,

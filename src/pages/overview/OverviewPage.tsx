@@ -25,6 +25,7 @@ import { formatSeasonString } from "../../utils/dateUtils";
 import { CalendarMonthOutlined } from "@mui/icons-material";
 import { canSeeLastSeason } from "../../utils/gameUtils";
 import { LocationUpdateSuggestion } from "../profile/components/LocationUpdateSuggestion";
+import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 
@@ -35,7 +36,6 @@ export const OverviewComponent: FC = () => {
     authState: { player, user },
     notificationBadgesState,
     initialLoading,
-    
   } = useAppContext();
   const isLeagueAdmin = league?.leagueManagerId === user?.id;
   const seasonString = formatSeasonString();
@@ -125,11 +125,15 @@ export const OverviewComponent: FC = () => {
               >
                 <ListItemIcon>
                   <Badge
-                    variant={notificationBadgesState.numNewGames === 0 ? "dot" : "standard"}
+                    variant={
+                      notificationBadgesState.numNewGames === 0
+                        ? "dot"
+                        : "standard"
+                    }
                     badgeContent={notificationBadgesState.numNewGames}
                     invisible={!notificationBadgesState.thereIsNewGame}
                     color="info"
-                 max={9}
+                    max={9}
                   >
                     <ScoreboardOutlinedIcon />
                   </Badge>
@@ -147,6 +151,15 @@ export const OverviewComponent: FC = () => {
                   <AccountBoxOutlinedIcon />
                 </ListItemIcon>
                 <ListItemText primary="My player profile" />
+              </ListItemButton>
+            </ListItem>
+            <Divider component="li" />
+            <ListItem disablePadding>
+              <ListItemButton to={`/locations`} component={RouterLink}>
+                <ListItemIcon>
+                  <FmdGoodOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Locations" />
               </ListItemButton>
             </ListItem>
             {showLastSeasonTab && <Divider component="li" />}

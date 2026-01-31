@@ -41,7 +41,7 @@ import { getStatKeyFromNumBalls } from "../../../utils/statsUtils";
 import { DiscardDialog } from "./DiscardDialog";
 import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlined";
 import { MultiBallDeleteDialog } from "./MultiBallDeleteDialog";
-import { useFetchLocations } from "../../../backend/endpoints/locations";
+import { useFetchLocationNames } from "../../../backend/endpoints/locations";
 import { DeleteOutlined } from "@mui/icons-material";
 import DatePicker from "../../../shared-components/DatePicker";
 import { Timestamp } from "firebase/firestore";
@@ -60,7 +60,7 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
     players,
     authState: { player },
   } = useAppContext();
-  const locations = useFetchLocations();
+  const locations = useFetchLocationNames();
   const { iterateStatNonRedux } = useIterateStats();
   const [selectedTab, setSelectedTab] = useState(0);
   const [endGameDialogOpen, setEndGameDialogOpen] = useState(false);

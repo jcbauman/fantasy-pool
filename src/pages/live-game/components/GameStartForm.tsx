@@ -19,7 +19,7 @@ import { initializeGame } from "../../../redux/gameSlice";
 import { useAppContext } from "../../../context/AppContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import {
-  useFetchLocations,
+  useFetchLocationNames,
   addNewLocation,
 } from "../../../backend/endpoints/locations";
 import { capitalizeLocation, sortGamesByDate } from "../../../utils/gameUtils";
@@ -56,7 +56,7 @@ export const GameStartForm: FC<{
   const [lastGameAddedPlayers, setLastGameAddedPlayers] = useState<string[]>(
     []
   );
-  const locations = useFetchLocations();
+  const locations = useFetchLocationNames();
   const { gameStartSoundEffect } = useSelector(
     (state: RootState) => state.settings
   );

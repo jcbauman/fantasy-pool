@@ -11,6 +11,7 @@ interface UseLocationParams {
   location: PoolHallLocation | undefined;
   locationGames: Game[];
   loading: boolean;
+  refetchLocation: () => Promise<void>;
 }
 
 export const useLocationParams = (): UseLocationParams => {
@@ -21,19 +22,26 @@ export const useLocationParams = (): UseLocationParams => {
   const [loading, setLoading] = useState(false);
   const { id } = useParams<LocationParams>();
 
+  const fetchLocationData = async (locationId: string) => {
+    setLoading(true);
+    const thisLocation = await fetchLocationById(locationId);
+    const thisLocationGames: Game[] = [];
+    setLocation(thisLocation);
+    setLocationGames(thisLocationGames || []);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchPlayerData = async (id: string) => {
-      setLoading(true);
-      const thisLocation = await fetchLocationById(id);
-      const thisLocationGames: Game[] = [];
-      setLocation(thisLocation);
-      setLocationGames(thisLocationGames || []);
-      setLoading(false);
-    };
     if (id) {
-      fetchPlayerData(id);
+      fetchLocationData(id);
     }
   }, [id]);
 
-  return { location, locationGames, loading };
+  const refetchLocation = async () => {
+    if (id) {
+      await fetchLocationData(id);
+    }
+  };
+
+  return { location, locationGames, loading, refetchLocation };
 };

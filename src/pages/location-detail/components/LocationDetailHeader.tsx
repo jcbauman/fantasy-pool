@@ -5,11 +5,17 @@ import { LocationStatOverview } from "./LocationStatOverview";
 import { LocationAvatar } from "./LocationAvatar";
 import EditIcon from "@mui/icons-material/Edit";
 import { EditLocationDrawer } from "./EditLocationDrawer";
+import { updateLocation } from "../../../backend/endpoints/locations";
+import {
+  sendErrorNotification,
+  sendSuccessNotification,
+} from "../../../shared-components/toasts/notificationToasts";
 
 export const LocationDetailHeader: FC<{
   location: PoolHallLocation;
   games: Game[];
-}> = ({ location, games }) => {
+  onRefetchLocation?: () => Promise<void>;
+}> = ({ location, games, onRefetchLocation }) => {
   const [openEditLocationDrawer, setOpenEditLocationDrawer] = useState(false);
   return (
     <Card
@@ -46,8 +52,21 @@ export const LocationDetailHeader: FC<{
       <EditLocationDrawer
         open={openEditLocationDrawer}
         onClose={() => setOpenEditLocationDrawer(false)}
-        onSave={() => {
-          //
+        onSave={async (data: PoolHallLocation) => {
+          await updateLocation(
+            data,
+            location.id,
+            async () => {
+              sendSuccessNotification(
+                "Thanks for contributing to this location!"
+              );
+              await onRefetchLocation?.();
+            },
+            () =>
+              sendErrorNotification(
+                "An error occurred, please try updating location later."
+              )
+          );
         }}
         location={location}
       />

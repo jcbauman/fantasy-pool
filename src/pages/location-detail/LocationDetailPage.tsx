@@ -7,7 +7,8 @@ import { LocationDetailHeader } from "./components/LocationDetailHeader";
 import { LocationGameLog } from "./components/LocationGameLog";
 
 export const LocationDetailPage: FC = () => {
-  const { location, loading, locationGames } = useLocationParams();
+  const { location, loading, locationGames, refetchLocation } =
+    useLocationParams();
 
   if (!location) {
     return (
@@ -32,7 +33,11 @@ export const LocationDetailPage: FC = () => {
   return (
     <PageContainer loading={loading}>
       <Stack direction="column" sx={{ width: "100%", height: "100%" }}>
-        <LocationDetailHeader location={location} games={locationGames} />
+        <LocationDetailHeader
+          location={location}
+          games={locationGames}
+          onRefetchLocation={refetchLocation}
+        />
         <Stack sx={{ p: 1, pt: 2 }} spacing={2}>
           <LocationGameLog games={locationGames} />
         </Stack>

@@ -1,4 +1,4 @@
-import { addDoc, doc, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { PoolHallLocation } from "../../types";
 import { firestore, LOCATIONS_COLLECTION } from "../firebase/controller";
@@ -79,5 +79,20 @@ export const fetchLocationById = async (
     };
   } else {
     console.error("No location record found found for ", id);
+  }
+};
+
+export const updateLocation = async (
+  location: Omit<PoolHallLocation, "id">,
+  locationId: string,
+  onSuccess?: () => void,
+  onError?: () => void
+): Promise<void> => {
+  try {
+    const docRef = doc(firestore, `locations/${locationId}`);
+    await updateDoc(docRef, location);
+    onSuccess?.();
+  } catch (e) {
+    onError?.();
   }
 };

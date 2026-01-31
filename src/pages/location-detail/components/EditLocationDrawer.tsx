@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogTitle,
   Drawer,
-  IconButton,
   Stack,
   TextField,
   Typography,
@@ -13,9 +12,9 @@ import {
 import { FC, useState } from "react";
 import { PoolHallLocation } from "../../../types";
 import { capitalizeLocation } from "../../../utils/gameUtils";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { EmojiPickerInput } from "./EmojiPickerInput";
 import { LocationAvatar } from "./LocationAvatar";
-import EditIcon from "@mui/icons-material/Edit";
 
 interface EditLocationDrawerProps {
   open: boolean;
@@ -37,6 +36,7 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
     register,
     setValue,
     watch,
+    control,
     formState: { errors },
   } = useForm<PoolHallLocation>({
     defaultValues: {
@@ -51,8 +51,15 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
   return (
     <Drawer open={open} anchor="bottom" onClose={onClose}>
       <DialogTitle>Edit location</DialogTitle>
-      <DialogContent>
-        <form onSubmit={handleSubmit(onSave)}>
+      <DialogContent sx={{ pt: 1, overflowY: "visible" }}>
+        <form
+          id="edit-location-form"
+          onSubmit={handleSubmit((data) => {
+            setLoading(true);
+            onSave(data);
+            onClose();
+          })}
+        >
           <Stack direction={"column"} gap={2}>
             <TextField
               variant="outlined"
@@ -83,24 +90,36 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
               value={watchAll.city}
               {...register("city")}
             />
-            <TextField
-              variant="outlined"
-              type="text"
-              label="State/Country (abbreviation)"
-              size="small"
-              value={watchAll.state}
-              inputProps={{ maxLength: 3 }}
-              {...register("state")}
-              onChange={(e) => {
-                const lettersOnly = e.target.value.replace(/[^a-zA-Z]/g, "");
-                setValue("state", lettersOnly.slice(0, 3).toUpperCase());
-              }}
-            />
-            <Stack direction="row" spacing={1}>
-              <LocationAvatar location={{ ...watchAll, icon: "🤯" }} />
-              <IconButton size="small">
-                <EditIcon />
-              </IconButton>
+
+            <Stack direction="row" spacing={2}>
+              <Stack direction="row">
+                <LocationAvatar location={{ ...watchAll }} />
+                <Controller
+                  name="icon"
+                  control={control}
+                  render={({ field }) => (
+                    <EmojiPickerInput
+                      name={field.name}
+                      value={field.value ?? ""}
+                      onChange={(emoji) => setValue("icon", emoji)}
+                    />
+                  )}
+                />
+              </Stack>
+              <TextField
+                fullWidth
+                variant="outlined"
+                type="text"
+                label="State/Country (abbreviation)"
+                size="small"
+                value={watchAll.state}
+                inputProps={{ maxLength: 3 }}
+                {...register("state")}
+                onChange={(e) => {
+                  const lettersOnly = e.target.value.replace(/[^a-zA-Z]/g, "");
+                  setValue("state", lettersOnly.slice(0, 3).toUpperCase());
+                }}
+              />
             </Stack>
           </Stack>
         </form>
@@ -122,12 +141,9 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
             </Button>
             <Button
               type="submit"
+              form="edit-location-form"
               disabled={loading}
               variant="contained"
-              onClick={() => {
-                setLoading(true);
-                onClose();
-              }}
             >
               {loading ? <CircularProgress size="1.5rem" /> : "Save"}
             </Button>

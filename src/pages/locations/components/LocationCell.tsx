@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { PoolHallLocation } from "../../../types";
-import { Avatar, Stack, Typography } from "@mui/material";
-import { getAbbreviation } from "../../../utils/statsUtils";
+import { Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { LocationAvatar } from "../../location-detail/components/LocationAvatar";
 
 export const LocationCell: FC<{
   location: PoolHallLocation;
@@ -24,18 +24,7 @@ export const LocationCell: FC<{
         if (linkToLocation) navigate(`/locations/${location.id}`);
       }}
     >
-      <Avatar
-        src={location.image}
-        sx={{
-          width: 25,
-          height: 25,
-        }}
-        alt={location.name}
-      >
-        <Typography variant="caption">
-          {getAbbreviation(location?.name)}
-        </Typography>
-      </Avatar>
+      <LocationAvatar location={location} sx={{ width: 25, height: 25 }} />
       <Stack direction="row" sx={{ alignItems: "center" }}>
         <Typography variant="body2" fontWeight={500} noWrap>
           {location.name}

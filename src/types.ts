@@ -28,7 +28,7 @@ export interface PoolHallLocation {
   discoveryPlayer?: string;
   city?: string;
   state?: string;
-  image?: string;
+  icon?: string;
   mapsUrl?: string;
 }
 

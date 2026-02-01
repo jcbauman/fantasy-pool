@@ -6,6 +6,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Link,
 } from "@mui/material";
 import { FC, useMemo } from "react";
 import { PoolHallLocation } from "../../types";
@@ -19,6 +20,7 @@ import { Timestamp } from "firebase/firestore";
 import { useFetchLocations } from "../../backend/endpoints/locations";
 import { LocationCell } from "./components/LocationCell";
 import { bucketGamesByLocation } from "./hooks/utils";
+import { setHideInactiveLocations } from "../../redux/settingsSlice";
 
 const SortableStatsOrder = [
   { label: "Name", value: "name" },
@@ -33,6 +35,9 @@ export const LocationsPage: FC = () => {
   const { locationSortBy: sortBy } = useSelector(
     (state: RootState) => state.nav
   );
+  const { hideInactiveLocations } = useSelector(
+    (state: RootState) => state.settings
+  );
   const dispatch = useDispatch();
 
   const alphabeticalLocations = useMemo(
@@ -44,13 +49,18 @@ export const LocationsPage: FC = () => {
     return bucketGamesByLocation(games);
   }, [games]);
 
-  console.log(bucketedGames);
+  const filteredLocations = useMemo(() => {
+    if (!hideInactiveLocations) return alphabeticalLocations;
+    return alphabeticalLocations.filter(
+      (l) => (bucketedGames?.[l.name] ?? 0) > 0
+    );
+  }, [hideInactiveLocations, alphabeticalLocations, bucketedGames]);
 
   const sortedLocations = useMemo(() => {
     if (sortBy === "name") {
-      return alphabeticalLocations;
+      return filteredLocations;
     } else if (sortBy === "city") {
-      return [...alphabeticalLocations].sort((a, b) => {
+      return [...filteredLocations].sort((a, b) => {
         const ac = (a?.city ?? "").trim();
         const bc = (b?.city ?? "").trim();
         if (!ac && bc) return 1;
@@ -58,7 +68,7 @@ export const LocationsPage: FC = () => {
         return ac.localeCompare(bc);
       });
     } else if (sortBy === "state") {
-      return [...alphabeticalLocations].sort((a, b) => {
+      return [...filteredLocations].sort((a, b) => {
         const as = (a?.state ?? "").trim();
         const bs = (b?.state ?? "").trim();
         if (!as && bs) return 1;
@@ -66,14 +76,14 @@ export const LocationsPage: FC = () => {
         return as.localeCompare(bs);
       });
     } else if (sortBy === "games") {
-      return [...alphabeticalLocations].sort(
+      return [...filteredLocations].sort(
         (a, b) =>
           (bucketedGames?.[b.name] ?? 0) - (bucketedGames?.[a.name] ?? 0)
       );
     } else {
-      return alphabeticalLocations;
+      return filteredLocations;
     }
-  }, [alphabeticalLocations, sortBy, bucketedGames]);
+  }, [filteredLocations, sortBy, bucketedGames]);
 
   const sortByProps = (field: string) => {
     return {
@@ -132,6 +142,32 @@ export const LocationsPage: FC = () => {
             })}
           </TableBody>
         </Table>
+        <Stack
+          direction="row"
+          sx={{ pt: 1, pl: 2, mb: 6, alignItems: "center" }}
+        >
+          <Typography variant="caption">
+            {hideInactiveLocations
+              ? "Inactive pool halls hidden"
+              : "Showing all pool halls"}
+          </Typography>
+          <Link
+            color="secondary"
+            sx={{
+              ml: 1,
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            onClick={() =>
+              dispatch(setHideInactiveLocations(!hideInactiveLocations))
+            }
+          >
+            <Typography variant="caption">
+              {hideInactiveLocations ? "Show all" : "Hide inactive"}
+            </Typography>
+          </Link>
+        </Stack>
       </Stack>
     </PageContainer>
   );

@@ -158,7 +158,7 @@ export const GameStartForm: FC<{
       addNewLocation({
         name: data.location.trim(),
         dateAdded: Timestamp.fromDate(new Date()),
-        discoveryPlayer: player?.id ?? "",
+        discoveryPlayerIds: data.playerIds,
       });
     }
     dispatch(initializeGame({ ...resolvedData }));

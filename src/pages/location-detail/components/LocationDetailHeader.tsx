@@ -29,7 +29,7 @@ export const LocationDetailHeader: FC<{
   const canEditLocation =
     user?.isAppAdmin ||
     (player?.id &&
-      (location?.discoveryPlayer === player?.id ||
+      (location?.discoveryPlayerIds?.includes(player?.id) ||
         games.some((g) => g.playerIds.includes(player?.id))));
   return (
     <Card
@@ -73,6 +73,11 @@ export const LocationDetailHeader: FC<{
           </Stack>
           {locationString.trim().length && (
             <Typography variant="overline">{locationString}</Typography>
+          )}
+          {location.description && (
+            <Typography variant="caption" sx={{ mt: 1 }}>
+              {location.description}
+            </Typography>
           )}
         </Stack>
       </Stack>

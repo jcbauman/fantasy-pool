@@ -42,7 +42,7 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
     useState(false);
   const navigate = useNavigate();
   const {
-    authState: { user },
+    authState: { user, player },
   } = useAppContext();
   const {
     handleSubmit,
@@ -57,6 +57,7 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
       city: location.city ?? "",
       state: location.state ?? "",
       icon: location.icon ?? "",
+      description: location.description ?? "",
     },
   });
   const watchAll = watch();
@@ -69,7 +70,15 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
             id="edit-location-form"
             onSubmit={handleSubmit((data) => {
               setLoading(true);
-              onSave(data);
+              onSave({
+                ...location,
+                name: data.name,
+                city: data.city,
+                state: data.state,
+                icon: data.icon,
+                description: data.description,
+                lastEditedBy: player?.id ?? "",
+              });
               onClose();
             })}
           >
@@ -95,18 +104,35 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
                   {errors.name.message}
                 </Typography>
               )}
-              <TextField
-                fullWidth
-                variant="outlined"
-                type="text"
-                label="City/Borough"
-                placeholder="Brooklyn"
-                size="small"
-                value={watchAll.city}
-                {...register("city")}
-              />
-
-              <Stack direction="row" spacing={4}>
+              <Stack direction="row" spacing={2}>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  type="text"
+                  label="City/Borough"
+                  placeholder="Brooklyn"
+                  size="small"
+                  value={watchAll.city}
+                  {...register("city")}
+                />
+                <TextField
+                  variant="outlined"
+                  type="text"
+                  label="State/Country"
+                  size="small"
+                  value={watchAll.state}
+                  inputProps={{ maxLength: 3 }}
+                  {...register("state")}
+                  onChange={(e) => {
+                    const lettersOnly = e.target.value.replace(
+                      /[^a-zA-Z]/g,
+                      ""
+                    );
+                    setValue("state", lettersOnly.slice(0, 3).toUpperCase());
+                  }}
+                />
+              </Stack>
+              <Stack direction="row" spacing={2} sx={{ alignItems: "start" }}>
                 <Stack direction="row">
                   <LocationAvatar location={{ ...watchAll }} />
                   <Controller
@@ -123,20 +149,15 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
                 </Stack>
                 <TextField
                   fullWidth
+                  multiline
+                  rows={3}
                   variant="outlined"
                   type="text"
-                  label="State/Country (abbreviation)"
+                  label="Bio/Description"
                   size="small"
-                  value={watchAll.state}
-                  inputProps={{ maxLength: 3 }}
-                  {...register("state")}
-                  onChange={(e) => {
-                    const lettersOnly = e.target.value.replace(
-                      /[^a-zA-Z]/g,
-                      ""
-                    );
-                    setValue("state", lettersOnly.slice(0, 3).toUpperCase());
-                  }}
+                  maxLength={200}
+                  value={watchAll.description}
+                  {...register("description")}
                 />
               </Stack>
             </Stack>

@@ -11,6 +11,7 @@ import {
   sendSuccessNotification,
 } from "../../../shared-components/toasts/notificationToasts";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
+import { useAppContext } from "../../../context/AppContext";
 
 export const LocationDetailHeader: FC<{
   location: PoolHallLocation;
@@ -22,6 +23,14 @@ export const LocationDetailHeader: FC<{
     location?.city?.length && location?.state?.length
       ? `${location.city ?? "-"}, ${location.state ?? "-"}`
       : `${location.city ?? "-"}${location.state ?? "-"}`;
+  const {
+    authState: { user, player },
+  } = useAppContext();
+  const canEditLocation =
+    user?.isAppAdmin ||
+    (player?.id &&
+      (location?.discoveryPlayer === player?.id ||
+        games.some((g) => g.playerIds.includes(player?.id))));
   return (
     <Card
       data-testid="player-detail-header"
@@ -50,15 +59,17 @@ export const LocationDetailHeader: FC<{
             <Typography variant="overline" fontWeight={500} fontSize={16}>
               {location.name}
             </Typography>
-            <IconButton
-              size="small"
-              onClick={() => {
-                setOpenEditLocationDrawer(true);
-                fireAnalyticsEvent("LocationDetail_Clicked_Edit");
-              }}
-            >
-              <EditIcon />
-            </IconButton>
+            {canEditLocation && (
+              <IconButton
+                size="small"
+                onClick={() => {
+                  setOpenEditLocationDrawer(true);
+                  fireAnalyticsEvent("LocationDetail_Clicked_Edit");
+                }}
+              >
+                <EditIcon />
+              </IconButton>
+            )}
           </Stack>
           {locationString.trim().length && (
             <Typography variant="overline">{locationString}</Typography>

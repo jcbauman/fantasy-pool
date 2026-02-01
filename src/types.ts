@@ -24,6 +24,13 @@ export interface Player {
 export interface PoolHallLocation {
   id: string;
   name: string;
+  dateAdded?: Timestamp;
+  discoveryPlayerIds?: string[];
+  city?: string;
+  state?: string;
+  icon?: string;
+  description?: string;
+  lastEditedBy?: string;
 }
 
 export interface League {

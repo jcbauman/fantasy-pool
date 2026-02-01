@@ -13,7 +13,7 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { useAppContext } from "../../../context/AppContext";
 import { Player } from "../../../types";
 import { useLocation } from "react-router-dom";
-import { useFetchLocations } from "../../../backend/endpoints/locations";
+import { useFetchLocationNames } from "../../../backend/endpoints/locations";
 import { capitalizeLocation } from "../../../utils/gameUtils";
 
 export interface ProfileFormValues {
@@ -34,7 +34,7 @@ export const ProfileEditor: FC<{
     authState: { user, signOut },
     league,
   } = useAppContext();
-  const locations = useFetchLocations();
+  const locations = useFetchLocationNames();
   const location = useLocation();
   const defaultValues = useMemo(() => {
     return {

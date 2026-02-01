@@ -55,5 +55,9 @@ export const useTopNav = (): UseTopNav => {
     };
   else if (location.pathname === "/forgot-password")
     return { title: "Reset password" };
+  else if (location.pathname.startsWith("/locations"))
+    return { title: "Locations", showBackButton: true };
+  else if (location.pathname.startsWith("/locations/:id"))
+    return { title: "Location", showBackButton: true };
   else return { title: "Fantasy Pool" };
 };

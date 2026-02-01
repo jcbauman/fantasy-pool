@@ -134,6 +134,7 @@ export const LocationsPage: FC = () => {
             {sortedLocations.map((loc) => {
               return (
                 <LocationRow
+                  key={loc.id}
                   rowKey={loc.id}
                   location={loc}
                   count={bucketedGames?.[loc.name] ?? 0}

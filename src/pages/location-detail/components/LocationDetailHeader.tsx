@@ -44,7 +44,7 @@ export const LocationDetailHeader: FC<{
         <LocationAvatar
           location={location}
           sx={{ width: 100, height: 100 }}
-          typographyProps={{ variant: "h2" }}
+          typographyProps={{ variant: location.icon ? "h2" : "h4" }}
         />
         <Stack direction="column" sx={{ p: 1, width: "100%" }}>
           <Stack

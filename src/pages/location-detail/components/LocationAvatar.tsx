@@ -22,10 +22,7 @@ export const LocationAvatar: FC<{
       onClick={onClick}
       {...rest}
     >
-      <Typography
-        variant={location.icon ? "caption" : "caption"}
-        {...typographyProps}
-      >
+      <Typography variant="caption" {...typographyProps}>
         {location.icon ? location.icon : getAbbreviation(location.name)}
       </Typography>
     </MUIAvatar>

@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Button,
   CircularProgress,
   DialogActions,
@@ -23,6 +24,7 @@ import {
 import { deleteLocation } from "../../../backend/endpoints/locations";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../../context/AppContext";
+import { getPlayerFullName } from "../../players/utils/playerUtils";
 
 interface EditLocationDrawerProps {
   open: boolean;
@@ -42,6 +44,7 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
     useState(false);
   const navigate = useNavigate();
   const {
+    players,
     authState: { user, player },
   } = useAppContext();
   const {
@@ -58,8 +61,12 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
       state: location.state ?? "",
       icon: location.icon ?? "",
       description: location.description ?? "",
+      discoveryPlayerIds: location.discoveryPlayerIds ?? [],
     },
   });
+  const playerOptionIds = players
+    .sort((a, b) => a.firstName.localeCompare(b.firstName))
+    .map((p) => p.id);
   const watchAll = watch();
   return (
     <>
@@ -77,6 +84,7 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
                 state: data.state,
                 icon: data.icon,
                 description: data.description,
+                discoveryPlayerIds: data.discoveryPlayerIds,
                 lastEditedBy: player?.id ?? "",
               });
               onClose();
@@ -158,8 +166,40 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
                   maxLength={200}
                   value={watchAll.description}
                   {...register("description")}
+                  helperText="Max 200 characters"
                 />
               </Stack>
+              <Controller
+                name="discoveryPlayerIds"
+                control={control}
+                render={({ field }) => (
+                  <Autocomplete
+                    {...field}
+                    multiple
+                    value={field.value}
+                    id="discovery-player-ids-outlined"
+                    options={playerOptionIds}
+                    getOptionLabel={(option) =>
+                      getPlayerFullName(players.find((p) => p.id === option))
+                    }
+                    filterSelectedOptions
+                    onChange={(_event, newValue) => {
+                      field.onChange(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        size="small"
+                        label="Discovered by"
+                        placeholder="Select player(s)"
+                        error={!!errors.discoveryPlayerIds}
+                        helperText="Players who first entered OR played a current season game at this location will be able
+                to make edits here."
+                      />
+                    )}
+                  />
+                )}
+              />
             </Stack>
           </form>
         </DialogContent>

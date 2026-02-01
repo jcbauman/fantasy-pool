@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Game } from "../../../types";
 import {
   AvatarGroup,
@@ -11,6 +11,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { sortGamesByDate } from "../../../utils/gameUtils";
@@ -18,10 +19,12 @@ import { formatDateToMMDD } from "../../../utils/dateUtils";
 import { useAppContext } from "../../../context/AppContext";
 import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 import { getWinningAndLosingPlayersForGame } from "../hooks/utils";
+import { getPlayerFullName } from "../../players/utils/playerUtils";
 
 export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
   const dateSortedGames = sortGamesByDate(games);
   const { players } = useAppContext();
+  const [openTooltipKey, setOpenTooltipKey] = useState<string | null>(null);
 
   return (
     <Card>
@@ -77,12 +80,32 @@ export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
                         >
                           {winningPlayers.length > 0 ? (
                             <AvatarGroup sx={{ justifyContent: "flex-end" }}>
-                              {winningPlayers.map((p) => (
-                                <PlayerAvatar
-                                  player={p}
-                                  key={`${p.id}-${g.id}`}
-                                />
-                              ))}
+                              {winningPlayers.map((p) => {
+                                const key = `${p.id}-${g.id}`;
+                                return (
+                                  <Tooltip
+                                    arrow
+                                    key={key}
+                                    title={getPlayerFullName(p)}
+                                    placement="bottom"
+                                    open={openTooltipKey === key}
+                                    onClose={() => setOpenTooltipKey(null)}
+                                    disableHoverListener
+                                    disableFocusListener
+                                  >
+                                    <span
+                                      style={{ display: "inline-flex" }}
+                                      onClick={() =>
+                                        setOpenTooltipKey((prev) =>
+                                          prev === key ? null : key
+                                        )
+                                      }
+                                    >
+                                      <PlayerAvatar player={p} />
+                                    </span>
+                                  </Tooltip>
+                                );
+                              })}
                             </AvatarGroup>
                           ) : (
                             ""
@@ -99,12 +122,32 @@ export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
                         >
                           {losingPlayers.length > 0 ? (
                             <AvatarGroup sx={{ justifyContent: "flex-end" }}>
-                              {losingPlayers.map((p) => (
-                                <PlayerAvatar
-                                  player={p}
-                                  key={`${p.id}-${g.id}`}
-                                />
-                              ))}
+                              {losingPlayers.map((p) => {
+                                const key = `${p.id}-${g.id}`;
+                                return (
+                                  <Tooltip
+                                    key={key}
+                                    title={getPlayerFullName(p)}
+                                    placement="bottom"
+                                    arrow
+                                    open={openTooltipKey === key}
+                                    onClose={() => setOpenTooltipKey(null)}
+                                    disableHoverListener
+                                    disableFocusListener
+                                  >
+                                    <span
+                                      style={{ display: "inline-flex" }}
+                                      onClick={() =>
+                                        setOpenTooltipKey((prev) =>
+                                          prev === key ? null : key
+                                        )
+                                      }
+                                    >
+                                      <PlayerAvatar player={p} />
+                                    </span>
+                                  </Tooltip>
+                                );
+                              })}
                             </AvatarGroup>
                           ) : (
                             ""

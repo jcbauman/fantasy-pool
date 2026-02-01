@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Game, PoolHallLocation } from "../../types";
 import { fetchLocationById } from "../../backend/endpoints/locations";
+import { useAppContext } from "../../context/AppContext";
 
 interface LocationParams extends Record<string, string | undefined> {
   id: string;
@@ -21,11 +22,14 @@ export const useLocationParams = (): UseLocationParams => {
   const [locationGames, setLocationGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(false);
   const { id } = useParams<LocationParams>();
+  const { games } = useAppContext();
 
   const fetchLocationData = async (locationId: string) => {
     setLoading(true);
     const thisLocation = await fetchLocationById(locationId);
-    const thisLocationGames: Game[] = [];
+    const thisLocationGames: Game[] = games.filter(
+      (g) => g.location === thisLocation?.name
+    );
     setLocation(thisLocation);
     setLocationGames(thisLocationGames || []);
     setLoading(false);

@@ -26,8 +26,18 @@ export const useFetchLocationNames = (): string[] => {
     fetchDocuments();
   }, []);
 
-  const reducedLocations = locations.map((l) => l.name);
-  return [...new Set(reducedLocations)].sort();
+  const byName = new Map<string, PoolHallLocation[]>();
+  for (const loc of locations) {
+    const list = byName.get(loc.name) ?? [];
+    list.push(loc);
+    byName.set(loc.name, list);
+  }
+  const names: string[] = [];
+  for (const [, list] of byName) {
+    const withCity = list.find((l) => l.city?.trim());
+    names.push((withCity ?? list[0]).name);
+  }
+  return names.sort();
 };
 
 export const useFetchLocations = (): PoolHallLocation[] => {
@@ -52,7 +62,18 @@ export const useFetchLocations = (): PoolHallLocation[] => {
     fetchDocuments();
   }, []);
 
-  return locations;
+  const byName = new Map<string, PoolHallLocation[]>();
+  for (const loc of locations) {
+    const list = byName.get(loc.name) ?? [];
+    list.push(loc);
+    byName.set(loc.name, list);
+  }
+  const deduped: PoolHallLocation[] = [];
+  for (const [, list] of byName) {
+    const withCity = list.find((l) => l.city?.trim());
+    deduped.push(withCity ?? list[0]);
+  }
+  return deduped;
 };
 
 export const addNewLocation = async (

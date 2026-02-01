@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Game } from "../../../types";
 import {
+  AvatarGroup,
   Card,
   Paper,
   Stack,
@@ -12,12 +13,15 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { getAbbreviation } from "../../../utils/statsUtils";
 import { sortGamesByDate } from "../../../utils/gameUtils";
 import { formatDateToMMDD } from "../../../utils/dateUtils";
+import { useAppContext } from "../../../context/AppContext";
+import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
+import { getWinningAndLosingPlayersForGame } from "../hooks/utils";
 
 export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
   const dateSortedGames = sortGamesByDate(games);
+  const { players } = useAppContext();
 
   return (
     <Card>
@@ -37,78 +41,21 @@ export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      Loc
+                      Win (+)
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="overline" noWrap>
-                      Pts
+                      Loss (-)
                     </Typography>
                   </TableCell>
-                  {/* <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.winsBy8BallSink]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.winsByOpponentScratch]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.lossesBy8BallSink]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.lossesByScratch]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.skillShots]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.threeBallsPocketedInRow]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.fourBallsPocketedInRow]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.fiveBallsPocketedInRow]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.sixBallsPocketedInRow]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.sevenBallsPocketedInRow]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.runTheTable]}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="overline" noWrap>
-                      {GameStatKeysAbbrev[GameStatKeys.scratches]}
-                    </Typography>
-                  </TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
                 {dateSortedGames.map((g, idx) => {
+                  const { winningPlayers, losingPlayers } =
+                    getWinningAndLosingPlayersForGame(players, g);
+
                   return (
                     <TableRow
                       key={g.id}
@@ -121,53 +68,50 @@ export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
                       <TableCell>
                         {formatDateToMMDD(new Date(g.timestamp))}
                       </TableCell>
-                      <TableCell>{getAbbreviation(g.location)}</TableCell>
-                      {/* <TableCell
-                        onClick={() => setDetailModalGame(g)}
-                        sx={{
-                          color: "lightblue",
-                          textDecoration: "underline",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {normalizeStat(fantasyPoints)}
+                      <TableCell>
+                        <Stack
+                          sx={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            textAlign: "center",
+                          }}
+                        >
+                          {winningPlayers.length > 0 ? (
+                            <AvatarGroup sx={{ justifyContent: "flex-end" }}>
+                              {winningPlayers.map((p) => (
+                                <PlayerAvatar
+                                  player={p}
+                                  key={`${p.id}-${g.id}`}
+                                />
+                              ))}
+                            </AvatarGroup>
+                          ) : (
+                            ""
+                          )}
+                        </Stack>
                       </TableCell>
                       <TableCell>
-                        {stats[GameStatKeys.winsBy8BallSink] ?? 0}
+                        <Stack
+                          sx={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            textAlign: "center",
+                          }}
+                        >
+                          {losingPlayers.length > 0 ? (
+                            <AvatarGroup sx={{ justifyContent: "flex-end" }}>
+                              {losingPlayers.map((p) => (
+                                <PlayerAvatar
+                                  player={p}
+                                  key={`${p.id}-${g.id}`}
+                                />
+                              ))}
+                            </AvatarGroup>
+                          ) : (
+                            ""
+                          )}
+                        </Stack>
                       </TableCell>
-                      <TableCell>
-                        {stats[GameStatKeys.winsByOpponentScratch] ?? 0}
-                      </TableCell>
-                      <TableCell>
-                        {stats[GameStatKeys.lossesBy8BallSink] ?? 0}
-                      </TableCell>
-                      <TableCell>
-                        {stats[GameStatKeys.lossesByScratch] ?? 0}
-                      </TableCell>
-                      <TableCell>
-                        {stats[GameStatKeys.skillShots] ?? 0}
-                      </TableCell>
-                      <TableCell>
-                        {stats[GameStatKeys.threeBallsPocketedInRow] ?? 0}
-                      </TableCell>
-                      <TableCell>
-                        {stats[GameStatKeys.fourBallsPocketedInRow] ?? 0}
-                      </TableCell>
-                      <TableCell>
-                        {stats[GameStatKeys.fiveBallsPocketedInRow] ?? 0}
-                      </TableCell>
-                      <TableCell>
-                        {stats[GameStatKeys.sixBallsPocketedInRow] ?? 0}
-                      </TableCell>
-                      <TableCell>
-                        {stats[GameStatKeys.sevenBallsPocketedInRow] ?? 0}
-                      </TableCell>
-                      <TableCell>
-                        {stats[GameStatKeys.runTheTable] ?? 0}
-                      </TableCell>
-                      <TableCell>
-                        {stats[GameStatKeys.scratches] ?? 0}
-                      </TableCell> */}
                     </TableRow>
                   );
                 })}
@@ -176,7 +120,9 @@ export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
           </TableContainer>
         ) : (
           <Stack sx={{ py: 2, alignItems: "center", justifyContent: "center" }}>
-            <Typography variant="caption">No games to show</Typography>
+            <Typography variant="caption">
+              No games to show this season
+            </Typography>
           </Stack>
         )}
       </Stack>

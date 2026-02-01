@@ -17,6 +17,10 @@ export const LocationDetailHeader: FC<{
   onRefetchLocation?: () => Promise<void>;
 }> = ({ location, games, onRefetchLocation }) => {
   const [openEditLocationDrawer, setOpenEditLocationDrawer] = useState(false);
+  const locationString =
+    location?.city?.length && location?.state?.length
+      ? `${location.city ?? "-"}, ${location.state ?? "-"}`
+      : `${location.city ?? "-"}${location.state ?? "-"}`;
   return (
     <Card
       data-testid="player-detail-header"
@@ -36,9 +40,9 @@ export const LocationDetailHeader: FC<{
           <Typography variant="overline" fontWeight={500} fontSize={16}>
             {location.name}
           </Typography>
-          <Typography variant="overline">
-            {`${location.city ?? "-"}, ${location.state ?? "-"}`}
-          </Typography>
+          {locationString.trim().length && (
+            <Typography variant="overline">{locationString}</Typography>
+          )}
           <IconButton
             onClick={() => {
               setOpenEditLocationDrawer(true);

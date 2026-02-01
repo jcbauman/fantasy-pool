@@ -22,9 +22,9 @@ import { bucketGamesByLocation } from "./hooks/utils";
 
 const SortableStatsOrder = [
   { label: "Name", value: "name" },
+  { label: "Games", value: "games" },
   { label: "City", value: "city" },
   { label: "State", value: "state" },
-  { label: "Games", value: "games" },
 ];
 
 export const LocationsPage: FC = () => {
@@ -44,33 +44,27 @@ export const LocationsPage: FC = () => {
     return bucketGamesByLocation(games);
   }, [games]);
 
-  //   const isKeyOfRankings = (
-  //     key: string,
-  //     obj: Record<string, string[]>
-  //   ): key is keyof Record<string, string[]> => {
-  //     return key in obj;
-  //   };
-
-  //   const sortPlayers = (
-  //     players: Player[],
-  //     sortedPlayerIds: string[]
-  //   ): Player[] => {
-  //     return players.sort(
-  //       (a, b) => sortedPlayerIds.indexOf(a.id) - sortedPlayerIds.indexOf(b.id)
-  //     );
-  //   };
+  console.log(bucketedGames);
 
   const sortedLocations = useMemo(() => {
     if (sortBy === "name") {
       return alphabeticalLocations;
     } else if (sortBy === "city") {
-      return [...alphabeticalLocations].sort((a, b) =>
-        (a?.city ?? "").localeCompare(b?.city ?? "")
-      );
+      return [...alphabeticalLocations].sort((a, b) => {
+        const ac = (a?.city ?? "").trim();
+        const bc = (b?.city ?? "").trim();
+        if (!ac && bc) return 1;
+        if (ac && !bc) return -1;
+        return ac.localeCompare(bc);
+      });
     } else if (sortBy === "state") {
-      return [...alphabeticalLocations].sort((a, b) =>
-        (a?.state ?? "").localeCompare(b?.state ?? "")
-      );
+      return [...alphabeticalLocations].sort((a, b) => {
+        const as = (a?.state ?? "").trim();
+        const bs = (b?.state ?? "").trim();
+        if (!as && bs) return 1;
+        if (as && !bs) return -1;
+        return as.localeCompare(bs);
+      });
     } else if (sortBy === "games") {
       return [...alphabeticalLocations].sort(
         (a, b) =>

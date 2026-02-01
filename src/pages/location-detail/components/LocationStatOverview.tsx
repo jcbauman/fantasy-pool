@@ -33,7 +33,7 @@ export const LocationStatOverview: FC<{
       <Divider orientation="vertical" />
       <Stack direction="column" sx={{ alignItems: "center", p: 2 }}>
         <Typography variant="overline" color="textSecondary" noWrap>
-          Current Leader
+          Current Ftsy Leader
         </Typography>
         <Typography variant="body1">
           <i>{leader ? getPlayerNameAbbreviation(leader) : "None"}</i>

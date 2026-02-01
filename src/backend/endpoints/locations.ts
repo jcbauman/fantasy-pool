@@ -4,7 +4,9 @@ import {
   doc,
   getDoc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { PoolHallLocation } from "../../types";
@@ -120,6 +122,26 @@ export const fetchLocationById = async (
     };
   } else {
     console.error("No location record found found for ", id);
+  }
+};
+
+export const fetchLocationByName = async (
+  name: string
+): Promise<PoolHallLocation | undefined> => {
+  const querySnapshot = await getDocs(
+    query(LOCATIONS_COLLECTION, where("name", "==", name))
+  );
+  if (querySnapshot.docs.length > 0) {
+    const docs = querySnapshot.docs;
+    const withCity = docs.find((d) =>
+      (d.data() as PoolHallLocation)?.city?.trim()
+    );
+    const chosen = withCity ?? docs[0];
+    const data = chosen.data() as Omit<PoolHallLocation, "id">;
+    return {
+      id: chosen.id,
+      ...data,
+    };
   }
 };
 

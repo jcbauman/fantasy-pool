@@ -22,6 +22,8 @@ import { GameFantasyDetailDialog } from "./GameFantasyDetailDialog";
 import { sortGamesByDate } from "../../../utils/gameUtils";
 import { useAppContext } from "../../../context/AppContext";
 import { formatDateToMMDD } from "../../../utils/dateUtils";
+import { fetchLocationByName } from "../../../backend/endpoints/locations";
+import { useNavigate } from "react-router-dom";
 
 export const GameLog: FC<{ player: Player; games: Game[] }> = ({
   player,
@@ -31,7 +33,16 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
   const [detailModalGame, setDetailModalGame] = useState<Game | undefined>(
     undefined
   );
+  const navigate = useNavigate();
   const dateSortedGames = sortGamesByDate(games);
+
+  const viewLocation = async (locationName: string | undefined) => {
+    if (!locationName) return;
+    const loc = await fetchLocationByName(locationName);
+    if (loc) {
+      navigate(`/locations/${loc.id}`);
+    }
+  };
 
   return (
     <Card>
@@ -141,7 +152,12 @@ export const GameLog: FC<{ player: Player; games: Game[] }> = ({
                       <TableCell>
                         {formatDateToMMDD(new Date(g.timestamp))}
                       </TableCell>
-                      <TableCell>{getAbbreviation(g.location)}</TableCell>
+                      <TableCell
+                        sx={{ cursor: "pointer" }}
+                        onClick={() => viewLocation(g.location)}
+                      >
+                        {getAbbreviation(g.location)}
+                      </TableCell>
                       <TableCell
                         onClick={() => setDetailModalGame(g)}
                         sx={{

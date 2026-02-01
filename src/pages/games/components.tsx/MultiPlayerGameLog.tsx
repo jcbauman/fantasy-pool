@@ -26,9 +26,10 @@ import { GameFantasyDetailDialog } from "../../player-detail/components/GameFant
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { useNavigate } from "react-router-dom";
 import { canEditGame } from "../../edit-game/utils";
-import { EditOutlined } from "@mui/icons-material";
+import { EditOutlined, NavigateNext } from "@mui/icons-material";
 import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 import React from "react";
+import { fetchLocationByName } from "../../../backend/endpoints/locations";
 
 export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const {
@@ -44,6 +45,15 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
   const [showEditingDropdownAnchor, setShowEditingDropdownAnchor] =
     useState<null | HTMLElement>(null);
 
+  const viewLocation = async (locationName: string | undefined) => {
+    if (!locationName) return;
+    const loc = await fetchLocationByName(locationName);
+    if (loc) {
+      navigate(`/locations/${loc.id}`);
+      fireAnalyticsEvent("RecentGames_Clicked_ViewLocation");
+    }
+  };
+
   return (
     <Card>
       <Stack
@@ -57,8 +67,17 @@ export const MultiPlayerGameLog: FC<{ game: Game }> = ({ game }) => {
           direction="row"
           sx={{ p: 2, justifyContent: "space-between", alignItems: "center" }}
         >
-          <Stack>
+          <Stack direction="row" sx={{ alignItems: "center" }}>
             <Typography>{game.location}</Typography>
+            {game.location && (
+              <IconButton
+                aria-label="view location"
+                size="small"
+                onClick={() => viewLocation(game.location)}
+              >
+                <NavigateNext />
+              </IconButton>
+            )}
           </Stack>
           {canEditGame(game, player?.id ?? "", false) ? (
             <Stack direction="row" sx={{ alignItems: "center" }}>

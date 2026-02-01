@@ -22,7 +22,11 @@ export function EmojiPickerInput({
   return (
     <>
       <input type="hidden" name={name} value={value} />
-      <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+      <IconButton
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        size="small"
+        aria-label="edit emoji"
+      >
         <EditIcon />
       </IconButton>
       <Popover

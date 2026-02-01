@@ -29,7 +29,6 @@ export interface PoolHallLocation {
   city?: string;
   state?: string;
   icon?: string;
-  mapsUrl?: string;
 }
 
 export interface League {

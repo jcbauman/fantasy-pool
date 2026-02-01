@@ -1,4 +1,11 @@
-import { addDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { PoolHallLocation } from "../../types";
 import { firestore, LOCATIONS_COLLECTION } from "../firebase/controller";
@@ -85,6 +92,19 @@ export const addNewLocation = async (
     return docRef.id;
   } catch (e) {
     console.error("Unable to add location, missing permissions");
+  }
+};
+
+export const deleteLocation = async (
+  locationId: string,
+  onSuccess?: () => void,
+  onError?: () => void
+): Promise<void> => {
+  try {
+    await deleteDoc(doc(firestore, `locations/${locationId}`));
+    onSuccess?.();
+  } catch (e) {
+    onError?.();
   }
 };
 

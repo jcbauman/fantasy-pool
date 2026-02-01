@@ -10,6 +10,7 @@ import {
   sendErrorNotification,
   sendSuccessNotification,
 } from "../../../shared-components/toasts/notificationToasts";
+import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 
 export const LocationDetailHeader: FC<{
   location: PoolHallLocation;
@@ -37,19 +38,23 @@ export const LocationDetailHeader: FC<{
           typographyProps={{ variant: "h4" }}
         />
         <Stack direction="column" sx={{ p: 1 }}>
-          <Typography variant="overline" fontWeight={500} fontSize={16}>
-            {location.name}
-          </Typography>
+          <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+            <Typography variant="overline" fontWeight={500} fontSize={16}>
+              {location.name}
+            </Typography>
+            <IconButton
+              size="small"
+              onClick={() => {
+                setOpenEditLocationDrawer(true);
+                fireAnalyticsEvent("LocationDetail_Clicked_Edit");
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+          </Stack>
           {locationString.trim().length && (
             <Typography variant="overline">{locationString}</Typography>
           )}
-          <IconButton
-            onClick={() => {
-              setOpenEditLocationDrawer(true);
-            }}
-          >
-            <EditIcon />
-          </IconButton>
         </Stack>
       </Stack>
       <LocationStatOverview games={games} />

@@ -204,11 +204,13 @@ const LocationRow: FC<{
         } else {
           return (
             <TableCell sx={{ textAlign: "center" }}>
-              {isKeyOfLocation(f.value, location)
-                ? location[f.value] instanceof Timestamp
-                  ? (location[f.value] as Timestamp).toDate().toLocaleString()
-                  : location[f.value]?.toString()
-                : "-"}
+              <Typography noWrap>
+                {isKeyOfLocation(f.value, location)
+                  ? location[f.value] instanceof Timestamp
+                    ? (location[f.value] as Timestamp).toDate().toLocaleString()
+                    : location[f.value]?.toString()
+                  : "-"}
+              </Typography>
             </TableCell>
           );
         }

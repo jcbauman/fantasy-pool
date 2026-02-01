@@ -55,7 +55,6 @@ export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
                 {dateSortedGames.map((g, idx) => {
                   const { winningPlayers, losingPlayers } =
                     getWinningAndLosingPlayersForGame(players, g);
-
                   return (
                     <TableRow
                       key={g.id}

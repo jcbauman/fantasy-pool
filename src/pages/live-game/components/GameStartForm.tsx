@@ -33,6 +33,7 @@ import {
 import { Add } from "@mui/icons-material";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { getPlayerFullName } from "../../players/utils/playerUtils";
+import { Timestamp } from "firebase/firestore";
 interface FormData {
   date: Date | null;
   location: string;
@@ -154,7 +155,11 @@ export const GameStartForm: FC<{
         (l) => l.trim().toLowerCase() === data.location.trim().toLowerCase()
       )
     ) {
-      addNewLocation({ name: data.location.trim() });
+      addNewLocation({
+        name: data.location.trim(),
+        dateAdded: Timestamp.fromDate(new Date()),
+        discoveryPlayer: player?.id ?? "",
+      });
     }
     dispatch(initializeGame({ ...resolvedData }));
     if (gameStartSoundEffect) {

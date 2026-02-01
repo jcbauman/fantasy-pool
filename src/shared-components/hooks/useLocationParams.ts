@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Game, PoolHallLocation } from "../../types";
 import { fetchLocationById } from "../../backend/endpoints/locations";
@@ -24,22 +24,25 @@ export const useLocationParams = (): UseLocationParams => {
   const { id } = useParams<LocationParams>();
   const { games } = useAppContext();
 
-  const fetchLocationData = async (locationId: string) => {
-    setLoading(true);
-    const thisLocation = await fetchLocationById(locationId);
-    const thisLocationGames: Game[] = games.filter(
-      (g) => g.location === thisLocation?.name
-    );
-    setLocation(thisLocation);
-    setLocationGames(thisLocationGames || []);
-    setLoading(false);
-  };
+  const fetchLocationData = useCallback(
+    async (locationId: string) => {
+      setLoading(true);
+      const thisLocation = await fetchLocationById(locationId);
+      const thisLocationGames: Game[] = games.filter(
+        (g) => g.location === thisLocation?.name
+      );
+      setLocation(thisLocation);
+      setLocationGames(thisLocationGames || []);
+      setLoading(false);
+    },
+    [games]
+  );
 
   useEffect(() => {
     if (id) {
       fetchLocationData(id);
     }
-  }, [id]);
+  }, [id, fetchLocationData]);
 
   const refetchLocation = async () => {
     if (id) {

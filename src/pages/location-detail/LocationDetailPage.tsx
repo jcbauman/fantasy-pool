@@ -5,10 +5,15 @@ import { PageContainer } from "../../shared-components/PageContainer";
 import { useLocationParams } from "../../shared-components/hooks/useLocationParams";
 import { LocationDetailHeader } from "./components/LocationDetailHeader";
 import { LocationGameLog } from "./components/LocationGameLog";
+import { PlayerSeasonStats } from "../player-detail/components/PlayerSeasonStats";
+import { useAppContext } from "../../context/AppContext";
 
 export const LocationDetailPage: FC = () => {
   const { location, loading, locationGames, refetchLocation } =
     useLocationParams();
+  const {
+    authState: { player },
+  } = useAppContext();
 
   if (!location) {
     return (
@@ -39,6 +44,13 @@ export const LocationDetailPage: FC = () => {
           onRefetchLocation={refetchLocation}
         />
         <Stack sx={{ p: 1, pt: 2 }} spacing={2}>
+          {player && (
+            <PlayerSeasonStats
+              player={player}
+              games={locationGames}
+              title="Your season stats"
+            />
+          )}
           <LocationGameLog games={locationGames} />
         </Stack>
       </Stack>

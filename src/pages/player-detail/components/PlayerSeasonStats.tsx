@@ -15,17 +15,18 @@ import { normalizePercentage } from "../../../utils/statsUtils";
 import { getStatsForPlayerGames } from "../../players/utils/playerUtils";
 import { useAppContext } from "../../../context/AppContext";
 
-export const PlayerSeasonStats: FC<{ player: Player; games: Game[] }> = ({
-  player,
-  games,
-}) => {
+export const PlayerSeasonStats: FC<{
+  player: Player;
+  games: Game[];
+  title?: string;
+}> = ({ player, games, title = "Season stats" }) => {
   const { scoringMatrix } = useAppContext();
   const stats = getStatsForPlayerGames(player.id, games, scoringMatrix);
   return (
     <Card sx={{ flexShrink: 0 }}>
       <Stack direction="column">
         <Stack direction="column" sx={{ p: 2 }}>
-          <Typography>Season Stats</Typography>
+          <Typography>{title}</Typography>
         </Stack>
         <TableContainer style={{ overflowX: "auto" }}>
           <Table size="small" sx={{ borderColor: "white" }}>

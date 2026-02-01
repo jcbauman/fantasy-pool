@@ -35,10 +35,18 @@ export const LocationDetailHeader: FC<{
         <LocationAvatar
           location={location}
           sx={{ width: 100, height: 100 }}
-          typographyProps={{ variant: "h4" }}
+          typographyProps={{ variant: "h2" }}
         />
-        <Stack direction="column" sx={{ p: 1 }}>
-          <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+        <Stack direction="column" sx={{ p: 1, width: "100%" }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
             <Typography variant="overline" fontWeight={500} fontSize={16}>
               {location.name}
             </Typography>

@@ -196,7 +196,15 @@ const LocationRow: FC<{
       {SortableStatsOrder.map((f) => {
         if (f.value === "name") {
           return (
-            <TableCell>
+            <TableCell
+              key={f.value}
+              style={{
+                position: "sticky",
+                left: 0,
+                zIndex: 1,
+                backgroundColor: "#303030",
+              }}
+            >
               <LocationCell location={location} />
             </TableCell>
           );

@@ -20,9 +20,14 @@ export const LocationDetailHeader: FC<{
 }> = ({ location, games, onRefetchLocation }) => {
   const [openEditLocationDrawer, setOpenEditLocationDrawer] = useState(false);
   const locationString =
-    location?.city?.length && location?.state?.length
-      ? `${location.city ?? "-"}, ${location.state ?? "-"}`
-      : `${location.city ?? "-"}${location.state ?? "-"}`;
+    location?.city?.trim() && location?.state?.trim()
+      ? `${location.city}, ${location.state}`
+      : location?.city?.trim()
+      ? location.city
+      : location?.state?.trim()
+      ? location.state
+      : undefined;
+
   const {
     authState: { user, player },
   } = useAppContext();
@@ -31,6 +36,8 @@ export const LocationDetailHeader: FC<{
     (player?.id &&
       (location?.discoveryPlayerIds?.includes(player?.id) ||
         games.some((g) => g.playerIds.includes(player?.id))));
+  const bioDefault = !canEditLocation ? "Add a bio/description" : "No bio yet";
+  const bio = location.description?.length ? location.description : bioDefault;
   return (
     <Card
       data-testid="player-detail-header"
@@ -56,7 +63,12 @@ export const LocationDetailHeader: FC<{
               width: "100%",
             }}
           >
-            <Typography variant="overline" fontWeight={500} fontSize={16}>
+            <Typography
+              variant="overline"
+              fontWeight={500}
+              fontSize={16}
+              lineHeight={1.5}
+            >
               {location.name}
             </Typography>
             {canEditLocation && (
@@ -71,14 +83,18 @@ export const LocationDetailHeader: FC<{
               </IconButton>
             )}
           </Stack>
-          {locationString.trim().length && (
+          {locationString && (
             <Typography variant="overline">{locationString}</Typography>
           )}
-          {location.description && (
-            <Typography variant="caption" sx={{ mt: 1 }}>
-              {location.description}
-            </Typography>
-          )}
+          <Typography
+            variant="caption"
+            sx={{ mt: 1 }}
+            color={
+              location.description?.length ? "text.primary" : "text.secondary"
+            }
+          >
+            <i>{bio}</i>
+          </Typography>
         </Stack>
       </Stack>
       <LocationStatOverview games={games} />
@@ -91,7 +107,7 @@ export const LocationDetailHeader: FC<{
             location.id,
             async () => {
               sendSuccessNotification(
-                "Thanks for contributing to this location!"
+                `Thanks for contributing to ${data.name}!`
               );
               await onRefetchLocation?.();
             },

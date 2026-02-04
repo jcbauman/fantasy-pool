@@ -62,6 +62,9 @@ export const checkPlayerInactivity = (
       makePlayerOut(player);
       return true;
     }
+    if (player.out) {
+      makePlayerActive(player, () => {});
+    }
     return false;
   }
 };

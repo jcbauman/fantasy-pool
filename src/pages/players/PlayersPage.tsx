@@ -39,7 +39,7 @@ const SortableStatsOrder = [
 ];
 
 export const PlayersPage: FC = () => {
-  const { players, rankings,authState,games } = useAppContext();
+  const { players, rankings, authState, games } = useAppContext();
   const { sortBy } = useSelector((state: RootState) => state.nav);
   const { hideInactivePlayers } = useSelector(
     (state: RootState) => state.settings

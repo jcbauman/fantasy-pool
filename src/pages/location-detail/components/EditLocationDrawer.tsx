@@ -129,14 +129,14 @@ export const EditLocationDrawer: FC<EditLocationDrawerProps> = ({
                   label="State/Country"
                   size="small"
                   value={watchAll.state}
-                  inputProps={{ maxLength: 3 }}
+                  inputProps={{ maxLength: 2 }}
                   {...register("state")}
                   onChange={(e) => {
                     const lettersOnly = e.target.value.replace(
                       /[^a-zA-Z]/g,
                       ""
                     );
-                    setValue("state", lettersOnly.slice(0, 3).toUpperCase());
+                    setValue("state", lettersOnly.slice(0, 2).toUpperCase());
                   }}
                 />
               </Stack>

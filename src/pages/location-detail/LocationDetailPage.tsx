@@ -1,5 +1,5 @@
-import { Button, Stack, Typography } from "@mui/material";
-import { FC } from "react";
+import { Button, Card, Stack, Typography } from "@mui/material";
+import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useLocationParams } from "../../shared-components/hooks/useLocationParams";
@@ -7,6 +7,9 @@ import { LocationDetailHeader } from "./components/LocationDetailHeader";
 import { LocationGameLog } from "./components/LocationGameLog";
 import { PlayerSeasonStats } from "../player-detail/components/PlayerSeasonStats";
 import { useAppContext } from "../../context/AppContext";
+import { getFirstEverGameAtLocation } from "../../backend/endpoints/locations";
+import { Game } from "../../types";
+import { MultiPlayerGameLog } from "../games/components.tsx/MultiPlayerGameLog";
 
 export const LocationDetailPage: FC = () => {
   const { location, loading, locationGames, refetchLocation } =
@@ -14,6 +17,21 @@ export const LocationDetailPage: FC = () => {
   const {
     authState: { player },
   } = useAppContext();
+
+  const [firstEverGame, setFirstEverGame] = useState<Game | undefined>(
+    undefined,
+  );
+  useEffect(() => {
+    const fetchFirstEverGame = async () => {
+      console.log(location, "location");
+      if (location) {
+        const firstEverGame = await getFirstEverGameAtLocation(location.name);
+        console.log(firstEverGame, "bruh");
+        setFirstEverGame(firstEverGame);
+      }
+    };
+    fetchFirstEverGame();
+  }, [location]);
 
   if (!location) {
     return (
@@ -52,6 +70,11 @@ export const LocationDetailPage: FC = () => {
             />
           )}
           <LocationGameLog games={locationGames} />
+          {firstEverGame && (
+            <Card sx={{ overflow: "auto" }}>
+              <MultiPlayerGameLog game={firstEverGame} />
+            </Card>
+          )}
         </Stack>
       </Stack>
     </PageContainer>

@@ -1,10 +1,10 @@
-import { Game, Player } from "../../../types";
+import { Game, Player, PoolHallLocation, User } from "../../../types";
 import { formatDateToMMDD } from "../../../utils/dateUtils";
 import { getFantasyScoreForPlayerSeason } from "../../../utils/statsUtils";
 
 export const getWinningAndLosingPlayersForGame = (
   players: Player[],
-  game: Game
+  game: Game,
 ) => {
   const winners = game.statsByPlayer
     .filter((s) => {
@@ -26,12 +26,12 @@ export const getWinningAndLosingPlayersForGame = (
 
 export const getLocationLeader = (
   games: Game[],
-  scoringMatrix: Record<string, number>
+  scoringMatrix: Record<string, number>,
 ): string | undefined => {
   if (!games.length) return undefined;
   const playerIds = new Set<string>();
   games.forEach((game) =>
-    game.statsByPlayer.forEach((s) => s.playerId && playerIds.add(s.playerId))
+    game.statsByPlayer.forEach((s) => s.playerId && playerIds.add(s.playerId)),
   );
   let leaderId: string | undefined;
   let maxScore = -Infinity;
@@ -39,7 +39,7 @@ export const getLocationLeader = (
     const score = getFantasyScoreForPlayerSeason(
       games,
       playerId,
-      scoringMatrix
+      scoringMatrix,
     );
     if (score > maxScore) {
       maxScore = score;
@@ -55,4 +55,15 @@ export const getNumberOfDates = (games: Game[]) => {
     dates.add(formatDateToMMDD(new Date(game.timestamp)));
   });
   return dates.size;
+};
+
+export const canEditLocation = (
+  user: User | null,
+  player: Player | null,
+  location: PoolHallLocation | undefined,
+) => {
+  return (
+    user?.isAppAdmin ||
+    (player?.id && location?.discoveryPlayerIds?.includes(player?.id))
+  );
 };

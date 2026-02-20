@@ -230,11 +230,15 @@ const LocationRow: FC<{
             <TableCell
               sx={{
                 textAlign: "center",
-                display: "flex",
                 justifyContent: "center",
               }}
             >
-              <PlayerAvatar player={leader} />
+              <Stack
+                direction="row"
+                sx={{ alignItems: "center", justifyContent: "center" }}
+              >
+                <PlayerAvatar player={leader} sx={{ height: 25, width: 25 }} />
+              </Stack>
             </TableCell>
           );
         } else {

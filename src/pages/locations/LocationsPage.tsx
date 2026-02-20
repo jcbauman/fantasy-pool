@@ -9,7 +9,7 @@ import {
   Link,
 } from "@mui/material";
 import { FC, useMemo } from "react";
-import { PoolHallLocation } from "../../types";
+import { Player, PoolHallLocation } from "../../types";
 import { PageContainer } from "../../shared-components/PageContainer";
 import { useAppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
@@ -21,38 +21,40 @@ import { useFetchLocations } from "../../backend/endpoints/locations";
 import { LocationCell } from "./components/LocationCell";
 import { bucketGamesByLocation } from "./hooks/utils";
 import { setHideInactiveLocations } from "../../redux/settingsSlice";
+import { PlayerAvatar } from "../../shared-components/PlayerAvatar";
 
 const SortableStatsOrder = [
   { label: "Name", value: "name" },
   { label: "Games", value: "games" },
+  { label: "Leader", value: "leader" },
   { label: "City", value: "city" },
   { label: "State", value: "state" },
 ];
 
 export const LocationsPage: FC = () => {
-  const { games } = useAppContext();
+  const { games, scoringMatrix, players } = useAppContext();
   const locations = useFetchLocations();
   const { locationSortBy: sortBy } = useSelector(
-    (state: RootState) => state.nav
+    (state: RootState) => state.nav,
   );
   const { hideInactiveLocations } = useSelector(
-    (state: RootState) => state.settings
+    (state: RootState) => state.settings,
   );
   const dispatch = useDispatch();
 
   const alphabeticalLocations = useMemo(
     () => (locations ?? []).sort((a, b) => a?.name?.localeCompare(b?.name)),
-    [locations]
+    [locations],
   );
 
   const bucketedGames = useMemo(() => {
-    return bucketGamesByLocation(games);
-  }, [games]);
+    return bucketGamesByLocation(games, scoringMatrix);
+  }, [games, scoringMatrix]);
 
   const filteredLocations = useMemo(() => {
     if (!hideInactiveLocations) return alphabeticalLocations;
     return alphabeticalLocations.filter(
-      (l) => (bucketedGames?.[l.name] ?? 0) > 0
+      (l) => (bucketedGames?.counts?.[l.name] ?? 0) > 0,
     );
   }, [hideInactiveLocations, alphabeticalLocations, bucketedGames]);
 
@@ -78,8 +80,17 @@ export const LocationsPage: FC = () => {
     } else if (sortBy === "games") {
       return [...filteredLocations].sort(
         (a, b) =>
-          (bucketedGames?.[b.name] ?? 0) - (bucketedGames?.[a.name] ?? 0)
+          (bucketedGames?.counts?.[b.name] ?? 0) -
+          (bucketedGames?.counts?.[a.name] ?? 0),
       );
+    } else if (sortBy === "leader") {
+      return [...filteredLocations].sort((a, b) => {
+        const leaderA = bucketedGames?.leaders?.[a.name];
+        const leaderB = bucketedGames?.leaders?.[b.name];
+        if (!leaderA && leaderB) return 1;
+        if (leaderA && !leaderB) return -1;
+        return leaderA?.localeCompare(leaderB ?? "") ?? 0;
+      });
     } else {
       return filteredLocations;
     }
@@ -137,7 +148,10 @@ export const LocationsPage: FC = () => {
                   key={loc.id}
                   rowKey={loc.id}
                   location={loc}
-                  count={bucketedGames?.[loc.name] ?? 0}
+                  count={bucketedGames?.counts?.[loc.name] ?? 0}
+                  leader={players.find(
+                    (p) => p.id === bucketedGames?.leaders?.[loc.name],
+                  )}
                 />
               );
             })}
@@ -178,7 +192,8 @@ const LocationRow: FC<{
   location: PoolHallLocation;
   rowKey: string;
   count: number;
-}> = ({ location, rowKey, count }) => {
+  leader: Player | undefined;
+}> = ({ location, rowKey, count, leader }) => {
   const navigate = useNavigate();
   const handleRowClick = (): void => {
     navigate("/locations/" + location.id);
@@ -186,7 +201,7 @@ const LocationRow: FC<{
 
   const isKeyOfLocation = (
     key: string,
-    obj: PoolHallLocation
+    obj: PoolHallLocation,
   ): key is keyof PoolHallLocation => {
     return key in obj;
   };
@@ -210,6 +225,22 @@ const LocationRow: FC<{
           );
         } else if (f.value === "games") {
           return <TableCell sx={{ textAlign: "center" }}>{count}</TableCell>;
+        } else if (f.value === "leader") {
+          return (
+            <TableCell
+              sx={{
+                textAlign: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Stack
+                direction="row"
+                sx={{ alignItems: "center", justifyContent: "center" }}
+              >
+                <PlayerAvatar player={leader} sx={{ height: 25, width: 25 }} />
+              </Stack>
+            </TableCell>
+          );
         } else {
           return (
             <TableCell sx={{ textAlign: "center" }}>

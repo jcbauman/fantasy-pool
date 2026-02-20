@@ -9,8 +9,12 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { PoolHallLocation } from "../../types";
-import { firestore, LOCATIONS_COLLECTION } from "../firebase/controller";
+import { Game, PoolHallLocation } from "../../types";
+import {
+  firestore,
+  GAMES_COLLECTION,
+  LOCATIONS_COLLECTION,
+} from "../firebase/controller";
 import { sendErrorNotification } from "../../shared-components/toasts/notificationToasts";
 
 export const useFetchLocationNames = (): string[] => {
@@ -86,7 +90,7 @@ export const useFetchLocations = (): PoolHallLocation[] => {
 };
 
 export const addNewLocation = async (
-  location: Omit<PoolHallLocation, "id">
+  location: Omit<PoolHallLocation, "id">,
 ): Promise<string | undefined> => {
   try {
     const docRef = await addDoc(LOCATIONS_COLLECTION, { ...location });
@@ -100,7 +104,7 @@ export const addNewLocation = async (
 export const deleteLocation = async (
   locationId: string,
   onSuccess?: () => void,
-  onError?: () => void
+  onError?: () => void,
 ): Promise<void> => {
   try {
     await deleteDoc(doc(firestore, `locations/${locationId}`));
@@ -111,7 +115,7 @@ export const deleteLocation = async (
 };
 
 export const fetchLocationById = async (
-  id: string
+  id: string,
 ): Promise<PoolHallLocation | undefined> => {
   const docSnap = await getDoc(doc(firestore, `locations/${id}`));
   if (docSnap.exists()) {
@@ -126,15 +130,15 @@ export const fetchLocationById = async (
 };
 
 export const fetchLocationByName = async (
-  name: string
+  name: string,
 ): Promise<PoolHallLocation | undefined> => {
   const querySnapshot = await getDocs(
-    query(LOCATIONS_COLLECTION, where("name", "==", name))
+    query(LOCATIONS_COLLECTION, where("name", "==", name)),
   );
   if (querySnapshot.docs.length > 0) {
     const docs = querySnapshot.docs;
     const withCity = docs.find((d) =>
-      (d.data() as PoolHallLocation)?.city?.trim()
+      (d.data() as PoolHallLocation)?.city?.trim(),
     );
     const chosen = withCity ?? docs[0];
     const data = chosen.data() as Omit<PoolHallLocation, "id">;
@@ -149,7 +153,7 @@ export const updateLocation = async (
   location: Omit<PoolHallLocation, "id">,
   locationId: string,
   onSuccess?: () => void,
-  onError?: () => void
+  onError?: () => void,
 ): Promise<void> => {
   try {
     const docRef = doc(firestore, `locations/${locationId}`);
@@ -158,4 +162,16 @@ export const updateLocation = async (
   } catch (e) {
     onError?.();
   }
+};
+
+export const getFirstEverGameAtLocation = async (
+  locationName: string,
+): Promise<Game | undefined> => {
+  const games = await getDocs(
+    query(GAMES_COLLECTION, where("location", "==", locationName)),
+  );
+  if (games.docs.length > 0) {
+    return games.docs[0].data() as Game;
+  }
+  return undefined;
 };

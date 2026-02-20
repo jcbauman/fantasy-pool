@@ -1,6 +1,14 @@
 import { FC, useEffect, useState } from "react";
 import { PageContainer } from "../../shared-components/PageContainer";
-import { Button, Card, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Card,
+  Divider,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { keyframes } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -9,10 +17,13 @@ import { GameFantasyDetail } from "../player-detail/components/GameFantasyDetail
 import { useAppContext } from "../../context/AppContext";
 import { makePlayerActive } from "../players/utils/inactivityUtils";
 import { useConfetti } from "../../shared-components/hooks/useConfetti";
-import { Game } from "../../types";
+import { Game, PoolHallLocation } from "../../types";
 import { Timestamp } from "firebase/firestore";
 import { initializeGame } from "../../redux/gameSlice";
-import { Replay } from "@mui/icons-material";
+import { NavigateNext, Replay } from "@mui/icons-material";
+import { fetchLocationByName } from "../../backend/endpoints/locations";
+import { fireAnalyticsEvent } from "../../shared-components/hooks/analytics";
+import { canEditLocation } from "../location-detail/hooks/utils";
 
 const rotateCounterclockwise = keyframes`
   from {
@@ -28,7 +39,7 @@ export const GameCompletePage: FC = () => {
     games,
     scoringMatrix,
     players,
-    authState: { player, refetchPlayer },
+    authState: { player, refetchPlayer, user },
   } = useAppContext();
   const { confettiComponent, launchConfetti } = useConfetti();
   const lastGameId = useSelector((state: RootState) => state.game.lastGameId);
@@ -36,6 +47,9 @@ export const GameCompletePage: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isRotating, setIsRotating] = useState(false);
+  const [gameLocationObj, setGameLocationObj] = useState<
+    PoolHallLocation | undefined
+  >(undefined);
 
   //make involved players active they were out
   useEffect(() => {
@@ -46,6 +60,20 @@ export const GameCompletePage: FC = () => {
       });
     }
   }, [targetGame, players, refetchPlayer]);
+
+  useEffect(() => {
+    const fetchLocationObj = async () => {
+      if (targetGame) {
+        const locationObj = await fetchLocationByName(
+          targetGame.location ?? "",
+        );
+        if (locationObj) {
+          setGameLocationObj(locationObj);
+        }
+      }
+    };
+    fetchLocationObj();
+  }, [targetGame]);
 
   useEffect(() => {
     launchConfetti();
@@ -82,6 +110,18 @@ export const GameCompletePage: FC = () => {
     // Join first names with ' and '
     return relevantFirstNames.join(" and ");
   };
+
+  const viewLocation = async () => {
+    if (!gameLocationObj) return;
+    navigate(`/locations/${gameLocationObj.id}`);
+    fireAnalyticsEvent("GameComplete_Clicked_EditLocation");
+  };
+
+  const displayEditLocationCard =
+    gameLocationObj &&
+    canEditLocation(user, player, gameLocationObj) &&
+    !gameLocationObj.icon;
+
   return (
     <PageContainer>
       <Stack
@@ -91,7 +131,22 @@ export const GameCompletePage: FC = () => {
       >
         <Card sx={{ p: 2, textAlign: "center", flexShrink: 0 }}>
           <Stack direction="column" spacing={2}>
-            <Typography variant="h5">GAME COMPLETE</Typography>
+            <Stack
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              width="100%"
+              sx={{ mb: 1 }}
+            >
+              <Divider flexItem />
+              <Typography
+                variant="h6"
+                sx={{ mx: 1, whiteSpace: "nowrap", my: 0.5 }}
+              >
+                GAME COMPLETE
+              </Typography>
+              <Divider flexItem />
+            </Stack>
             {player && targetGame?.playerIds.includes(player.id) ? (
               <GameFantasyDetail
                 game={targetGame}
@@ -137,6 +192,20 @@ export const GameCompletePage: FC = () => {
             </Stack>
           </Stack>
         </Card>
+        {displayEditLocationCard && (
+          <Card sx={{ p: 2, textAlign: "center", flexShrink: 0 }}>
+            <Stack direction="row" gap={2}>
+              <Avatar alt="?">✏️</Avatar>
+              <Typography textAlign="left" variant="caption">
+                Help out the community by adding an icon and details for{" "}
+                {targetGame?.location ? targetGame.location : "this location"}.
+              </Typography>
+              <IconButton sx={{ flexShrink: 0 }} onClick={() => viewLocation()}>
+                <NavigateNext />
+              </IconButton>
+            </Stack>
+          </Card>
+        )}
         {confettiComponent()}
       </Stack>
     </PageContainer>

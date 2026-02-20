@@ -12,6 +12,7 @@ import {
 } from "../../../shared-components/toasts/notificationToasts";
 import { fireAnalyticsEvent } from "../../../shared-components/hooks/analytics";
 import { useAppContext } from "../../../context/AppContext";
+import { canEditLocation } from "../hooks/utils";
 
 export const LocationDetailHeader: FC<{
   location: PoolHallLocation;
@@ -23,20 +24,16 @@ export const LocationDetailHeader: FC<{
     location?.city?.trim() && location?.state?.trim()
       ? `${location.city}, ${location.state}`
       : location?.city?.trim()
-      ? location.city
-      : location?.state?.trim()
-      ? location.state
-      : undefined;
+        ? location.city
+        : location?.state?.trim()
+          ? location.state
+          : undefined;
 
   const {
     authState: { user, player },
   } = useAppContext();
-  const canEditLocation =
-    user?.isAppAdmin ||
-    (player?.id &&
-      (location?.discoveryPlayerIds?.includes(player?.id) ||
-        games.some((g) => g.playerIds.includes(player?.id))));
-  const bioDefault = !canEditLocation ? "Add a bio/description" : "No bio yet";
+  const canEdit = canEditLocation(user, player, location);
+  const bioDefault = !canEdit ? "Add a bio/description" : "No bio yet";
   const bio = location.description?.length ? location.description : bioDefault;
   return (
     <Card
@@ -71,7 +68,7 @@ export const LocationDetailHeader: FC<{
             >
               {location.name}
             </Typography>
-            {canEditLocation && (
+            {canEdit && (
               <IconButton
                 size="small"
                 onClick={() => {
@@ -107,14 +104,14 @@ export const LocationDetailHeader: FC<{
             location.id,
             async () => {
               sendSuccessNotification(
-                `Thanks for contributing to ${data.name}!`
+                `Thanks for contributing to ${data.name}!`,
               );
               await onRefetchLocation?.();
             },
             () =>
               sendErrorNotification(
-                "An error occurred, please try updating location later."
-              )
+                "An error occurred, please try updating location later.",
+              ),
           );
         }}
         location={location}

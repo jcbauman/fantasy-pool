@@ -39,7 +39,11 @@ export const TopNav: FC = () => {
             color="inherit"
             aria-label="menu"
             onClick={() => {
-              if (showBackButton && window.history.length > 2) {
+              if (
+                showBackButton &&
+                window.history.length > 2 &&
+                !location.pathname.startsWith("/locations")
+              ) {
                 window.history.back();
                 fireAnalyticsEvent("TopNav_Clicked_BackButton");
               } else {

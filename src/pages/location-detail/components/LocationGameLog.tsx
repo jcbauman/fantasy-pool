@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Game } from "../../../types";
+import { Game, Player } from "../../../types";
 import {
   AvatarGroup,
   Card,
@@ -11,7 +11,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { sortGamesByDate } from "../../../utils/gameUtils";
@@ -19,12 +18,22 @@ import { formatDateToMMDD } from "../../../utils/dateUtils";
 import { useAppContext } from "../../../context/AppContext";
 import { PlayerAvatar } from "../../../shared-components/PlayerAvatar";
 import { getWinningAndLosingPlayersForGame } from "../hooks/utils";
-import { getPlayerFullName } from "../../players/utils/playerUtils";
+import { GameFantasyDetailDialog } from "../../player-detail/components/GameFantasyDetailDialog";
 
 export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
   const dateSortedGames = sortGamesByDate(games);
-  const { players } = useAppContext();
-  const [openTooltipKey, setOpenTooltipKey] = useState<string | null>(null);
+  const { players, scoringMatrix } = useAppContext();
+  const [detailModalGame, setDetailModalGame] = useState<Game | undefined>(
+    undefined,
+  );
+  const [detailModalPlayer, setDetailModalPlayer] = useState<
+    Player | undefined
+  >(undefined);
+
+  const handleOpenDetailModal = (player: Player, game: Game) => {
+    setDetailModalPlayer(player);
+    setDetailModalGame(game);
+  };
 
   return (
     <Card>
@@ -83,27 +92,11 @@ export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
                               {winningPlayers.map((p) => {
                                 const key = `${p.id}-${g.id}`;
                                 return (
-                                  <Tooltip
-                                    arrow
+                                  <PlayerAvatar
                                     key={key}
-                                    title={getPlayerFullName(p)}
-                                    placement="bottom"
-                                    open={openTooltipKey === key}
-                                    onClose={() => setOpenTooltipKey(null)}
-                                    disableHoverListener
-                                    disableFocusListener
-                                  >
-                                    <span
-                                      style={{ display: "inline-flex" }}
-                                      onClick={() =>
-                                        setOpenTooltipKey((prev) =>
-                                          prev === key ? null : key
-                                        )
-                                      }
-                                    >
-                                      <PlayerAvatar player={p} />
-                                    </span>
-                                  </Tooltip>
+                                    player={p}
+                                    onClick={() => handleOpenDetailModal(p, g)}
+                                  />
                                 );
                               })}
                             </AvatarGroup>
@@ -125,27 +118,11 @@ export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
                               {losingPlayers.map((p) => {
                                 const key = `${p.id}-${g.id}`;
                                 return (
-                                  <Tooltip
+                                  <PlayerAvatar
                                     key={key}
-                                    title={getPlayerFullName(p)}
-                                    placement="bottom"
-                                    arrow
-                                    open={openTooltipKey === key}
-                                    onClose={() => setOpenTooltipKey(null)}
-                                    disableHoverListener
-                                    disableFocusListener
-                                  >
-                                    <span
-                                      style={{ display: "inline-flex" }}
-                                      onClick={() =>
-                                        setOpenTooltipKey((prev) =>
-                                          prev === key ? null : key
-                                        )
-                                      }
-                                    >
-                                      <PlayerAvatar player={p} />
-                                    </span>
-                                  </Tooltip>
+                                    player={p}
+                                    onClick={() => handleOpenDetailModal(p, g)}
+                                  />
                                 );
                               })}
                             </AvatarGroup>
@@ -168,6 +145,13 @@ export const LocationGameLog: FC<{ games: Game[] }> = ({ games }) => {
           </Stack>
         )}
       </Stack>
+      <GameFantasyDetailDialog
+        open={Boolean(detailModalGame)}
+        onClose={() => setDetailModalGame(undefined)}
+        player={detailModalPlayer}
+        scoringMatrix={scoringMatrix}
+        game={detailModalGame}
+      />
     </Card>
   );
 };

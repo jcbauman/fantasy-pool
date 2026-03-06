@@ -29,7 +29,7 @@ import { getPlayerFullName } from "../../players/utils/playerUtils";
 interface EditLocationDrawerProps {
   open: boolean;
   onClose: () => void;
-  onSave: () => void;
+  onSave: (data: PoolHallLocation) => void;
   location: PoolHallLocation;
 }
 

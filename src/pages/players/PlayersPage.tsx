@@ -26,6 +26,7 @@ const SortableStatsOrder = [
   { label: "Name", value: "name" },
   { label: "Avg", value: "fantasyGameAvg" },
   { label: "Win %", value: "winPercentage" },
+  { label: "Total", value: "fantasyScore" },
   { label: "Games", value: "totalGames" },
   { label: "Wins", value: "totalWins" },
   { label: "SS", value: "skillShots" },
@@ -42,16 +43,16 @@ export const PlayersPage: FC = () => {
   const { players, rankings, authState, games } = useAppContext();
   const { sortBy } = useSelector((state: RootState) => state.nav);
   const { hideInactivePlayers } = useSelector(
-    (state: RootState) => state.settings
+    (state: RootState) => state.settings,
   );
   const dispatch = useDispatch();
 
   const alphabeticalPlayers = useMemo(
     () =>
       players.sort((a, b) =>
-        getPlayerFullName(a).localeCompare(getPlayerFullName(b))
+        getPlayerFullName(a).localeCompare(getPlayerFullName(b)),
       ),
-    [players]
+    [players],
   );
 
   useEffect(() => {
@@ -64,17 +65,17 @@ export const PlayersPage: FC = () => {
 
   const isKeyOfRankings = (
     key: string,
-    obj: Record<string, string[]>
+    obj: Record<string, string[]>,
   ): key is keyof Record<string, string[]> => {
     return key in obj;
   };
 
   const sortPlayers = (
     players: Player[],
-    sortedPlayerIds: string[]
+    sortedPlayerIds: string[],
   ): Player[] => {
     return players.sort(
-      (a, b) => sortedPlayerIds.indexOf(a.id) - sortedPlayerIds.indexOf(b.id)
+      (a, b) => sortedPlayerIds.indexOf(a.id) - sortedPlayerIds.indexOf(b.id),
     );
   };
 
@@ -193,7 +194,7 @@ const PlayerRow: FC<{
 
   const isKeyOfStats = (
     key: string,
-    obj: StatsForPlayerGames
+    obj: StatsForPlayerGames,
   ): key is keyof StatsForPlayerGames => {
     return key in obj;
   };
@@ -226,6 +227,12 @@ const PlayerRow: FC<{
           return (
             <TableCell sx={{ textAlign: "center" }} key={f.value}>
               {normalizeStat(stats.fantasyGameAvg)}
+            </TableCell>
+          );
+        else if (f.value === "fantasyScore")
+          return (
+            <TableCell sx={{ textAlign: "center" }} key={f.value}>
+              {normalizeStat(stats.fantasyScore)}
             </TableCell>
           );
         else

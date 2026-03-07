@@ -12,6 +12,7 @@ import { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppContext } from "../../../context/AppContext";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { verifyAndExhaustInviteCode } from "../../../backend/endpoints/invitations";
 
 interface FormValues {
   email: string;
@@ -40,14 +41,20 @@ export const SignIn: FC = () => {
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     if (signUpMode === 1) {
-      // todo - league invite code
-      if (data.leagueInvite !== process.env.REACT_APP_LEAGUE_PASSWORD) {
+      if (!data.leagueInvite) {
+        setError("leagueInvite", {
+          message: "League invite is required",
+        });
+        return;
+      }
+      const leagueId = await verifyAndExhaustInviteCode(data.leagueInvite);
+      if (!leagueId) {
         setError("leagueInvite", {
           message: "Invalid league invite code",
         });
         return;
       }
-      const result = await createAccount(data.email, data.password);
+      const result = await createAccount(data.email, data.password, leagueId);
       if (!result) throw new Error("No account created");
       navigate("/create-player");
     } else {

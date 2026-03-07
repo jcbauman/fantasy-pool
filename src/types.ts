@@ -42,6 +42,14 @@ export interface League {
   release2024Wrapped?: boolean;
 }
 
+export interface LeagueInvite {
+  leagueId: string;
+  id: string;
+  createdAt: Timestamp;
+  consumedAt?: Timestamp;
+  createdById: string;
+}
+
 export interface Game {
   id: string;
   timestamp: string;

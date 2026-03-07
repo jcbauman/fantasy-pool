@@ -12,14 +12,20 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { Controller, useForm } from "react-hook-form";
 import { League } from "../../types";
 import { deleteGame } from "../../backend/endpoints/games";
 import { ScoringRubrikForm } from "./components/ScoringRubrikForm";
-import { sendSuccessNotification } from "../../shared-components/toasts/notificationToasts";
+import {
+  sendErrorNotification,
+  sendSuccessNotification,
+} from "../../shared-components/toasts/notificationToasts";
 import { updateLeague } from "../../backend/endpoints/league";
+import { generateNewInvitation } from "../../backend/endpoints/invitations";
+import { Timestamp } from "firebase/firestore";
 
 type FormData = {
   leagueName: string;
@@ -37,18 +43,14 @@ export const LeagueAdminPage: FC = () => {
     navigate("/profile");
   }
 
-  const [gameIdToDelete, setGameIdToDelete] = useState("");
-
   const {
     handleSubmit,
     register,
-    control,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
       leagueName: league?.name ?? "",
       leagueManagerMessage: league?.leagueManagerMessage ?? "",
-      releaseWrapped: league?.release2024Wrapped ?? false,
     },
   });
 
@@ -62,16 +64,25 @@ export const LeagueAdminPage: FC = () => {
       };
       const { id, ...leagueNoId } = resolvedLeague;
       await updateLeague(leagueNoId, league.id, () =>
-        sendSuccessNotification("League settings updated")
+        sendSuccessNotification("League settings updated"),
       );
     }
   };
 
-  const onDeleteGame = async (): Promise<void> => {
-    if (gameIdToDelete.length === 0) return;
-    await deleteGame(gameIdToDelete, () =>
-      sendSuccessNotification("Game deleted!")
-    );
+  const onInviteNewUser = async (): Promise<void> => {
+    if (!league) return;
+    const invitationId = await generateNewInvitation({
+      leagueId: league.id,
+      createdAt: Timestamp.now(),
+      createdById: user?.id ?? "",
+    });
+    if (!invitationId) {
+      sendErrorNotification("Failed to generate invitation");
+      return;
+    }
+    const message = `You have been invited to join my Fantasy Pool league. Get started at https://www.fantasy-pool.com/#/sign-in?leagueInvite=${invitationId}`;
+    const smsUrl = `sms:?body=${message}`;
+    window.open(smsUrl, "_blank");
   };
 
   if (!league) {
@@ -102,34 +113,6 @@ export const LeagueAdminPage: FC = () => {
                 defaultValue={league?.leagueManagerMessage}
                 {...register("leagueManagerMessage")}
               />
-              <FormControl>
-                <FormLabel>Release 2024 wrapped?</FormLabel>
-                <Controller
-                  name="releaseWrapped"
-                  control={control}
-                  render={({ field }) => (
-                    <RadioGroup
-                      row
-                      {...field}
-                      value={(field.value ?? false).toString()}
-                      onChange={(e) =>
-                        field.onChange(e.target.value === "true")
-                      }
-                    >
-                      <FormControlLabel
-                        value="true"
-                        control={<Radio />}
-                        label="Release"
-                      />
-                      <FormControlLabel
-                        value="false"
-                        control={<Radio />}
-                        label="Hide"
-                      />
-                    </RadioGroup>
-                  )}
-                />
-              </FormControl>
               <Button type="submit" variant="contained">
                 Save changes
               </Button>
@@ -137,18 +120,16 @@ export const LeagueAdminPage: FC = () => {
           </form>
         </Card>
         <Card sx={{ p: 1 }}>
-          <Stack direction="column" spacing={1}>
-            <Typography variant="overline">Delete repeat game</Typography>
-            <TextField
-              type="text"
-              label="Game ID to delete"
-              onChange={(e) => setGameIdToDelete(e.target.value)}
-            />
-            <Stack direction="row" justifyContent="flex-end">
-              <Button color="error" variant="outlined" onClick={onDeleteGame}>
-                Delete
-              </Button>
-            </Stack>
+          <Typography variant="overline">Invite new user</Typography>
+          <Stack direction="column" spacing={2} sx={{ p: 1 }}>
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={onInviteNewUser}
+              startIcon={<SendOutlinedIcon />}
+            >
+              Send league invite message
+            </Button>
           </Stack>
         </Card>
         <ScoringRubrikForm league={league} />

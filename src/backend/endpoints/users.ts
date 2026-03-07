@@ -31,8 +31,8 @@ export const useFetchUsers = (): User[] => {
               leagueId: data.leagueId,
               isAppAdmin: data.isAppAdmin,
             };
-          })
-        )
+          }),
+        ),
     );
     return () => unsubscribe();
   }, []);
@@ -40,7 +40,7 @@ export const useFetchUsers = (): User[] => {
 };
 
 export const getAppUserByUID = async (
-  uID?: string
+  uID?: string,
 ): Promise<User | undefined> => {
   try {
     if (!uID) return;
@@ -59,19 +59,20 @@ export const getAppUserByUID = async (
 
 export const setupNewUser = async (
   email: string,
-  password: string
+  password: string,
+  leagueId: string,
 ): Promise<string | undefined> => {
   try {
     const { user } = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     try {
       const newUser: Omit<User, "id"> = {
         email,
         fbID: user.uid ?? "",
-        leagueId: process.env.REACT_APP_DEFAULT_LEAGUE_ID,
+        leagueId,
       };
       const docRef = await addDoc(USERS_COLLECTION, newUser);
       return docRef.id;

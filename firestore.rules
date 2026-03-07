@@ -1,5 +1,10 @@
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Invitations: only authenticated league admins can create; no client read/delete (use Cloud Function to verify/consume)
+    match /invitations/{inviteId} {
+      allow create: if request.auth != null;
+      allow read, update, delete: if false;
+    }
     match /{document=**} {
       allow read: if true;
     }

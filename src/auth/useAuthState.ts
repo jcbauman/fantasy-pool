@@ -22,11 +22,12 @@ export interface UseAuthState {
   signOut: () => void;
   signIn: (
     email: string,
-    password: string
+    password: string,
   ) => Promise<UserCredential | undefined>;
   createAccount: (
     email: string,
-    password: string
+    password: string,
+    leagueId: string,
   ) => Promise<string | undefined>;
   fbUser: FBUser | null;
   refetchPlayer: () => void;
@@ -84,10 +85,11 @@ export const useAuthState = (): UseAuthState => {
 
   const createAccount = async (
     email: string,
-    password: string
+    password: string,
+    leagueId: string,
   ): Promise<string | undefined> => {
     try {
-      const result = await setupNewUser(email, password);
+      const result = await setupNewUser(email, password, leagueId);
       return result;
     } catch (error) {
       console.error(error);
@@ -97,7 +99,7 @@ export const useAuthState = (): UseAuthState => {
 
   const signIn = async (
     email: string,
-    password: string
+    password: string,
   ): Promise<UserCredential | undefined> => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);

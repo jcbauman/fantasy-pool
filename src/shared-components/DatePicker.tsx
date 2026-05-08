@@ -15,30 +15,69 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const [date, setDate] = useState(defValue);
   const [error, setError] = useState("");
 
-  // Function to format input value as mm/dd/yyyy
   const formatDate = (value: string): string => {
-    // Remove non-digit characters
     const digits = value.replace(/\D/g, "");
-    // Format digits as mm/dd/yyyy
+
     if (digits.length <= 2) return digits;
     if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+
     return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4, 8)}`;
   };
 
-  // Handle input change
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    const formattedValue = formatDate(value);
-    setDate(formattedValue);
-    onChange(new Date(formattedValue));
+  const parseDateWithCurrentTime = (value: string): Date | null => {
+    const match = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (!match) return null;
 
-    // Validate date format (basic validation)
-    const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d$/;
-    if (regex.test(formattedValue) || formattedValue === "") {
-      setError("");
-    } else {
-      setError("Invalid date format");
+    const [, month, day, year] = match;
+    const now = new Date();
+
+    const parsedDate = new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day),
+      now.getHours(),
+      now.getMinutes(),
+      now.getSeconds(),
+      now.getMilliseconds(),
+    );
+
+    // Prevent dates like 02/31/2026 from rolling into March
+    if (
+      parsedDate.getFullYear() !== Number(year) ||
+      parsedDate.getMonth() !== Number(month) - 1 ||
+      parsedDate.getDate() !== Number(day)
+    ) {
+      return null;
     }
+
+    return parsedDate;
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatDate(event.target.value);
+    setDate(formattedValue);
+
+    const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d\d$/;
+
+    if (formattedValue === "") {
+      setError("");
+      return;
+    }
+
+    if (!regex.test(formattedValue)) {
+      setError("Invalid date format");
+      return;
+    }
+
+    const parsedDate = parseDateWithCurrentTime(formattedValue);
+
+    if (!parsedDate) {
+      setError("Invalid date");
+      return;
+    }
+
+    setError("");
+    onChange(parsedDate);
   };
 
   return (

@@ -65,7 +65,7 @@ export const GameCompletePage: FC = () => {
     const fetchLocationObj = async () => {
       if (targetGame) {
         const locationObj = await fetchLocationByName(
-          targetGame.location ?? "",
+          targetGame.location ?? ""
         );
         if (locationObj) {
           setGameLocationObj(locationObj);
@@ -80,6 +80,7 @@ export const GameCompletePage: FC = () => {
   }, [launchConfetti]);
 
   const restartGame = (): void => {
+    fireAnalyticsEvent("PlayerDetail_Clicked_RestartGame");
     setIsRotating(true);
     setTimeout(() => {
       const resolvedGame: Omit<Game, "id"> = {

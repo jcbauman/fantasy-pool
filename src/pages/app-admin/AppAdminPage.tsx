@@ -64,16 +64,6 @@ export const AppAdminPage: FC = () => {
         </Card>
         <Card sx={{ p: 2 }}>
           <Button
-            startIcon={<AccessTimeIcon />}
-            fullWidth
-            variant="outlined"
-            onClick={() => updateGamesWithTimestamps()}
-          >
-            Infill timestamps
-          </Button>
-        </Card>
-        <Card sx={{ p: 2 }}>
-          <Button
             startIcon={<QueryStatsIcon />}
             fullWidth
             variant="outlined"

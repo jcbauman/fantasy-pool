@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { FC, useCallback, useEffect, useState } from "react";
-import DatePicker from "../../../shared-components/DatePicker";
+import { DatePicker } from "../../../shared-components/DatePicker";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeGame } from "../../../redux/gameSlice";
@@ -28,6 +28,7 @@ import { RootState } from "../../../redux/store";
 import { Game, Player } from "../../../types";
 import {
   areStringArraysEqual,
+  getSeasonStart,
   isMoreThanTwoHoursAgo,
 } from "../../../utils/dateUtils";
 import { Add } from "@mui/icons-material";
@@ -331,6 +332,7 @@ export const GameStartForm: FC<{
               control={control}
               render={({ field }) => (
                 <DatePicker
+                  minDate={getSeasonStart()}
                   label="Original game date"
                   {...field}
                   onChange={(date) => field.onChange(date)}

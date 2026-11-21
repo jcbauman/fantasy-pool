@@ -43,7 +43,7 @@ import StrikethroughSOutlinedIcon from "@mui/icons-material/StrikethroughSOutlin
 import { MultiBallDeleteDialog } from "./MultiBallDeleteDialog";
 import { useFetchLocationNames } from "../../../backend/endpoints/locations";
 import { DeleteOutlined } from "@mui/icons-material";
-import DatePicker from "../../../shared-components/DatePicker";
+import { DatePicker } from "../../../shared-components/DatePicker";
 import { Timestamp } from "firebase/firestore";
 import { formatDateStringToMMDDYYY } from "../../../utils/dateUtils";
 import { sendSuccessNotification } from "../../../shared-components/toasts/notificationToasts";
@@ -169,7 +169,7 @@ export const GameEditingInterface: FC<{ gameToEdit: Game }> = ({
           />
           <DatePicker
             label="Original game date"
-            defValue={formatDateStringToMMDDYYY(currGame.timestamp)}
+            defValue={currGame.timestamp}
             onChange={(date) => {
               setCurrGame({
                 ...currGame,

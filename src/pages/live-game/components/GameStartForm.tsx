@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { FC, useCallback, useEffect, useState } from "react";
-import DatePicker from "../../../shared-components/DatePicker";
+import { DatePicker } from "../../../shared-components/DatePicker";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeGame } from "../../../redux/gameSlice";

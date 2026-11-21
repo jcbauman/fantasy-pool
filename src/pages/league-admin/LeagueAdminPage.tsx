@@ -102,34 +102,6 @@ export const LeagueAdminPage: FC = () => {
                 defaultValue={league?.leagueManagerMessage}
                 {...register("leagueManagerMessage")}
               />
-              <FormControl>
-                <FormLabel>Release 2024 wrapped?</FormLabel>
-                <Controller
-                  name="releaseWrapped"
-                  control={control}
-                  render={({ field }) => (
-                    <RadioGroup
-                      row
-                      {...field}
-                      value={(field.value ?? false).toString()}
-                      onChange={(e) =>
-                        field.onChange(e.target.value === "true")
-                      }
-                    >
-                      <FormControlLabel
-                        value="true"
-                        control={<Radio />}
-                        label="Release"
-                      />
-                      <FormControlLabel
-                        value="false"
-                        control={<Radio />}
-                        label="Hide"
-                      />
-                    </RadioGroup>
-                  )}
-                />
-              </FormControl>
               <Button type="submit" variant="contained">
                 Save changes
               </Button>

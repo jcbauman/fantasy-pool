@@ -59,10 +59,9 @@ export const formatSeasonString = (specificDate?: Date): string => {
   const month = date.getUTCMonth();
   const seasons = ["Winter", "Spring", "Summer", "Fall"];
   const seasonIndex = Math.floor(month / 3);
-  const seasonYear = seasonIndex === 3 ? year + 1 : year;
   const endMonths = [2, 5, 8, 11];
-  const endDate = new Date(Date.UTC(seasonYear, endMonths[seasonIndex] + 1, 0));
-  return `${seasonYear} ${
+  const endDate = new Date(Date.UTC(year, endMonths[seasonIndex] + 1, 0));
+  return `${year} ${
     seasons[seasonIndex]
   } Season - through ${endDate.toLocaleString("en-US", {
     month: "long",

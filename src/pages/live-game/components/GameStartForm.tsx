@@ -180,6 +180,13 @@ export const GameStartForm: FC<{
     return player ? player.firstName + " " + player.lastName : "";
   };
 
+  const findOtherPlayerId = (): string | undefined => {
+    const otherPlayerId = lastGameAddedPlayers.find(
+      (p) => p !== watchAll.playerIds?.[0]
+    );
+    return otherPlayerId;
+  };
+
   return (
     <Card sx={{ p: 2 }}>
       <Stack direction="row" sx={{ alignItems: "center", mb: 1 }}>
@@ -250,11 +257,14 @@ export const GameStartForm: FC<{
                 sx={{ flexShrink: 1, ml: 1 }}
                 label={findOtherPlayerName()}
                 onClick={() => {
-                  setValue("playerIds", lastGameAddedPlayers);
-                  setLastGameAddedPlayers([]);
-                  fireAnalyticsEvent(
-                    "GameMode_Clicked_AddLastPlayerConfiguration"
-                  );
+                  const idToAdd = findOtherPlayerId();
+                  if (idToAdd) {
+                    setValue("playerIds", watchAll.playerIds.concat(idToAdd));
+                    setLastGameAddedPlayers([]);
+                    fireAnalyticsEvent(
+                      "GameMode_Clicked_AddLastPlayerConfiguration"
+                    );
+                  }
                 }}
               />
             </Stack>

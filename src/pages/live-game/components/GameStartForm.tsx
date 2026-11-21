@@ -28,6 +28,7 @@ import { RootState } from "../../../redux/store";
 import { Game, Player } from "../../../types";
 import {
   areStringArraysEqual,
+  getSeasonStart,
   isMoreThanTwoHoursAgo,
 } from "../../../utils/dateUtils";
 import { Add } from "@mui/icons-material";
@@ -331,6 +332,7 @@ export const GameStartForm: FC<{
               control={control}
               render={({ field }) => (
                 <DatePicker
+                  minDate={getSeasonStart()}
                   label="Original game date"
                   {...field}
                   onChange={(date) => field.onChange(date)}

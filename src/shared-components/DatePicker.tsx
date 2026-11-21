@@ -8,12 +8,14 @@ interface DatePickerProps {
   label?: string;
   onChange: (date: Date) => void;
   defValue?: string;
+  minDate?: string;
 }
 
 export const DatePicker: FC<DatePickerProps> = ({
   label = "Select date and time",
   onChange,
   defValue,
+  minDate,
 }) => {
   const [dateTime, setDateTime] = useState<Dayjs | null>(
     defValue ? dayjs(defValue) : dayjs()
@@ -29,6 +31,8 @@ export const DatePicker: FC<DatePickerProps> = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateTimePicker
+        maxDateTime={dayjs()}
+        minDate={minDate ? dayjs(minDate) : undefined}
         label={label}
         value={dateTime}
         onChange={handleChange}

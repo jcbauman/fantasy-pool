@@ -21,11 +21,12 @@ import { joinedInTimeFor2024Wrapped } from "../players/utils/playerUtils";
 import { NewSeasonDialog } from "./components/NewSeasonDialog";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import { formatSeasonString } from "../../utils/dateUtils";
+import { formatSeasonString, getSeasonEmoji } from "../../utils/dateUtils";
 import { CalendarMonthOutlined } from "@mui/icons-material";
 import { canSeeLastSeason } from "../../utils/gameUtils";
 import { LocationUpdateSuggestion } from "../profile/components/LocationUpdateSuggestion";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
+import SpinningCoin from "./components/SpinningCoin";
 
 const WRAPPED_STORAGE_KEY = "2024_wrapped_storage_keyyy";
 
@@ -58,6 +59,7 @@ export const OverviewComponent: FC = () => {
     !hasSeenNewSeasonDialog
   );
   const showLastSeasonTab = canSeeLastSeason(records, player?.id);
+  const seasonEmoji = getSeasonEmoji();
 
   return (
     <PageContainer authedRoute loading={initialLoading}>
@@ -70,28 +72,31 @@ export const OverviewComponent: FC = () => {
             }}
           />
         )}
-        <Stack
-          direction="column"
-          sx={{
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-            px: 2,
-            pt: 2,
-          }}
-        >
-          <Typography variant="overline" lineHeight={0.5}>
-            <strong>League</strong>
-          </Typography>
-          {league?.name ? (
-            <Typography variant="overline" fontSize={16}>
-              {league?.name}
+        <Stack direction="row" sx={{ alignItems: "center" }}>
+          <Stack
+            direction="column"
+            sx={{
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              px: 2,
+              pt: 2,
+            }}
+          >
+            <Typography variant="overline" lineHeight={0.5}>
+              <strong>League</strong>
             </Typography>
-          ) : (
-            <Skeleton variant="text" width={150} height={20} />
-          )}
-          <Typography variant="caption" sx={{ fontStyle: "italic" }}>
-            {seasonString}
-          </Typography>
+            {league?.name ? (
+              <Typography variant="overline" fontSize={16}>
+                {league?.name}
+              </Typography>
+            ) : (
+              <Skeleton variant="text" width={150} height={20} />
+            )}
+            <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+              {seasonString}
+            </Typography>
+          </Stack>
+          <SpinningCoin emoji={seasonEmoji} size={70} />
         </Stack>
         <Box sx={{ width: "100%" }}>
           <List>
